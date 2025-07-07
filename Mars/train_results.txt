@@ -1,0 +1,13 @@
+Tucker Best Rank One Class SVM (65, 35, 65) 0.68
+Best Rank Tucker with autoencoder (95, 65, 65) 0.74
+Best Rank Tucker with Random forest (5, 65, 5) 0.5
+Best Rank for Tucker with Autoencoder and One Class SVM (65, 35, 5) 0.62
+Best Rank for CP with One Class SVM 90 0.58
+Best Rank for CP with autoencoder 90 0.66
+Best Rank for CP with random forest 65 0.44
+Best Rank for CP with autoencoder and oc svm 85 0.66
+
+Best Rank for CP with One Class SVM 80 0.54
+Best Rank for CP with autoencoder 85 0.62
+Best Rank for CP with random forest 10 0.44
+Best Rank for CP with autoencoder and oc svm 35 0.62
