@@ -24,8 +24,8 @@ dataset_reduction_factor = 1.0
 use_predefined_rank = False
 
 # CP decomposition with one-class SVM
-enable_cp_oc_svm = True
-enable_tucker_oc_svm = False
+enable_cp_oc_svm = False
+enable_tucker_oc_svm = True
 
 # Dataset visualization
 def showMNISTImages(X):

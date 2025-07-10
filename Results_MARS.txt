@@ -1,0 +1,323 @@
+C:\Users\Anthony\anaconda3\envs\isye6740\python.exe C:/OMSA/ISyE6748_practicum_publish/Mars/experiment_3.py
+Tucker rank search One Class SVM
+Rank: 5 5 5
+Running Tucker one-class SVM
+Accuracy: 0.4
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 5 5 35
+Running Tucker one-class SVM
+Accuracy: 0.4
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 5 5 65
+Running Tucker one-class SVM
+Accuracy: 0.4
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 5 5 95
+Running Tucker one-class SVM
+Accuracy: 0.4
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 5 35 5
+Running Tucker one-class SVM
+Accuracy: 0.72
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 5 35 35
+Running Tucker one-class SVM
+Accuracy: 0.64
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 5 35 65
+Running Tucker one-class SVM
+Accuracy: 0.64
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 5 35 95
+Running Tucker one-class SVM
+Accuracy: 0.64
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 5 65 5
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 5 65 35
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 5 65 65
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 5 65 95
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 5 95 5
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 5 95 35
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 5 95 65
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 5 95 95
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 35 5 5
+Running Tucker one-class SVM
+Accuracy: 0.64
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 35 5 35
+Running Tucker one-class SVM
+Accuracy: 0.66
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 35 5 65
+Running Tucker one-class SVM
+Accuracy: 0.66
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 35 5 95
+Running Tucker one-class SVM
+Accuracy: 0.66
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 35 35 5
+Running Tucker one-class SVM
+Accuracy: 0.84
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 35 35 35
+Running Tucker one-class SVM
+Accuracy: 0.88
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 35 35 65
+Running Tucker one-class SVM
+Accuracy: 0.88
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 35 35 95
+Running Tucker one-class SVM
+Accuracy: 0.88
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 35 65 5
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 35 65 35
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 35 65 65
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 35 65 95
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 35 95 5
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 35 95 35
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 35 95 65
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 35 95 95
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 65 5 5
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 65 5 35
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 65 5 65
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 65 5 95
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 65 35 5
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 65 35 35
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 65 35 65
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 65 35 95
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 65 65 5
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 65 65 35
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 65 65 65
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 65 65 95
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 65 95 5
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 65 95 35
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 65 95 65
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 65 95 95
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 95 5 5
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 95 5 35
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 95 5 65
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 95 5 95
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 95 35 5
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 95 35 35
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 95 35 65
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 95 35 95
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 95 65 5
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 95 65 35
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 95 65 65
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 95 65 95
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 95 95 5
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 95 95 35
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 95 95 65
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank: 95 95 95
+Running Tucker one-class SVM
+Accuracy: 0.6
+Best param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Rank accuracy {(5, 5, 5): 0.4, (5, 5, 35): 0.4, (5, 5, 65): 0.4, (5, 5, 95): 0.4, (5, 35, 5): 0.72, (5, 35, 35): 0.64, (5, 35, 65): 0.64, (5, 35, 95): 0.64, (5, 65, 5): 0.6, (5, 65, 35): 0.6, (5, 65, 65): 0.6, (5, 65, 95): 0.6, (5, 95, 5): 0.6, (5, 95, 35): 0.6, (5, 95, 65): 0.6, (5, 95, 95): 0.6, (35, 5, 5): 0.64, (35, 5, 35): 0.66, (35, 5, 65): 0.66, (35, 5, 95): 0.66, (35, 35, 5): 0.84, (35, 35, 35): 0.88, (35, 35, 65): 0.88, (35, 35, 95): 0.88, (35, 65, 5): 0.6, (35, 65, 35): 0.6, (35, 65, 65): 0.6, (35, 65, 95): 0.6, (35, 95, 5): 0.6, (35, 95, 35): 0.6, (35, 95, 65): 0.6, (35, 95, 95): 0.6, (65, 5, 5): 0.6, (65, 5, 35): 0.6, (65, 5, 65): 0.6, (65, 5, 95): 0.6, (65, 35, 5): 0.6, (65, 35, 35): 0.6, (65, 35, 65): 0.6, (65, 35, 95): 0.6, (65, 65, 5): 0.6, (65, 65, 35): 0.6, (65, 65, 65): 0.6, (65, 65, 95): 0.6, (65, 95, 5): 0.6, (65, 95, 35): 0.6, (65, 95, 65): 0.6, (65, 95, 95): 0.6, (95, 5, 5): 0.6, (95, 5, 35): 0.6, (95, 5, 65): 0.6, (95, 5, 95): 0.6, (95, 35, 5): 0.6, (95, 35, 35): 0.6, (95, 35, 65): 0.6, (95, 35, 95): 0.6, (95, 65, 5): 0.6, (95, 65, 35): 0.6, (95, 65, 65): 0.6, (95, 65, 95): 0.6, (95, 95, 5): 0.6, (95, 95, 35): 0.6, (95, 95, 65): 0.6, (95, 95, 95): 0.6}
+Tucker Best Rank One Class SVM (35, 35, 35) 0.88
+
+
+
+BASELINE
+C:\Users\Anthony\anaconda3\envs\isye6740\python.exe C:/OMSA/ISyE6748_practicum_publish/Mars/experiment_3.py
+CP rank search One Class SVM
+Rank: 10
+Best accuracy: 0.600 with params: {'gamma': 'scale', 'kernel': 'poly', 'nu': 0.05}
+Accuracy: 0.6
+Rank: 15
+Best accuracy: 0.600 with params: {'gamma': 'scale', 'kernel': 'poly', 'nu': 0.05}
+Accuracy: 0.6
+Rank: 20
+Best accuracy: 0.880 with params: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Accuracy: 0.88
+Rank: 25
+Best accuracy: 0.840 with params: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Accuracy: 0.84
+Rank: 30
+Best accuracy: 0.840 with params: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Accuracy: 0.84
+Rank: 35
+Best accuracy: 0.800 with params: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Accuracy: 0.8
+Rank: 40
+Best accuracy: 0.800 with params: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Accuracy: 0.8
+Rank: 45
+Best accuracy: 0.780 with params: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Accuracy: 0.78
+Rank: 50
+Best accuracy: 0.740 with params: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Accuracy: 0.74
+Rank: 55
+Best accuracy: 0.860 with params: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Accuracy: 0.86
+Rank: 60
+Best accuracy: 0.780 with params: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Accuracy: 0.78
+Rank: 65
+Best accuracy: 0.940 with params: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.05}
+Accuracy: 0.94
+Rank: 70
+Best accuracy: 0.840 with params: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.2}
+Accuracy: 0.84
+Rank: 75
+Best accuracy: 0.780 with params: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.2}
+Accuracy: 0.78
+Rank: 80
+Best accuracy: 0.800 with params: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.2}
+Accuracy: 0.8
+Rank: 85
+Best accuracy: 0.840 with params: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.2}
+Accuracy: 0.84
+Rank: 90
+Best accuracy: 0.820 with params: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.2}
+Accuracy: 0.82
+Rank: 95
+Best accuracy: 0.840 with params: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.2}
+Accuracy: 0.84
+Rank accuracy {10: 0.6, 15: 0.6, 20: 0.88, 25: 0.84, 30: 0.84, 35: 0.8, 40: 0.8, 45: 0.78, 50: 0.74, 55: 0.86, 60: 0.78, 65: 0.94, 70: 0.84, 75: 0.78, 80: 0.8, 85: 0.84, 90: 0.82, 95: 0.84}
+Best Rank for CP with One Class SVM 65 0.94
+
