@@ -16,6 +16,7 @@ from tensorflow.keras.callbacks import EarlyStopping
 from sklearn.ensemble import IsolationForest
 from sklearn import metrics
 from sklearn.model_selection import ParameterGrid
+from sklearn.metrics import make_scorer, roc_auc_score
 
 random.seed(1)
 
@@ -174,7 +175,7 @@ enable_tucker_oc_svm = False
 # Tucker's decomposition with neural-network autoencoders
 enable_tucker_autoencoder = False
 # Tucker's decomposition with random forest
-enable_tucker_random_forest = False
+enable_tucker_random_forest = True
 # Tucker's decomposition with combination of autoencoder and one-class SVM.
 enable_tucker_autoencoder_oc_svm = False
 # CP decomposition with one-class SVM
@@ -182,7 +183,7 @@ enable_cp_oc_svm = False
 # CP decomposition with neural-network autoencoders
 enable_cp_autoencoder = False
 # CP decomposition with random forest
-enable_cp_random_forest = True
+enable_cp_random_forest = False
 # CP decomposition with combination of autoencoder and one-class SVM.
 enable_cp_autoencoder_oc_svm = False
 
@@ -718,6 +719,7 @@ def tucker_random_forests(rank, displayConfusionMatrix=False):
     isolation_forest = IsolationForest(random_state=42)
     grid_search = GridSearchCV(estimator=isolation_forest, param_grid=param_grid, cv=5, scoring=custom_scorer,
                                verbose=0, n_jobs=-1)
+
     grid_search.fit(features_scaled)
 
     best_isolation_forest = grid_search.best_estimator_
@@ -775,5 +777,3 @@ if enable_tucker_random_forest:
         print('Running best rank Tucker with random forest')
         rank=(5, 65, 5)
         accuracy = tucker_random_forests(rank, True)
-
-

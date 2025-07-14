@@ -182,7 +182,6 @@ Best Rank for CP with One Class SVM for label 9 bestRank: 25 bestAccuracy 0.9
 Process finished with exit code 0
 
 
-
 BASELINE
 C:\Users\Anthony\anaconda3\envs\isye6740\python.exe C:/OMSA/ISyE6748_practicum_publish/Mars/Experiment_4.py
 Model for label 0
