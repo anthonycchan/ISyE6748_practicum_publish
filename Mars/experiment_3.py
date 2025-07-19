@@ -886,7 +886,7 @@ def cp_rank_search_autoencover_oc_svm():
     endRank = 100
     step = 5
     rank_accuracy = {}
-    for factor in range(1, 4):
+    for factor in range(1, 40):
         for bottleneck in {16, 32, 64}:
             for i in range(startRank, endRank, step):
                 print('Rank:', i, 'Factor:', factor, 'Bottleneck:', bottleneck)

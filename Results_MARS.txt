@@ -386,3 +386,59 @@ Rank accuracy {10: 0.46, 15: 0.44, 20: 0.46, 25: 0.68, 30: 0.92, 35: 0.98, 40: 0
 Best Rank for CP with random forest 35 0.98
 
 Process finished with exit code 0
+
+
+C:\Users\Anthony\anaconda3\envs\isye6740\python.exe C:/OMSA/ISyE6748_practicum_publish/Mars/Experiment_3.py
+CP rank search autoencoder with oc svm
+Rank: 10 Factor: 1 Bottleneck: 16
+Normal: 3, Anomalies: 47
+Accuracy: 0.58
+Rank: 15 Factor: 1 Bottleneck: 16
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: 20 Factor: 1 Bottleneck: 16
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: 25 Factor: 1 Bottleneck: 16
+Normal: 19, Anomalies: 31
+Accuracy: 0.42
+Rank: 30 Factor: 1 Bottleneck: 16
+Normal: 32, Anomalies: 18
+Accuracy: 0.4
+Rank: 35 Factor: 1 Bottleneck: 16
+Normal: 39, Anomalies: 11
+Accuracy: 0.26
+Rank: 40 Factor: 1 Bottleneck: 16
+Normal: 37, Anomalies: 13
+Accuracy: 0.18
+Rank: 45 Factor: 1 Bottleneck: 16
+Normal: 12, Anomalies: 38
+Accuracy: 0.52
+Rank: 50 Factor: 1 Bottleneck: 16
+Normal: 19, Anomalies: 31
+Accuracy: 0.22
+Rank: 55 Factor: 1 Bottleneck: 16
+Normal: 29, Anomalies: 21
+Accuracy: 0.06
+Rank: 60 Factor: 1 Bottleneck: 16
+Normal: 31, Anomalies: 19
+Accuracy: 0.02
+Rank: 65 Factor: 1 Bottleneck: 16
+Normal: 11, Anomalies: 39
+Accuracy: 0.5
+Rank: 70 Factor: 1 Bottleneck: 16
+Normal: 50, Anomalies: 0
+Accuracy: 0.4
+Rank: 75 Factor: 1 Bottleneck: 16
+Normal: 50, Anomalies: 0
+Accuracy: 0.4
+Rank: 80 Factor: 1 Bottleneck: 16
+Normal: 47, Anomalies: 3
+Accuracy: 0.34
+Rank: 85 Factor: 1 Bottleneck: 16
+Normal: 48, Anomalies: 2
+Accuracy: 0.36
+Rank: 90 Factor: 1 Bottleneck: 16
+Normal: 49, Anomalies: 1
+Accuracy: 0.38
+Rank: 95 Factor: 1 Bottleneck: 16

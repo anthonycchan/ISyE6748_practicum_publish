@@ -17,6 +17,7 @@ from sklearn import metrics
 from tensorflow.keras.models import Model, Sequential
 from tensorflow.keras.layers import Dense, Dropout, Input
 from tensorflow.keras.callbacks import EarlyStopping
+from sklearn.ensemble import IsolationForest
 
 random.seed(1)
 
@@ -30,7 +31,9 @@ use_predefined_rank = False
 enable_cp_oc_svm = False
 enable_tucker_oc_svm = False
 enable_cp_autoencoder = False
-enable_tucker_autoencoder = True
+enable_tucker_autoencoder = False
+enable_cp_random_forest = False
+enable_tucker_random_forest = True
 
 # Dataset visualization
 def showMNISTImages(X):
@@ -334,6 +337,7 @@ def parafac_autoencoder(X_train, X_test, Y_test, rank, factor, displayConfusionM
 
 def cp_rank_search_autoencoder(reduced_X_train, reduced_X_test, reduced_Y_test):
     print('CP rank search autoencoder')
+    print('X_train', reduced_X_train.shape)
     startRank = 5
     endRank = 30
     step = 5
@@ -386,7 +390,7 @@ def tucker_neural_network_autoencoder(X_train, X_test, Y_test, rank, factor, dis
     early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
 
     # Fit the model
-    autoencoder.fit(features_scaled, features_scaled, epochs=10, batch_size=32, validation_split=0.1, 
+    autoencoder.fit(features_scaled, features_scaled, epochs=10, batch_size=32, validation_split=0.1,
                     callbacks=[early_stopping], verbose=0 )
 
     ###
@@ -441,6 +445,170 @@ def tucker_rank_search_autoencoder(reduced_X_train, reduced_X_test, reduced_Y_te
                     rank = (j,k)
                     accuracy = tucker_neural_network_autoencoder(reduced_X_train, reduced_X_test, reduced_Y_test, rank, factor)
                     rank_accuracy[(rank, factor)] = accuracy
+    print('Rank accuracy', rank_accuracy)
+    bestRank = max(rank_accuracy, key=rank_accuracy.get)
+    return bestRank, rank_accuracy[bestRank]
+
+
+############################################
+### CP with random forest
+############################################
+def parafac_random_forest(X_train, X_test, Y_test, rank, displayConfusionMatrix=False):
+    # CP decomposition
+    decomposed_train = buildTensor(X_train, rank, False)
+    decomposed_train_features = np.array(decomposed_train[0])
+
+    scaler = StandardScaler()
+    features_train_scaled = scaler.fit_transform(decomposed_train_features)
+
+    # Suppress warnings
+    warnings.filterwarnings('ignore', category=UserWarning)
+
+    # Hyperparameter tuning
+    param_grid = {
+        'n_estimators': [50, 100, 200],
+        'max_samples': [0.5, 0.75, 1.0],
+        'contamination': [0.05, 0.1, 0.2],
+        'max_features': [0.5, 0.75, 1.0]
+    }
+
+    # Custom scoring function for unsupervised learning
+    def custom_scorer(estimator, X):
+        return np.mean(estimator.score_samples(X))
+
+    isolation_forest = IsolationForest(random_state=42)
+    grid_search = GridSearchCV(estimator=isolation_forest, param_grid=param_grid, cv=5, scoring=custom_scorer, verbose=0, n_jobs=-1)
+    grid_search.fit(features_train_scaled)
+
+    best_isolation_forest = grid_search.best_estimator_
+    best_params = grid_search.best_params_
+
+    ###
+    ### Predict using the test set
+    ###
+    true_labels = np.array(Y_test)
+
+    # Run CP decomposition
+    decomposed_test = buildTensor(X_test, rank, False)
+
+    # Extract and normalize features
+    features_test = np.array(decomposed_test[0])
+    features_test_scaled = scaler.transform(features_test)
+
+    # Predict on the test set
+    predictions = best_isolation_forest.predict(features_test_scaled)
+    #print("Predictions", predictions)
+    #print('True labels', true_labels)
+    accuracy = sum(predictions == true_labels) / len(true_labels)
+    print('Accuracy:', accuracy)
+    print('best parameters', best_params)
+
+    if displayConfusionMatrix:
+        confusion_matrix = metrics.confusion_matrix(true_labels, predictions)
+        cm_display = metrics.ConfusionMatrixDisplay(confusion_matrix=confusion_matrix, display_labels=[-1, 1])
+        cm_display.plot()
+        plt.show()
+
+    return accuracy
+
+def cp_rank_search_random_forest(reduced_X_train, reduced_X_test, reduced_Y_test):
+    print('CP rank search random forest')
+    startRank = 10
+    endRank = 100
+    step = 5
+    rank_accuracy = {}
+    for i in range(startRank, endRank, step):
+        print('Rank:', i)
+        rank = i
+        accuracy = parafac_random_forest(reduced_X_train, reduced_X_test, reduced_Y_test, rank)
+        rank_accuracy[rank] = accuracy
+    print('Rank accuracy', rank_accuracy)
+    bestRank = max(rank_accuracy, key=rank_accuracy.get)
+    return bestRank, rank_accuracy[bestRank]
+
+
+############################################
+### Tucker with random forest
+############################################
+def tucker_random_forests(X_train, X_test, Y_test, rank, displayConfusionMatrix=False):
+    print('Running Tucker with Random Forests')
+    ###
+    ### Training
+    ###
+    num_sets = X_train.shape[0]
+
+    # Run Tucker decomposition
+    decomposed_data = buildTensor(X_train, rank)
+
+    # Extract and normalize features
+    features = extractFeatures(decomposed_data, num_sets)
+    scaler = StandardScaler()
+    features_scaled = scaler.fit_transform(features)
+
+    # Suppress warnings
+    warnings.filterwarnings('ignore', category=UserWarning)
+
+    # Hyperparameter tuning
+    param_grid = {
+        'n_estimators': [50, 100, 200],
+        'max_samples': [0.5, 0.75, 1.0],
+        'contamination': [0.05, 0.1, 0.2],
+        'max_features': [0.5, 0.75, 1.0]
+    }
+
+    # Custom scoring function for unsupervised learning
+    def custom_scorer(estimator, X):
+        return np.mean(estimator.score_samples(X))
+
+    isolation_forest = IsolationForest(random_state=42)
+    grid_search = GridSearchCV(estimator=isolation_forest, param_grid=param_grid, cv=5, scoring=custom_scorer,
+                               verbose=0, n_jobs=-1)
+
+    grid_search.fit(features_scaled)
+
+    best_isolation_forest = grid_search.best_estimator_
+    best_params = grid_search.best_params_
+
+    ###
+    ### Predict using the test set
+    ###
+    num_test_sets = X_test.shape[0]
+    true_labels = np.array(Y_test)
+
+    # Run Tucker decomposition
+    decomposed_data = buildTensor(X_test, rank)
+
+    # Extract and normalize features
+    features_test = extractFeatures(decomposed_data, num_test_sets)
+    features_scaled_test = scaler.transform(features_test)
+
+    # Predict on the test set
+    predictions = best_isolation_forest.predict(features_scaled_test)
+    #print("Predictions", predictions)
+    #print('True labels', true_labels)
+    accuracy = sum(predictions == true_labels) / len(true_labels)
+    print('Accuracy:', accuracy)
+    print('best parameters', best_params)
+
+    if displayConfusionMatrix:
+        confusion_matrix = metrics.confusion_matrix(true_labels, predictions)
+        cm_display = metrics.ConfusionMatrixDisplay(confusion_matrix=confusion_matrix, display_labels=[-1, 1])
+        cm_display.plot()
+        plt.show()
+
+    return accuracy
+
+def tucker_rank_search_random_forest(reduced_X_train, reduced_X_test, reduced_Y_test):
+    print('Tucker rank search random forest')
+    rankSet = sorted({5, 16, 32, 64})
+    rank_accuracy = {}
+    for i in rankSet:
+        for j in rankSet:
+            for k in {5}:
+                print('Rank:', i, j, k)
+                rank = (i,j,k)
+                accuracy = tucker_random_forests(reduced_X_train, reduced_X_test, reduced_Y_test, rank)
+                rank_accuracy[rank] = accuracy
     print('Rank accuracy', rank_accuracy)
     bestRank = max(rank_accuracy, key=rank_accuracy.get)
     return bestRank, rank_accuracy[bestRank]
@@ -510,4 +678,23 @@ for applicableLabel in np.unique(y_test):
             rank=(95, 65, 65)
             factor=40
             accuracy = tucker_neural_network_autoencoder(rank, factor, True)
+
+    if enable_cp_random_forest:
+        if use_predefined_rank == False:
+            bestRank, bestAccuracy = cp_rank_search_random_forest(reduced_X_train, reduced_X_test, reduced_Y_test)
+            print('Best Rank for CP with random forest', bestRank, bestAccuracy)
+        else:
+            print('Running best rank CP with random forest')
+            bestRank = 10
+            factor = 1
+            parafac_random_forest(reduced_X_train, reduced_X_test, reduced_Y_test, bestRank, True)
+
+    if enable_tucker_random_forest:
+        if use_predefined_rank == False:
+            bestRank, bestAccuracy = tucker_rank_search_random_forest(reduced_X_train, reduced_X_test, reduced_Y_test)
+            print('Best Rank Tucker with Random forest', bestRank, bestAccuracy)
+        else:
+            print('Running best rank Tucker with random forest')
+            rank=(5, 65, 5)
+            accuracy = tucker_random_forests(reduced_X_train, reduced_X_test, reduced_Y_test, rank, True)
 
