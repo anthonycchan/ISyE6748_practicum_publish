@@ -326,3 +326,63 @@ CP rank search autoencoder
 Rank accuracy {10: 0.38, 15: 0.62, 20: 0.74, 25: 0.9, 30: 0.9, 35: 0.9, 40: 0.9, 45: 0.9, 50: 0.9, 55: 0.9, 60: 0.9, 65: 0.86, 70: 0.82, 75: 0.78, 80: 0.78, 85: 0.82, 90: 0.82, 95: 0.82}
 Best Rank for CP with autoencoder 25 0.9
 
+
+CP rank search random forest
+Rank: 10
+Accuracy: 0.46
+best parameters {'contamination': 0.05, 'max_features': 0.75, 'max_samples': 1.0, 'n_estimators': 50}
+Rank: 15
+Accuracy: 0.44
+best parameters {'contamination': 0.05, 'max_features': 0.5, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 20
+Accuracy: 0.46
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 50}
+Rank: 25
+Accuracy: 0.68
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 30
+Accuracy: 0.92
+best parameters {'contamination': 0.05, 'max_features': 0.5, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 35
+Accuracy: 0.98
+best parameters {'contamination': 0.05, 'max_features': 0.5, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 40
+Accuracy: 0.96
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 200}
+Rank: 45
+Accuracy: 0.96
+best parameters {'contamination': 0.05, 'max_features': 0.75, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 50
+Accuracy: 0.96
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 55
+Accuracy: 0.9
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 60
+Accuracy: 0.92
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 65
+Accuracy: 0.54
+best parameters {'contamination': 0.05, 'max_features': 0.75, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 70
+Accuracy: 0.5
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 75
+Accuracy: 0.42
+best parameters {'contamination': 0.05, 'max_features': 0.5, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 80
+Accuracy: 0.46
+best parameters {'contamination': 0.05, 'max_features': 0.5, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 85
+Accuracy: 0.48
+best parameters {'contamination': 0.05, 'max_features': 0.5, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 90
+Accuracy: 0.48
+best parameters {'contamination': 0.05, 'max_features': 0.5, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 95
+Accuracy: 0.5
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 50}
+Rank accuracy {10: 0.46, 15: 0.44, 20: 0.46, 25: 0.68, 30: 0.92, 35: 0.98, 40: 0.96, 45: 0.96, 50: 0.96, 55: 0.9, 60: 0.92, 65: 0.54, 70: 0.5, 75: 0.42, 80: 0.46, 85: 0.48, 90: 0.48, 95: 0.5}
+Best Rank for CP with random forest 35 0.98
+
+Process finished with exit code 0
