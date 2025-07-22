@@ -783,9 +783,8 @@ if enable_tucker_random_forest:
 ############################################
 ### CP with autoencoder and oc-svm
 ############################################
-# Old code
-def parafac_autoencoder_oc_svm(rank, displayConfusionMatrix=False):
-    X, true_labels = readData('train_full')
+def parafac_autoencoder_oc_svm(rank, factor, bottleneck, displayConfusionMatrix=False):
+    X, _ = readData('train_full')
     num_sets = X.shape[0]
 
     # Run CP decomposition
@@ -794,35 +793,36 @@ def parafac_autoencoder_oc_svm(rank, displayConfusionMatrix=False):
     # Extract and normalize features
     features = extractFeatures(decomposed_data, num_sets, False)
     scaler = StandardScaler()
-    #features_scaled = scaler.fit_transform(features)
+    features_scaled = scaler.fit_transform(features)
 
     # Step 3: Define and train the autoencoder
-    input_dim = features.shape[1]
-    factor = 40  # Adjust factor as needed
-
+    input_dim = features_scaled.shape[1]
     input_layer = Input(shape=(input_dim,))
-    encoder = Dense(128 * factor, activation='relu')(input_layer)
+
+    encoder = Dense(128*factor, activation='relu')(input_layer)
     encoder = Dropout(0.2)(encoder)
-    encoder = Dense(64 * factor, activation='relu')(encoder)
-    encoder_output = Dense(32 * factor, activation='relu')(encoder)
+    encoder = Dense(64*factor, activation='relu')(encoder)
+    bottleneck_layer = Dense(bottleneck, activation='relu')(encoder)
 
-    decoder = Dense(64 * factor, activation='relu')(encoder_output)
-    decoder = Dense(128 * factor, activation='relu')(decoder)
+    decoder = Dense(64*factor, activation='relu')(bottleneck_layer)
+    decoder = Dense(128*factor, activation='relu')(decoder)
     decoder = Dropout(0.2)(decoder)
-    decoder_output = Dense(input_dim, activation='sigmoid')(decoder)
+    decoder = Dense(input_dim, activation='sigmoid')(decoder)
 
-    autoencoder = Model(inputs=input_layer, outputs=decoder_output)
+    autoencoder = Model(inputs=input_layer, outputs=decoder)
     autoencoder.compile(optimizer='adam', loss='mse')
 
-    autoencoder.fit(features, features, epochs=10, batch_size=32, shuffle=True, validation_split=0.1, verbose=0)
+    #early_stop = EarlyStopping(monitor='val_loss', patience=7, restore_best_weights=True)
+    autoencoder.fit(features_scaled, features_scaled, epochs=10, batch_size=32, shuffle=True, validation_split=0.1,
+                    verbose=0)
 
     # Extract features using the encoder part of the autoencoder
-    encoder_model = Model(inputs=input_layer, outputs=encoder_output)
-    encoded_features = encoder_model.predict(features, verbose=0)
+    encoder_model = Model(inputs=input_layer, outputs=bottleneck_layer )
+    encoded_features = encoder_model.predict(features_scaled, verbose=0)
 
     # Step 4: Normalize the features
-    scaler = StandardScaler()
-    features_scaled = scaler.fit_transform(encoded_features)
+    ocsvm_scaler = StandardScaler()
+    features_scaled = ocsvm_scaler.fit_transform(encoded_features)
 
     # Step 5: Train OC-SVM with Grid Search for Hyperparameter Tuning
     param_grid = {
@@ -854,11 +854,12 @@ def parafac_autoencoder_oc_svm(rank, displayConfusionMatrix=False):
 
     # Extract features from test data using the trained encoder
     encoded_test_features = encoder_model.predict(features_test, verbose=0)
-    features_scaled_test = scaler.transform(encoded_test_features)
+    features_scaled_test = ocsvm_scaler.transform(encoded_test_features)
+
 
     # Step 6: Predict using the trained OC-SVM
     prediction = best_oc_svm.predict(features_scaled_test)
-    print("Prediction:", prediction)  # 1 indicates normal, -1 indicates anomaly
+    #print("Prediction:", prediction)  # 1 indicates normal, -1 indicates anomaly
 
     # Evaluate performance
     normal_count = np.sum(prediction == 1)
@@ -883,11 +884,13 @@ def cp_rank_search_autoencover_oc_svm():
     endRank = 100
     step = 5
     rank_accuracy = {}
-    for i in range(startRank, endRank, step):
-        print('Rank:', i)
-        rank = i
-        accuracy = parafac_autoencoder_oc_svm(rank)
-        rank_accuracy[rank] = accuracy
+    for factor in {1}:
+        for bottleneck in {32, 64}:
+            for i in range(startRank, endRank, step):
+                print('Rank:', i, 'Factor:', factor, 'Bottleneck:', bottleneck)
+                rank = i
+                accuracy = parafac_autoencoder_oc_svm(rank, factor, bottleneck)
+                rank_accuracy[(rank, factor, bottleneck)] = accuracy
     print('Rank accuracy', rank_accuracy)
     bestRank = max(rank_accuracy, key=rank_accuracy.get)
     return bestRank, rank_accuracy[bestRank]
@@ -900,6 +903,7 @@ if enable_cp_autoencoder_oc_svm:
         print('Running best rank CP with autoencoder and oc svm')
         bestRank=35
         parafac_autoencoder_oc_svm(bestRank, True)
+
 
 ############################################
 ### Tucker with autoencoder and oc-svm
@@ -1008,8 +1012,7 @@ def tucker_rank_search_autoencoder_OC_svm():
     print('Tucker rank search autoencoder with One Class SVM')
     rankSet = sorted({5, 16, 32, 64})
     rank_accuracy = {}
-    for factor in range(1, 4, 40
-                        ):
+    for factor in range(1, 4):
         for bottleneck in {16, 32, 64}:
             for i in rankSet:
                 for j in rankSet:

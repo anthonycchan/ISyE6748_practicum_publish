@@ -799,23 +799,21 @@ def parafac_autoencoder_oc_svm(rank, factor, bottleneck, displayConfusionMatrix=
     input_dim = features_scaled.shape[1]
     input_layer = Input(shape=(input_dim,))
 
-    encoder = Dense(128*factor, activation='relu', kernel_regularizer=regularizers.l2(0.001))(input_layer)
-    encoder = Dropout(0.3)(encoder)
-    encoder = Dense(64*factor, activation='relu', kernel_regularizer=regularizers.l2(0.001))(encoder)
-    encoder = Dropout(0.3)(encoder)
+    encoder = Dense(128*factor, activation='relu')(input_layer)
+    encoder = Dropout(0.2)(encoder)
+    encoder = Dense(64*factor, activation='relu')(encoder)
     bottleneck_layer = Dense(bottleneck, activation='relu')(encoder)
+
     decoder = Dense(64*factor, activation='relu')(bottleneck_layer)
-    decoder = Dropout(0.3)(decoder)
     decoder = Dense(128*factor, activation='relu')(decoder)
-    decoder = Dropout(0.3)(decoder)
-    decoder = Dense(input_dim, activation='linear')(decoder)
+    decoder = Dropout(0.2)(decoder)
+    decoder = Dense(input_dim, activation='sigmoid')(decoder)
 
     autoencoder = Model(inputs=input_layer, outputs=decoder)
     autoencoder.compile(optimizer='adam', loss='mse')
 
-    early_stop = EarlyStopping(monitor='val_loss', patience=7, restore_best_weights=True)
+    #early_stop = EarlyStopping(monitor='val_loss', patience=7, restore_best_weights=True)
     autoencoder.fit(features_scaled, features_scaled, epochs=10, batch_size=32, shuffle=True, validation_split=0.1,
-                    callbacks=[early_stop],
                     verbose=0)
 
     # Extract features using the encoder part of the autoencoder
@@ -856,7 +854,7 @@ def parafac_autoencoder_oc_svm(rank, factor, bottleneck, displayConfusionMatrix=
 
     # Extract features from test data using the trained encoder
     encoded_test_features = encoder_model.predict(features_test, verbose=0)
-    features_scaled_test = ocsvm_scaler .transform(encoded_test_features)
+    features_scaled_test = ocsvm_scaler.transform(encoded_test_features)
 
 
     # Step 6: Predict using the trained OC-SVM
@@ -886,8 +884,8 @@ def cp_rank_search_autoencover_oc_svm():
     endRank = 100
     step = 5
     rank_accuracy = {}
-    for factor in range(1, 40):
-        for bottleneck in {16, 32, 64}:
+    for factor in {40}:
+        for bottleneck in {32, 64}:
             for i in range(startRank, endRank, step):
                 print('Rank:', i, 'Factor:', factor, 'Bottleneck:', bottleneck)
                 rank = i
