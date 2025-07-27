@@ -885,8 +885,8 @@ def cp_rank_search_autoencover_oc_svm():
     endRank = 100
     step = 5
     rank_accuracy = {}
-    for factor in {4,8,12}:
-        for bottleneck in {32,64,128}:
+    for factor in range(1,6):
+        for bottleneck in sorted({8,16,24,32,64}):
             for i in range(startRank, endRank, step):
                 print('Rank:', i, 'Factor:', factor, 'Bottleneck:', bottleneck)
                 rank = i
@@ -1014,13 +1014,13 @@ def tucker_rank_search_autoencoder_OC_svm():
     print('Tucker rank search autoencoder with One Class SVM')
     rankSet = sorted({5, 16, 32, 64})
     rank_accuracy = {}
-    for factor in {4,8,12}:
-        for bottleneck in {32, 64, 128}:
+    for factor in range(1,6):
+        for bottleneck in sorted({8,16,24,32,64}):
             for i in rankSet:
                 for j in rankSet:
                     for k in {5}:
-                        print('Rank:', i, j, k)
                         rank = (i,j,k)
+                        print('Rank:', rank, 'Factor:', factor, 'Bottleneck:', bottleneck)
                         accuracy = tucker_autoencoder_ocSVM(rank, factor, bottleneck)
                         rank_accuracy[(rank, factor, bottleneck)] = accuracy
     print('Rank accuracy', rank_accuracy)

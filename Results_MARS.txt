@@ -385,8 +385,8 @@ best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0,
 Rank accuracy {10: 0.46, 15: 0.44, 20: 0.46, 25: 0.68, 30: 0.92, 35: 0.98, 40: 0.96, 45: 0.96, 50: 0.96, 55: 0.9, 60: 0.92, 65: 0.54, 70: 0.5, 75: 0.42, 80: 0.46, 85: 0.48, 90: 0.48, 95: 0.5}
 Best Rank for CP with random forest 35 0.98
 
-Process finished with exit code 0
 
+CP with autoencoder and oc-svm
 
 18f23302aa88217e4cf55dda328cf52b55ba9030 - Old code previously submitted.
 Factor 10       |Factor 20       |Factor 30       |Factor 40
@@ -409,29 +409,7 @@ Rank|Acc        |Acc             |Acc             |Acc
 75  |0.40       |0.40            |0.40            |0.60
 80  |0.32       |0.40            |0.60            |0.60
 
-Latest codes:
-Factor 1        |Factor 1
-bottleneck 16   |bottleneck 32
-Rank|Acc        |Acc
-----|---        |---
-10  |0.58       |0.56
-15  |0.60       |0.60
-20  |0.60       |0.56
-25  |0.42       |0.56
-30  |0.40       |0.60
-35  |0.26       |0.56
-40  |0.18       |0.60
-45  |0.52       |0.22
-50  |0.22       |0.26
-55  |0.06       |0.50
-60  |0.02       |0.34
-65  |0.50       |0.36
-70  |0.40       |0.46
-75  |0.40       |0.60
-80  |0.34       |0.60
-85  |0.36       |0.50
-90  |0.38       |
-
+37888a8dd3b8caa17ccb8d383113a5709b4a46dc
 Factor 1        |Factor 1        |Factor 40
 bottleneck 16   |bottleneck 32   |bottleneck 32
 Rank|Acc        |Acc            |Acc

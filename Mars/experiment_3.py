@@ -21,6 +21,7 @@ from sklearn.metrics import make_scorer, roc_auc_score
 
 random.seed(1)
 
+
 # Step 1: Read the data, build the tensor
 def readData(directory):
     directory = os.fsencode(directory)
@@ -47,6 +48,7 @@ def readData(directory):
         i += 1
 
     return data_set, true_labels
+
 
 def displayImages(X, imageSetIndx):
     numSets = 3
@@ -85,7 +87,7 @@ def plot_signals(X, num_sets):
         n_images_in_set = image_set.shape[2]
         signal = np.zeros(image_set.shape[0] * image_set.shape[1])
         for i in range(n_images_in_set):
-            signal = signal + image_set[:,:,i].ravel(order='F')
+            signal = signal + image_set[:, :, i].ravel(order='F')
         signal = signal / n_images_in_set
         avgSignalsInSets.append(signal)
 
@@ -105,24 +107,30 @@ def plot_signals(X, num_sets):
 
 data_set, true_labels = readData('train_full')
 plot_signals(data_set, 10)
-#plt.show()
+
+
+# plt.show()
 
 # CP (Parafac) Decomposition and Tucker's Decomposition
 def decompose_tensor_tucker(tensor, rank):
     core, factors = tucker(tensor, rank)
     return core, factors
 
+
 def decompose_tensor_parafac(tensor, rank):
     weights, factors = parafac(tensor, rank=rank)
     return factors
+
 
 def extract_features_tucker(core, factors):
     core_flattened = core.ravel()
     factors_flattened = np.concatenate([factor.ravel() for factor in factors], axis=0)
     return np.concatenate((core_flattened, factors_flattened), axis=0)
 
+
 def extract_features_cp(factors):
     return np.concatenate([factor.ravel() for factor in factors], axis=0)
+
 
 def buildTensor(X, rank, num_sets, isTuckerDecomposition=True, ordered=False):
     if ordered:
@@ -169,7 +177,6 @@ def extractFeatures(decomposed_data, num_sets, isTuckerDecomposition=True):
 # Use predefined rank
 use_predefined_rank = False
 
-
 # Activation variables
 # Tucker's decomposition with one-class SVM
 enable_tucker_oc_svm = False
@@ -178,7 +185,7 @@ enable_tucker_autoencoder = False
 # Tucker's decomposition with random forest
 enable_tucker_random_forest = False
 # Tucker's decomposition with combination of autoencoder and one-class SVM.
-enable_tucker_autoencoder_oc_svm = True
+enable_tucker_autoencoder_oc_svm = False
 # CP decomposition with one-class SVM
 enable_cp_oc_svm = False
 # CP decomposition with neural-network autoencoders
@@ -186,7 +193,8 @@ enable_cp_autoencoder = False
 # CP decomposition with random forest
 enable_cp_random_forest = False
 # CP decomposition with combination of autoencoder and one-class SVM.
-enable_cp_autoencoder_oc_svm = False
+enable_cp_autoencoder_oc_svm = True
+
 
 ############################################
 # CP decomposition with One-Class SVM
@@ -240,7 +248,7 @@ def parafac_OC_SVM(rank, displayConfusionMatrix=False):
     print(f"Best accuracy: {best_acc:.3f} with params: {best_params}")
 
     # Train OC-SVM
-    #oc_svm = OneClassSVM(nu=0.1, kernel='rbf', gamma='scale')
+    # oc_svm = OneClassSVM(nu=0.1, kernel='rbf', gamma='scale')
     best_model.fit(features_train_scaled)
 
     # Predict
@@ -280,14 +288,16 @@ def cp_rank_search_one_class_svm():
     bestRank = max(rank_accuracy, key=rank_accuracy.get)
     return bestRank, rank_accuracy[bestRank]
 
+
 if enable_cp_oc_svm:
     if use_predefined_rank == False:
         bestRank, bestAccuracy = cp_rank_search_one_class_svm()
         print('Best Rank for CP with One Class SVM', bestRank, bestAccuracy)
     else:
         print('Running best rank CP OC-SVM')
-        bestRank=80
+        bestRank = 80
         parafac_OC_SVM(bestRank, True)
+
 
 ############################################
 ## Tucker with OC-SVM
@@ -340,7 +350,7 @@ def tucker_one_class_svm(rank, displayConfusionMatrix=False):
     # Predict using the trained OC-SVM
     prediction = best_oc_svm.predict(features_scaled_test)
     accuracy = sum(prediction == true_labels) / len(true_labels)
-    #print('Accuracy:', accuracy)
+    # print('Accuracy:', accuracy)
     print('Best param:', best_params)
 
     if displayConfusionMatrix:
@@ -359,7 +369,7 @@ def tucker_rank_search_one_class_svm():
     for i in rankSet:
         for j in rankSet:
             for k in {5}:
-                rank = (i,j,k)
+                rank = (i, j, k)
                 accuracy = tucker_one_class_svm(rank)
                 rank_accuracy[rank] = accuracy
                 print('Rank:', i, j, k, 'Accuracy:', accuracy)
@@ -367,14 +377,16 @@ def tucker_rank_search_one_class_svm():
     bestRank = max(rank_accuracy, key=rank_accuracy.get)
     return bestRank, rank_accuracy[bestRank]
 
+
 if enable_tucker_oc_svm:
     if use_predefined_rank == False:
         bestRank, bestAccuracy = tucker_rank_search_one_class_svm()
         print('Tucker Best Rank One Class SVM', bestRank, bestAccuracy)
     else:
         print('Running best rank Tucker with one-class SVM')
-        rank=(5, 5, 35)
+        rank = (5, 5, 35)
         accuracy = tucker_one_class_svm(rank, True)
+
 
 ############################################
 ## CP with autoencoder
@@ -445,7 +457,7 @@ def parafac_autoencoder(rank, factor, bottleneck, displayConfusionMatrix=False):
     predictions[predictions == 1] = -1
     predictions[predictions == 0] = 1
     accuracy = sum(predictions == true_labels) / len(true_labels)
-    #print('Accuracy:', accuracy)
+    # print('Accuracy:', accuracy)
 
     if displayConfusionMatrix:
         confusion_matrix = metrics.confusion_matrix(true_labels, predictions)
@@ -455,14 +467,15 @@ def parafac_autoencoder(rank, factor, bottleneck, displayConfusionMatrix=False):
 
     return accuracy
 
+
 def cp_rank_search_autoencoder():
     print('CP rank search autoencoder')
     startRank = 10
     endRank = 100
     step = 5
     rank_accuracy = {}
-    for factor in range(1,4):
-        for bottleneck in {16,32,64}:
+    for factor in range(1, 4):
+        for bottleneck in {16, 32, 64}:
             for i in range(startRank, endRank, step):
                 rank = i
                 accuracy = parafac_autoencoder(rank, factor, bottleneck)
@@ -479,8 +492,9 @@ if enable_cp_autoencoder:
         print('Best Rank for CP with autoencoder', bestRank, bestAccuracy)
     else:
         print('Running best rank CP with autoencoder')
-        bestRank=85
+        bestRank = 85
         parafac_autoencoder(bestRank, True)
+
 
 ############################################
 ### Tucker with autoencoder
@@ -505,12 +519,12 @@ def tucker_neural_network_autoencoder(rank, factor, bottleneck, displayConfusion
     input_layer = Input(shape=(input_dim,))
 
     # Encoder
-    encoder = Dense(128*factor, activation='relu')(input_layer)
+    encoder = Dense(128 * factor, activation='relu')(input_layer)
     encoder = Dropout(0.1)(encoder)
     encoder = Dense(bottleneck, activation='relu')(encoder)
 
     # Decoder
-    decoder = Dense(128*factor, activation='relu')(encoder)
+    decoder = Dense(128 * factor, activation='relu')(encoder)
     decoder = Dropout(0.1)(decoder)
     decoder = Dense(input_dim, activation='sigmoid')(decoder)
 
@@ -553,9 +567,9 @@ def tucker_neural_network_autoencoder(rank, factor, bottleneck, displayConfusion
     predictions[predictions == 1] = -1
     predictions[predictions == 0] = 1
     accuracy = sum(predictions == true_labels) / len(true_labels)
-    #print("Predictions", predictions)
-    #print('True labels', true_labels)
-    #print('Accuracy:', accuracy)
+    # print("Predictions", predictions)
+    # print('True labels', true_labels)
+    # print('Accuracy:', accuracy)
 
     if displayConfusionMatrix:
         confusion_matrix = metrics.confusion_matrix(true_labels, predictions)
@@ -565,16 +579,17 @@ def tucker_neural_network_autoencoder(rank, factor, bottleneck, displayConfusion
 
     return accuracy
 
+
 def tucker_rank_search_autoencoder():
     print('Tucker rank search autoencoder')
     rankSet = sorted({5, 16, 32, 64})
     rank_accuracy = {}
-    for factor in range(1,4):
-        for bottleneck in {16,32,64}:
+    for factor in range(1, 4):
+        for bottleneck in {16, 32, 64}:
             for i in rankSet:
                 for j in rankSet:
                     for k in {5}:
-                        rank = (i,j,k)
+                        rank = (i, j, k)
                         accuracy = tucker_neural_network_autoencoder(rank, factor, bottleneck)
                         rank_accuracy[(rank, factor, bottleneck)] = accuracy
                         print('Rank:', i, j, k, 'Factor', factor, 'Bottleneck:', bottleneck, 'Accuracy:', accuracy)
@@ -582,15 +597,17 @@ def tucker_rank_search_autoencoder():
     bestRank = max(rank_accuracy, key=rank_accuracy.get)
     return bestRank, rank_accuracy[bestRank]
 
+
 if enable_tucker_autoencoder:
     if use_predefined_rank == False:
         bestRank, bestAccuracy = tucker_rank_search_autoencoder()
         print('Best Rank Tucker with autoencoder', bestRank, bestAccuracy)
     else:
         print('Running best rank Tucker with autoencoder')
-        rank=(5, 5, 35)
-        factor=1
+        rank = (5, 5, 35)
+        factor = 1
         accuracy = tucker_neural_network_autoencoder(rank, factor, 16, True)
+
 
 ############################################
 ### CP with random forest
@@ -623,7 +640,8 @@ def parafac_random_forest(rank, displayConfusionMatrix=False):
         return np.mean(estimator.score_samples(X))
 
     isolation_forest = IsolationForest(random_state=42)
-    grid_search = GridSearchCV(estimator=isolation_forest, param_grid=param_grid, cv=5, scoring=custom_scorer, verbose=0, n_jobs=-1)
+    grid_search = GridSearchCV(estimator=isolation_forest, param_grid=param_grid, cv=5, scoring=custom_scorer,
+                               verbose=0, n_jobs=-1)
     grid_search.fit(features_scaled)
 
     best_isolation_forest = grid_search.best_estimator_
@@ -644,8 +662,8 @@ def parafac_random_forest(rank, displayConfusionMatrix=False):
 
     # Predict on the test set
     predictions = best_isolation_forest.predict(features_scaled_test)
-    #print("Predictions", predictions)
-    #print('True labels', true_labels)
+    # print("Predictions", predictions)
+    # print('True labels', true_labels)
     accuracy = sum(predictions == true_labels) / len(true_labels)
     print('Accuracy:', accuracy)
     print('best parameters', best_params)
@@ -657,6 +675,7 @@ def parafac_random_forest(rank, displayConfusionMatrix=False):
         plt.show()
 
     return accuracy
+
 
 def cp_rank_search_random_forest():
     print('CP rank search random forest')
@@ -673,13 +692,14 @@ def cp_rank_search_random_forest():
     bestRank = max(rank_accuracy, key=rank_accuracy.get)
     return bestRank, rank_accuracy[bestRank]
 
+
 if enable_cp_random_forest:
     if use_predefined_rank == False:
         bestRank, bestAccuracy = cp_rank_search_random_forest()
         print('Best Rank for CP with random forest', bestRank, bestAccuracy)
     else:
         print('Running best rank CP with random forest')
-        bestRank=10
+        bestRank = 10
         parafac_random_forest(bestRank, True)
 
 
@@ -741,8 +761,8 @@ def tucker_random_forests(rank, displayConfusionMatrix=False):
 
     # Predict on the test set
     predictions = best_isolation_forest.predict(features_scaled_test)
-    #print("Predictions", predictions)
-    #print('True labels', true_labels)
+    # print("Predictions", predictions)
+    # print('True labels', true_labels)
     accuracy = sum(predictions == true_labels) / len(true_labels)
     print('Accuracy:', accuracy)
     print('best parameters', best_params)
@@ -755,6 +775,7 @@ def tucker_random_forests(rank, displayConfusionMatrix=False):
 
     return accuracy
 
+
 def tucker_rank_search_random_forest():
     print('Tucker rank search random forest')
     rankSet = sorted({5, 16, 32, 64})
@@ -763,12 +784,13 @@ def tucker_rank_search_random_forest():
         for j in rankSet:
             for k in {5}:
                 print('Rank:', i, j, k)
-                rank = (i,j,k)
+                rank = (i, j, k)
                 accuracy = tucker_random_forests(rank)
                 rank_accuracy[rank] = accuracy
     print('Rank accuracy', rank_accuracy)
     bestRank = max(rank_accuracy, key=rank_accuracy.get)
     return bestRank, rank_accuracy[bestRank]
+
 
 if enable_tucker_random_forest:
     if use_predefined_rank == False:
@@ -776,7 +798,7 @@ if enable_tucker_random_forest:
         print('Best Rank Tucker with Random forest', bestRank, bestAccuracy)
     else:
         print('Running best rank Tucker with random forest')
-        rank=(5, 65, 5)
+        rank = (5, 65, 5)
         accuracy = tucker_random_forests(rank, True)
 
 
@@ -799,13 +821,13 @@ def parafac_autoencoder_oc_svm(rank, factor, bottleneck, displayConfusionMatrix=
     input_dim = features_scaled.shape[1]
     input_layer = Input(shape=(input_dim,))
 
-    encoder = Dense(128*factor, activation='relu')(input_layer)
+    encoder = Dense(128 * factor, activation='relu')(input_layer)
     encoder = Dropout(0.2)(encoder)
-    encoder = Dense(64*factor, activation='relu')(encoder)
+    encoder = Dense(64 * factor, activation='relu')(encoder)
     bottleneck_layer = Dense(bottleneck, activation='relu')(encoder)
 
-    decoder = Dense(64*factor, activation='relu')(bottleneck_layer)
-    decoder = Dense(128*factor, activation='relu')(decoder)
+    decoder = Dense(64 * factor, activation='relu')(bottleneck_layer)
+    decoder = Dense(128 * factor, activation='relu')(decoder)
     decoder = Dropout(0.2)(decoder)
     decoder = Dense(input_dim, activation='sigmoid')(decoder)
 
@@ -818,7 +840,7 @@ def parafac_autoencoder_oc_svm(rank, factor, bottleneck, displayConfusionMatrix=
                     verbose=0)
 
     # Extract features using the encoder part of the autoencoder
-    encoder_model = Model(inputs=input_layer, outputs=bottleneck_layer )
+    encoder_model = Model(inputs=input_layer, outputs=bottleneck_layer)
     encoded_features = encoder_model.predict(features_scaled, verbose=0)
 
     # Step 4: Normalize the features
@@ -857,17 +879,16 @@ def parafac_autoencoder_oc_svm(rank, factor, bottleneck, displayConfusionMatrix=
     encoded_test_features = encoder_model.predict(features_test, verbose=0)
     features_scaled_test = ocsvm_scaler.transform(encoded_test_features)
 
-
     # Step 6: Predict using the trained OC-SVM
     prediction = best_oc_svm.predict(features_scaled_test)
-    #print("Prediction:", prediction)  # 1 indicates normal, -1 indicates anomaly
+    # print("Prediction:", prediction)  # 1 indicates normal, -1 indicates anomaly
 
     # Evaluate performance
     normal_count = np.sum(prediction == 1)
     anomaly_count = np.sum(prediction == -1)
     print(f"Normal: {normal_count}, Anomalies: {anomaly_count}")
-    #print("Predictions", prediction)
-    #print('True labels', true_labels)
+    # print("Predictions", prediction)
+    # print('True labels', true_labels)
     accuracy = sum(prediction == true_labels) / len(true_labels)
     print('Accuracy:', accuracy)
 
@@ -879,14 +900,15 @@ def parafac_autoencoder_oc_svm(rank, factor, bottleneck, displayConfusionMatrix=
 
     return accuracy
 
+
 def cp_rank_search_autoencover_oc_svm():
     print('CP rank search autoencoder with oc svm')
     startRank = 10
     endRank = 100
     step = 5
     rank_accuracy = {}
-    for factor in {4,8,12}:
-        for bottleneck in {32,64,128}:
+    for factor in range(1, 6):
+        for bottleneck in sorted({8, 16, 24, 32, 64}):
             for i in range(startRank, endRank, step):
                 print('Rank:', i, 'Factor:', factor, 'Bottleneck:', bottleneck)
                 rank = i
@@ -896,13 +918,14 @@ def cp_rank_search_autoencover_oc_svm():
     bestRank = max(rank_accuracy, key=rank_accuracy.get)
     return bestRank, rank_accuracy[bestRank]
 
+
 if enable_cp_autoencoder_oc_svm:
     if use_predefined_rank == False:
         bestRank, bestAccuracy = cp_rank_search_autoencover_oc_svm()
         print('Best Rank for CP with autoencoder and oc svm', bestRank, bestAccuracy)
     else:
         print('Running best rank CP with autoencoder and oc svm')
-        bestRank=35
+        bestRank = 35
         parafac_autoencoder_oc_svm(bestRank, True)
 
 
@@ -983,11 +1006,12 @@ def tucker_autoencoder_ocSVM(rank, factor, bottleneck, displayConfusionMatrix=Fa
 
     # Apply Tucker Decomposition to test data
     test_decomposed_data = decomposed_data
-    test_features = [flatten_tucker(test_decomposed_data[i][0], test_decomposed_data[i][1]) for i in range(num_test_sets)]
+    test_features = [flatten_tucker(test_decomposed_data[i][0], test_decomposed_data[i][1]) for i in
+                     range(num_test_sets)]
     test_features = np.array(test_features)
 
     # Extract features from test data using the trained encoder
-    encoded_test_features = encoder_model.predict(test_features,verbose=0)
+    encoded_test_features = encoder_model.predict(test_features, verbose=0)
     features_scaled_test = scaler.transform(encoded_test_features)
 
     # Step 6: Predict using the trained OC-SVM
@@ -997,8 +1021,8 @@ def tucker_autoencoder_ocSVM(rank, factor, bottleneck, displayConfusionMatrix=Fa
     normal_count = np.sum(prediction == 1)
     anomaly_count = np.sum(prediction == -1)
     print(f"Normal: {normal_count}, Anomalies: {anomaly_count}")
-    #print("Predictions", prediction)
-    #print('True labels', true_labels)
+    # print("Predictions", prediction)
+    # print('True labels', true_labels)
     accuracy = sum(prediction == true_labels) / len(true_labels)
     print('Accuracy:', accuracy)
 
@@ -1010,22 +1034,24 @@ def tucker_autoencoder_ocSVM(rank, factor, bottleneck, displayConfusionMatrix=Fa
 
     return accuracy
 
+
 def tucker_rank_search_autoencoder_OC_svm():
     print('Tucker rank search autoencoder with One Class SVM')
     rankSet = sorted({5, 16, 32, 64})
     rank_accuracy = {}
-    for factor in {4,8,12}:
-        for bottleneck in {32, 64, 128}:
+    for factor in range(1, 6):
+        for bottleneck in sorted({8, 16, 24, 32, 64}):
             for i in rankSet:
                 for j in rankSet:
                     for k in {5}:
-                        print('Rank:', i, j, k)
-                        rank = (i,j,k)
+                        rank = (i, j, k)
+                        print('Rank:', rank, 'Factor:', factor, 'Bottleneck:', bottleneck)
                         accuracy = tucker_autoencoder_ocSVM(rank, factor, bottleneck)
                         rank_accuracy[(rank, factor, bottleneck)] = accuracy
     print('Rank accuracy', rank_accuracy)
     bestRank = max(rank_accuracy, key=rank_accuracy.get)
     return bestRank, rank_accuracy[bestRank]
+
 
 if enable_tucker_autoencoder_oc_svm:
     if use_predefined_rank == False:
@@ -1033,6 +1059,6 @@ if enable_tucker_autoencoder_oc_svm:
         print('Best Rank for Tucker with Autoencoder and One Class SVM', bestRank, bestAccuracy)
     else:
         print('Running best rank Tucker with autoencoder and one-class SVM')
-        rank = (65,35,5)
+        rank = (65, 35, 5)
         accuracy = tucker_autoencoder_ocSVM(rank, True)
 
