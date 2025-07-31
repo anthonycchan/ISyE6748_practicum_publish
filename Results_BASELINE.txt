@@ -2916,3 +2916,199 @@ Rank accuracy {((5, 5), 1): 0.9486, ((5, 10), 1): 0.9577, ((5, 15), 1): 0.9494, 
 Best Rank Tucker with autoencoder ((5, 10), 2) 0.9583
 
 Process finished with exit code 0
+
+
+BASELINE
+C:\Users\Anthony\anaconda3\envs\isye6740\python.exe C:/OMSA/ISyE6748_practicum_publish/Mars/Experiment_2.py
+Model for label 0
+CP rank search random forest
+Rank: 5
+Accuracy: 0.7051
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 10
+Accuracy: 0.802
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 15
+Accuracy: 0.7038
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 50}
+Rank: 20
+Accuracy: 0.7152
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 25
+Accuracy: 0.7402
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank accuracy {5: 0.7051, 10: 0.802, 15: 0.7038, 20: 0.7152, 25: 0.7402}
+Best Rank for CP with random forest 10 0.802
+Model for label 1
+CP rank search random forest
+Rank: 5
+Accuracy: 0.8763
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 200}
+Rank: 10
+Accuracy: 0.885
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 15
+Accuracy: 0.853
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 20
+Accuracy: 0.868
+best parameters {'contamination': 0.05, 'max_features': 0.75, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 25
+Accuracy: 0.8893
+best parameters {'contamination': 0.05, 'max_features': 0.75, 'max_samples': 1.0, 'n_estimators': 100}
+Rank accuracy {5: 0.8763, 10: 0.885, 15: 0.853, 20: 0.868, 25: 0.8893}
+Best Rank for CP with random forest 25 0.8893
+Model for label 2
+CP rank search random forest
+Rank: 5
+Accuracy: 0.6941
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 10
+Accuracy: 0.7715
+best parameters {'contamination': 0.05, 'max_features': 0.75, 'max_samples': 1.0, 'n_estimators': 50}
+Rank: 15
+Accuracy: 0.7503
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 20
+Accuracy: 0.4265
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 25
+Accuracy: 0.668
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank accuracy {5: 0.6941, 10: 0.7715, 15: 0.7503, 20: 0.4265, 25: 0.668}
+Best Rank for CP with random forest 10 0.7715
+Model for label 3
+CP rank search random forest
+Rank: 5
+Accuracy: 0.6007
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 10
+Accuracy: 0.7712
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 15
+Accuracy: 0.7173
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 20
+Accuracy: 0.5421
+best parameters {'contamination': 0.05, 'max_features': 0.75, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 25
+Accuracy: 0.7153
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank accuracy {5: 0.6007, 10: 0.7712, 15: 0.7173, 20: 0.5421, 25: 0.7153}
+Best Rank for CP with random forest 10 0.7712
+Model for label 4
+CP rank search random forest
+Rank: 5
+Accuracy: 0.7506
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 10
+Accuracy: 0.8998
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 15
+Accuracy: 0.5335
+best parameters {'contamination': 0.05, 'max_features': 0.75, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 20
+Accuracy: 0.7082
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 50}
+Rank: 25
+Accuracy: 0.839
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank accuracy {5: 0.7506, 10: 0.8998, 15: 0.5335, 20: 0.7082, 25: 0.839}
+Best Rank for CP with random forest 10 0.8998
+Model for label 5
+CP rank search random forest
+Rank: 5
+Accuracy: 0.8806
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 10
+Accuracy: 0.7336
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 15
+Accuracy: 0.549
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 50}
+Rank: 20
+Accuracy: 0.3646
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 50}
+Rank: 25
+Accuracy: 0.6511
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank accuracy {5: 0.8806, 10: 0.7336, 15: 0.549, 20: 0.3646, 25: 0.6511}
+Best Rank for CP with random forest 5 0.8806
+Model for label 6
+CP rank search random forest
+Rank: 5
+Accuracy: 0.7457
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 10
+Accuracy: 0.6135
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 15
+Accuracy: 0.7074
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 50}
+Rank: 20
+Accuracy: 0.5489
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 25
+Accuracy: 0.6377
+best parameters {'contamination': 0.05, 'max_features': 0.75, 'max_samples': 1.0, 'n_estimators': 50}
+Rank accuracy {5: 0.7457, 10: 0.6135, 15: 0.7074, 20: 0.5489, 25: 0.6377}
+Best Rank for CP with random forest 5 0.7457
+Model for label 7
+CP rank search random forest
+Rank: 5
+Accuracy: 0.8835
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 10
+Accuracy: 0.7441
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 15
+Accuracy: 0.8003
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 20
+Accuracy: 0.7706
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 200}
+Rank: 25
+Accuracy: 0.8747
+best parameters {'contamination': 0.05, 'max_features': 0.75, 'max_samples': 1.0, 'n_estimators': 100}
+Rank accuracy {5: 0.8835, 10: 0.7441, 15: 0.8003, 20: 0.7706, 25: 0.8747}
+Best Rank for CP with random forest 5 0.8835
+Model for label 8
+CP rank search random forest
+Rank: 5
+Accuracy: 0.4691
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 10
+Accuracy: 0.7557
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 15
+Accuracy: 0.652
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 20
+Accuracy: 0.5903
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 25
+Accuracy: 0.6945
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank accuracy {5: 0.4691, 10: 0.7557, 15: 0.652, 20: 0.5903, 25: 0.6945}
+Best Rank for CP with random forest 10 0.7557
+Model for label 9
+CP rank search random forest
+Rank: 5
+Accuracy: 0.8502
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 200}
+Rank: 10
+Accuracy: 0.856
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 200}
+Rank: 15
+Accuracy: 0.8748
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 200}
+Rank: 20
+Accuracy: 0.8244
+best parameters {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100}
+Rank: 25
+Accuracy: 0.8128
+best parameters {'contamination': 0.05, 'max_features': 0.75, 'max_samples': 1.0, 'n_estimators': 100}
+Rank accuracy {5: 0.8502, 10: 0.856, 15: 0.8748, 20: 0.8244, 25: 0.8128}
+Best Rank for CP with random forest 15 0.8748
+
+Process finished with exit code 0
