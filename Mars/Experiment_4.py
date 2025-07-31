@@ -29,13 +29,15 @@ use_predefined_rank = False
 
 # CP decomposition with one-class SVM
 enable_cp_oc_svm = False
-enable_tucker_oc_svm = False
+enable_tucker_oc_svm = True
 enable_cp_autoencoder = False
 enable_tucker_autoencoder = False
 enable_cp_random_forest = False
 enable_tucker_random_forest = False
 enable_cp_autoencoder_oc_svm = False
-enable_tucker_autoencoder_oc_svm = True
+enable_tucker_autoencoder_oc_svm = False
+
+use_tucker_alt = True
 
 # Dataset visualization
 def showMNISTImages(X):
@@ -186,7 +188,6 @@ def cp_rank_search_one_class_svm(reduced_X_train, reduced_X_test, reduced_Y_test
 
 
 def tucker_one_class_svm(X_train, X_test, Y_test, rank, displayConfusionMatrix=False):
-    print('Running Tucker one-class SVM')
     ###
     ### Training
     ###
@@ -198,7 +199,6 @@ def tucker_one_class_svm(X_train, X_test, Y_test, rank, displayConfusionMatrix=F
     # Extract and normalize features
     features = extractFeatures(decomposed_data, num_sets)
     scaler = StandardScaler()
-    print('features', features.shape)
     features_scaled = scaler.fit_transform(features)
 
     # Step 4: Train OC-SVM with Grid Search for Hyperparameter Tuning
@@ -260,6 +260,21 @@ def tucker_rank_search_one_class_svm(reduced_X_train, reduced_X_test, reduced_Y_
     bestRank = max(rank_accuracy, key=rank_accuracy.get)
     return bestRank, rank_accuracy[bestRank]
 
+def tucker_rank_search_one_class_svm_alt(reduced_X_train, reduced_X_test, reduced_Y_test):
+    print('Tucker rank search One Class SVM alt')
+    rankSet = sorted({5, 16, 24, 32, 48, 64})
+    k = 5
+    rank_accuracy = {}
+    for i in rankSet:
+        for j in rankSet:
+            print('Rank:', i, j, k)
+            rank = (i, j, k)
+            accuracy = tucker_one_class_svm(reduced_X_train, reduced_X_test, reduced_Y_test, rank)
+            rank_accuracy[rank] = accuracy
+    print('Rank accuracy', rank_accuracy)
+    bestRank = max(rank_accuracy, key=rank_accuracy.get)
+    return bestRank, rank_accuracy[bestRank]
+
 
 ####################
 ## CP with autoencoder
@@ -294,7 +309,7 @@ def parafac_autoencoder(X_train, X_test, Y_test, rank, factor, displayConfusionM
     early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
 
     # Fit the model
-    autoencoder.fit(features_scaled, features_scaled, epochs=10, batch_size=32, validation_split=0.1,
+    autoencoder.fit(features_scaled, features_scaled, epochs=30, batch_size=32, validation_split=0.1,
                     callbacks=[early_stopping], verbose=0)
 
     ###
@@ -339,7 +354,6 @@ def parafac_autoencoder(X_train, X_test, Y_test, rank, factor, displayConfusionM
 
 def cp_rank_search_autoencoder(reduced_X_train, reduced_X_test, reduced_Y_test):
     print('CP rank search autoencoder')
-    print('X_train', reduced_X_train.shape)
     startRank = 5
     endRank = 30
     step = 5
@@ -392,7 +406,7 @@ def tucker_neural_network_autoencoder(X_train, X_test, Y_test, rank, factor, dis
     early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
 
     # Fit the model
-    autoencoder.fit(features_scaled, features_scaled, epochs=10, batch_size=32, validation_split=0.1,
+    autoencoder.fit(features_scaled, features_scaled, epochs=30, batch_size=32, validation_split=0.1,
                     callbacks=[early_stopping], verbose=0 )
 
     ###
@@ -451,6 +465,21 @@ def tucker_rank_search_autoencoder(reduced_X_train, reduced_X_test, reduced_Y_te
     bestRank = max(rank_accuracy, key=rank_accuracy.get)
     return bestRank, rank_accuracy[bestRank]
 
+def tucker_rank_search_autoencoder_alt(reduced_X_train, reduced_X_test, reduced_Y_test):
+    print('Tucker rank search autoencoder alt')
+    rankSet = sorted({5, 16, 24, 32, 48, 64})
+    k = 5
+    rank_accuracy = {}
+    for factor in range(1, 4):
+        for i in rankSet:
+            for j in rankSet:
+                    print('Factor', factor, 'Rank:', i, j, k)
+                    rank = (i, j, k)
+                    accuracy = tucker_neural_network_autoencoder(reduced_X_train, reduced_X_test, reduced_Y_test, rank, factor)
+                    rank_accuracy[(rank, factor)] = accuracy
+    print('Rank accuracy', rank_accuracy)
+    bestRank = max(rank_accuracy, key=rank_accuracy.get)
+    return bestRank, rank_accuracy[bestRank]
 
 ############################################
 ### CP with random forest
@@ -515,8 +544,8 @@ def parafac_random_forest(X_train, X_test, Y_test, rank, displayConfusionMatrix=
 
 def cp_rank_search_random_forest(reduced_X_train, reduced_X_test, reduced_Y_test):
     print('CP rank search random forest')
-    startRank = 10
-    endRank = 100
+    startRank = 5
+    endRank = 30
     step = 5
     rank_accuracy = {}
     for i in range(startRank, endRank, step):
@@ -533,7 +562,6 @@ def cp_rank_search_random_forest(reduced_X_train, reduced_X_test, reduced_Y_test
 ### Tucker with random forest
 ############################################
 def tucker_random_forests(X_train, X_test, Y_test, rank, displayConfusionMatrix=False):
-    print('Running Tucker with Random Forests')
     ###
     ### Training
     ###
@@ -602,15 +630,31 @@ def tucker_random_forests(X_train, X_test, Y_test, rank, displayConfusionMatrix=
 
 def tucker_rank_search_random_forest(reduced_X_train, reduced_X_test, reduced_Y_test):
     print('Tucker rank search random forest')
-    rankSet = sorted({5, 16, 32, 64})
+    startRank = 5
+    endRank = 30
+    stepSize = 5
+    rank_accuracy = {}
+    for j in range(startRank, endRank, stepSize):
+        for k in range(startRank, endRank, stepSize):
+            print('Rank:', j, k)
+            rank = (j, k)
+            accuracy = tucker_random_forests(reduced_X_train, reduced_X_test, reduced_Y_test, rank)
+            rank_accuracy[rank] = accuracy
+    print('Rank accuracy', rank_accuracy)
+    bestRank = max(rank_accuracy, key=rank_accuracy.get)
+    return bestRank, rank_accuracy[bestRank]
+
+def tucker_rank_search_random_forest_alt(reduced_X_train, reduced_X_test, reduced_Y_test):
+    print('Tucker rank search random forest alt')
+    rankSet = sorted({5, 16, 24, 32, 48, 64})
+    k = 5
     rank_accuracy = {}
     for i in rankSet:
         for j in rankSet:
-            for k in {5}:
-                print('Rank:', i, j, k)
-                rank = (i,j,k)
-                accuracy = tucker_random_forests(reduced_X_train, reduced_X_test, reduced_Y_test, rank)
-                rank_accuracy[rank] = accuracy
+            print('Rank:', i, j, k)
+            rank = (i,j,k)
+            accuracy = tucker_random_forests(reduced_X_train, reduced_X_test, reduced_Y_test, rank)
+            rank_accuracy[rank] = accuracy
     print('Rank accuracy', rank_accuracy)
     bestRank = max(rank_accuracy, key=rank_accuracy.get)
     return bestRank, rank_accuracy[bestRank]
@@ -819,8 +863,8 @@ def tucker_autoencoder_ocSVM(X_train, X_test, Y_test, rank, factor, displayConfu
     normal_count = np.sum(prediction == 1)
     anomaly_count = np.sum(prediction == -1)
     print(f"Normal: {normal_count}, Anomalies: {anomaly_count}")
-    print("Predictions", prediction)
-    print('True labels', true_labels)
+    #print("Predictions", prediction)
+    #print('True labels', true_labels)
     accuracy = sum(prediction == true_labels) / len(true_labels)
     print('Accuracy:', accuracy)
 
@@ -843,6 +887,22 @@ def tucker_rank_search_autoencoder_OC_svm(reduced_X_train, reduced_X_test, reduc
             for k in range(startRank, endRank, stepSize):
                 print('Rank:', j, k)
                 rank = (j,k)
+                accuracy = tucker_autoencoder_ocSVM(reduced_X_train, reduced_X_test, reduced_Y_test, rank, factor)
+                rank_accuracy[(rank, factor)] = accuracy
+    print('Rank accuracy', rank_accuracy)
+    bestRank = max(rank_accuracy, key=rank_accuracy.get)
+    return bestRank, rank_accuracy[bestRank]
+
+def tucker_rank_search_autoencoder_OC_svm_alt(reduced_X_train, reduced_X_test, reduced_Y_test):
+    print('Tucker rank search autoencoder with One Class SVM alt')
+    rankSet = sorted({5, 16, 24, 32, 48, 64})
+    k = 5
+    rank_accuracy = {}
+    for factor in range(1, 4):
+        for i in rankSet:
+            for j in rankSet:
+                print('Rank:', i, j, k)
+                rank = (i, j, k)
                 accuracy = tucker_autoencoder_ocSVM(reduced_X_train, reduced_X_test, reduced_Y_test, rank, factor)
                 rank_accuracy[(rank, factor)] = accuracy
     print('Rank accuracy', rank_accuracy)
@@ -887,7 +947,10 @@ for applicableLabel in np.unique(y_test):
 
     if enable_tucker_oc_svm:
         if use_predefined_rank == False:
-            bestRank, bestAccuracy = tucker_rank_search_one_class_svm(reduced_X_train, reduced_X_test, reduced_Y_test)
+            if use_tucker_alt:
+                bestRank, bestAccuracy = tucker_rank_search_one_class_svm_alt(reduced_X_train, reduced_X_test, reduced_Y_test)
+            else:
+                bestRank, bestAccuracy = tucker_rank_search_one_class_svm(reduced_X_train, reduced_X_test, reduced_Y_test)
             print('Tucker Best Rank One Class SVM', bestRank, bestAccuracy)
         else:
             print('Running best rank Tucker with one-class SVM')
@@ -907,7 +970,10 @@ for applicableLabel in np.unique(y_test):
 
     if enable_tucker_autoencoder:
         if use_predefined_rank == False:
-            bestRank, bestAccuracy = tucker_rank_search_autoencoder(reduced_X_train, reduced_X_test, reduced_Y_test)
+            if use_tucker_alt:
+                bestRank, bestAccuracy = tucker_rank_search_autoencoder_alt(reduced_X_train, reduced_X_test, reduced_Y_test)
+            else:
+                bestRank, bestAccuracy = tucker_rank_search_autoencoder(reduced_X_train, reduced_X_test, reduced_Y_test)
             print('Best Rank Tucker with autoencoder', bestRank, bestAccuracy)
         else:
             print('Running best rank Tucker with autoencoder')
@@ -927,7 +993,10 @@ for applicableLabel in np.unique(y_test):
 
     if enable_tucker_random_forest:
         if use_predefined_rank == False:
-            bestRank, bestAccuracy = tucker_rank_search_random_forest(reduced_X_train, reduced_X_test, reduced_Y_test)
+            if use_tucker_alt:
+                bestRank, bestAccuracy = tucker_rank_search_random_forest_alt(reduced_X_train, reduced_X_test, reduced_Y_test)
+            else:
+                bestRank, bestAccuracy = tucker_rank_search_random_forest(reduced_X_train, reduced_X_test, reduced_Y_test)
             print('Best Rank Tucker with Random forest', bestRank, bestAccuracy)
         else:
             print('Running best rank Tucker with random forest')
@@ -945,7 +1014,10 @@ for applicableLabel in np.unique(y_test):
 
     if enable_tucker_autoencoder_oc_svm:
         if use_predefined_rank == False:
-            bestRank, bestAccuracy = tucker_rank_search_autoencoder_OC_svm(reduced_X_train, reduced_X_test, reduced_Y_test)
+            if use_tucker_alt:
+                bestRank, bestAccuracy = tucker_rank_search_autoencoder_OC_svm_alt(reduced_X_train, reduced_X_test, reduced_Y_test)
+            else:
+                bestRank, bestAccuracy = tucker_rank_search_autoencoder_OC_svm(reduced_X_train, reduced_X_test, reduced_Y_test)
             print('Best Rank for Tucker with Autoencoder and One Class SVM', bestRank, bestAccuracy)
         else:
             print('Running best rank Tucker with autoencoder and one-class SVM')

@@ -1026,3 +1026,1893 @@ Rank accuracy {(5, 5): 0.9687, (5, 10): 0.968, (5, 15): 0.9645, (5, 20): 0.9663,
 Tucker Best Rank One Class SVM (15, 5) 0.9702
 
 
+BASELINE
+C:\Users\Anthony\anaconda3\envs\isye6740\python.exe C:/OMSA/ISyE6748_practicum_publish/Mars/Experiment_2.py
+Model for label 0
+CP rank search autoencoder
+Factor: 1 Rank: 5
+Accuracy: 0.6688
+Factor: 1 Rank: 10
+Accuracy: 0.679
+Factor: 1 Rank: 15
+Accuracy: 0.6591
+Factor: 1 Rank: 20
+Accuracy: 0.7393
+Factor: 1 Rank: 25
+Accuracy: 0.7467
+Factor: 2 Rank: 5
+Accuracy: 0.6213
+Factor: 2 Rank: 10
+Accuracy: 0.716
+Factor: 2 Rank: 15
+Accuracy: 0.6388
+Factor: 2 Rank: 20
+Accuracy: 0.7377
+Factor: 2 Rank: 25
+Accuracy: 0.7471
+Factor: 3 Rank: 5
+Accuracy: 0.6214
+Factor: 3 Rank: 10
+Accuracy: 0.7052
+Factor: 3 Rank: 15
+Accuracy: 0.6314
+Factor: 3 Rank: 20
+Accuracy: 0.7316
+Factor: 3 Rank: 25
+Accuracy: 0.7423
+Rank accuracy {(5, 1): 0.6688, (10, 1): 0.679, (15, 1): 0.6591, (20, 1): 0.7393, (25, 1): 0.7467, (5, 2): 0.6213, (10, 2): 0.716, (15, 2): 0.6388, (20, 2): 0.7377, (25, 2): 0.7471, (5, 3): 0.6214, (10, 3): 0.7052, (15, 3): 0.6314, (20, 3): 0.7316, (25, 3): 0.7423}
+Best Rank for CP with autoencoder (25, 2) 0.7471
+Model for label 1
+CP rank search autoencoder
+Factor: 1 Rank: 5
+Accuracy: 0.8652
+Factor: 1 Rank: 10
+Accuracy: 0.8574
+Factor: 1 Rank: 15
+Accuracy: 0.7696
+Factor: 1 Rank: 20
+Accuracy: 0.8614
+Factor: 1 Rank: 25
+Accuracy: 0.8879
+Factor: 2 Rank: 5
+Accuracy: 0.8686
+Factor: 2 Rank: 10
+Accuracy: 0.8664
+Factor: 2 Rank: 15
+Accuracy: 0.7634
+Factor: 2 Rank: 20
+Accuracy: 0.865
+Factor: 2 Rank: 25
+Accuracy: 0.8875
+Factor: 3 Rank: 5
+Accuracy: 0.8681
+Factor: 3 Rank: 10
+Accuracy: 0.8635
+Factor: 3 Rank: 15
+Accuracy: 0.7608
+Factor: 3 Rank: 20
+Accuracy: 0.8649
+Factor: 3 Rank: 25
+Accuracy: 0.8862
+Rank accuracy {(5, 1): 0.8652, (10, 1): 0.8574, (15, 1): 0.7696, (20, 1): 0.8614, (25, 1): 0.8879, (5, 2): 0.8686, (10, 2): 0.8664, (15, 2): 0.7634, (20, 2): 0.865, (25, 2): 0.8875, (5, 3): 0.8681, (10, 3): 0.8635, (15, 3): 0.7608, (20, 3): 0.8649, (25, 3): 0.8862}
+Best Rank for CP with autoencoder (25, 1) 0.8879
+Model for label 2
+CP rank search autoencoder
+Factor: 1 Rank: 5
+Accuracy: 0.4796
+Factor: 1 Rank: 10
+Accuracy: 0.6798
+Factor: 1 Rank: 15
+Accuracy: 0.6247
+Factor: 1 Rank: 20
+Accuracy: 0.4278
+Factor: 1 Rank: 25
+Accuracy: 0.6279
+Factor: 2 Rank: 5
+Accuracy: 0.4844
+Factor: 2 Rank: 10
+Accuracy: 0.6857
+Factor: 2 Rank: 15
+Accuracy: 0.6438
+Factor: 2 Rank: 20
+Accuracy: 0.4299
+Factor: 2 Rank: 25
+Accuracy: 0.6236
+Factor: 3 Rank: 5
+Accuracy: 0.4765
+Factor: 3 Rank: 10
+Accuracy: 0.6703
+Factor: 3 Rank: 15
+Accuracy: 0.6367
+Factor: 3 Rank: 20
+Accuracy: 0.4224
+Factor: 3 Rank: 25
+Accuracy: 0.6209
+Rank accuracy {(5, 1): 0.4796, (10, 1): 0.6798, (15, 1): 0.6247, (20, 1): 0.4278, (25, 1): 0.6279, (5, 2): 0.4844, (10, 2): 0.6857, (15, 2): 0.6438, (20, 2): 0.4299, (25, 2): 0.6236, (5, 3): 0.4765, (10, 3): 0.6703, (15, 3): 0.6367, (20, 3): 0.4224, (25, 3): 0.6209}
+Best Rank for CP with autoencoder (10, 2) 0.6857
+Model for label 3
+CP rank search autoencoder
+Factor: 1 Rank: 5
+Accuracy: 0.4254
+Factor: 1 Rank: 10
+Accuracy: 0.6753
+Factor: 1 Rank: 15
+Accuracy: 0.6381
+Factor: 1 Rank: 20
+Accuracy: 0.5553
+Factor: 1 Rank: 25
+Accuracy: 0.6969
+Factor: 2 Rank: 5
+Accuracy: 0.4382
+Factor: 2 Rank: 10
+Accuracy: 0.7021
+Factor: 2 Rank: 15
+Accuracy: 0.6203
+Factor: 2 Rank: 20
+Accuracy: 0.5317
+Factor: 2 Rank: 25
+Accuracy: 0.696
+Factor: 3 Rank: 5
+Accuracy: 0.4368
+Factor: 3 Rank: 10
+Accuracy: 0.6949
+Factor: 3 Rank: 15
+Accuracy: 0.6143
+Factor: 3 Rank: 20
+Accuracy: 0.524
+Factor: 3 Rank: 25
+Accuracy: 0.6876
+Rank accuracy {(5, 1): 0.4254, (10, 1): 0.6753, (15, 1): 0.6381, (20, 1): 0.5553, (25, 1): 0.6969, (5, 2): 0.4382, (10, 2): 0.7021, (15, 2): 0.6203, (20, 2): 0.5317, (25, 2): 0.696, (5, 3): 0.4368, (10, 3): 0.6949, (15, 3): 0.6143, (20, 3): 0.524, (25, 3): 0.6876}
+Best Rank for CP with autoencoder (10, 2) 0.7021
+Model for label 4
+CP rank search autoencoder
+Factor: 1 Rank: 5
+Accuracy: 0.6079
+Factor: 1 Rank: 10
+Accuracy: 0.8878
+Factor: 1 Rank: 15
+Accuracy: 0.369
+Factor: 1 Rank: 20
+Accuracy: 0.7118
+Factor: 1 Rank: 25
+Accuracy: 0.8071
+Factor: 2 Rank: 5
+Accuracy: 0.6101
+Factor: 2 Rank: 10
+Accuracy: 0.8729
+Factor: 2 Rank: 15
+Accuracy: 0.3503
+Factor: 2 Rank: 20
+Accuracy: 0.6817
+Factor: 2 Rank: 25
+Accuracy: 0.8041
+Factor: 3 Rank: 5
+Accuracy: 0.6147
+Factor: 3 Rank: 10
+Accuracy: 0.874
+Factor: 3 Rank: 15
+Accuracy: 0.3402
+Factor: 3 Rank: 20
+Accuracy: 0.661
+Factor: 3 Rank: 25
+Accuracy: 0.8005
+Rank accuracy {(5, 1): 0.6079, (10, 1): 0.8878, (15, 1): 0.369, (20, 1): 0.7118, (25, 1): 0.8071, (5, 2): 0.6101, (10, 2): 0.8729, (15, 2): 0.3503, (20, 2): 0.6817, (25, 2): 0.8041, (5, 3): 0.6147, (10, 3): 0.874, (15, 3): 0.3402, (20, 3): 0.661, (25, 3): 0.8005}
+Best Rank for CP with autoencoder (10, 1) 0.8878
+Model for label 5
+CP rank search autoencoder
+Factor: 1 Rank: 5
+Accuracy: 0.556
+Factor: 1 Rank: 10
+Accuracy: 0.4801
+Factor: 1 Rank: 15
+Accuracy: 0.3494
+Factor: 1 Rank: 20
+Accuracy: 0.2867
+Factor: 1 Rank: 25
+Accuracy: 0.5993
+Factor: 2 Rank: 5
+Accuracy: 0.5376
+Factor: 2 Rank: 10
+Accuracy: 0.5321
+Factor: 2 Rank: 15
+Accuracy: 0.3488
+Factor: 2 Rank: 20
+Accuracy: 0.2751
+Factor: 2 Rank: 25
+Accuracy: 0.582
+Factor: 3 Rank: 5
+Accuracy: 0.5572
+Factor: 3 Rank: 10
+Accuracy: 0.5136
+Factor: 3 Rank: 15
+Accuracy: 0.3172
+Factor: 3 Rank: 20
+Accuracy: 0.2691
+Factor: 3 Rank: 25
+Accuracy: 0.5796
+Rank accuracy {(5, 1): 0.556, (10, 1): 0.4801, (15, 1): 0.3494, (20, 1): 0.2867, (25, 1): 0.5993, (5, 2): 0.5376, (10, 2): 0.5321, (15, 2): 0.3488, (20, 2): 0.2751, (25, 2): 0.582, (5, 3): 0.5572, (10, 3): 0.5136, (15, 3): 0.3172, (20, 3): 0.2691, (25, 3): 0.5796}
+Best Rank for CP with autoencoder (25, 1) 0.5993
+Model for label 6
+CP rank search autoencoder
+Factor: 1 Rank: 5
+Accuracy: 0.6295
+Factor: 1 Rank: 10
+Accuracy: 0.3461
+Factor: 1 Rank: 15
+Accuracy: 0.4175
+Factor: 1 Rank: 20
+Accuracy: 0.5226
+Factor: 1 Rank: 25
+Accuracy: 0.5862
+Factor: 2 Rank: 5
+Accuracy: 0.6103
+Factor: 2 Rank: 10
+Accuracy: 0.3568
+Factor: 2 Rank: 15
+Accuracy: 0.4
+Factor: 2 Rank: 20
+Accuracy: 0.5217
+Factor: 2 Rank: 25
+Accuracy: 0.5705
+Factor: 3 Rank: 5
+Accuracy: 0.6153
+Factor: 3 Rank: 10
+Accuracy: 0.3514
+Factor: 3 Rank: 15
+Accuracy: 0.3905
+Factor: 3 Rank: 20
+Accuracy: 0.5047
+Factor: 3 Rank: 25
+Accuracy: 0.5589
+Rank accuracy {(5, 1): 0.6295, (10, 1): 0.3461, (15, 1): 0.4175, (20, 1): 0.5226, (25, 1): 0.5862, (5, 2): 0.6103, (10, 2): 0.3568, (15, 2): 0.4, (20, 2): 0.5217, (25, 2): 0.5705, (5, 3): 0.6153, (10, 3): 0.3514, (15, 3): 0.3905, (20, 3): 0.5047, (25, 3): 0.5589}
+Best Rank for CP with autoencoder (5, 1) 0.6295
+Model for label 7
+CP rank search autoencoder
+Factor: 1 Rank: 5
+Accuracy: 0.7499
+Factor: 1 Rank: 10
+Accuracy: 0.3676
+Factor: 1 Rank: 15
+Accuracy: 0.6994
+Factor: 1 Rank: 20
+Accuracy: 0.7247
+Factor: 1 Rank: 25
+Accuracy: 0.8665
+Factor: 2 Rank: 5
+Accuracy: 0.8064
+Factor: 2 Rank: 10
+Accuracy: 0.3599
+Factor: 2 Rank: 15
+Accuracy: 0.7085
+Factor: 2 Rank: 20
+Accuracy: 0.7296
+Factor: 2 Rank: 25
+Accuracy: 0.8641
+Factor: 3 Rank: 5
+Accuracy: 0.8049
+Factor: 3 Rank: 10
+Accuracy: 0.3503
+Factor: 3 Rank: 15
+Accuracy: 0.712
+Factor: 3 Rank: 20
+Accuracy: 0.7163
+Factor: 3 Rank: 25
+Accuracy: 0.8651
+Rank accuracy {(5, 1): 0.7499, (10, 1): 0.3676, (15, 1): 0.6994, (20, 1): 0.7247, (25, 1): 0.8665, (5, 2): 0.8064, (10, 2): 0.3599, (15, 2): 0.7085, (20, 2): 0.7296, (25, 2): 0.8641, (5, 3): 0.8049, (10, 3): 0.3503, (15, 3): 0.712, (20, 3): 0.7163, (25, 3): 0.8651}
+Best Rank for CP with autoencoder (25, 1) 0.8665
+Model for label 8
+CP rank search autoencoder
+Factor: 1 Rank: 5
+Accuracy: 0.289
+Factor: 1 Rank: 10
+Accuracy: 0.6199
+Factor: 1 Rank: 15
+Accuracy: 0.562
+Factor: 1 Rank: 20
+Accuracy: 0.4844
+Factor: 1 Rank: 25
+Accuracy: 0.642
+Factor: 2 Rank: 5
+Accuracy: 0.2757
+Factor: 2 Rank: 10
+Accuracy: 0.6328
+Factor: 2 Rank: 15
+Accuracy: 0.5611
+Factor: 2 Rank: 20
+Accuracy: 0.4854
+Factor: 2 Rank: 25
+Accuracy: 0.6434
+Factor: 3 Rank: 5
+Accuracy: 0.2643
+Factor: 3 Rank: 10
+Accuracy: 0.6365
+Factor: 3 Rank: 15
+Accuracy: 0.5408
+Factor: 3 Rank: 20
+Accuracy: 0.4652
+Factor: 3 Rank: 25
+Accuracy: 0.6434
+Rank accuracy {(5, 1): 0.289, (10, 1): 0.6199, (15, 1): 0.562, (20, 1): 0.4844, (25, 1): 0.642, (5, 2): 0.2757, (10, 2): 0.6328, (15, 2): 0.5611, (20, 2): 0.4854, (25, 2): 0.6434, (5, 3): 0.2643, (10, 3): 0.6365, (15, 3): 0.5408, (20, 3): 0.4652, (25, 3): 0.6434}
+Best Rank for CP with autoencoder (25, 2) 0.6434
+Model for label 9
+CP rank search autoencoder
+Factor: 1 Rank: 5
+Accuracy: 0.4245
+Factor: 1 Rank: 10
+Accuracy: 0.6149
+Factor: 1 Rank: 15
+Accuracy: 0.7485
+Factor: 1 Rank: 20
+Accuracy: 0.6694
+Factor: 1 Rank: 25
+Accuracy: 0.6901
+Factor: 2 Rank: 5
+Accuracy: 0.4071
+Factor: 2 Rank: 10
+Accuracy: 0.6132
+Factor: 2 Rank: 15
+Accuracy: 0.7315
+Factor: 2 Rank: 20
+Accuracy: 0.6791
+Factor: 2 Rank: 25
+Accuracy: 0.6721
+Factor: 3 Rank: 5
+Accuracy: 0.4015
+Factor: 3 Rank: 10
+Accuracy: 0.6176
+Factor: 3 Rank: 15
+Accuracy: 0.726
+Factor: 3 Rank: 20
+Accuracy: 0.6628
+Factor: 3 Rank: 25
+Accuracy: 0.6559
+Rank accuracy {(5, 1): 0.4245, (10, 1): 0.6149, (15, 1): 0.7485, (20, 1): 0.6694, (25, 1): 0.6901, (5, 2): 0.4071, (10, 2): 0.6132, (15, 2): 0.7315, (20, 2): 0.6791, (25, 2): 0.6721, (5, 3): 0.4015, (10, 3): 0.6176, (15, 3): 0.726, (20, 3): 0.6628, (25, 3): 0.6559}
+Best Rank for CP with autoencoder (15, 1) 0.7485
+
+Process finished with exit code 0
+
+
+BASELINE
+C:\Users\Anthony\anaconda3\envs\isye6740\python.exe C:/OMSA/ISyE6748_practicum_publish/Mars/Experiment_4.py
+Model for label 0
+Tucker rank search autoencoder
+Factor 1 Rank: 5 5
+Accuracy: 0.5213
+Factor 1 Rank: 5 10
+Accuracy: 0.4989
+Factor 1 Rank: 5 15
+Accuracy: 0.538
+Factor 1 Rank: 5 20
+Accuracy: 0.55
+Factor 1 Rank: 5 25
+Accuracy: 0.5255
+Factor 1 Rank: 10 5
+Accuracy: 0.489
+Factor 1 Rank: 10 10
+Accuracy: 0.4949
+Factor 1 Rank: 10 15
+Accuracy: 0.4935
+Factor 1 Rank: 10 20
+Accuracy: 0.4918
+Factor 1 Rank: 10 25
+Accuracy: 0.4909
+Factor 1 Rank: 15 5
+Accuracy: 0.4843
+Factor 1 Rank: 15 10
+Accuracy: 0.4919
+Factor 1 Rank: 15 15
+Accuracy: 0.5543
+Factor 1 Rank: 15 20
+Accuracy: 0.5318
+Factor 1 Rank: 15 25
+Accuracy: 0.4945
+Factor 1 Rank: 20 5
+Accuracy: 0.4863
+Factor 1 Rank: 20 10
+Accuracy: 0.4906
+Factor 1 Rank: 20 15
+Accuracy: 0.5198
+Factor 1 Rank: 20 20
+Accuracy: 0.4992
+Factor 1 Rank: 20 25
+Accuracy: 0.484
+Factor 1 Rank: 25 5
+Accuracy: 0.4976
+Factor 1 Rank: 25 10
+Accuracy: 0.4975
+Factor 1 Rank: 25 15
+Accuracy: 0.5176
+Factor 1 Rank: 25 20
+Accuracy: 0.505
+Factor 1 Rank: 25 25
+Accuracy: 0.4988
+Factor 2 Rank: 5 5
+Accuracy: 0.5215
+Factor 2 Rank: 5 10
+Accuracy: 0.4986
+Factor 2 Rank: 5 15
+Accuracy: 0.538
+Factor 2 Rank: 5 20
+Accuracy: 0.5479
+Factor 2 Rank: 5 25
+Accuracy: 0.5229
+Factor 2 Rank: 10 5
+Accuracy: 0.4901
+Factor 2 Rank: 10 10
+Accuracy: 0.4952
+Factor 2 Rank: 10 15
+Accuracy: 0.4935
+Factor 2 Rank: 10 20
+Accuracy: 0.4918
+Factor 2 Rank: 10 25
+Accuracy: 0.4909
+Factor 2 Rank: 15 5
+Accuracy: 0.481
+Factor 2 Rank: 15 10
+Accuracy: 0.4919
+Factor 2 Rank: 15 15
+Accuracy: 0.5543
+Factor 2 Rank: 15 20
+Accuracy: 0.5318
+Factor 2 Rank: 15 25
+Accuracy: 0.4945
+Factor 2 Rank: 20 5
+Accuracy: 0.4806
+Factor 2 Rank: 20 10
+Accuracy: 0.4906
+Factor 2 Rank: 20 15
+Accuracy: 0.5198
+Factor 2 Rank: 20 20
+Accuracy: 0.4992
+Factor 2 Rank: 20 25
+Accuracy: 0.484
+Factor 2 Rank: 25 5
+Accuracy: 0.5013
+Factor 2 Rank: 25 10
+Accuracy: 0.4975
+Factor 2 Rank: 25 15
+Accuracy: 0.5176
+Factor 2 Rank: 25 20
+Accuracy: 0.505
+Factor 2 Rank: 25 25
+Accuracy: 0.4988
+Factor 3 Rank: 5 5
+Accuracy: 0.5201
+Factor 3 Rank: 5 10
+Accuracy: 0.5024
+Factor 3 Rank: 5 15
+Accuracy: 0.538
+Factor 3 Rank: 5 20
+Accuracy: 0.5479
+Factor 3 Rank: 5 25
+Accuracy: 0.5229
+Factor 3 Rank: 10 5
+Accuracy: 0.4878
+Factor 3 Rank: 10 10
+Accuracy: 0.4952
+Factor 3 Rank: 10 15
+Accuracy: 0.4935
+Factor 3 Rank: 10 20
+Accuracy: 0.4918
+Factor 3 Rank: 10 25
+Accuracy: 0.4909
+Factor 3 Rank: 15 5
+Accuracy: 0.4795
+Factor 3 Rank: 15 10
+Accuracy: 0.4919
+Factor 3 Rank: 15 15
+Accuracy: 0.5543
+Factor 3 Rank: 15 20
+Accuracy: 0.5318
+Factor 3 Rank: 15 25
+Accuracy: 0.4945
+Factor 3 Rank: 20 5
+Accuracy: 0.4814
+Factor 3 Rank: 20 10
+Accuracy: 0.4906
+Factor 3 Rank: 20 15
+Accuracy: 0.52
+Factor 3 Rank: 20 20
+Accuracy: 0.4992
+Factor 3 Rank: 20 25
+Accuracy: 0.484
+Factor 3 Rank: 25 5
+Accuracy: 0.4913
+Factor 3 Rank: 25 10
+Accuracy: 0.4975
+Factor 3 Rank: 25 15
+Accuracy: 0.5176
+Factor 3 Rank: 25 20
+Accuracy: 0.505
+Factor 3 Rank: 25 25
+Accuracy: 0.4988
+Rank accuracy {((5, 5), 1): 0.5213, ((5, 10), 1): 0.4989, ((5, 15), 1): 0.538, ((5, 20), 1): 0.55, ((5, 25), 1): 0.5255, ((10, 5), 1): 0.489, ((10, 10), 1): 0.4949, ((10, 15), 1): 0.4935, ((10, 20), 1): 0.4918, ((10, 25), 1): 0.4909, ((15, 5), 1): 0.4843, ((15, 10), 1): 0.4919, ((15, 15), 1): 0.5543, ((15, 20), 1): 0.5318, ((15, 25), 1): 0.4945, ((20, 5), 1): 0.4863, ((20, 10), 1): 0.4906, ((20, 15), 1): 0.5198, ((20, 20), 1): 0.4992, ((20, 25), 1): 0.484, ((25, 5), 1): 0.4976, ((25, 10), 1): 0.4975, ((25, 15), 1): 0.5176, ((25, 20), 1): 0.505, ((25, 25), 1): 0.4988, ((5, 5), 2): 0.5215, ((5, 10), 2): 0.4986, ((5, 15), 2): 0.538, ((5, 20), 2): 0.5479, ((5, 25), 2): 0.5229, ((10, 5), 2): 0.4901, ((10, 10), 2): 0.4952, ((10, 15), 2): 0.4935, ((10, 20), 2): 0.4918, ((10, 25), 2): 0.4909, ((15, 5), 2): 0.481, ((15, 10), 2): 0.4919, ((15, 15), 2): 0.5543, ((15, 20), 2): 0.5318, ((15, 25), 2): 0.4945, ((20, 5), 2): 0.4806, ((20, 10), 2): 0.4906, ((20, 15), 2): 0.5198, ((20, 20), 2): 0.4992, ((20, 25), 2): 0.484, ((25, 5), 2): 0.5013, ((25, 10), 2): 0.4975, ((25, 15), 2): 0.5176, ((25, 20), 2): 0.505, ((25, 25), 2): 0.4988, ((5, 5), 3): 0.5201, ((5, 10), 3): 0.5024, ((5, 15), 3): 0.538, ((5, 20), 3): 0.5479, ((5, 25), 3): 0.5229, ((10, 5), 3): 0.4878, ((10, 10), 3): 0.4952, ((10, 15), 3): 0.4935, ((10, 20), 3): 0.4918, ((10, 25), 3): 0.4909, ((15, 5), 3): 0.4795, ((15, 10), 3): 0.4919, ((15, 15), 3): 0.5543, ((15, 20), 3): 0.5318, ((15, 25), 3): 0.4945, ((20, 5), 3): 0.4814, ((20, 10), 3): 0.4906, ((20, 15), 3): 0.52, ((20, 20), 3): 0.4992, ((20, 25), 3): 0.484, ((25, 5), 3): 0.4913, ((25, 10), 3): 0.4975, ((25, 15), 3): 0.5176, ((25, 20), 3): 0.505, ((25, 25), 3): 0.4988}
+Best Rank Tucker with autoencoder ((15, 15), 1) 0.5543
+Model for label 1
+Tucker rank search autoencoder
+Factor 1 Rank: 5 5
+Accuracy: 0.9195
+Factor 1 Rank: 5 10
+Accuracy: 0.9274
+Factor 1 Rank: 5 15
+Accuracy: 0.9246
+Factor 1 Rank: 5 20
+Accuracy: 0.923
+Factor 1 Rank: 5 25
+Accuracy: 0.9224
+Factor 1 Rank: 10 5
+Accuracy: 0.9265
+Factor 1 Rank: 10 10
+Accuracy: 0.9046
+Factor 1 Rank: 10 15
+Accuracy: 0.9213
+Factor 1 Rank: 10 20
+Accuracy: 0.9214
+Factor 1 Rank: 10 25
+Accuracy: 0.9239
+Factor 1 Rank: 15 5
+Accuracy: 0.9194
+Factor 1 Rank: 15 10
+Accuracy: 0.9112
+Factor 1 Rank: 15 15
+Accuracy: 0.9271
+Factor 1 Rank: 15 20
+Accuracy: 0.9233
+Factor 1 Rank: 15 25
+Accuracy: 0.9223
+Factor 1 Rank: 20 5
+Accuracy: 0.9167
+Factor 1 Rank: 20 10
+Accuracy: 0.9085
+Factor 1 Rank: 20 15
+Accuracy: 0.9286
+Factor 1 Rank: 20 20
+Accuracy: 0.9238
+Factor 1 Rank: 20 25
+Accuracy: 0.9232
+Factor 1 Rank: 25 5
+Accuracy: 0.9132
+Factor 1 Rank: 25 10
+Accuracy: 0.9138
+Factor 1 Rank: 25 15
+Accuracy: 0.9265
+Factor 1 Rank: 25 20
+Accuracy: 0.9237
+Factor 1 Rank: 25 25
+Accuracy: 0.9234
+Factor 2 Rank: 5 5
+Accuracy: 0.9214
+Factor 2 Rank: 5 10
+Accuracy: 0.9279
+Factor 2 Rank: 5 15
+Accuracy: 0.9247
+Factor 2 Rank: 5 20
+Accuracy: 0.9224
+Factor 2 Rank: 5 25
+Accuracy: 0.9222
+Factor 2 Rank: 10 5
+Accuracy: 0.927
+Factor 2 Rank: 10 10
+Accuracy: 0.9052
+Factor 2 Rank: 10 15
+Accuracy: 0.9213
+Factor 2 Rank: 10 20
+Accuracy: 0.9214
+Factor 2 Rank: 10 25
+Accuracy: 0.9239
+Factor 2 Rank: 15 5
+Accuracy: 0.9203
+Factor 2 Rank: 15 10
+Accuracy: 0.9112
+Factor 2 Rank: 15 15
+Accuracy: 0.9271
+Factor 2 Rank: 15 20
+Accuracy: 0.9233
+Factor 2 Rank: 15 25
+Accuracy: 0.9223
+Factor 2 Rank: 20 5
+Accuracy: 0.9156
+Factor 2 Rank: 20 10
+Accuracy: 0.9085
+Factor 2 Rank: 20 15
+Accuracy: 0.9286
+Factor 2 Rank: 20 20
+Accuracy: 0.9238
+Factor 2 Rank: 20 25
+Accuracy: 0.9232
+Factor 2 Rank: 25 5
+Accuracy: 0.9151
+Factor 2 Rank: 25 10
+Accuracy: 0.9138
+Factor 2 Rank: 25 15
+Accuracy: 0.9265
+Factor 2 Rank: 25 20
+Accuracy: 0.9237
+Factor 2 Rank: 25 25
+Accuracy: 0.9234
+Factor 3 Rank: 5 5
+Accuracy: 0.9207
+Factor 3 Rank: 5 10
+Accuracy: 0.9276
+Factor 3 Rank: 5 15
+Accuracy: 0.9247
+Factor 3 Rank: 5 20
+Accuracy: 0.9224
+Factor 3 Rank: 5 25
+Accuracy: 0.9222
+Factor 3 Rank: 10 5
+Accuracy: 0.9256
+Factor 3 Rank: 10 10
+Accuracy: 0.9052
+Factor 3 Rank: 10 15
+Accuracy: 0.9213
+Factor 3 Rank: 10 20
+Accuracy: 0.9214
+Factor 3 Rank: 10 25
+Accuracy: 0.9239
+Factor 3 Rank: 15 5
+Accuracy: 0.9198
+Factor 3 Rank: 15 10
+Accuracy: 0.9112
+Factor 3 Rank: 15 15
+Accuracy: 0.9271
+Factor 3 Rank: 15 20
+Accuracy: 0.9233
+Factor 3 Rank: 15 25
+Accuracy: 0.9223
+Factor 3 Rank: 20 5
+Accuracy: 0.9155
+Factor 3 Rank: 20 10
+Accuracy: 0.9085
+Factor 3 Rank: 20 15
+Accuracy: 0.9286
+Factor 3 Rank: 20 20
+Accuracy: 0.9238
+Factor 3 Rank: 20 25
+Accuracy: 0.9232
+Factor 3 Rank: 25 5
+Accuracy: 0.9128
+Factor 3 Rank: 25 10
+Accuracy: 0.9138
+Factor 3 Rank: 25 15
+Accuracy: 0.9265
+Factor 3 Rank: 25 20
+Accuracy: 0.9237
+Factor 3 Rank: 25 25
+Accuracy: 0.9234
+Rank accuracy {((5, 5), 1): 0.9195, ((5, 10), 1): 0.9274, ((5, 15), 1): 0.9246, ((5, 20), 1): 0.923, ((5, 25), 1): 0.9224, ((10, 5), 1): 0.9265, ((10, 10), 1): 0.9046, ((10, 15), 1): 0.9213, ((10, 20), 1): 0.9214, ((10, 25), 1): 0.9239, ((15, 5), 1): 0.9194, ((15, 10), 1): 0.9112, ((15, 15), 1): 0.9271, ((15, 20), 1): 0.9233, ((15, 25), 1): 0.9223, ((20, 5), 1): 0.9167, ((20, 10), 1): 0.9085, ((20, 15), 1): 0.9286, ((20, 20), 1): 0.9238, ((20, 25), 1): 0.9232, ((25, 5), 1): 0.9132, ((25, 10), 1): 0.9138, ((25, 15), 1): 0.9265, ((25, 20), 1): 0.9237, ((25, 25), 1): 0.9234, ((5, 5), 2): 0.9214, ((5, 10), 2): 0.9279, ((5, 15), 2): 0.9247, ((5, 20), 2): 0.9224, ((5, 25), 2): 0.9222, ((10, 5), 2): 0.927, ((10, 10), 2): 0.9052, ((10, 15), 2): 0.9213, ((10, 20), 2): 0.9214, ((10, 25), 2): 0.9239, ((15, 5), 2): 0.9203, ((15, 10), 2): 0.9112, ((15, 15), 2): 0.9271, ((15, 20), 2): 0.9233, ((15, 25), 2): 0.9223, ((20, 5), 2): 0.9156, ((20, 10), 2): 0.9085, ((20, 15), 2): 0.9286, ((20, 20), 2): 0.9238, ((20, 25), 2): 0.9232, ((25, 5), 2): 0.9151, ((25, 10), 2): 0.9138, ((25, 15), 2): 0.9265, ((25, 20), 2): 0.9237, ((25, 25), 2): 0.9234, ((5, 5), 3): 0.9207, ((5, 10), 3): 0.9276, ((5, 15), 3): 0.9247, ((5, 20), 3): 0.9224, ((5, 25), 3): 0.9222, ((10, 5), 3): 0.9256, ((10, 10), 3): 0.9052, ((10, 15), 3): 0.9213, ((10, 20), 3): 0.9214, ((10, 25), 3): 0.9239, ((15, 5), 3): 0.9198, ((15, 10), 3): 0.9112, ((15, 15), 3): 0.9271, ((15, 20), 3): 0.9233, ((15, 25), 3): 0.9223, ((20, 5), 3): 0.9155, ((20, 10), 3): 0.9085, ((20, 15), 3): 0.9286, ((20, 20), 3): 0.9238, ((20, 25), 3): 0.9232, ((25, 5), 3): 0.9128, ((25, 10), 3): 0.9138, ((25, 15), 3): 0.9265, ((25, 20), 3): 0.9237, ((25, 25), 3): 0.9234}
+Best Rank Tucker with autoencoder ((20, 15), 1) 0.9286
+Model for label 2
+Tucker rank search autoencoder
+Factor 1 Rank: 5 5
+Accuracy: 0.6331
+Factor 1 Rank: 5 10
+Accuracy: 0.5867
+Factor 1 Rank: 5 15
+Accuracy: 0.645
+Factor 1 Rank: 5 20
+Accuracy: 0.6542
+Factor 1 Rank: 5 25
+Accuracy: 0.6253
+Factor 1 Rank: 10 5
+Accuracy: 0.5599
+Factor 1 Rank: 10 10
+Accuracy: 0.5091
+Factor 1 Rank: 10 15
+Accuracy: 0.5225
+Factor 1 Rank: 10 20
+Accuracy: 0.518
+Factor 1 Rank: 10 25
+Accuracy: 0.5124
+Factor 1 Rank: 15 5
+Accuracy: 0.5242
+Factor 1 Rank: 15 10
+Accuracy: 0.5071
+Factor 1 Rank: 15 15
+Accuracy: 0.6254
+Factor 1 Rank: 15 20
+Accuracy: 0.6256
+Factor 1 Rank: 15 25
+Accuracy: 0.6063
+Factor 1 Rank: 20 5
+Accuracy: 0.5168
+Factor 1 Rank: 20 10
+Accuracy: 0.5097
+Factor 1 Rank: 20 15
+Accuracy: 0.6061
+Factor 1 Rank: 20 20
+Accuracy: 0.6159
+Factor 1 Rank: 20 25
+Accuracy: 0.6093
+Factor 1 Rank: 25 5
+Accuracy: 0.5143
+Factor 1 Rank: 25 10
+Accuracy: 0.5108
+Factor 1 Rank: 25 15
+Accuracy: 0.6079
+Factor 1 Rank: 25 20
+Accuracy: 0.6178
+Factor 1 Rank: 25 25
+Accuracy: 0.631
+Factor 2 Rank: 5 5
+Accuracy: 0.6323
+Factor 2 Rank: 5 10
+Accuracy: 0.5812
+Factor 2 Rank: 5 15
+Accuracy: 0.6415
+Factor 2 Rank: 5 20
+Accuracy: 0.6455
+Factor 2 Rank: 5 25
+Accuracy: 0.6253
+Factor 2 Rank: 10 5
+Accuracy: 0.5487
+Factor 2 Rank: 10 10
+Accuracy: 0.5083
+Factor 2 Rank: 10 15
+Accuracy: 0.5225
+Factor 2 Rank: 10 20
+Accuracy: 0.518
+Factor 2 Rank: 10 25
+Accuracy: 0.5124
+Factor 2 Rank: 15 5
+Accuracy: 0.5183
+Factor 2 Rank: 15 10
+Accuracy: 0.5071
+Factor 2 Rank: 15 15
+Accuracy: 0.6254
+Factor 2 Rank: 15 20
+Accuracy: 0.6256
+Factor 2 Rank: 15 25
+Accuracy: 0.6063
+Factor 2 Rank: 20 5
+Accuracy: 0.5036
+Factor 2 Rank: 20 10
+Accuracy: 0.5097
+Factor 2 Rank: 20 15
+Accuracy: 0.6061
+Factor 2 Rank: 20 20
+Accuracy: 0.6159
+Factor 2 Rank: 20 25
+Accuracy: 0.6093
+Factor 2 Rank: 25 5
+Accuracy: 0.5085
+Factor 2 Rank: 25 10
+Accuracy: 0.5108
+Factor 2 Rank: 25 15
+Accuracy: 0.6079
+Factor 2 Rank: 25 20
+Accuracy: 0.6178
+Factor 2 Rank: 25 25
+Accuracy: 0.631
+Factor 3 Rank: 5 5
+Accuracy: 0.6345
+Factor 3 Rank: 5 10
+Accuracy: 0.587
+Factor 3 Rank: 5 15
+Accuracy: 0.6415
+Factor 3 Rank: 5 20
+Accuracy: 0.6455
+Factor 3 Rank: 5 25
+Accuracy: 0.6253
+Factor 3 Rank: 10 5
+Accuracy: 0.5487
+Factor 3 Rank: 10 10
+Accuracy: 0.5083
+Factor 3 Rank: 10 15
+Accuracy: 0.5225
+Factor 3 Rank: 10 20
+Accuracy: 0.518
+Factor 3 Rank: 10 25
+Accuracy: 0.5124
+Factor 3 Rank: 15 5
+Accuracy: 0.5183
+Factor 3 Rank: 15 10
+Accuracy: 0.5071
+Factor 3 Rank: 15 15
+Accuracy: 0.6254
+Factor 3 Rank: 15 20
+Accuracy: 0.6256
+Factor 3 Rank: 15 25
+Accuracy: 0.6063
+Factor 3 Rank: 20 5
+Accuracy: 0.5039
+Factor 3 Rank: 20 10
+Accuracy: 0.5097
+Factor 3 Rank: 20 15
+Accuracy: 0.6061
+Factor 3 Rank: 20 20
+Accuracy: 0.6159
+Factor 3 Rank: 20 25
+Accuracy: 0.6093
+Factor 3 Rank: 25 5
+Accuracy: 0.5085
+Factor 3 Rank: 25 10
+Accuracy: 0.5108
+Factor 3 Rank: 25 15
+Accuracy: 0.6079
+Factor 3 Rank: 25 20
+Accuracy: 0.6178
+Factor 3 Rank: 25 25
+Accuracy: 0.631
+Rank accuracy {((5, 5), 1): 0.6331, ((5, 10), 1): 0.5867, ((5, 15), 1): 0.645, ((5, 20), 1): 0.6542, ((5, 25), 1): 0.6253, ((10, 5), 1): 0.5599, ((10, 10), 1): 0.5091, ((10, 15), 1): 0.5225, ((10, 20), 1): 0.518, ((10, 25), 1): 0.5124, ((15, 5), 1): 0.5242, ((15, 10), 1): 0.5071, ((15, 15), 1): 0.6254, ((15, 20), 1): 0.6256, ((15, 25), 1): 0.6063, ((20, 5), 1): 0.5168, ((20, 10), 1): 0.5097, ((20, 15), 1): 0.6061, ((20, 20), 1): 0.6159, ((20, 25), 1): 0.6093, ((25, 5), 1): 0.5143, ((25, 10), 1): 0.5108, ((25, 15), 1): 0.6079, ((25, 20), 1): 0.6178, ((25, 25), 1): 0.631, ((5, 5), 2): 0.6323, ((5, 10), 2): 0.5812, ((5, 15), 2): 0.6415, ((5, 20), 2): 0.6455, ((5, 25), 2): 0.6253, ((10, 5), 2): 0.5487, ((10, 10), 2): 0.5083, ((10, 15), 2): 0.5225, ((10, 20), 2): 0.518, ((10, 25), 2): 0.5124, ((15, 5), 2): 0.5183, ((15, 10), 2): 0.5071, ((15, 15), 2): 0.6254, ((15, 20), 2): 0.6256, ((15, 25), 2): 0.6063, ((20, 5), 2): 0.5036, ((20, 10), 2): 0.5097, ((20, 15), 2): 0.6061, ((20, 20), 2): 0.6159, ((20, 25), 2): 0.6093, ((25, 5), 2): 0.5085, ((25, 10), 2): 0.5108, ((25, 15), 2): 0.6079, ((25, 20), 2): 0.6178, ((25, 25), 2): 0.631, ((5, 5), 3): 0.6345, ((5, 10), 3): 0.587, ((5, 15), 3): 0.6415, ((5, 20), 3): 0.6455, ((5, 25), 3): 0.6253, ((10, 5), 3): 0.5487, ((10, 10), 3): 0.5083, ((10, 15), 3): 0.5225, ((10, 20), 3): 0.518, ((10, 25), 3): 0.5124, ((15, 5), 3): 0.5183, ((15, 10), 3): 0.5071, ((15, 15), 3): 0.6254, ((15, 20), 3): 0.6256, ((15, 25), 3): 0.6063, ((20, 5), 3): 0.5039, ((20, 10), 3): 0.5097, ((20, 15), 3): 0.6061, ((20, 20), 3): 0.6159, ((20, 25), 3): 0.6093, ((25, 5), 3): 0.5085, ((25, 10), 3): 0.5108, ((25, 15), 3): 0.6079, ((25, 20), 3): 0.6178, ((25, 25), 3): 0.631}
+Best Rank Tucker with autoencoder ((5, 20), 1) 0.6542
+Model for label 3
+Tucker rank search autoencoder
+Factor 1 Rank: 5 5
+Accuracy: 0.7707
+Factor 1 Rank: 5 10
+Accuracy: 0.7925
+Factor 1 Rank: 5 15
+Accuracy: 0.7819
+Factor 1 Rank: 5 20
+Accuracy: 0.772
+Factor 1 Rank: 5 25
+Accuracy: 0.783
+Factor 1 Rank: 10 5
+Accuracy: 0.74
+Factor 1 Rank: 10 10
+Accuracy: 0.7425
+Factor 1 Rank: 10 15
+Accuracy: 0.742
+Factor 1 Rank: 10 20
+Accuracy: 0.7417
+Factor 1 Rank: 10 25
+Accuracy: 0.7615
+Factor 1 Rank: 15 5
+Accuracy: 0.7085
+Factor 1 Rank: 15 10
+Accuracy: 0.7394
+Factor 1 Rank: 15 15
+Accuracy: 0.7195
+Factor 1 Rank: 15 20
+Accuracy: 0.7242
+Factor 1 Rank: 15 25
+Accuracy: 0.7412
+Factor 1 Rank: 20 5
+Accuracy: 0.6717
+Factor 1 Rank: 20 10
+Accuracy: 0.7121
+Factor 1 Rank: 20 15
+Accuracy: 0.7036
+Factor 1 Rank: 20 20
+Accuracy: 0.736
+Factor 1 Rank: 20 25
+Accuracy: 0.7524
+Factor 1 Rank: 25 5
+Accuracy: 0.6379
+Factor 1 Rank: 25 10
+Accuracy: 0.6895
+Factor 1 Rank: 25 15
+Accuracy: 0.7056
+Factor 1 Rank: 25 20
+Accuracy: 0.7432
+Factor 1 Rank: 25 25
+Accuracy: 0.7456
+Factor 2 Rank: 5 5
+Accuracy: 0.7719
+Factor 2 Rank: 5 10
+Accuracy: 0.7944
+Factor 2 Rank: 5 15
+Accuracy: 0.782
+Factor 2 Rank: 5 20
+Accuracy: 0.772
+Factor 2 Rank: 5 25
+Accuracy: 0.7832
+Factor 2 Rank: 10 5
+Accuracy: 0.7523
+Factor 2 Rank: 10 10
+Accuracy: 0.7425
+Factor 2 Rank: 10 15
+Accuracy: 0.742
+Factor 2 Rank: 10 20
+Accuracy: 0.7417
+Factor 2 Rank: 10 25
+Accuracy: 0.7615
+Factor 2 Rank: 15 5
+Accuracy: 0.7156
+Factor 2 Rank: 15 10
+Accuracy: 0.7394
+Factor 2 Rank: 15 15
+Accuracy: 0.7195
+Factor 2 Rank: 15 20
+Accuracy: 0.7242
+Factor 2 Rank: 15 25
+Accuracy: 0.7412
+Factor 2 Rank: 20 5
+Accuracy: 0.6717
+Factor 2 Rank: 20 10
+Accuracy: 0.7121
+Factor 2 Rank: 20 15
+Accuracy: 0.7036
+Factor 2 Rank: 20 20
+Accuracy: 0.736
+Factor 2 Rank: 20 25
+Accuracy: 0.7524
+Factor 2 Rank: 25 5
+Accuracy: 0.6379
+Factor 2 Rank: 25 10
+Accuracy: 0.6895
+Factor 2 Rank: 25 15
+Accuracy: 0.7056
+Factor 2 Rank: 25 20
+Accuracy: 0.7432
+Factor 2 Rank: 25 25
+Accuracy: 0.7456
+Factor 3 Rank: 5 5
+Accuracy: 0.771
+Factor 3 Rank: 5 10
+Accuracy: 0.7887
+Factor 3 Rank: 5 15
+Accuracy: 0.782
+Factor 3 Rank: 5 20
+Accuracy: 0.772
+Factor 3 Rank: 5 25
+Accuracy: 0.7832
+Factor 3 Rank: 10 5
+Accuracy: 0.7523
+Factor 3 Rank: 10 10
+Accuracy: 0.7425
+Factor 3 Rank: 10 15
+Accuracy: 0.742
+Factor 3 Rank: 10 20
+Accuracy: 0.7417
+Factor 3 Rank: 10 25
+Accuracy: 0.7615
+Factor 3 Rank: 15 5
+Accuracy: 0.7156
+Factor 3 Rank: 15 10
+Accuracy: 0.7394
+Factor 3 Rank: 15 15
+Accuracy: 0.7195
+Factor 3 Rank: 15 20
+Accuracy: 0.7242
+Factor 3 Rank: 15 25
+Accuracy: 0.7412
+Factor 3 Rank: 20 5
+Accuracy: 0.6717
+Factor 3 Rank: 20 10
+Accuracy: 0.7121
+Factor 3 Rank: 20 15
+Accuracy: 0.7036
+Factor 3 Rank: 20 20
+Accuracy: 0.736
+Factor 3 Rank: 20 25
+Accuracy: 0.7524
+Factor 3 Rank: 25 5
+Accuracy: 0.6379
+Factor 3 Rank: 25 10
+Accuracy: 0.6895
+Factor 3 Rank: 25 15
+Accuracy: 0.7056
+Factor 3 Rank: 25 20
+Accuracy: 0.7432
+Factor 3 Rank: 25 25
+Accuracy: 0.7456
+Rank accuracy {((5, 5), 1): 0.7707, ((5, 10), 1): 0.7925, ((5, 15), 1): 0.7819, ((5, 20), 1): 0.772, ((5, 25), 1): 0.783, ((10, 5), 1): 0.74, ((10, 10), 1): 0.7425, ((10, 15), 1): 0.742, ((10, 20), 1): 0.7417, ((10, 25), 1): 0.7615, ((15, 5), 1): 0.7085, ((15, 10), 1): 0.7394, ((15, 15), 1): 0.7195, ((15, 20), 1): 0.7242, ((15, 25), 1): 0.7412, ((20, 5), 1): 0.6717, ((20, 10), 1): 0.7121, ((20, 15), 1): 0.7036, ((20, 20), 1): 0.736, ((20, 25), 1): 0.7524, ((25, 5), 1): 0.6379, ((25, 10), 1): 0.6895, ((25, 15), 1): 0.7056, ((25, 20), 1): 0.7432, ((25, 25), 1): 0.7456, ((5, 5), 2): 0.7719, ((5, 10), 2): 0.7944, ((5, 15), 2): 0.782, ((5, 20), 2): 0.772, ((5, 25), 2): 0.7832, ((10, 5), 2): 0.7523, ((10, 10), 2): 0.7425, ((10, 15), 2): 0.742, ((10, 20), 2): 0.7417, ((10, 25), 2): 0.7615, ((15, 5), 2): 0.7156, ((15, 10), 2): 0.7394, ((15, 15), 2): 0.7195, ((15, 20), 2): 0.7242, ((15, 25), 2): 0.7412, ((20, 5), 2): 0.6717, ((20, 10), 2): 0.7121, ((20, 15), 2): 0.7036, ((20, 20), 2): 0.736, ((20, 25), 2): 0.7524, ((25, 5), 2): 0.6379, ((25, 10), 2): 0.6895, ((25, 15), 2): 0.7056, ((25, 20), 2): 0.7432, ((25, 25), 2): 0.7456, ((5, 5), 3): 0.771, ((5, 10), 3): 0.7887, ((5, 15), 3): 0.782, ((5, 20), 3): 0.772, ((5, 25), 3): 0.7832, ((10, 5), 3): 0.7523, ((10, 10), 3): 0.7425, ((10, 15), 3): 0.742, ((10, 20), 3): 0.7417, ((10, 25), 3): 0.7615, ((15, 5), 3): 0.7156, ((15, 10), 3): 0.7394, ((15, 15), 3): 0.7195, ((15, 20), 3): 0.7242, ((15, 25), 3): 0.7412, ((20, 5), 3): 0.6717, ((20, 10), 3): 0.7121, ((20, 15), 3): 0.7036, ((20, 20), 3): 0.736, ((20, 25), 3): 0.7524, ((25, 5), 3): 0.6379, ((25, 10), 3): 0.6895, ((25, 15), 3): 0.7056, ((25, 20), 3): 0.7432, ((25, 25), 3): 0.7456}
+Best Rank Tucker with autoencoder ((5, 10), 2) 0.7944
+Model for label 4
+Tucker rank search autoencoder
+Factor 1 Rank: 5 5
+Accuracy: 0.6616
+Factor 1 Rank: 5 10
+Accuracy: 0.6143
+Factor 1 Rank: 5 15
+Accuracy: 0.6487
+Factor 1 Rank: 5 20
+Accuracy: 0.6604
+Factor 1 Rank: 5 25
+Accuracy: 0.6215
+Factor 1 Rank: 10 5
+Accuracy: 0.6397
+Factor 1 Rank: 10 10
+Accuracy: 0.5527
+Factor 1 Rank: 10 15
+Accuracy: 0.5528
+Factor 1 Rank: 10 20
+Accuracy: 0.5493
+Factor 1 Rank: 10 25
+Accuracy: 0.5418
+Factor 1 Rank: 15 5
+Accuracy: 0.6169
+Factor 1 Rank: 15 10
+Accuracy: 0.5544
+Factor 1 Rank: 15 15
+Accuracy: 0.6239
+Factor 1 Rank: 15 20
+Accuracy: 0.6178
+Factor 1 Rank: 15 25
+Accuracy: 0.6133
+Factor 1 Rank: 20 5
+Accuracy: 0.5867
+Factor 1 Rank: 20 10
+Accuracy: 0.5523
+Factor 1 Rank: 20 15
+Accuracy: 0.6188
+Factor 1 Rank: 20 20
+Accuracy: 0.6083
+Factor 1 Rank: 20 25
+Accuracy: 0.6016
+Factor 1 Rank: 25 5
+Accuracy: 0.5876
+Factor 1 Rank: 25 10
+Accuracy: 0.5432
+Factor 1 Rank: 25 15
+Accuracy: 0.6187
+Factor 1 Rank: 25 20
+Accuracy: 0.6054
+Factor 1 Rank: 25 25
+Accuracy: 0.6172
+Factor 2 Rank: 5 5
+Accuracy: 0.6651
+Factor 2 Rank: 5 10
+Accuracy: 0.6113
+Factor 2 Rank: 5 15
+Accuracy: 0.6366
+Factor 2 Rank: 5 20
+Accuracy: 0.6503
+Factor 2 Rank: 5 25
+Accuracy: 0.6215
+Factor 2 Rank: 10 5
+Accuracy: 0.6398
+Factor 2 Rank: 10 10
+Accuracy: 0.5491
+Factor 2 Rank: 10 15
+Accuracy: 0.55
+Factor 2 Rank: 10 20
+Accuracy: 0.5493
+Factor 2 Rank: 10 25
+Accuracy: 0.5418
+Factor 2 Rank: 15 5
+Accuracy: 0.613
+Factor 2 Rank: 15 10
+Accuracy: 0.5544
+Factor 2 Rank: 15 15
+Accuracy: 0.6239
+Factor 2 Rank: 15 20
+Accuracy: 0.6178
+Factor 2 Rank: 15 25
+Accuracy: 0.6133
+Factor 2 Rank: 20 5
+Accuracy: 0.5867
+Factor 2 Rank: 20 10
+Accuracy: 0.5523
+Factor 2 Rank: 20 15
+Accuracy: 0.6188
+Factor 2 Rank: 20 20
+Accuracy: 0.6083
+Factor 2 Rank: 20 25
+Accuracy: 0.6016
+Factor 2 Rank: 25 5
+Accuracy: 0.5757
+Factor 2 Rank: 25 10
+Accuracy: 0.5432
+Factor 2 Rank: 25 15
+Accuracy: 0.6187
+Factor 2 Rank: 25 20
+Accuracy: 0.6054
+Factor 2 Rank: 25 25
+Accuracy: 0.6172
+Factor 3 Rank: 5 5
+Accuracy: 0.6645
+Factor 3 Rank: 5 10
+Accuracy: 0.6017
+Factor 3 Rank: 5 15
+Accuracy: 0.6366
+Factor 3 Rank: 5 20
+Accuracy: 0.6515
+Factor 3 Rank: 5 25
+Accuracy: 0.6215
+Factor 3 Rank: 10 5
+Accuracy: 0.634
+Factor 3 Rank: 10 10
+Accuracy: 0.5491
+Factor 3 Rank: 10 15
+Accuracy: 0.55
+Factor 3 Rank: 10 20
+Accuracy: 0.5493
+Factor 3 Rank: 10 25
+Accuracy: 0.5418
+Factor 3 Rank: 15 5
+Accuracy: 0.613
+Factor 3 Rank: 15 10
+Accuracy: 0.5544
+Factor 3 Rank: 15 15
+Accuracy: 0.6239
+Factor 3 Rank: 15 20
+Accuracy: 0.6178
+Factor 3 Rank: 15 25
+Accuracy: 0.6133
+Factor 3 Rank: 20 5
+Accuracy: 0.5867
+Factor 3 Rank: 20 10
+Accuracy: 0.5523
+Factor 3 Rank: 20 15
+Accuracy: 0.6188
+Factor 3 Rank: 20 20
+Accuracy: 0.6083
+Factor 3 Rank: 20 25
+Accuracy: 0.6016
+Factor 3 Rank: 25 5
+Accuracy: 0.5757
+Factor 3 Rank: 25 10
+Accuracy: 0.5432
+Factor 3 Rank: 25 15
+Accuracy: 0.6187
+Factor 3 Rank: 25 20
+Accuracy: 0.6054
+Factor 3 Rank: 25 25
+Accuracy: 0.6172
+Rank accuracy {((5, 5), 1): 0.6616, ((5, 10), 1): 0.6143, ((5, 15), 1): 0.6487, ((5, 20), 1): 0.6604, ((5, 25), 1): 0.6215, ((10, 5), 1): 0.6397, ((10, 10), 1): 0.5527, ((10, 15), 1): 0.5528, ((10, 20), 1): 0.5493, ((10, 25), 1): 0.5418, ((15, 5), 1): 0.6169, ((15, 10), 1): 0.5544, ((15, 15), 1): 0.6239, ((15, 20), 1): 0.6178, ((15, 25), 1): 0.6133, ((20, 5), 1): 0.5867, ((20, 10), 1): 0.5523, ((20, 15), 1): 0.6188, ((20, 20), 1): 0.6083, ((20, 25), 1): 0.6016, ((25, 5), 1): 0.5876, ((25, 10), 1): 0.5432, ((25, 15), 1): 0.6187, ((25, 20), 1): 0.6054, ((25, 25), 1): 0.6172, ((5, 5), 2): 0.6651, ((5, 10), 2): 0.6113, ((5, 15), 2): 0.6366, ((5, 20), 2): 0.6503, ((5, 25), 2): 0.6215, ((10, 5), 2): 0.6398, ((10, 10), 2): 0.5491, ((10, 15), 2): 0.55, ((10, 20), 2): 0.5493, ((10, 25), 2): 0.5418, ((15, 5), 2): 0.613, ((15, 10), 2): 0.5544, ((15, 15), 2): 0.6239, ((15, 20), 2): 0.6178, ((15, 25), 2): 0.6133, ((20, 5), 2): 0.5867, ((20, 10), 2): 0.5523, ((20, 15), 2): 0.6188, ((20, 20), 2): 0.6083, ((20, 25), 2): 0.6016, ((25, 5), 2): 0.5757, ((25, 10), 2): 0.5432, ((25, 15), 2): 0.6187, ((25, 20), 2): 0.6054, ((25, 25), 2): 0.6172, ((5, 5), 3): 0.6645, ((5, 10), 3): 0.6017, ((5, 15), 3): 0.6366, ((5, 20), 3): 0.6515, ((5, 25), 3): 0.6215, ((10, 5), 3): 0.634, ((10, 10), 3): 0.5491, ((10, 15), 3): 0.55, ((10, 20), 3): 0.5493, ((10, 25), 3): 0.5418, ((15, 5), 3): 0.613, ((15, 10), 3): 0.5544, ((15, 15), 3): 0.6239, ((15, 20), 3): 0.6178, ((15, 25), 3): 0.6133, ((20, 5), 3): 0.5867, ((20, 10), 3): 0.5523, ((20, 15), 3): 0.6188, ((20, 20), 3): 0.6083, ((20, 25), 3): 0.6016, ((25, 5), 3): 0.5757, ((25, 10), 3): 0.5432, ((25, 15), 3): 0.6187, ((25, 20), 3): 0.6054, ((25, 25), 3): 0.6172}
+Best Rank Tucker with autoencoder ((5, 5), 2) 0.6651
+Model for label 5
+Tucker rank search autoencoder
+Factor 1 Rank: 5 5
+Accuracy: 0.7532
+Factor 1 Rank: 5 10
+Accuracy: 0.7706
+Factor 1 Rank: 5 15
+Accuracy: 0.7764
+Factor 1 Rank: 5 20
+Accuracy: 0.7751
+Factor 1 Rank: 5 25
+Accuracy: 0.7623
+Factor 1 Rank: 10 5
+Accuracy: 0.7472
+Factor 1 Rank: 10 10
+Accuracy: 0.7174
+Factor 1 Rank: 10 15
+Accuracy: 0.7265
+Factor 1 Rank: 10 20
+Accuracy: 0.7145
+Factor 1 Rank: 10 25
+Accuracy: 0.6827
+Factor 1 Rank: 15 5
+Accuracy: 0.7394
+Factor 1 Rank: 15 10
+Accuracy: 0.725
+Factor 1 Rank: 15 15
+Accuracy: 0.637
+Factor 1 Rank: 15 20
+Accuracy: 0.5948
+Factor 1 Rank: 15 25
+Accuracy: 0.5103
+Factor 1 Rank: 20 5
+Accuracy: 0.7248
+Factor 1 Rank: 20 10
+Accuracy: 0.704
+Factor 1 Rank: 20 15
+Accuracy: 0.623
+Factor 1 Rank: 20 20
+Accuracy: 0.5041
+Factor 1 Rank: 20 25
+Accuracy: 0.404
+Factor 1 Rank: 25 5
+Accuracy: 0.7002
+Factor 1 Rank: 25 10
+Accuracy: 0.6568
+Factor 1 Rank: 25 15
+Accuracy: 0.5443
+Factor 1 Rank: 25 20
+Accuracy: 0.5337
+Factor 1 Rank: 25 25
+Accuracy: 0.3357
+Factor 2 Rank: 5 5
+Accuracy: 0.7537
+Factor 2 Rank: 5 10
+Accuracy: 0.7623
+Factor 2 Rank: 5 15
+Accuracy: 0.7687
+Factor 2 Rank: 5 20
+Accuracy: 0.7664
+Factor 2 Rank: 5 25
+Accuracy: 0.7623
+Factor 2 Rank: 10 5
+Accuracy: 0.7469
+Factor 2 Rank: 10 10
+Accuracy: 0.7173
+Factor 2 Rank: 10 15
+Accuracy: 0.7265
+Factor 2 Rank: 10 20
+Accuracy: 0.7145
+Factor 2 Rank: 10 25
+Accuracy: 0.6827
+Factor 2 Rank: 15 5
+Accuracy: 0.7338
+Factor 2 Rank: 15 10
+Accuracy: 0.725
+Factor 2 Rank: 15 15
+Accuracy: 0.637
+Factor 2 Rank: 15 20
+Accuracy: 0.5948
+Factor 2 Rank: 15 25
+Accuracy: 0.5103
+Factor 2 Rank: 20 5
+Accuracy: 0.72
+Factor 2 Rank: 20 10
+Accuracy: 0.704
+Factor 2 Rank: 20 15
+Accuracy: 0.623
+Factor 2 Rank: 20 20
+Accuracy: 0.5041
+Factor 2 Rank: 20 25
+Accuracy: 0.404
+Factor 2 Rank: 25 5
+Accuracy: 0.6919
+Factor 2 Rank: 25 10
+Accuracy: 0.6568
+Factor 2 Rank: 25 15
+Accuracy: 0.5443
+Factor 2 Rank: 25 20
+Accuracy: 0.5337
+Factor 2 Rank: 25 25
+Accuracy: 0.3357
+Factor 3 Rank: 5 5
+Accuracy: 0.7528
+Factor 3 Rank: 5 10
+Accuracy: 0.7623
+Factor 3 Rank: 5 15
+Accuracy: 0.7687
+Factor 3 Rank: 5 20
+Accuracy: 0.7664
+Factor 3 Rank: 5 25
+Accuracy: 0.7623
+Factor 3 Rank: 10 5
+Accuracy: 0.7388
+Factor 3 Rank: 10 10
+Accuracy: 0.7174
+Factor 3 Rank: 10 15
+Accuracy: 0.7265
+Factor 3 Rank: 10 20
+Accuracy: 0.7145
+Factor 3 Rank: 10 25
+Accuracy: 0.6827
+Factor 3 Rank: 15 5
+Accuracy: 0.7333
+Factor 3 Rank: 15 10
+Accuracy: 0.725
+Factor 3 Rank: 15 15
+Accuracy: 0.637
+Factor 3 Rank: 15 20
+Accuracy: 0.5948
+Factor 3 Rank: 15 25
+Accuracy: 0.5103
+Factor 3 Rank: 20 5
+Accuracy: 0.72
+Factor 3 Rank: 20 10
+Accuracy: 0.704
+Factor 3 Rank: 20 15
+Accuracy: 0.623
+Factor 3 Rank: 20 20
+Accuracy: 0.5041
+Factor 3 Rank: 20 25
+Accuracy: 0.404
+Factor 3 Rank: 25 5
+Accuracy: 0.6919
+Factor 3 Rank: 25 10
+Accuracy: 0.6568
+Factor 3 Rank: 25 15
+Accuracy: 0.5443
+Factor 3 Rank: 25 20
+Accuracy: 0.5337
+Factor 3 Rank: 25 25
+Accuracy: 0.3357
+Rank accuracy {((5, 5), 1): 0.7532, ((5, 10), 1): 0.7706, ((5, 15), 1): 0.7764, ((5, 20), 1): 0.7751, ((5, 25), 1): 0.7623, ((10, 5), 1): 0.7472, ((10, 10), 1): 0.7174, ((10, 15), 1): 0.7265, ((10, 20), 1): 0.7145, ((10, 25), 1): 0.6827, ((15, 5), 1): 0.7394, ((15, 10), 1): 0.725, ((15, 15), 1): 0.637, ((15, 20), 1): 0.5948, ((15, 25), 1): 0.5103, ((20, 5), 1): 0.7248, ((20, 10), 1): 0.704, ((20, 15), 1): 0.623, ((20, 20), 1): 0.5041, ((20, 25), 1): 0.404, ((25, 5), 1): 0.7002, ((25, 10), 1): 0.6568, ((25, 15), 1): 0.5443, ((25, 20), 1): 0.5337, ((25, 25), 1): 0.3357, ((5, 5), 2): 0.7537, ((5, 10), 2): 0.7623, ((5, 15), 2): 0.7687, ((5, 20), 2): 0.7664, ((5, 25), 2): 0.7623, ((10, 5), 2): 0.7469, ((10, 10), 2): 0.7173, ((10, 15), 2): 0.7265, ((10, 20), 2): 0.7145, ((10, 25), 2): 0.6827, ((15, 5), 2): 0.7338, ((15, 10), 2): 0.725, ((15, 15), 2): 0.637, ((15, 20), 2): 0.5948, ((15, 25), 2): 0.5103, ((20, 5), 2): 0.72, ((20, 10), 2): 0.704, ((20, 15), 2): 0.623, ((20, 20), 2): 0.5041, ((20, 25), 2): 0.404, ((25, 5), 2): 0.6919, ((25, 10), 2): 0.6568, ((25, 15), 2): 0.5443, ((25, 20), 2): 0.5337, ((25, 25), 2): 0.3357, ((5, 5), 3): 0.7528, ((5, 10), 3): 0.7623, ((5, 15), 3): 0.7687, ((5, 20), 3): 0.7664, ((5, 25), 3): 0.7623, ((10, 5), 3): 0.7388, ((10, 10), 3): 0.7174, ((10, 15), 3): 0.7265, ((10, 20), 3): 0.7145, ((10, 25), 3): 0.6827, ((15, 5), 3): 0.7333, ((15, 10), 3): 0.725, ((15, 15), 3): 0.637, ((15, 20), 3): 0.5948, ((15, 25), 3): 0.5103, ((20, 5), 3): 0.72, ((20, 10), 3): 0.704, ((20, 15), 3): 0.623, ((20, 20), 3): 0.5041, ((20, 25), 3): 0.404, ((25, 5), 3): 0.6919, ((25, 10), 3): 0.6568, ((25, 15), 3): 0.5443, ((25, 20), 3): 0.5337, ((25, 25), 3): 0.3357}
+Best Rank Tucker with autoencoder ((5, 15), 1) 0.7764
+Model for label 6
+Tucker rank search autoencoder
+Factor 1 Rank: 5 5
+Accuracy: 0.5094
+Factor 1 Rank: 5 10
+Accuracy: 0.4881
+Factor 1 Rank: 5 15
+Accuracy: 0.5409
+Factor 1 Rank: 5 20
+Accuracy: 0.5555
+Factor 1 Rank: 5 25
+Accuracy: 0.514
+Factor 1 Rank: 10 5
+Accuracy: 0.4805
+Factor 1 Rank: 10 10
+Accuracy: 0.4635
+Factor 1 Rank: 10 15
+Accuracy: 0.468
+Factor 1 Rank: 10 20
+Accuracy: 0.4672
+Factor 1 Rank: 10 25
+Accuracy: 0.4614
+Factor 1 Rank: 15 5
+Accuracy: 0.4682
+Factor 1 Rank: 15 10
+Accuracy: 0.448
+Factor 1 Rank: 15 15
+Accuracy: 0.4372
+Factor 1 Rank: 15 20
+Accuracy: 0.4496
+Factor 1 Rank: 15 25
+Accuracy: 0.4382
+Factor 1 Rank: 20 5
+Accuracy: 0.4502
+Factor 1 Rank: 20 10
+Accuracy: 0.4487
+Factor 1 Rank: 20 15
+Accuracy: 0.4454
+Factor 1 Rank: 20 20
+Accuracy: 0.4224
+Factor 1 Rank: 20 25
+Accuracy: 0.4201
+Factor 1 Rank: 25 5
+Accuracy: 0.4515
+Factor 1 Rank: 25 10
+Accuracy: 0.4523
+Factor 1 Rank: 25 15
+Accuracy: 0.436
+Factor 1 Rank: 25 20
+Accuracy: 0.4027
+Factor 1 Rank: 25 25
+Accuracy: 0.3765
+Factor 2 Rank: 5 5
+Accuracy: 0.5127
+Factor 2 Rank: 5 10
+Accuracy: 0.4788
+Factor 2 Rank: 5 15
+Accuracy: 0.5358
+Factor 2 Rank: 5 20
+Accuracy: 0.5555
+Factor 2 Rank: 5 25
+Accuracy: 0.514
+Factor 2 Rank: 10 5
+Accuracy: 0.4735
+Factor 2 Rank: 10 10
+Accuracy: 0.4635
+Factor 2 Rank: 10 15
+Accuracy: 0.468
+Factor 2 Rank: 10 20
+Accuracy: 0.4672
+Factor 2 Rank: 10 25
+Accuracy: 0.4614
+Factor 2 Rank: 15 5
+Accuracy: 0.4693
+Factor 2 Rank: 15 10
+Accuracy: 0.448
+Factor 2 Rank: 15 15
+Accuracy: 0.4372
+Factor 2 Rank: 15 20
+Accuracy: 0.4496
+Factor 2 Rank: 15 25
+Accuracy: 0.4382
+Factor 2 Rank: 20 5
+Accuracy: 0.4488
+Factor 2 Rank: 20 10
+Accuracy: 0.4487
+Factor 2 Rank: 20 15
+Accuracy: 0.4454
+Factor 2 Rank: 20 20
+Accuracy: 0.4224
+Factor 2 Rank: 20 25
+Accuracy: 0.4201
+Factor 2 Rank: 25 5
+Accuracy: 0.4515
+Factor 2 Rank: 25 10
+Accuracy: 0.4523
+Factor 2 Rank: 25 15
+Accuracy: 0.436
+Factor 2 Rank: 25 20
+Accuracy: 0.4027
+Factor 2 Rank: 25 25
+Accuracy: 0.3765
+Factor 3 Rank: 5 5
+Accuracy: 0.511
+Factor 3 Rank: 5 10
+Accuracy: 0.4797
+Factor 3 Rank: 5 15
+Accuracy: 0.5358
+Factor 3 Rank: 5 20
+Accuracy: 0.5555
+Factor 3 Rank: 5 25
+Accuracy: 0.514
+Factor 3 Rank: 10 5
+Accuracy: 0.4735
+Factor 3 Rank: 10 10
+Accuracy: 0.4635
+Factor 3 Rank: 10 15
+Accuracy: 0.468
+Factor 3 Rank: 10 20
+Accuracy: 0.4672
+Factor 3 Rank: 10 25
+Accuracy: 0.4614
+Factor 3 Rank: 15 5
+Accuracy: 0.4612
+Factor 3 Rank: 15 10
+Accuracy: 0.448
+Factor 3 Rank: 15 15
+Accuracy: 0.4372
+Factor 3 Rank: 15 20
+Accuracy: 0.4496
+Factor 3 Rank: 15 25
+Accuracy: 0.4382
+Factor 3 Rank: 20 5
+Accuracy: 0.4488
+Factor 3 Rank: 20 10
+Accuracy: 0.4487
+Factor 3 Rank: 20 15
+Accuracy: 0.4454
+Factor 3 Rank: 20 20
+Accuracy: 0.4224
+Factor 3 Rank: 20 25
+Accuracy: 0.4201
+Factor 3 Rank: 25 5
+Accuracy: 0.4515
+Factor 3 Rank: 25 10
+Accuracy: 0.4523
+Factor 3 Rank: 25 15
+Accuracy: 0.436
+Factor 3 Rank: 25 20
+Accuracy: 0.4027
+Factor 3 Rank: 25 25
+Accuracy: 0.376
+Rank accuracy {((5, 5), 1): 0.5094, ((5, 10), 1): 0.4881, ((5, 15), 1): 0.5409, ((5, 20), 1): 0.5555, ((5, 25), 1): 0.514, ((10, 5), 1): 0.4805, ((10, 10), 1): 0.4635, ((10, 15), 1): 0.468, ((10, 20), 1): 0.4672, ((10, 25), 1): 0.4614, ((15, 5), 1): 0.4682, ((15, 10), 1): 0.448, ((15, 15), 1): 0.4372, ((15, 20), 1): 0.4496, ((15, 25), 1): 0.4382, ((20, 5), 1): 0.4502, ((20, 10), 1): 0.4487, ((20, 15), 1): 0.4454, ((20, 20), 1): 0.4224, ((20, 25), 1): 0.4201, ((25, 5), 1): 0.4515, ((25, 10), 1): 0.4523, ((25, 15), 1): 0.436, ((25, 20), 1): 0.4027, ((25, 25), 1): 0.3765, ((5, 5), 2): 0.5127, ((5, 10), 2): 0.4788, ((5, 15), 2): 0.5358, ((5, 20), 2): 0.5555, ((5, 25), 2): 0.514, ((10, 5), 2): 0.4735, ((10, 10), 2): 0.4635, ((10, 15), 2): 0.468, ((10, 20), 2): 0.4672, ((10, 25), 2): 0.4614, ((15, 5), 2): 0.4693, ((15, 10), 2): 0.448, ((15, 15), 2): 0.4372, ((15, 20), 2): 0.4496, ((15, 25), 2): 0.4382, ((20, 5), 2): 0.4488, ((20, 10), 2): 0.4487, ((20, 15), 2): 0.4454, ((20, 20), 2): 0.4224, ((20, 25), 2): 0.4201, ((25, 5), 2): 0.4515, ((25, 10), 2): 0.4523, ((25, 15), 2): 0.436, ((25, 20), 2): 0.4027, ((25, 25), 2): 0.3765, ((5, 5), 3): 0.511, ((5, 10), 3): 0.4797, ((5, 15), 3): 0.5358, ((5, 20), 3): 0.5555, ((5, 25), 3): 0.514, ((10, 5), 3): 0.4735, ((10, 10), 3): 0.4635, ((10, 15), 3): 0.468, ((10, 20), 3): 0.4672, ((10, 25), 3): 0.4614, ((15, 5), 3): 0.4612, ((15, 10), 3): 0.448, ((15, 15), 3): 0.4372, ((15, 20), 3): 0.4496, ((15, 25), 3): 0.4382, ((20, 5), 3): 0.4488, ((20, 10), 3): 0.4487, ((20, 15), 3): 0.4454, ((20, 20), 3): 0.4224, ((20, 25), 3): 0.4201, ((25, 5), 3): 0.4515, ((25, 10), 3): 0.4523, ((25, 15), 3): 0.436, ((25, 20), 3): 0.4027, ((25, 25), 3): 0.376}
+Best Rank Tucker with autoencoder ((5, 20), 1) 0.5555
+Model for label 7
+Tucker rank search autoencoder
+Factor 1 Rank: 5 5
+Accuracy: 0.9158
+Factor 1 Rank: 5 10
+Accuracy: 0.9354
+Factor 1 Rank: 5 15
+Accuracy: 0.9296
+Factor 1 Rank: 5 20
+Accuracy: 0.9237
+Factor 1 Rank: 5 25
+Accuracy: 0.9274
+Factor 1 Rank: 10 5
+Accuracy: 0.9069
+Factor 1 Rank: 10 10
+Accuracy: 0.9047
+Factor 1 Rank: 10 15
+Accuracy: 0.9028
+Factor 1 Rank: 10 20
+Accuracy: 0.899
+Factor 1 Rank: 10 25
+Accuracy: 0.9003
+Factor 1 Rank: 15 5
+Accuracy: 0.9048
+Factor 1 Rank: 15 10
+Accuracy: 0.9068
+Factor 1 Rank: 15 15
+Accuracy: 0.9004
+Factor 1 Rank: 15 20
+Accuracy: 0.8979
+Factor 1 Rank: 15 25
+Accuracy: 0.8937
+Factor 1 Rank: 20 5
+Accuracy: 0.9011
+Factor 1 Rank: 20 10
+Accuracy: 0.9043
+Factor 1 Rank: 20 15
+Accuracy: 0.9078
+Factor 1 Rank: 20 20
+Accuracy: 0.9021
+Factor 1 Rank: 20 25
+Accuracy: 0.9014
+Factor 1 Rank: 25 5
+Accuracy: 0.9076
+Factor 1 Rank: 25 10
+Accuracy: 0.904
+Factor 1 Rank: 25 15
+Accuracy: 0.9029
+Factor 1 Rank: 25 20
+Accuracy: 0.8999
+Factor 1 Rank: 25 25
+Accuracy: 0.8989
+Factor 2 Rank: 5 5
+Accuracy: 0.9153
+Factor 2 Rank: 5 10
+Accuracy: 0.9362
+Factor 2 Rank: 5 15
+Accuracy: 0.9233
+Factor 2 Rank: 5 20
+Accuracy: 0.9237
+Factor 2 Rank: 5 25
+Accuracy: 0.9176
+Factor 2 Rank: 10 5
+Accuracy: 0.9072
+Factor 2 Rank: 10 10
+Accuracy: 0.9057
+Factor 2 Rank: 10 15
+Accuracy: 0.9028
+Factor 2 Rank: 10 20
+Accuracy: 0.899
+Factor 2 Rank: 10 25
+Accuracy: 0.9003
+Factor 2 Rank: 15 5
+Accuracy: 0.9024
+Factor 2 Rank: 15 10
+Accuracy: 0.9068
+Factor 2 Rank: 15 15
+Accuracy: 0.9004
+Factor 2 Rank: 15 20
+Accuracy: 0.8979
+Factor 2 Rank: 15 25
+Accuracy: 0.8937
+Factor 2 Rank: 20 5
+Accuracy: 0.9005
+Factor 2 Rank: 20 10
+Accuracy: 0.9043
+Factor 2 Rank: 20 15
+Accuracy: 0.9078
+Factor 2 Rank: 20 20
+Accuracy: 0.9021
+Factor 2 Rank: 20 25
+Accuracy: 0.9014
+Factor 2 Rank: 25 5
+Accuracy: 0.9064
+Factor 2 Rank: 25 10
+Accuracy: 0.904
+Factor 2 Rank: 25 15
+Accuracy: 0.9029
+Factor 2 Rank: 25 20
+Accuracy: 0.8999
+Factor 2 Rank: 25 25
+Accuracy: 0.8989
+Factor 3 Rank: 5 5
+Accuracy: 0.915
+Factor 3 Rank: 5 10
+Accuracy: 0.9359
+Factor 3 Rank: 5 15
+Accuracy: 0.9233
+Factor 3 Rank: 5 20
+Accuracy: 0.9143
+Factor 3 Rank: 5 25
+Accuracy: 0.9175
+Factor 3 Rank: 10 5
+Accuracy: 0.9067
+Factor 3 Rank: 10 10
+Accuracy: 0.9057
+Factor 3 Rank: 10 15
+Accuracy: 0.9028
+Factor 3 Rank: 10 20
+Accuracy: 0.899
+Factor 3 Rank: 10 25
+Accuracy: 0.9003
+Factor 3 Rank: 15 5
+Accuracy: 0.9023
+Factor 3 Rank: 15 10
+Accuracy: 0.9068
+Factor 3 Rank: 15 15
+Accuracy: 0.9004
+Factor 3 Rank: 15 20
+Accuracy: 0.8979
+Factor 3 Rank: 15 25
+Accuracy: 0.8937
+Factor 3 Rank: 20 5
+Accuracy: 0.9005
+Factor 3 Rank: 20 10
+Accuracy: 0.9043
+Factor 3 Rank: 20 15
+Accuracy: 0.9078
+Factor 3 Rank: 20 20
+Accuracy: 0.9021
+Factor 3 Rank: 20 25
+Accuracy: 0.9014
+Factor 3 Rank: 25 5
+Accuracy: 0.9064
+Factor 3 Rank: 25 10
+Accuracy: 0.904
+Factor 3 Rank: 25 15
+Accuracy: 0.9029
+Factor 3 Rank: 25 20
+Accuracy: 0.8999
+Factor 3 Rank: 25 25
+Accuracy: 0.8989
+Rank accuracy {((5, 5), 1): 0.9158, ((5, 10), 1): 0.9354, ((5, 15), 1): 0.9296, ((5, 20), 1): 0.9237, ((5, 25), 1): 0.9274, ((10, 5), 1): 0.9069, ((10, 10), 1): 0.9047, ((10, 15), 1): 0.9028, ((10, 20), 1): 0.899, ((10, 25), 1): 0.9003, ((15, 5), 1): 0.9048, ((15, 10), 1): 0.9068, ((15, 15), 1): 0.9004, ((15, 20), 1): 0.8979, ((15, 25), 1): 0.8937, ((20, 5), 1): 0.9011, ((20, 10), 1): 0.9043, ((20, 15), 1): 0.9078, ((20, 20), 1): 0.9021, ((20, 25), 1): 0.9014, ((25, 5), 1): 0.9076, ((25, 10), 1): 0.904, ((25, 15), 1): 0.9029, ((25, 20), 1): 0.8999, ((25, 25), 1): 0.8989, ((5, 5), 2): 0.9153, ((5, 10), 2): 0.9362, ((5, 15), 2): 0.9233, ((5, 20), 2): 0.9237, ((5, 25), 2): 0.9176, ((10, 5), 2): 0.9072, ((10, 10), 2): 0.9057, ((10, 15), 2): 0.9028, ((10, 20), 2): 0.899, ((10, 25), 2): 0.9003, ((15, 5), 2): 0.9024, ((15, 10), 2): 0.9068, ((15, 15), 2): 0.9004, ((15, 20), 2): 0.8979, ((15, 25), 2): 0.8937, ((20, 5), 2): 0.9005, ((20, 10), 2): 0.9043, ((20, 15), 2): 0.9078, ((20, 20), 2): 0.9021, ((20, 25), 2): 0.9014, ((25, 5), 2): 0.9064, ((25, 10), 2): 0.904, ((25, 15), 2): 0.9029, ((25, 20), 2): 0.8999, ((25, 25), 2): 0.8989, ((5, 5), 3): 0.915, ((5, 10), 3): 0.9359, ((5, 15), 3): 0.9233, ((5, 20), 3): 0.9143, ((5, 25), 3): 0.9175, ((10, 5), 3): 0.9067, ((10, 10), 3): 0.9057, ((10, 15), 3): 0.9028, ((10, 20), 3): 0.899, ((10, 25), 3): 0.9003, ((15, 5), 3): 0.9023, ((15, 10), 3): 0.9068, ((15, 15), 3): 0.9004, ((15, 20), 3): 0.8979, ((15, 25), 3): 0.8937, ((20, 5), 3): 0.9005, ((20, 10), 3): 0.9043, ((20, 15), 3): 0.9078, ((20, 20), 3): 0.9021, ((20, 25), 3): 0.9014, ((25, 5), 3): 0.9064, ((25, 10), 3): 0.904, ((25, 15), 3): 0.9029, ((25, 20), 3): 0.8999, ((25, 25), 3): 0.8989}
+Best Rank Tucker with autoencoder ((5, 10), 2) 0.9362
+Model for label 8
+Tucker rank search autoencoder
+Factor 1 Rank: 5 5
+Accuracy: 0.516
+Factor 1 Rank: 5 10
+Accuracy: 0.5649
+Factor 1 Rank: 5 15
+Accuracy: 0.5035
+Factor 1 Rank: 5 20
+Accuracy: 0.4861
+Factor 1 Rank: 5 25
+Accuracy: 0.6045
+Factor 1 Rank: 10 5
+Accuracy: 0.3949
+Factor 1 Rank: 10 10
+Accuracy: 0.3207
+Factor 1 Rank: 10 15
+Accuracy: 0.3192
+Factor 1 Rank: 10 20
+Accuracy: 0.3321
+Factor 1 Rank: 10 25
+Accuracy: 0.2791
+Factor 1 Rank: 15 5
+Accuracy: 0.3482
+Factor 1 Rank: 15 10
+Accuracy: 0.2824
+Factor 1 Rank: 15 15
+Accuracy: 0.211
+Factor 1 Rank: 15 20
+Accuracy: 0.1672
+Factor 1 Rank: 15 25
+Accuracy: 0.1521
+Factor 1 Rank: 20 5
+Accuracy: 0.2982
+Factor 1 Rank: 20 10
+Accuracy: 0.2493
+Factor 1 Rank: 20 15
+Accuracy: 0.1875
+Factor 1 Rank: 20 20
+Accuracy: 0.1367
+Factor 1 Rank: 20 25
+Accuracy: 0.1527
+Factor 1 Rank: 25 5
+Accuracy: 0.2393
+Factor 1 Rank: 25 10
+Accuracy: 0.1928
+Factor 1 Rank: 25 15
+Accuracy: 0.1492
+Factor 1 Rank: 25 20
+Accuracy: 0.1393
+Factor 1 Rank: 25 25
+Accuracy: 0.1345
+Factor 2 Rank: 5 5
+Accuracy: 0.5195
+Factor 2 Rank: 5 10
+Accuracy: 0.5348
+Factor 2 Rank: 5 15
+Accuracy: 0.4369
+Factor 2 Rank: 5 20
+Accuracy: 0.4074
+Factor 2 Rank: 5 25
+Accuracy: 0.4975
+Factor 2 Rank: 10 5
+Accuracy: 0.4012
+Factor 2 Rank: 10 10
+Accuracy: 0.3207
+Factor 2 Rank: 10 15
+Accuracy: 0.3192
+Factor 2 Rank: 10 20
+Accuracy: 0.3321
+Factor 2 Rank: 10 25
+Accuracy: 0.2791
+Factor 2 Rank: 15 5
+Accuracy: 0.3527
+Factor 2 Rank: 15 10
+Accuracy: 0.2824
+Factor 2 Rank: 15 15
+Accuracy: 0.211
+Factor 2 Rank: 15 20
+Accuracy: 0.1672
+Factor 2 Rank: 15 25
+Accuracy: 0.1521
+Factor 2 Rank: 20 5
+Accuracy: 0.2982
+Factor 2 Rank: 20 10
+Accuracy: 0.2493
+Factor 2 Rank: 20 15
+Accuracy: 0.1875
+Factor 2 Rank: 20 20
+Accuracy: 0.1367
+Factor 2 Rank: 20 25
+Accuracy: 0.1527
+Factor 2 Rank: 25 5
+Accuracy: 0.2238
+Factor 2 Rank: 25 10
+Accuracy: 0.1928
+Factor 2 Rank: 25 15
+Accuracy: 0.1492
+Factor 2 Rank: 25 20
+Accuracy: 0.1393
+Factor 2 Rank: 25 25
+Accuracy: 0.1345
+Factor 3 Rank: 5 5
+Accuracy: 0.5277
+Factor 3 Rank: 5 10
+Accuracy: 0.5345
+Factor 3 Rank: 5 15
+Accuracy: 0.4369
+Factor 3 Rank: 5 20
+Accuracy: 0.4074
+Factor 3 Rank: 5 25
+Accuracy: 0.4975
+Factor 3 Rank: 10 5
+Accuracy: 0.3977
+Factor 3 Rank: 10 10
+Accuracy: 0.3207
+Factor 3 Rank: 10 15
+Accuracy: 0.3192
+Factor 3 Rank: 10 20
+Accuracy: 0.3321
+Factor 3 Rank: 10 25
+Accuracy: 0.2791
+Factor 3 Rank: 15 5
+Accuracy: 0.3527
+Factor 3 Rank: 15 10
+Accuracy: 0.2824
+Factor 3 Rank: 15 15
+Accuracy: 0.211
+Factor 3 Rank: 15 20
+Accuracy: 0.1672
+Factor 3 Rank: 15 25
+Accuracy: 0.1521
+Factor 3 Rank: 20 5
+Accuracy: 0.2982
+Factor 3 Rank: 20 10
+Accuracy: 0.2493
+Factor 3 Rank: 20 15
+Accuracy: 0.1875
+Factor 3 Rank: 20 20
+Accuracy: 0.1367
+Factor 3 Rank: 20 25
+Accuracy: 0.1527
+Factor 3 Rank: 25 5
+Accuracy: 0.2238
+Factor 3 Rank: 25 10
+Accuracy: 0.1928
+Factor 3 Rank: 25 15
+Accuracy: 0.1492
+Factor 3 Rank: 25 20
+Accuracy: 0.1393
+Factor 3 Rank: 25 25
+Accuracy: 0.1343
+Rank accuracy {((5, 5), 1): 0.516, ((5, 10), 1): 0.5649, ((5, 15), 1): 0.5035, ((5, 20), 1): 0.4861, ((5, 25), 1): 0.6045, ((10, 5), 1): 0.3949, ((10, 10), 1): 0.3207, ((10, 15), 1): 0.3192, ((10, 20), 1): 0.3321, ((10, 25), 1): 0.2791, ((15, 5), 1): 0.3482, ((15, 10), 1): 0.2824, ((15, 15), 1): 0.211, ((15, 20), 1): 0.1672, ((15, 25), 1): 0.1521, ((20, 5), 1): 0.2982, ((20, 10), 1): 0.2493, ((20, 15), 1): 0.1875, ((20, 20), 1): 0.1367, ((20, 25), 1): 0.1527, ((25, 5), 1): 0.2393, ((25, 10), 1): 0.1928, ((25, 15), 1): 0.1492, ((25, 20), 1): 0.1393, ((25, 25), 1): 0.1345, ((5, 5), 2): 0.5195, ((5, 10), 2): 0.5348, ((5, 15), 2): 0.4369, ((5, 20), 2): 0.4074, ((5, 25), 2): 0.4975, ((10, 5), 2): 0.4012, ((10, 10), 2): 0.3207, ((10, 15), 2): 0.3192, ((10, 20), 2): 0.3321, ((10, 25), 2): 0.2791, ((15, 5), 2): 0.3527, ((15, 10), 2): 0.2824, ((15, 15), 2): 0.211, ((15, 20), 2): 0.1672, ((15, 25), 2): 0.1521, ((20, 5), 2): 0.2982, ((20, 10), 2): 0.2493, ((20, 15), 2): 0.1875, ((20, 20), 2): 0.1367, ((20, 25), 2): 0.1527, ((25, 5), 2): 0.2238, ((25, 10), 2): 0.1928, ((25, 15), 2): 0.1492, ((25, 20), 2): 0.1393, ((25, 25), 2): 0.1345, ((5, 5), 3): 0.5277, ((5, 10), 3): 0.5345, ((5, 15), 3): 0.4369, ((5, 20), 3): 0.4074, ((5, 25), 3): 0.4975, ((10, 5), 3): 0.3977, ((10, 10), 3): 0.3207, ((10, 15), 3): 0.3192, ((10, 20), 3): 0.3321, ((10, 25), 3): 0.2791, ((15, 5), 3): 0.3527, ((15, 10), 3): 0.2824, ((15, 15), 3): 0.211, ((15, 20), 3): 0.1672, ((15, 25), 3): 0.1521, ((20, 5), 3): 0.2982, ((20, 10), 3): 0.2493, ((20, 15), 3): 0.1875, ((20, 20), 3): 0.1367, ((20, 25), 3): 0.1527, ((25, 5), 3): 0.2238, ((25, 10), 3): 0.1928, ((25, 15), 3): 0.1492, ((25, 20), 3): 0.1393, ((25, 25), 3): 0.1343}
+Best Rank Tucker with autoencoder ((5, 25), 1) 0.6045
+Model for label 9
+Tucker rank search autoencoder
+Factor 1 Rank: 5 5
+Accuracy: 0.9486
+Factor 1 Rank: 5 10
+Accuracy: 0.9577
+Factor 1 Rank: 5 15
+Accuracy: 0.9494
+Factor 1 Rank: 5 20
+Accuracy: 0.9537
+Factor 1 Rank: 5 25
+Accuracy: 0.9493
+Factor 1 Rank: 10 5
+Accuracy: 0.9332
+Factor 1 Rank: 10 10
+Accuracy: 0.8376
+Factor 1 Rank: 10 15
+Accuracy: 0.8175
+Factor 1 Rank: 10 20
+Accuracy: 0.816
+Factor 1 Rank: 10 25
+Accuracy: 0.8107
+Factor 1 Rank: 15 5
+Accuracy: 0.9518
+Factor 1 Rank: 15 10
+Accuracy: 0.8258
+Factor 1 Rank: 15 15
+Accuracy: 0.7999
+Factor 1 Rank: 15 20
+Accuracy: 0.7833
+Factor 1 Rank: 15 25
+Accuracy: 0.7703
+Factor 1 Rank: 20 5
+Accuracy: 0.9526
+Factor 1 Rank: 20 10
+Accuracy: 0.8007
+Factor 1 Rank: 20 15
+Accuracy: 0.7802
+Factor 1 Rank: 20 20
+Accuracy: 0.7521
+Factor 1 Rank: 20 25
+Accuracy: 0.7067
+Factor 1 Rank: 25 5
+Accuracy: 0.9434
+Factor 1 Rank: 25 10
+Accuracy: 0.7703
+Factor 1 Rank: 25 15
+Accuracy: 0.7569
+Factor 1 Rank: 25 20
+Accuracy: 0.763
+Factor 1 Rank: 25 25
+Accuracy: 0.7765
+Factor 2 Rank: 5 5
+Accuracy: 0.948
+Factor 2 Rank: 5 10
+Accuracy: 0.9583
+Factor 2 Rank: 5 15
+Accuracy: 0.9515
+Factor 2 Rank: 5 20
+Accuracy: 0.9443
+Factor 2 Rank: 5 25
+Accuracy: 0.9354
+Factor 2 Rank: 10 5
+Accuracy: 0.9363
+Factor 2 Rank: 10 10
+Accuracy: 0.8338
+Factor 2 Rank: 10 15
+Accuracy: 0.8175
+Factor 2 Rank: 10 20
+Accuracy: 0.816
+Factor 2 Rank: 10 25
+Accuracy: 0.8107
+Factor 2 Rank: 15 5
+Accuracy: 0.9537
+Factor 2 Rank: 15 10
+Accuracy: 0.8258
+Factor 2 Rank: 15 15
+Accuracy: 0.7999
+Factor 2 Rank: 15 20
+Accuracy: 0.7833
+Factor 2 Rank: 15 25
+Accuracy: 0.7703
+Factor 2 Rank: 20 5
+Accuracy: 0.9303
+Factor 2 Rank: 20 10
+Accuracy: 0.8007
+Factor 2 Rank: 20 15
+Accuracy: 0.7802
+Factor 2 Rank: 20 20
+Accuracy: 0.7521
+Factor 2 Rank: 20 25
+Accuracy: 0.7067
+Factor 2 Rank: 25 5
+Accuracy: 0.9212
+Factor 2 Rank: 25 10
+Accuracy: 0.7703
+Factor 2 Rank: 25 15
+Accuracy: 0.757
+Factor 2 Rank: 25 20
+Accuracy: 0.763
+Factor 2 Rank: 25 25
+Accuracy: 0.7765
+Factor 3 Rank: 5 5
+Accuracy: 0.9481
+Factor 3 Rank: 5 10
+Accuracy: 0.9546
+Factor 3 Rank: 5 15
+Accuracy: 0.9425
+Factor 3 Rank: 5 20
+Accuracy: 0.945
+Factor 3 Rank: 5 25
+Accuracy: 0.9354
+Factor 3 Rank: 10 5
+Accuracy: 0.9387
+Factor 3 Rank: 10 10
+Accuracy: 0.8338
+Factor 3 Rank: 10 15
+Accuracy: 0.8175
+Factor 3 Rank: 10 20
+Accuracy: 0.816
+Factor 3 Rank: 10 25
+Accuracy: 0.8107
+Factor 3 Rank: 15 5
+Accuracy: 0.9533
+Factor 3 Rank: 15 10
+Accuracy: 0.8311
+Factor 3 Rank: 15 15
+Accuracy: 0.7999
+Factor 3 Rank: 15 20
+Accuracy: 0.7833
+Factor 3 Rank: 15 25
+Accuracy: 0.7703
+Factor 3 Rank: 20 5
+Accuracy: 0.932
+Factor 3 Rank: 20 10
+Accuracy: 0.8007
+Factor 3 Rank: 20 15
+Accuracy: 0.7802
+Factor 3 Rank: 20 20
+Accuracy: 0.7521
+Factor 3 Rank: 20 25
+Accuracy: 0.7067
+Factor 3 Rank: 25 5
+Accuracy: 0.9212
+Factor 3 Rank: 25 10
+Accuracy: 0.7703
+Factor 3 Rank: 25 15
+Accuracy: 0.7569
+Factor 3 Rank: 25 20
+Accuracy: 0.763
+Factor 3 Rank: 25 25
+Accuracy: 0.7765
+Rank accuracy {((5, 5), 1): 0.9486, ((5, 10), 1): 0.9577, ((5, 15), 1): 0.9494, ((5, 20), 1): 0.9537, ((5, 25), 1): 0.9493, ((10, 5), 1): 0.9332, ((10, 10), 1): 0.8376, ((10, 15), 1): 0.8175, ((10, 20), 1): 0.816, ((10, 25), 1): 0.8107, ((15, 5), 1): 0.9518, ((15, 10), 1): 0.8258, ((15, 15), 1): 0.7999, ((15, 20), 1): 0.7833, ((15, 25), 1): 0.7703, ((20, 5), 1): 0.9526, ((20, 10), 1): 0.8007, ((20, 15), 1): 0.7802, ((20, 20), 1): 0.7521, ((20, 25), 1): 0.7067, ((25, 5), 1): 0.9434, ((25, 10), 1): 0.7703, ((25, 15), 1): 0.7569, ((25, 20), 1): 0.763, ((25, 25), 1): 0.7765, ((5, 5), 2): 0.948, ((5, 10), 2): 0.9583, ((5, 15), 2): 0.9515, ((5, 20), 2): 0.9443, ((5, 25), 2): 0.9354, ((10, 5), 2): 0.9363, ((10, 10), 2): 0.8338, ((10, 15), 2): 0.8175, ((10, 20), 2): 0.816, ((10, 25), 2): 0.8107, ((15, 5), 2): 0.9537, ((15, 10), 2): 0.8258, ((15, 15), 2): 0.7999, ((15, 20), 2): 0.7833, ((15, 25), 2): 0.7703, ((20, 5), 2): 0.9303, ((20, 10), 2): 0.8007, ((20, 15), 2): 0.7802, ((20, 20), 2): 0.7521, ((20, 25), 2): 0.7067, ((25, 5), 2): 0.9212, ((25, 10), 2): 0.7703, ((25, 15), 2): 0.757, ((25, 20), 2): 0.763, ((25, 25), 2): 0.7765, ((5, 5), 3): 0.9481, ((5, 10), 3): 0.9546, ((5, 15), 3): 0.9425, ((5, 20), 3): 0.945, ((5, 25), 3): 0.9354, ((10, 5), 3): 0.9387, ((10, 10), 3): 0.8338, ((10, 15), 3): 0.8175, ((10, 20), 3): 0.816, ((10, 25), 3): 0.8107, ((15, 5), 3): 0.9533, ((15, 10), 3): 0.8311, ((15, 15), 3): 0.7999, ((15, 20), 3): 0.7833, ((15, 25), 3): 0.7703, ((20, 5), 3): 0.932, ((20, 10), 3): 0.8007, ((20, 15), 3): 0.7802, ((20, 20), 3): 0.7521, ((20, 25), 3): 0.7067, ((25, 5), 3): 0.9212, ((25, 10), 3): 0.7703, ((25, 15), 3): 0.7569, ((25, 20), 3): 0.763, ((25, 25), 3): 0.7765}
+Best Rank Tucker with autoencoder ((5, 10), 2) 0.9583
+
+Process finished with exit code 0
