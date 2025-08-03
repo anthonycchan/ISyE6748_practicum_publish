@@ -1,0 +1,53 @@
+C:\Users\Anthony\anaconda3\envs\isye6740\python.exe C:/OMSA/ISyE6748_practicum_publish/Mars/Experiment_3.py
+One Class SVM
+Best accuracy: 0.620 with params: {'gamma': 'scale', 'kernel': 'poly', 'nu': 0.05}
+Accuracy: 0.62
+One class SVM best accuracy: 0.62 param: {'gamma': 'scale', 'kernel': 'poly', 'nu': 0.05}
+Autoencoder
+Factor: 1 Bottleneck: 16 Accuracy 0.44
+Factor: 1 Bottleneck: 32 Accuracy 0.44
+Factor: 1 Bottleneck: 64 Accuracy 0.44
+Factor: 2 Bottleneck: 16 Accuracy 0.44
+Factor: 2 Bottleneck: 32 Accuracy 0.44
+Factor: 2 Bottleneck: 64 Accuracy 0.44
+Factor: 3 Bottleneck: 16 Accuracy 0.44
+Factor: 3 Bottleneck: 32 Accuracy 0.44
+Factor: 3 Bottleneck: 64 Accuracy 0.44
+Rank accuracy {(1, 16): 0.44, (1, 32): 0.44, (1, 64): 0.44, (2, 16): 0.44, (2, 32): 0.44, (2, 64): 0.44, (3, 16): 0.44, (3, 32): 0.44, (3, 64): 0.44}
+Best param for autoencoder (1, 16) 0.44
+Random forest
+Accuracy: 0.42
+Best parameters: {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 50}
+Random forest accuracy 0.42
+Autoencoder with oc svm
+Normal: 21, Anomalies: 29
+Accuracy: 0.62
+Factor: 1 Bottleneck: 16 Accuracy 0.62
+Normal: 6, Anomalies: 44
+Accuracy: 0.6
+Factor: 1 Bottleneck: 32 Accuracy 0.6
+Normal: 15, Anomalies: 35
+Accuracy: 0.7
+Factor: 1 Bottleneck: 64 Accuracy 0.7
+Normal: 7, Anomalies: 43
+Accuracy: 0.74
+Factor: 2 Bottleneck: 16 Accuracy 0.74
+Normal: 9, Anomalies: 41
+Accuracy: 0.7
+Factor: 2 Bottleneck: 32 Accuracy 0.7
+Normal: 12, Anomalies: 38
+Accuracy: 0.6
+Factor: 2 Bottleneck: 64 Accuracy 0.6
+Normal: 11, Anomalies: 39
+Accuracy: 0.62
+Factor: 3 Bottleneck: 16 Accuracy 0.62
+Normal: 7, Anomalies: 43
+Accuracy: 0.74
+Factor: 3 Bottleneck: 32 Accuracy 0.74
+Normal: 12, Anomalies: 38
+Accuracy: 0.6
+Factor: 3 Bottleneck: 64 Accuracy 0.6
+Rank accuracy {(1, 16): 0.62, (1, 32): 0.6, (1, 64): 0.7, (2, 16): 0.74, (2, 32): 0.7, (2, 64): 0.6, (3, 16): 0.62, (3, 32): 0.74, (3, 64): 0.6}
+Best param for autoencoder with OC-SVM (2, 16) 0.74
+
+Process finished with exit code 0

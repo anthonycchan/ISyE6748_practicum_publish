@@ -1,0 +1,153 @@
+C:\Users\Anthony\anaconda3\envs\isye6740\python.exe C:/OMSA/ISyE6748_practicum_publish/Mars/Experiment_2.py
+Model for label 0
+One Class SVM
+Best accuracy: 0.932 with params: {'gamma': 0.01, 'kernel': 'rbf', 'nu': 0.05}
+Accuracy: 0.9316
+Elapsed time: 2015.902 seconds
+Autoencoder
+Factor: 1
+Accuracy: 0.6091
+Elapsed time: 108.626 seconds
+Factor: 2
+Accuracy: 0.6084
+Elapsed time: 191.193 seconds
+Factor: 3
+Accuracy: 0.6078
+Elapsed time: 321.062 seconds
+Model for label 1
+One Class SVM
+Best accuracy: 0.973 with params: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.2}
+Accuracy: 0.9729
+Elapsed time: 1865.956 seconds
+Autoencoder
+Factor: 1
+Accuracy: 0.9171
+Elapsed time: 174.225 seconds
+Factor: 2
+Accuracy: 0.9175
+Elapsed time: 341.653 seconds
+Factor: 3
+Accuracy: 0.9172
+Elapsed time: 279.982 seconds
+Model for label 2
+One Class SVM
+Best accuracy: 0.900 with params: {'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.05}
+Accuracy: 0.9
+Elapsed time: 2048.763 seconds
+Autoencoder
+Factor: 1
+Accuracy: 0.5401
+Elapsed time: 173.291 seconds
+Factor: 2
+Accuracy: 0.5441
+Elapsed time: 321.452 seconds
+Factor: 3
+Accuracy: 0.5458
+Elapsed time: 251.460 seconds
+Model for label 3
+One Class SVM
+Best accuracy: 0.938 with params: {'gamma': 0.01, 'kernel': 'rbf', 'nu': 0.05}
+Accuracy: 0.9379
+Elapsed time: 1923.130 seconds
+Autoencoder
+Factor: 1
+Accuracy: 0.8216
+Elapsed time: 151.452 seconds
+Factor: 2
+Accuracy: 0.822
+Elapsed time: 338.933 seconds
+Factor: 3
+Accuracy: 0.8214
+Elapsed time: 408.937 seconds
+Model for label 4
+One Class SVM
+Best accuracy: 0.901 with params: {'gamma': 0.01, 'kernel': 'rbf', 'nu': 0.05}
+Accuracy: 0.9006
+Elapsed time: 2013.270 seconds
+Autoencoder
+Factor: 1
+Accuracy: 0.6262
+Elapsed time: 232.085 seconds
+Factor: 2
+Accuracy: 0.6269
+Elapsed time: 312.977 seconds
+Factor: 3
+Accuracy: 0.6269
+Elapsed time: 428.324 seconds
+Model for label 5
+One Class SVM
+Best accuracy: 0.903 with params: {'gamma': 0.01, 'kernel': 'rbf', 'nu': 0.05}
+Accuracy: 0.9026
+Elapsed time: 1984.367 seconds
+Autoencoder
+Factor: 1
+Accuracy: 0.8212
+Elapsed time: 167.904 seconds
+Factor: 2
+Accuracy: 0.8213
+Elapsed time: 283.597 seconds
+Factor: 3
+Accuracy: 0.8212
+Elapsed time: 376.293 seconds
+Model for label 6
+One Class SVM
+Best accuracy: 0.900 with params: {'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.05}
+Accuracy: 0.9
+Elapsed time: 2205.591 seconds
+Autoencoder
+Factor: 1
+Accuracy: 0.4673
+Elapsed time: 187.213 seconds
+Factor: 2
+Accuracy: 0.4673
+Elapsed time: 321.026 seconds
+Factor: 3
+Accuracy: 0.4671
+Elapsed time: 380.054 seconds
+Model for label 7
+One Class SVM
+Best accuracy: 0.965 with params: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.2}
+Accuracy: 0.9648
+Elapsed time: 1826.118 seconds
+Autoencoder
+Factor: 1
+Accuracy: 0.9261
+Elapsed time: 221.863 seconds
+Factor: 2
+Accuracy: 0.9256
+Elapsed time: 350.421 seconds
+Factor: 3
+Accuracy: 0.9263
+Elapsed time: 487.942 seconds
+Model for label 8
+One Class SVM
+Best accuracy: 0.921 with params: {'gamma': 0.01, 'kernel': 'rbf', 'nu': 0.05}
+Accuracy: 0.921
+Elapsed time: 2155.992 seconds
+Autoencoder
+Factor: 1
+Accuracy: 0.4382
+Elapsed time: 211.395 seconds
+Factor: 2
+Accuracy: 0.4504
+Elapsed time: 327.269 seconds
+Factor: 3
+Accuracy: 0.4466
+Elapsed time: 293.970 seconds
+Model for label 9
+One Class SVM
+Best accuracy: 0.965 with params: {'gamma': 0.001, 'kernel': 'rbf', 'nu': 0.1}
+Accuracy: 0.9651
+Elapsed time: 1906.619 seconds
+Autoencoder
+Factor: 1
+Accuracy: 0.96
+Elapsed time: 159.288 seconds
+Factor: 2
+Accuracy: 0.9604
+Elapsed time: 279.547 seconds
+Factor: 3
+Accuracy: 0.9599
+Elapsed time: 524.581 seconds
+
+Process finished with exit code 0

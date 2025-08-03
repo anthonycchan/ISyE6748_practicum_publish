@@ -1188,6 +1188,8 @@ def tucker_rank_search_autoencoder_OC_svm_alt(reduced_X_train, reduced_X_test, r
 
 # Perform anomaly detection for every label in the dataset
 for applicableLabel in np.unique(y_test):
+    if applicableLabel < 5:
+        continue
     print('Model for label', applicableLabel)
 
     # Extract train data
