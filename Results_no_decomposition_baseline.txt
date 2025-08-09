@@ -151,3 +151,197 @@ Accuracy: 0.9599
 Elapsed time: 524.581 seconds
 
 Process finished with exit code 0
+
+C:\Users\Anthony\anaconda3\envs\isye6740\python.exe C:/OMSA/ISyE6748_practicum_publish/Mars/Experiment_4.py
+Model for label 0
+Isolation forest
+Accuracy: 0.6489
+Best parameters: {'contamination': 0.05, 'max_features': 0.75, 'max_samples': 0.75, 'n_estimators': 50}
+Elapsed time: 401.084 seconds
+Autoencoder with oc svm
+Factor: 8
+Accuracy: 0.5692
+Normal: 4134, Anomalies: 5866
+Elapsed time: 1575.239 seconds
+Factor: 4
+Accuracy: 0.5695
+Normal: 4081, Anomalies: 5919
+Elapsed time: 1040.082 seconds
+Factor: 12
+Accuracy: 0.5196
+Normal: 4680, Anomalies: 5320
+Elapsed time: 2785.936 seconds
+
+Model for label 1
+Isolation forest
+Accuracy: 0.9386
+Best parameters: {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 0.75, 'n_estimators': 100}
+Elapsed time: 384.976 seconds
+Autoencoder with oc svm
+Factor: 8
+Accuracy: 0.5645
+Normal: 4257, Anomalies: 5743
+Elapsed time: 1862.945 seconds
+Factor: 4
+Accuracy: 0.5862
+Normal: 3930, Anomalies: 6070
+Elapsed time: 943.198 seconds
+Factor: 12
+Accuracy: 0.316
+Normal: 6738, Anomalies: 3262
+Elapsed time: 2807.200 seconds
+
+Model for label 2
+Isolation forest
+Accuracy: 0.6285
+Best parameters: {'contamination': 0.05, 'max_features': 0.75, 'max_samples': 0.75, 'n_estimators': 50}
+Elapsed time: 389.912 seconds
+Autoencoder with oc svm
+Factor: 8
+Accuracy: 0.3868
+Normal: 5972, Anomalies: 4028
+Elapsed time: 1841.497 seconds
+Factor: 4
+Accuracy: 0.5302
+Normal: 4522, Anomalies: 5478
+Elapsed time: 826.183 seconds
+Factor: 12
+Accuracy: 0.2806
+Normal: 7084, Anomalies: 2916
+Elapsed time: 2823.452 seconds
+
+Model for label 3
+Isolation forest
+Accuracy: 0.81
+Best parameters: {'contamination': 0.05, 'max_features': 0.75, 'max_samples': 1.0, 'n_estimators': 100}
+Elapsed time: 387.258 seconds
+Autoencoder with oc svm
+Factor: 8
+Accuracy: 0.5692
+Normal: 4162, Anomalies: 5838
+Elapsed time: 1757.339 seconds
+Factor: 4
+Accuracy: 0.532
+Normal: 4538, Anomalies: 5462
+Elapsed time: 778.842 seconds
+Factor: 12
+Accuracy: 0.4132
+Normal: 5744, Anomalies: 4256
+Elapsed time: 2867.158 seconds
+
+Model for label 4
+Isolation forest
+Accuracy: 0.6807
+Best parameters: {'contamination': 0.05, 'max_features': 0.75, 'max_samples': 0.75, 'n_estimators': 50}
+Elapsed time: 385.913 seconds
+Autoencoder with oc svm
+Factor: 8
+Accuracy: 0.5668
+Normal: 4160, Anomalies: 5840
+Elapsed time: 1845.219 seconds
+Factor: 4
+Accuracy: 0.6585
+Normal: 3157, Anomalies: 6843
+Elapsed time: 897.122 seconds
+Factor: 12
+Accuracy: 0.3959
+Normal: 5819, Anomalies: 4181
+Elapsed time: 2964.129 seconds
+
+Model for label 5
+Isolation forest
+Accuracy: 0.8181
+Best parameters: {'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.75, 'n_estimators': 50}
+Elapsed time: 373.535 seconds
+Autoencoder with oc svm
+Factor: 8
+Accuracy: 0.8375
+Normal: 1359, Anomalies: 8641
+Elapsed time: 1512.486 seconds
+Factor: 4
+Accuracy: 0.8141
+Normal: 1495, Anomalies: 8505
+Elapsed time: 788.531 seconds
+Factor: 12
+Accuracy: 0.1855
+Normal: 8111, Anomalies: 1889
+Elapsed time: 1738.591 seconds
+
+Model for label 6
+Isolation forest
+Accuracy: 0.5161
+Best parameters: {'contamination': 0.05, 'max_features': 0.75, 'max_samples': 0.75, 'n_estimators': 50}
+Elapsed time: 366.540 seconds
+Autoencoder with oc svm
+Factor: 8
+Accuracy: 0.3742
+Normal: 6078, Anomalies: 3922
+Elapsed time: 1440.295 seconds
+Factor: 4
+Accuracy: 0.5721
+Normal: 4033, Anomalies: 5967
+Elapsed time: 832.734 seconds
+Factor: 12
+Accuracy: 0.4333
+Normal: 5529, Anomalies: 4471
+Elapsed time: 2377.254 seconds
+
+Model for label 7
+Isolation forest
+Accuracy: 0.9229
+Best parameters: {'contamination': 0.05, 'max_features': 0.75, 'max_samples': 1.0, 'n_estimators': 50}
+Elapsed time: 365.905 seconds
+Autoencoder with oc svm
+Factor: 8
+Accuracy: 0.9439
+Normal: 691, Anomalies: 9309
+Elapsed time: 1487.657 seconds
+Factor: 4
+Accuracy: 0.9507
+Normal: 667, Anomalies: 9333
+Elapsed time: 818.901 seconds
+Factor: 12
+Accuracy: 0.7614
+Normal: 2348, Anomalies: 7652
+Elapsed time: 1766.067 seconds
+
+Model for label 8
+Isolation forest
+Accuracy: 0.5017
+Best parameters: {'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 200}
+Elapsed time: 370.609 seconds
+Autoencoder with oc svm
+Factor: 8
+Accuracy: 0.3556
+Normal: 6234, Anomalies: 3766
+Elapsed time: 1513.330 seconds
+Factor: 4
+Accuracy: 0.5165
+Normal: 4541, Anomalies: 5459
+Elapsed time: 791.683 seconds
+Factor: 12
+Accuracy: 0.4053
+Normal: 5711, Anomalies: 4289
+Elapsed time: 2397.817 seconds
+
+Model for label 9
+Isolation forest
+Accuracy: 0.9156
+Best parameters: {'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.75, 'n_estimators': 50}
+Elapsed time: 363.471 seconds
+Autoencoder with oc svm
+Factor: 8
+Accuracy: 0.7403
+Normal: 2397, Anomalies: 7603
+Elapsed time: 1591.395 seconds
+Factor: 4
+Accuracy: 0.6477
+Normal: 3253, Anomalies: 6747
+Elapsed time: 761.112 seconds
+Factor: 12
+Accuracy: 0.6843
+Normal: 2973, Anomalies: 7027
+Elapsed time: 2183.784 seconds
+
+Process finished with exit code 0
+
