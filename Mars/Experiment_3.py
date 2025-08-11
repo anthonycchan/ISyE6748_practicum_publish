@@ -181,21 +181,21 @@ use_predefined_rank = False
 # Tucker's decomposition with one-class SVM
 enable_tucker_oc_svm = False
 # Tucker's decomposition with neural-network autoencoders
-enable_tucker_autoencoder = False
+enable_tucker_autoencoder = True
 # Tucker's decomposition with random forest
 enable_tucker_random_forest = False
 # Tucker's decomposition with combination of autoencoder and one-class SVM.
 enable_tucker_autoencoder_oc_svm = False
 # CP decomposition with one-class SVM
-enable_cp_oc_svm = True
+enable_cp_oc_svm = False
 # CP decomposition with neural-network autoencoders
-enable_cp_autoencoder = True
+enable_cp_autoencoder = False
 # CP decomposition with random forest
-enable_cp_random_forest = True
+enable_cp_random_forest = False
 # CP decomposition with combination of autoencoder and one-class SVM.
-enable_cp_autoencoder_oc_svm = True
+enable_cp_autoencoder_oc_svm = False
 
-no_decomposition = True
+no_decomposition = False
 
 ############################################
 # CP decomposition with One-Class SVM
@@ -365,7 +365,7 @@ if enable_cp_oc_svm:
 ## Tucker with OC-SVM
 ############################################
 def tucker_one_class_svm(rank, displayConfusionMatrix=False):
-    print('Running Tucker one-class SVM')
+    #print('Running Tucker one-class SVM')
     ###
     ### Training
     ###
@@ -430,7 +430,7 @@ def tucker_rank_search_one_class_svm():
     rank_accuracy = {}
     for i in rankSet:
         for j in rankSet:
-            for k in {5}:
+            for k in rankSet:
                 rank = (i, j, k)
                 accuracy = tucker_one_class_svm(rank)
                 rank_accuracy[rank] = accuracy
@@ -717,11 +717,12 @@ def tucker_rank_search_autoencoder():
     print('Tucker rank search autoencoder')
     rankSet = sorted({5, 16, 32, 64})
     rank_accuracy = {}
-    for factor in range(1, 4):
+    #for factor in range(1, 4):
+    for factor in range(3, 4):
         for bottleneck in {16, 32, 64}:
             for i in rankSet:
                 for j in rankSet:
-                    for k in {5}:
+                    for k in rankSet:
                         rank = (i, j, k)
                         accuracy = tucker_neural_network_autoencoder(rank, factor, bottleneck)
                         rank_accuracy[(rank, factor, bottleneck)] = accuracy
@@ -1030,7 +1031,7 @@ def tucker_rank_search_random_forest():
     rank_accuracy = {}
     for i in rankSet:
         for j in rankSet:
-            for k in {5}:
+            for k in rankSet:
                 print('Rank:', i, j, k)
                 rank = (i, j, k)
                 accuracy = tucker_random_forests(rank)
@@ -1379,7 +1380,7 @@ def tucker_rank_search_autoencoder_OC_svm():
         for bottleneck in sorted({8, 16, 24, 32, 64}):
             for i in rankSet:
                 for j in rankSet:
-                    for k in {5}:
+                    for k in rankSet:
                         rank = (i, j, k)
                         print('Rank:', rank, 'Factor:', factor, 'Bottleneck:', bottleneck)
                         accuracy = tucker_autoencoder_ocSVM(rank, factor, bottleneck)

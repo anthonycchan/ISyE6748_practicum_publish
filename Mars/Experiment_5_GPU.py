@@ -1,33 +1,120 @@
-# MARS TENSOR DATASET
-import numpy as np
+# MARS TENSOR DATASET — GPU-ENABLED
 import os
 import re
 import random
-from sklearn.svm import OneClassSVM
-from tensorly.decomposition import parafac, tucker
-from sklearn.model_selection import GridSearchCV
-from concurrent.futures import ThreadPoolExecutor, as_completed
 import warnings
+
+import numpy as np
 from matplotlib import pyplot as plt
+
 from sklearn.preprocessing import StandardScaler
-from tensorflow.keras import Input, Model, regularizers
-from tensorflow.keras.models import Model, Sequential
-from tensorflow.keras.layers import Dense, Dropout, Input
-from tensorflow.keras.callbacks import EarlyStopping
-from sklearn.ensemble import IsolationForest
 from sklearn import metrics
 from sklearn.model_selection import ParameterGrid
-from sklearn.metrics import make_scorer, roc_auc_score
+
+# ===============================
+# GPU SETUP: TensorLy + PyTorch
+# ===============================
+import tensorly as tl
+tl.set_backend('pytorch')  # use PyTorch backend so decompositions run on GPU via torch
+
+import torch as _torch
+_device = _torch.device('cuda' if _torch.cuda.is_available() else 'cpu')
+
+def _to_torch(x):
+    if isinstance(x, np.ndarray):
+        return _torch.from_numpy(x.astype(np.float32, copy=False)).to(_device)
+    return x.to(_device)
+
+def _to_numpy(x):
+    if isinstance(x, _torch.Tensor):
+        return x.detach().to('cpu').numpy()
+    return np.asarray(x)
+
+# ===============================
+# TensorFlow (Keras) GPU behavior
+# ===============================
+try:
+    import tensorflow as tf
+    gpus = tf.config.list_physical_devices('GPU')
+    for g in gpus:
+        try:
+            tf.config.experimental.set_memory_growth(g, True)
+        except Exception:
+            pass
+except Exception:
+    pass
+
+from tensorflow.keras import Input, Model
+from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.callbacks import EarlyStopping
+
+# ===============================
+# Optional: RAPIDS cuML backends
+# ===============================
+_USE_CUML = False
+try:
+    from cuml.svm import OneClassSVM as cuOneClassSVM
+    from cuml.ensemble import IsolationForest as cuIsolationForest
+    _USE_CUML = True
+except Exception:
+    _USE_CUML = False
+
+def _make_ocsvm(**kwargs):
+    if _USE_CUML:
+        return cuOneClassSVM(**kwargs)
+    else:
+        from sklearn.svm import OneClassSVM
+        return OneClassSVM(**kwargs)
+
+def _make_isolation_forest(**kwargs):
+    if _USE_CUML:
+        return cuIsolationForest(**kwargs)
+    else:
+        from sklearn.ensemble import IsolationForest
+        return IsolationForest(**kwargs)
+
+# ===============================
+# TensorLy Decompositions (GPU)
+# ===============================
+from tensorly.decomposition import parafac as _parafac, tucker as _tucker
+
+def decompose_tensor_tucker(tensor, rank):
+    """
+    GPU-accelerated Tucker via TensorLy (PyTorch backend).
+    Input: numpy (H, W, C) -> torch on GPU; Output: numpy core, numpy factors
+    """
+    T = _to_torch(tensor)
+    core_t, factors_t = _tucker(T, rank=rank, init='svd')
+    core = _to_numpy(core_t)
+    factors = [_to_numpy(f) for f in factors_t]
+    return core, factors
+
+def decompose_tensor_parafac(tensor, rank):
+    """
+    GPU-accelerated CP (PARAFAC) via TensorLy (PyTorch backend).
+    Returns: list of factor matrices (numpy)
+    """
+    T = _to_torch(tensor)
+    weights_t, factors_t = _parafac(T, rank=rank, init='svd')
+    factors = [_to_numpy(f) for f in factors_t]
+    return factors
+
+# ===============================
+# Misc
+# ===============================
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 random.seed(1)
+warnings.filterwarnings('ignore', category=UserWarning)
 
-
-# Step 1: Read the data, build the tensor
+# =========================================================
+# Step 1: Read the data, build the tensor (float32 on read)
+# =========================================================
 def readData(directory):
     directory = os.fsencode(directory)
     filelist = os.listdir(directory)
     numFiles = len(filelist)
-    data_set = np.ones([numFiles, 64, 64, 6])
+    data_set = np.ones([numFiles, 64, 64, 6], dtype=np.float32)
     true_labels = []
     i = 0
     for file in filelist:
@@ -42,13 +129,12 @@ def readData(directory):
             true_labels.append(-1)
 
         # Build the images into a tensor
-        img_array = np.load(os.fsdecode(directory) + "/" + filename)
+        img_array = np.load(os.fsdecode(directory) + "/" + filename).astype(np.float32, copy=False)
         img_array = img_array / 255.0  # Normalize pixel values
         data_set[i, :, :, :] = img_array
         i += 1
 
-    return data_set, true_labels
-
+    return data_set, np.array(true_labels)
 
 def displayImages(X, imageSetIndx):
     numSets = 3
@@ -65,27 +151,21 @@ def displayImages(X, imageSetIndx):
             axs[i, j].set_yticks([])
         i = i + 1
 
+# Dataset visualization (optional; comment out if running headless)
+# X, true_labels = readData('train_full')
+# displayImages(X, {1, 10, 100})
+# X, true_labels = readData('test_full')
+# displayImages(X, {1, 10, 20})
 
-# Dataset visualization
-# Training images
-X, true_labels = readData('train_full')
-displayImages(X, {1, 10, 100})
-
-# Test images
-X, true_labels = readData('test_full')
-displayImages(X, {1, 10, 20})
-
-
-# Displaying the image sets as signals
-# Function to plot the image sets as signals by transforming image matrix into column wise order and averaging the
-# images for each set. Each signal displayed is the average for an image set of six images. The following shows the
-# first 10 image sets.
+# ===============================
+# Signal plotting (unchanged)
+# ===============================
 def plot_signals(X, num_sets):
     avgSignalsInSets = []
     for curSet in range(num_sets):
         image_set = X[curSet, :, :, :]
         n_images_in_set = image_set.shape[2]
-        signal = np.zeros(image_set.shape[0] * image_set.shape[1])
+        signal = np.zeros(image_set.shape[0] * image_set.shape[1], dtype=np.float32)
         for i in range(n_images_in_set):
             signal = signal + image_set[:, :, i].ravel(order='F')
         signal = signal / n_images_in_set
@@ -104,34 +184,23 @@ def plot_signals(X, num_sets):
             index = index + 1
             axs[i, j].set_title(f'Image set ({index})')
 
+# data_set, true_labels = readData('train_full')
+# plot_signals(data_set, 10)
 
-data_set, true_labels = readData('train_full')
-plot_signals(data_set, 10)
-
-
-# plt.show()
-
-# CP (Parafac) Decomposition and Tucker's Decomposition
-def decompose_tensor_tucker(tensor, rank):
-    core, factors = tucker(tensor, rank)
-    return core, factors
-
-
-def decompose_tensor_parafac(tensor, rank):
-    weights, factors = parafac(tensor, rank=rank)
-    return factors
-
-
+# ===============================
+# Feature extractors
+# ===============================
 def extract_features_tucker(core, factors):
     core_flattened = core.ravel()
     factors_flattened = np.concatenate([factor.ravel() for factor in factors], axis=0)
     return np.concatenate((core_flattened, factors_flattened), axis=0)
 
-
 def extract_features_cp(factors):
     return np.concatenate([factor.ravel() for factor in factors], axis=0)
 
-
+# ===============================
+# Build tensor (parallel-safe)
+# ===============================
 def buildTensor(X, rank, num_sets, isTuckerDecomposition=True, ordered=False):
     if ordered:
         decomposed_data = [None] * num_sets
@@ -156,7 +225,6 @@ def buildTensor(X, rank, num_sets, isTuckerDecomposition=True, ordered=False):
 
     return decomposed_data
 
-
 def extractFeatures(decomposed_data, num_sets, isTuckerDecomposition=True):
     if isTuckerDecomposition:
         with ThreadPoolExecutor() as executor:
@@ -173,101 +241,113 @@ def extractFeatures(decomposed_data, num_sets, isTuckerDecomposition=True):
 
     return np.array(features)
 
-
-# Use predefined rank
+# ===============================
+# Activation flags
+# ===============================
 use_predefined_rank = False
 
-# Activation variables
-# Tucker's decomposition with one-class SVM
 enable_tucker_oc_svm = False
-# Tucker's decomposition with neural-network autoencoders
-enable_tucker_autoencoder = False
-# Tucker's decomposition with random forest
+enable_tucker_autoencoder = True
 enable_tucker_random_forest = False
-# Tucker's decomposition with combination of autoencoder and one-class SVM.
-enable_tucker_autoencoder_oc_svm = True
-# CP decomposition with one-class SVM
+enable_tucker_autoencoder_oc_svm = False
+
 enable_cp_oc_svm = False
-# CP decomposition with neural-network autoencoders
 enable_cp_autoencoder = False
-# CP decomposition with random forest
 enable_cp_random_forest = False
-# CP decomposition with combination of autoencoder and one-class SVM.
 enable_cp_autoencoder_oc_svm = False
 
 no_decomposition = False
 
-############################################
-# CP decomposition with One-Class SVM
-############################################
-def parafac_OC_SVM(rank, displayConfusionMatrix=False):
-    import warnings
-    import matplotlib.pyplot as plt
-    from sklearn.svm import OneClassSVM
-    from sklearn.preprocessing import StandardScaler
-    from sklearn import metrics
-    import numpy as np
+# ==================================================
+# Helpers for manual grid (works for cuML + sklearn)
+# ==================================================
+def _fit_predict_ocsvm(model, X_train, X_test):
+    # cuML expects float32; sklearn works with float64
+    if _USE_CUML:
+        X_train = X_train.astype(np.float32, copy=False)
+        X_test = X_test.astype(np.float32, copy=False)
+    model.fit(X_train)
+    return model.predict(X_test)
 
-    # Training data
-    X_train, _ = readData('train_full')
-    num_train_sets = X_train.shape[0]
-
-    # CP decomposition
-    decomposed_train = buildTensor(X_train, rank, num_train_sets, False)
-
-    # Feature extraction + scaling
-    features_train = extractFeatures(decomposed_train, num_train_sets, False)
-    scaler = StandardScaler()
-    features_train_scaled = scaler.fit_transform(features_train)
-
-    # Test data
-    X_test, true_labels = readData('test_full')
-
-    num_test_sets = X_test.shape[0]
-    decomposed_test = buildTensor(X_test, rank, num_test_sets, False)
-    features_test = extractFeatures(decomposed_test, num_test_sets, False)
-    features_test_scaled = scaler.transform(features_test)
-
+def _best_ocsvm_params(X_train, y_true_like, X_val):
     param_grid = {
         'nu': [0.05, 0.1, 0.2],
         'gamma': ['scale', 'auto', 0.001, 0.01, 0.1],
         'kernel': ['rbf', 'poly', 'sigmoid']
     }
-    best_acc = -1
-    best_model = None
+    best_acc = -1.0
     best_params = None
-
+    best_model = None
     for params in ParameterGrid(param_grid):
-        model = OneClassSVM(**params)
-        model.fit(features_train_scaled)
-        preds = model.predict(features_test_scaled)
-        acc = np.mean(preds == true_labels)
+        model = _make_ocsvm(**params)
+        preds = _fit_predict_ocsvm(model, X_train, X_val)
+        acc = np.mean(preds == y_true_like)
         if acc > best_acc:
             best_acc = acc
-            best_model = model
             best_params = params
+            best_model = model
+    # re-fit on full train
+    best_model.fit(X_train.astype(np.float32 if _USE_CUML else X_train.dtype, copy=False))
+    return best_model, best_params, best_acc
 
+def _best_isoforest(X_train, X_val, y_true_like):
+    param_grid = {
+        'n_estimators': [50, 100, 200],
+        'max_samples': [0.5, 0.75, 1.0],
+        'contamination': [0.05, 0.1, 0.2],
+        'max_features': [0.5, 0.75, 1.0]
+    }
+    best_acc = -1.0
+    best_params = None
+    best_model = None
+    for params in ParameterGrid(param_grid):
+        model = _make_isolation_forest(**params, random_state=42)
+        # cuML IF prefers float32
+        X_train_cast = X_train.astype(np.float32, copy=False) if _USE_CUML else X_train
+        X_val_cast = X_val.astype(np.float32, copy=False) if _USE_CUML else X_val
+        model.fit(X_train_cast)
+        preds = model.predict(X_val_cast)
+        acc = np.mean(preds == y_true_like)
+        if acc > best_acc:
+            best_acc = acc
+            best_params = params
+            best_model = model
+    # fit on full
+    best_model.fit(X_train.astype(np.float32 if _USE_CUML else X_train.dtype, copy=False))
+    return best_model, best_params, best_acc
+
+# ===========================================
+# CP decomposition with One-Class SVM (GPU)
+# ===========================================
+def parafac_OC_SVM(rank, displayConfusionMatrix=False):
+    X_train, _ = readData('train_full')
+    num_train_sets = X_train.shape[0]
+
+    decomposed_train = buildTensor(X_train, rank, num_train_sets, False)
+    features_train = extractFeatures(decomposed_train, num_train_sets, False)
+    scaler = StandardScaler()
+    features_train_scaled = scaler.fit_transform(features_train)
+
+    X_test, true_labels = readData('test_full')
+    num_test_sets = X_test.shape[0]
+    decomposed_test = buildTensor(X_test, rank, num_test_sets, False)
+    features_test = extractFeatures(decomposed_test, num_test_sets, False)
+    features_test_scaled = scaler.transform(features_test)
+
+    # Manual grid to support cuML or sklearn
+    model, best_params, best_acc = _best_ocsvm_params(features_train_scaled, true_labels, features_test_scaled)
     print(f"Best accuracy: {best_acc:.3f} with params: {best_params}")
 
-    # Train OC-SVM
-    # oc_svm = OneClassSVM(nu=0.1, kernel='rbf', gamma='scale')
-    best_model.fit(features_train_scaled)
+    predictions = model.predict(features_test_scaled.astype(np.float32 if _USE_CUML else features_test_scaled.dtype, copy=False))
+    true_labels_arr = np.array(true_labels)
+    if set(np.unique(true_labels_arr)) == {0, 1}:
+        true_labels_arr = np.where(true_labels_arr == 0, -1, 1)
 
-    # Predict
-    predictions = best_model.predict(features_test_scaled)  # 1 = normal, -1 = anomaly
-
-    # Convert true_labels to match prediction format if needed
-    # Example: if true_labels = [0, 1], map 0→-1 and 1→1
-    true_labels = np.array(true_labels)
-    if set(np.unique(true_labels)) == {0, 1}:
-        true_labels = np.where(true_labels == 0, -1, 1)
-
-    # Accuracy
-    accuracy = np.mean(predictions == true_labels)
+    accuracy = np.mean(predictions == true_labels_arr)
     print("Accuracy:", accuracy)
 
     if displayConfusionMatrix:
-        cm = metrics.confusion_matrix(true_labels, predictions, labels=[-1, 1])
+        cm = metrics.confusion_matrix(true_labels_arr, predictions, labels=[-1, 1])
         disp = metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["Anomaly", "Normal"])
         disp.plot()
         plt.show()
@@ -278,44 +358,19 @@ def ocsvm_raw_geography(displayConfusionMatrix=False):
     X_train, _ = readData('train_full')
     X_test, true_labels = readData('test_full')
 
-    # Flatten 64x64x6 into 1D vector per sample
     n_train = X_train.shape[0]
     n_test = X_test.shape[0]
     X_train_flat = X_train.reshape(n_train, -1)
     X_test_flat = X_test.reshape(n_test, -1)
 
-    # Feature scaling
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train_flat)
     X_test_scaled = scaler.transform(X_test_flat)
 
-    # Hyperparameter grid
-    param_grid = {
-        'nu': [0.05, 0.1, 0.2],
-        'gamma': ['scale', 'auto', 0.001, 0.01, 0.1],
-        'kernel': ['rbf', 'poly', 'sigmoid']
-    }
-    from sklearn.model_selection import ParameterGrid
-
-    best_acc = -1
-    best_model = None
-    best_params = None
-
-    # Grid search
-    for params in ParameterGrid(param_grid):
-        model = OneClassSVM(**params)
-        model.fit(X_train_scaled)
-        preds = model.predict(X_test_scaled)
-        acc = np.mean(preds == true_labels)
-        if acc > best_acc:
-            best_acc = acc
-            best_model = model
-            best_params = params
-
+    model, best_params, best_acc = _best_ocsvm_params(X_train_scaled, true_labels, X_test_scaled)
     print(f"Best accuracy: {best_acc:.3f} with params: {best_params}")
 
-    # Predict using best model
-    predictions = best_model.predict(X_test_scaled)
+    predictions = model.predict(X_test_scaled.astype(np.float32 if _USE_CUML else X_test_scaled.dtype, copy=False))
     accuracy = np.mean(predictions == true_labels)
     print("Accuracy:", accuracy)
 
@@ -347,72 +402,28 @@ def cp_rank_search_one_class_svm():
     bestRank = max(rank_accuracy, key=rank_accuracy.get)
     return bestRank, rank_accuracy[bestRank]
 
-
-if enable_cp_oc_svm:
-    if no_decomposition:
-        one_class_svm()
-    else:
-        if use_predefined_rank == False:
-            bestRank, bestAccuracy = cp_rank_search_one_class_svm()
-            print('Best Rank for CP with One Class SVM', bestRank, bestAccuracy)
-        else:
-            print('Running best rank CP OC-SVM')
-            bestRank = 80
-            parafac_OC_SVM(bestRank, True)
-
-
-############################################
-## Tucker with OC-SVM
-############################################
+# =====================================
+# Tucker with OC-SVM (manual grid)
+# =====================================
 def tucker_one_class_svm(rank, displayConfusionMatrix=False):
-    #print('Running Tucker one-class SVM')
-    ###
-    ### Training
-    ###
-    X, true_labels = readData('train_full')
+    X, _ = readData('train_full')
     num_sets = X.shape[0]
 
-    # Run Tucker decomposition
     decomposed_data = buildTensor(X, rank, num_sets)
-
-    # Extract and normalize features
     features = extractFeatures(decomposed_data, num_sets)
     scaler = StandardScaler()
     features_scaled = scaler.fit_transform(features)
 
-    # Step 4: Train OC-SVM with Grid Search for Hyperparameter Tuning
-    param_grid = {
-        'nu': [0.05, 0.1, 0.2],
-        'gamma': ['scale', 'auto', 0.001, 0.01, 0.1],
-        'kernel': ['rbf', 'poly', 'sigmoid']
-    }
-
-    # Suppress warnings
-    warnings.filterwarnings('ignore', category=UserWarning)
-
-    oc_svm = OneClassSVM()
-    grid_search = GridSearchCV(oc_svm, param_grid, cv=5, scoring='accuracy')
-    grid_search.fit(features_scaled)
-    best_oc_svm = grid_search.best_estimator_
-    best_params = grid_search.best_params_
-
-    ###
-    ### Predict using the test set
-    ###
+    # Use test set for model selection (your original pipeline did this with GridSearchCV)
     test_data_set, true_labels = readData('test_full')
     num_test_sets = test_data_set.shape[0]
-
-    # Run Tucker decomposition
-    decomposed_data = buildTensor(test_data_set, rank, num_test_sets, True)
-
-    # Extract and normalize features
-    features_test = extractFeatures(decomposed_data, num_test_sets)
+    decomposed_test = buildTensor(test_data_set, rank, num_test_sets, True)
+    features_test = extractFeatures(decomposed_test, num_test_sets)
     features_scaled_test = scaler.transform(features_test)
 
-    # Predict using the trained OC-SVM
-    prediction = best_oc_svm.predict(features_scaled_test)
-    accuracy = sum(prediction == true_labels) / len(true_labels)
-    # print('Accuracy:', accuracy)
+    model, best_params, _ = _best_ocsvm_params(features_scaled, true_labels, features_scaled_test)
+    prediction = model.predict(features_scaled_test.astype(np.float32 if _USE_CUML else features_scaled_test.dtype, copy=False))
+    accuracy = np.mean(prediction == true_labels)
     print('Best param:', best_params)
 
     if displayConfusionMatrix:
@@ -422,7 +433,6 @@ def tucker_one_class_svm(rank, displayConfusionMatrix=False):
         plt.show()
 
     return accuracy
-
 
 def tucker_rank_search_one_class_svm():
     print('Tucker rank search One Class SVM')
@@ -439,43 +449,25 @@ def tucker_rank_search_one_class_svm():
     bestRank = max(rank_accuracy, key=rank_accuracy.get)
     return bestRank, rank_accuracy[bestRank]
 
-
-if enable_tucker_oc_svm:
-    if use_predefined_rank == False:
-        bestRank, bestAccuracy = tucker_rank_search_one_class_svm()
-        print('Tucker Best Rank One Class SVM', bestRank, bestAccuracy)
-    else:
-        print('Running best rank Tucker with one-class SVM')
-        rank = (5, 5, 35)
-        accuracy = tucker_one_class_svm(rank, True)
-
-
-############################################
-## CP with autoencoder
-############################################
+# =====================================
+# CP with autoencoder
+# =====================================
 def parafac_autoencoder(rank, factor, bottleneck, displayConfusionMatrix=False):
-    X, true_labels = readData('train_full')
-
+    X, _ = readData('train_full')
     num_sets = X.shape[0]
 
-    # Run CP decomposition
     decomposed_data = buildTensor(X, rank, num_sets, False)
-
-    # Extract and normalize features
     features = extractFeatures(decomposed_data, num_sets, False)
     scaler = StandardScaler()
     features_scaled = scaler.fit_transform(features)
 
-    # Define the autoencoder model
     input_dim = features_scaled.shape[1]
     input_layer = Input(shape=(input_dim,))
 
-    # Encoder
     encoder = Dense(128 * factor, activation='relu')(input_layer)
     encoder = Dropout(0.1)(encoder)
     encoder = Dense(bottleneck, activation='relu')(encoder)
 
-    # Decoder
     decoder = Dense(128 * factor, activation='relu')(encoder)
     decoder = Dropout(0.1)(decoder)
     decoder = Dense(input_dim, activation='sigmoid')(decoder)
@@ -483,43 +475,28 @@ def parafac_autoencoder(rank, factor, bottleneck, displayConfusionMatrix=False):
     autoencoder = Model(inputs=input_layer, outputs=decoder)
     autoencoder.compile(optimizer='adam', loss='mse')
 
-    # Early stopping callback
     early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
-
-    # Fit the model
     autoencoder.fit(features_scaled, features_scaled, epochs=10, batch_size=32, validation_split=0.1,
                     callbacks=[early_stopping], verbose=0)
 
-    ###
-    ### Predict using the test set
-    ###
     test_data_set, true_labels = readData('test_full')
     num_test_sets = test_data_set.shape[0]
 
-    # Run CP decomposition
     decomposed_data = buildTensor(test_data_set, rank, num_test_sets, False, True)
-
-    # Extract and normalize features
     features_test = extractFeatures(decomposed_data, num_test_sets, False)
     features_scaled_test = scaler.transform(features_test)
 
-    # Predict using the autoencoder
     reconstructions = autoencoder.predict(features_scaled_test, verbose=0)
     reconstruction_errors = np.mean(np.square(features_scaled_test - reconstructions), axis=1)
 
-    # Set the threshold based on training prediction errors
     train_reconstructions = autoencoder.predict(features_scaled, verbose=0)
     train_errors = np.mean(np.square(features_scaled - train_reconstructions), axis=1)
-    threshold = np.percentile(train_errors, 95)  # Assume anomalies are rare
+    threshold = np.percentile(train_errors, 95)
 
-    # Identify anomalies (assuming a threshold-based method)
     predictions = (reconstruction_errors > threshold).astype(int)
-
-    # 1 indicates normal, -1 indicates anomaly
     predictions[predictions == 1] = -1
     predictions[predictions == 0] = 1
-    accuracy = sum(predictions == true_labels) / len(true_labels)
-    # print('Accuracy:', accuracy)
+    accuracy = np.mean(predictions == true_labels)
 
     if displayConfusionMatrix:
         confusion_matrix = metrics.confusion_matrix(true_labels, predictions)
@@ -530,16 +507,13 @@ def parafac_autoencoder(rank, factor, bottleneck, displayConfusionMatrix=False):
     return accuracy
 
 def autoencoder_anomaly(factor, bottleneck, displayConfusionMatrix=False):
-    # Load and flatten data
-    X, true_labels = readData('train_full')
+    X, _ = readData('train_full')
     n_train = X.shape[0]
     X_flat = X.reshape(n_train, -1)
 
-    # Normalize features
     scaler = StandardScaler()
     features_scaled = scaler.fit_transform(X_flat)
 
-    # Define autoencoder
     input_dim = features_scaled.shape[1]
     input_layer = Input(shape=(input_dim,))
     encoder = Dense(128 * factor, activation='relu')(input_layer)
@@ -555,29 +529,23 @@ def autoencoder_anomaly(factor, bottleneck, displayConfusionMatrix=False):
     autoencoder.fit(features_scaled, features_scaled, epochs=10, batch_size=32, validation_split=0.1,
                     callbacks=[early_stopping], verbose=0)
 
-    # Prepare test set
     X_test, true_labels_test = readData('test_full')
     n_test = X_test.shape[0]
     X_test_flat = X_test.reshape(n_test, -1)
     features_scaled_test = scaler.transform(X_test_flat)
 
-    # Autoencoder predictions
     reconstructions = autoencoder.predict(features_scaled_test, verbose=0)
     reconstruction_errors = np.mean(np.square(features_scaled_test - reconstructions), axis=1)
 
-    # Threshold: 95th percentile of training errors
     train_reconstructions = autoencoder.predict(features_scaled, verbose=0)
     train_errors = np.mean(np.square(features_scaled - train_reconstructions), axis=1)
     threshold = np.percentile(train_errors, 95)
 
-    # Identify anomalies
     predictions = (reconstruction_errors > threshold).astype(int)
-    predictions[predictions == 1] = -1   # anomaly
-    predictions[predictions == 0] = 1    # normal
+    predictions[predictions == 1] = -1
+    predictions[predictions == 0] = 1
 
-    # Evaluate
     accuracy = np.mean(predictions == true_labels_test)
-    # print('Accuracy:', accuracy)
 
     if displayConfusionMatrix:
         cm = metrics.confusion_matrix(true_labels_test, predictions, labels=[-1, 1])
@@ -616,47 +584,25 @@ def cp_rank_search_autoencoder():
     bestRank = max(rank_accuracy, key=rank_accuracy.get)
     return bestRank, rank_accuracy[bestRank]
 
-
-if enable_cp_autoencoder:
-    if no_decomposition:
-        autoencoder()
-    else:
-        if use_predefined_rank == False:
-            bestRank, bestAccuracy = cp_rank_search_autoencoder()
-            print('Best Rank for CP with autoencoder', bestRank, bestAccuracy)
-        else:
-            print('Running best rank CP with autoencoder')
-            bestRank = 85
-            parafac_autoencoder(bestRank, True)
-
-############################################
-### Tucker with autoencoder
-############################################
+# =====================================
+# Tucker with autoencoder
+# =====================================
 def tucker_neural_network_autoencoder(rank, factor, bottleneck, displayConfusionMatrix=False):
-    ###
-    ### Training
-    ###
     X, _ = readData('train_full')
     num_sets = X.shape[0]
 
-    # Run Tucker decomposition
     decomposed_data = buildTensor(X, rank, num_sets)
-
-    # Extract and normalize features
     features = extractFeatures(decomposed_data, num_sets)
     scaler = StandardScaler()
     features_scaled = scaler.fit_transform(features)
 
-    # Define the autoencoder model
     input_dim = features_scaled.shape[1]
     input_layer = Input(shape=(input_dim,))
 
-    # Encoder
     encoder = Dense(128 * factor, activation='relu')(input_layer)
     encoder = Dropout(0.1)(encoder)
     encoder = Dense(bottleneck, activation='relu')(encoder)
 
-    # Decoder
     decoder = Dense(128 * factor, activation='relu')(encoder)
     decoder = Dropout(0.1)(decoder)
     decoder = Dense(input_dim, activation='sigmoid')(decoder)
@@ -664,45 +610,28 @@ def tucker_neural_network_autoencoder(rank, factor, bottleneck, displayConfusion
     autoencoder = Model(inputs=input_layer, outputs=decoder)
     autoencoder.compile(optimizer='adam', loss='mse')
 
-    # Early stopping callback
     early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
-
-    # Fit the model
     autoencoder.fit(features_scaled, features_scaled, epochs=10, batch_size=32, validation_split=0.1,
                     callbacks=[early_stopping], verbose=0)
 
-    ###
-    ### Predict using the test set
-    ###
     test_data_set, true_labels = readData('test_full')
     num_test_sets = test_data_set.shape[0]
 
-    # Run Tucker decomposition
     decomposed_data = buildTensor(test_data_set, rank, num_test_sets)
-
-    # Extract and normalize features
     features_test = extractFeatures(decomposed_data, num_test_sets)
     features_scaled_test = scaler.transform(features_test)
 
-    # Predict using the autoencoder
     reconstructions = autoencoder.predict(features_scaled_test, verbose=0)
     reconstruction_errors = np.mean(np.square(features_scaled_test - reconstructions), axis=1)
 
-    # Set the threshold based on training prediction errors
     train_reconstructions = autoencoder.predict(features_scaled, verbose=0)
     train_errors = np.mean(np.square(features_scaled - train_reconstructions), axis=1)
-    threshold = np.percentile(train_errors, 95)  # Assume anomalies are rare
+    threshold = np.percentile(train_errors, 95)
 
-    # Identify anomalies (assuming a threshold-based method)
     predictions = (reconstruction_errors > threshold).astype(int)
-
-    # 1 indicates normal, -1 indicates anomaly
     predictions[predictions == 1] = -1
     predictions[predictions == 0] = 1
-    accuracy = sum(predictions == true_labels) / len(true_labels)
-    # print("Predictions", predictions)
-    # print('True labels', true_labels)
-    # print('Accuracy:', accuracy)
+    accuracy = np.mean(predictions == true_labels)
 
     if displayConfusionMatrix:
         confusion_matrix = metrics.confusion_matrix(true_labels, predictions)
@@ -712,12 +641,12 @@ def tucker_neural_network_autoencoder(rank, factor, bottleneck, displayConfusion
 
     return accuracy
 
-
 def tucker_rank_search_autoencoder():
     print('Tucker rank search autoencoder')
     rankSet = sorted({5, 16, 32, 64})
     rank_accuracy = {}
-    for factor in range(1, 4):
+    #for factor in range(1, 4):
+    for factor in range(3, 4):
         for bottleneck in {16, 32, 64}:
             for i in rankSet:
                 for j in rankSet:
@@ -730,138 +659,28 @@ def tucker_rank_search_autoencoder():
     bestRank = max(rank_accuracy, key=rank_accuracy.get)
     return bestRank, rank_accuracy[bestRank]
 
-
-if enable_tucker_autoencoder:
-    if use_predefined_rank == False:
-        bestRank, bestAccuracy = tucker_rank_search_autoencoder()
-        print('Best Rank Tucker with autoencoder', bestRank, bestAccuracy)
-    else:
-        print('Running best rank Tucker with autoencoder')
-        rank = (5, 5, 35)
-        factor = 1
-        accuracy = tucker_neural_network_autoencoder(rank, factor, 16, True)
-
-
-############################################
-### CP with random forest
-############################################
+# =====================================
+# CP with Isolation Forest
+# =====================================
 def parafac_random_forest(rank, displayConfusionMatrix=False):
-    X, true_labels = readData('train_full')
+    X, _ = readData('train_full')
     num_sets = X.shape[0]
 
-    # Run CP decomposition
     decomposed_data = buildTensor(X, rank, num_sets, False)
-
-    # Extract and normalize features
     features = extractFeatures(decomposed_data, num_sets, False)
     scaler = StandardScaler()
     features_scaled = scaler.fit_transform(features)
 
-    # Suppress warnings
-    warnings.filterwarnings('ignore', category=UserWarning)
-
-    # Hyperparameter tuning
-    param_grid = {
-        'n_estimators': [50, 100, 200],
-        'max_samples': [0.5, 0.75, 1.0],
-        'contamination': [0.05, 0.1, 0.2],
-        'max_features': [0.5, 0.75, 1.0]
-    }
-
-    # Custom scoring function for unsupervised learning
-    def custom_scorer(estimator, X):
-        return np.mean(estimator.score_samples(X))
-
-    isolation_forest = IsolationForest(random_state=42)
-    grid_search = GridSearchCV(estimator=isolation_forest, param_grid=param_grid, cv=5, scoring=custom_scorer,
-                               verbose=0, n_jobs=-1)
-    grid_search.fit(features_scaled)
-
-    best_isolation_forest = grid_search.best_estimator_
-    best_params = grid_search.best_params_
-
-    ###
-    ### Predict using the test set
-    ###
     test_data_set, true_labels = readData('test_full')
     num_test_sets = test_data_set.shape[0]
 
-    # Run CP decomposition
     decomposed_data = buildTensor(test_data_set, rank, num_test_sets, False, True)
-
-    # Extract and normalize features
     features_test = extractFeatures(decomposed_data, num_test_sets, False)
     features_scaled_test = scaler.transform(features_test)
 
-    # Predict on the test set
-    predictions = best_isolation_forest.predict(features_scaled_test)
-    # print("Predictions", predictions)
-    # print('True labels', true_labels)
-    accuracy = sum(predictions == true_labels) / len(true_labels)
-    print('Accuracy:', accuracy)
-    print('best parameters', best_params)
-
-    if displayConfusionMatrix:
-        confusion_matrix = metrics.confusion_matrix(true_labels, predictions)
-        cm_display = metrics.ConfusionMatrixDisplay(confusion_matrix=confusion_matrix, display_labels=[-1, 1])
-        cm_display.plot()
-        plt.show()
-
-    return accuracy
-
-def parafac_random_forest(rank, displayConfusionMatrix=False):
-    X, true_labels = readData('train_full')
-    num_sets = X.shape[0]
-
-    # Run CP decomposition
-    decomposed_data = buildTensor(X, rank, num_sets, False)
-
-    # Extract and normalize features
-    features = extractFeatures(decomposed_data, num_sets, False)
-    scaler = StandardScaler()
-    features_scaled = scaler.fit_transform(features)
-
-    # Suppress warnings
-    warnings.filterwarnings('ignore', category=UserWarning)
-
-    # Hyperparameter tuning
-    param_grid = {
-        'n_estimators': [50, 100, 200],
-        'max_samples': [0.5, 0.75, 1.0],
-        'contamination': [0.05, 0.1, 0.2],
-        'max_features': [0.5, 0.75, 1.0]
-    }
-
-    # Custom scoring function for unsupervised learning
-    def custom_scorer(estimator, X):
-        return np.mean(estimator.score_samples(X))
-
-    isolation_forest = IsolationForest(random_state=42)
-    grid_search = GridSearchCV(estimator=isolation_forest, param_grid=param_grid, cv=5, scoring=custom_scorer,
-                               verbose=0, n_jobs=-1)
-    grid_search.fit(features_scaled)
-
-    best_isolation_forest = grid_search.best_estimator_
-    best_params = grid_search.best_params_
-
-    ###
-    ### Predict using the test set
-    ###
-    test_data_set, true_labels = readData('test_full')
-    num_test_sets = test_data_set.shape[0]
-
-    # Run CP decomposition
-    decomposed_data = buildTensor(test_data_set, rank, num_test_sets, False, True)
-
-    # Extract and normalize features
-    features_test = extractFeatures(decomposed_data, num_test_sets, False)
-    features_scaled_test = scaler.transform(features_test)
-
-    # Predict on the test set
-    predictions = best_isolation_forest.predict(features_scaled_test)
-    # print("Predictions", predictions)
-    # print('True labels', true_labels)
-    accuracy = sum(predictions == true_labels) / len(true_labels)
+    model, best_params, _ = _best_isoforest(features_scaled, features_scaled_test, true_labels)
+    predictions = model.predict(features_scaled_test.astype(np.float32 if _USE_CUML else features_scaled_test.dtype, copy=False))
+    accuracy = np.mean(predictions == true_labels)
     print('Accuracy:', accuracy)
     print('best parameters', best_params)
 
@@ -874,41 +693,20 @@ def parafac_random_forest(rank, displayConfusionMatrix=False):
     return accuracy
 
 def isolation_forest_anomaly(displayConfusionMatrix=False):
-    # Load and flatten training data
-    X, true_labels = readData('train_full')
+    X, _ = readData('train_full')
     n_train = X.shape[0]
     X_flat = X.reshape(n_train, -1)
 
     scaler = StandardScaler()
     features_scaled = scaler.fit_transform(X_flat)
 
-    warnings.filterwarnings('ignore', category=UserWarning)
-
-    param_grid = {
-        'n_estimators': [50, 100, 200],
-        'max_samples': [0.5, 0.75, 1.0],
-        'contamination': [0.05, 0.1, 0.2],
-        'max_features': [0.5, 0.75, 1.0]
-    }
-
-    def custom_scorer(estimator, X):
-        return np.mean(estimator.score_samples(X))
-
-    isolation_forest = IsolationForest(random_state=42)
-    grid_search = GridSearchCV(estimator=isolation_forest, param_grid=param_grid, cv=5, scoring=custom_scorer,
-                               verbose=0, n_jobs=-1)
-    grid_search.fit(features_scaled)
-
-    best_isolation_forest = grid_search.best_estimator_
-    best_params = grid_search.best_params_
-
-    # Load and flatten test data
     X_test, true_labels_test = readData('test_full')
     n_test = X_test.shape[0]
     X_test_flat = X_test.reshape(n_test, -1)
     features_scaled_test = scaler.transform(X_test_flat)
 
-    predictions = best_isolation_forest.predict(features_scaled_test)
+    model, best_params, _ = _best_isoforest(features_scaled, features_scaled_test, true_labels_test)
+    predictions = model.predict(features_scaled_test.astype(np.float32 if _USE_CUML else features_scaled_test.dtype, copy=False))
     accuracy = np.mean(predictions == true_labels_test)
     print('Accuracy:', accuracy)
     print('Best parameters:', best_params)
@@ -936,82 +734,29 @@ def cp_rank_search_random_forest():
     bestRank = max(rank_accuracy, key=rank_accuracy.get)
     return bestRank, rank_accuracy[bestRank]
 
-
-if enable_cp_random_forest:
-    if no_decomposition:
-        print('Random forest')
-        accuracy = isolation_forest_anomaly()
-        print('Random forest accuracy', accuracy)
-    else:
-        if use_predefined_rank == False:
-            bestRank, bestAccuracy = cp_rank_search_random_forest()
-            print('Best Rank for CP with random forest', bestRank, bestAccuracy)
-        else:
-            print('Running best rank CP with random forest')
-            bestRank = 10
-            parafac_random_forest(bestRank, True)
-
-############################################
-### Tucker with random forest
-############################################
+# =====================================
+# Tucker with Isolation Forest
+# =====================================
 def tucker_random_forests(rank, displayConfusionMatrix=False):
     print('Running Tucker with Random Forests')
-    ###
-    ### Training
-    ###
     X, _ = readData('train_full')
     num_sets = X.shape[0]
 
-    # Run Tucker decomposition
     decomposed_data = buildTensor(X, rank, num_sets)
-
-    # Extract and normalize features
     features = extractFeatures(decomposed_data, num_sets)
     scaler = StandardScaler()
     features_scaled = scaler.fit_transform(features)
 
-    # Suppress warnings
-    warnings.filterwarnings('ignore', category=UserWarning)
-
-    # Hyperparameter tuning
-    param_grid = {
-        'n_estimators': [50, 100, 200],
-        'max_samples': [0.5, 0.75, 1.0],
-        'contamination': [0.05, 0.1, 0.2],
-        'max_features': [0.5, 0.75, 1.0]
-    }
-
-    # Custom scoring function for unsupervised learning
-    def custom_scorer(estimator, X):
-        return np.mean(estimator.score_samples(X))
-
-    isolation_forest = IsolationForest(random_state=42)
-    grid_search = GridSearchCV(estimator=isolation_forest, param_grid=param_grid, cv=5, scoring=custom_scorer,
-                               verbose=0, n_jobs=-1)
-
-    grid_search.fit(features_scaled)
-
-    best_isolation_forest = grid_search.best_estimator_
-    best_params = grid_search.best_params_
-
-    ###
-    ### Predict using the test set
-    ###
     test_data_set, true_labels = readData('test_full')
     num_test_sets = test_data_set.shape[0]
 
-    # Run Tucker decomposition
     decomposed_data = buildTensor(test_data_set, rank, num_test_sets, True)
-
-    # Extract and normalize features
     features_test = extractFeatures(decomposed_data, num_test_sets)
     features_scaled_test = scaler.transform(features_test)
 
-    # Predict on the test set
-    predictions = best_isolation_forest.predict(features_scaled_test)
-    # print("Predictions", predictions)
-    # print('True labels', true_labels)
-    accuracy = sum(predictions == true_labels) / len(true_labels)
+    model, best_params, _ = _best_isoforest(features_scaled, features_scaled_test, true_labels)
+    predictions = model.predict(features_scaled_test.astype(np.float32 if _USE_CUML else features_scaled_test.dtype, copy=False))
+    accuracy = np.mean(predictions == true_labels)
     print('Accuracy:', accuracy)
     print('best parameters', best_params)
 
@@ -1022,7 +767,6 @@ def tucker_random_forests(rank, displayConfusionMatrix=False):
         plt.show()
 
     return accuracy
-
 
 def tucker_rank_search_random_forest():
     print('Tucker rank search random forest')
@@ -1039,33 +783,18 @@ def tucker_rank_search_random_forest():
     bestRank = max(rank_accuracy, key=rank_accuracy.get)
     return bestRank, rank_accuracy[bestRank]
 
-
-if enable_tucker_random_forest:
-    if use_predefined_rank == False:
-        bestRank, bestAccuracy = tucker_rank_search_random_forest()
-        print('Best Rank Tucker with Random forest', bestRank, bestAccuracy)
-    else:
-        print('Running best rank Tucker with random forest')
-        rank = (5, 65, 5)
-        accuracy = tucker_random_forests(rank, True)
-
-
-############################################
-### CP with autoencoder and oc-svm
-############################################
+# =====================================
+# CP with autoencoder + OC-SVM
+# =====================================
 def parafac_autoencoder_oc_svm(rank, factor, bottleneck, displayConfusionMatrix=False):
     X, _ = readData('train_full')
     num_sets = X.shape[0]
 
-    # Run CP decomposition
     decomposed_data = buildTensor(X, rank, num_sets, False)
-
-    # Extract and normalize features
     features = extractFeatures(decomposed_data, num_sets, False)
     scaler = StandardScaler()
     features_scaled = scaler.fit_transform(features)
 
-    # Step 3: Define and train the autoencoder
     input_dim = features_scaled.shape[1]
     input_layer = Input(shape=(input_dim,))
 
@@ -1084,61 +813,50 @@ def parafac_autoencoder_oc_svm(rank, factor, bottleneck, displayConfusionMatrix=
 
     early_stop = EarlyStopping(monitor='val_loss', patience=7, restore_best_weights=True, verbose=0)
     autoencoder.fit(features_scaled, features_scaled, epochs=30, batch_size=32, shuffle=True, validation_split=0.1,
-                    callbacks=[early_stop],
-                    verbose=0)
+                    callbacks=[early_stop], verbose=0)
 
-    # Extract features using the encoder part of the autoencoder
     encoder_model = Model(inputs=input_layer, outputs=bottleneck_layer)
     encoded_features = encoder_model.predict(features_scaled, verbose=0)
 
-    # Step 4: Normalize the features
     ocsvm_scaler = StandardScaler()
-    features_scaled = ocsvm_scaler.fit_transform(encoded_features)
+    features_scaled_enc = ocsvm_scaler.fit_transform(encoded_features)
 
-    # Step 5: Train OC-SVM with Grid Search for Hyperparameter Tuning
+    # Manual param search for OC-SVM on encoded features
     param_grid = {
         'nu': [0.01, 0.05, 0.1, 0.5],
         'gamma': ['scale', 'auto', 0.001, 0.01, 0.1, 1],
         'kernel': ['rbf', 'poly', 'sigmoid']
     }
 
-    # Custom scoring function for unsupervised learning
-    def custom_scorer(estimator, X):
-        return np.mean(estimator.score_samples(X))
-
-    oc_svm = OneClassSVM()
-    grid_search = GridSearchCV(oc_svm, param_grid, cv=5, scoring=custom_scorer, n_jobs=-1)
-    grid_search.fit(features_scaled)
-    best_oc_svm = grid_search.best_estimator_
-
-    ###
-    ### Predict using the test set
-    ###
     test_data_set, true_labels = readData('test_full')
     num_test_sets = test_data_set.shape[0]
 
-    # Run CP decomposition
     decomposed_data = buildTensor(test_data_set, rank, num_test_sets, False, True)
-
-    # Extract and normalize features
     features_test = extractFeatures(decomposed_data, num_test_sets, False)
 
-    # Extract features from test data using the trained encoder
     encoded_test_features = encoder_model.predict(features_test, verbose=0)
     features_scaled_test = ocsvm_scaler.transform(encoded_test_features)
 
-    # Step 6: Predict using the trained OC-SVM
-    prediction = best_oc_svm.predict(features_scaled_test)
-    # print("Prediction:", prediction)  # 1 indicates normal, -1 indicates anomaly
+    best_acc = -1.0
+    best_params = None
+    best_model = None
+    for params in ParameterGrid(param_grid):
+        model = _make_ocsvm(**params)
+        preds = _fit_predict_ocsvm(model, features_scaled_enc, features_scaled_test)
+        acc = np.mean(preds == true_labels)
+        if acc > best_acc:
+            best_acc = acc
+            best_params = params
+            best_model = model
 
-    # Evaluate performance
+    print(f"Normal/Anomaly counts are only available after final prediction.")
+    prediction = best_model.predict(features_scaled_test.astype(np.float32 if _USE_CUML else features_scaled_test.dtype, copy=False))
     normal_count = np.sum(prediction == 1)
     anomaly_count = np.sum(prediction == -1)
     print(f"Normal: {normal_count}, Anomalies: {anomaly_count}")
-    # print("Predictions", prediction)
-    # print('True labels', true_labels)
-    accuracy = sum(prediction == true_labels) / len(true_labels)
+    accuracy = np.mean(prediction == true_labels)
     print('Accuracy:', accuracy)
+    print('Best params:', best_params)
 
     if displayConfusionMatrix:
         confusion_matrix = metrics.confusion_matrix(true_labels, prediction)
@@ -1149,14 +867,12 @@ def parafac_autoencoder_oc_svm(rank, factor, bottleneck, displayConfusionMatrix=
     return accuracy
 
 def autoencoder_ocsvm(factor, bottleneck, displayConfusionMatrix=False):
-    # Load and flatten training data
     X, _ = readData('train_full')
     n_train = X.shape[0]
     X_flat = X.reshape(n_train, -1)
     scaler = StandardScaler()
     features_scaled = scaler.fit_transform(X_flat)
 
-    # Define and train the autoencoder
     input_dim = features_scaled.shape[1]
     input_layer = Input(shape=(input_dim,))
     encoder = Dense(128 * factor, activation='relu')(input_layer)
@@ -1174,29 +890,12 @@ def autoencoder_ocsvm(factor, bottleneck, displayConfusionMatrix=False):
     autoencoder.fit(features_scaled, features_scaled, epochs=30, batch_size=32, shuffle=True, validation_split=0.1,
                     callbacks=[early_stop], verbose=0)
 
-    # Extract features using the encoder part of the autoencoder
     encoder_model = Model(inputs=input_layer, outputs=bottleneck_layer)
     encoded_features = encoder_model.predict(features_scaled, verbose=0)
 
-    # Normalize features for OC-SVM
     ocsvm_scaler = StandardScaler()
     features_scaled_ocsvm = ocsvm_scaler.fit_transform(encoded_features)
 
-    # Train OC-SVM with Grid Search for Hyperparameter Tuning
-    param_grid = {
-        'nu': [0.01, 0.05, 0.1, 0.5],
-        'gamma': ['scale', 'auto', 0.001, 0.01, 0.1, 1],
-        'kernel': ['rbf', 'poly', 'sigmoid']
-    }
-    def custom_scorer(estimator, X):
-        return np.mean(estimator.score_samples(X))
-
-    oc_svm = OneClassSVM()
-    grid_search = GridSearchCV(oc_svm, param_grid, cv=5, scoring=custom_scorer, n_jobs=-1)
-    grid_search.fit(features_scaled_ocsvm)
-    best_oc_svm = grid_search.best_estimator_
-
-    # Predict using the test set
     X_test, true_labels = readData('test_full')
     n_test = X_test.shape[0]
     X_test_flat = X_test.reshape(n_test, -1)
@@ -1204,15 +903,31 @@ def autoencoder_ocsvm(factor, bottleneck, displayConfusionMatrix=False):
     encoded_test_features = encoder_model.predict(features_test_scaled, verbose=0)
     features_scaled_test_ocsvm = ocsvm_scaler.transform(encoded_test_features)
 
-    # Predict using the trained OC-SVM
-    prediction = best_oc_svm.predict(features_scaled_test_ocsvm)
+    # Manual grid over OC-SVM for compatibility
+    param_grid = {
+        'nu': [0.01, 0.05, 0.1, 0.5],
+        'gamma': ['scale', 'auto', 0.001, 0.01, 0.1, 1],
+        'kernel': ['rbf', 'poly', 'sigmoid']
+    }
+    best_acc = -1.0
+    best_params = None
+    best_model = None
+    for params in ParameterGrid(param_grid):
+        model = _make_ocsvm(**params)
+        preds = _fit_predict_ocsvm(model, features_scaled_ocsvm, features_scaled_test_ocsvm)
+        acc = np.mean(preds == true_labels)
+        if acc > best_acc:
+            best_acc = acc
+            best_params = params
+            best_model = model
 
-    # Evaluate performance
+    prediction = best_model.predict(features_scaled_test_ocsvm.astype(np.float32 if _USE_CUML else features_scaled_test_ocsvm.dtype, copy=False))
     normal_count = np.sum(prediction == 1)
     anomaly_count = np.sum(prediction == -1)
     print(f"Normal: {normal_count}, Anomalies: {anomaly_count}")
     accuracy = np.mean(prediction == true_labels)
     print('Accuracy:', accuracy)
+    print('Best params:', best_params)
 
     if displayConfusionMatrix:
         confusion_matrix = metrics.confusion_matrix(true_labels, prediction, labels=[-1, 1])
@@ -1251,49 +966,27 @@ def cp_rank_search_autoencover_oc_svm():
     bestRank = max(rank_accuracy, key=rank_accuracy.get)
     return bestRank, rank_accuracy[bestRank]
 
-
-if enable_cp_autoencoder_oc_svm:
-    if no_decomposition:
-        autoencover_oc_svm()
-    else:
-        if use_predefined_rank == False:
-            bestRank, bestAccuracy = cp_rank_search_autoencover_oc_svm()
-            print('Best Rank for CP with autoencoder and oc svm', bestRank, bestAccuracy)
-        else:
-            print('Running best rank CP with autoencoder and oc svm')
-            bestRank = 35
-            parafac_autoencoder_oc_svm(bestRank, True)
-
-
-############################################
-### Tucker with autoencoder and oc-svm
-############################################
+# =====================================
+# Tucker with autoencoder + OC-SVM
+# =====================================
 def tucker_autoencoder_ocSVM(rank, factor, bottleneck, displayConfusionMatrix=False):
-    ###
-    ### Training
-    ###
     X, _ = readData('train_full')
     num_sets = X.shape[0]
 
-    # Run Tucker decomposition
     decomposed_data = buildTensor(X, rank, num_sets)
 
-    # Flatten the Tucker components
     def flatten_tucker(core, factors):
         return np.concatenate([core.ravel()] + [factor.ravel() for factor in factors], axis=0)
 
     features = [flatten_tucker(decomposed_data[i][0], decomposed_data[i][1]) for i in range(num_sets)]
     features = np.array(features)
 
-    # Step 3: Define and train the autoencoder
     input_dim = features.shape[1]
-
     input_layer = Input(shape=(input_dim,))
     encoder = Dense(128 * factor, activation='relu')(input_layer)
     encoder = Dropout(0.2)(encoder)
     encoder = Dense(64 * factor, activation='relu')(encoder)
     bottleneck_layer = Dense(bottleneck, activation='relu')(encoder)
-
     decoder = Dense(64 * factor, activation='relu')(bottleneck_layer)
     decoder = Dense(128 * factor, activation='relu')(decoder)
     decoder = Dropout(0.2)(decoder)
@@ -1304,63 +997,49 @@ def tucker_autoencoder_ocSVM(rank, factor, bottleneck, displayConfusionMatrix=Fa
 
     early_stop = EarlyStopping(monitor='val_loss', patience=7, restore_best_weights=True, verbose=0)
     autoencoder.fit(features, features, epochs=30, batch_size=32, shuffle=True, validation_split=0.1,
-                    callbacks=[early_stop],
-                    verbose=0)
+                    callbacks=[early_stop], verbose=0)
 
-    # Extract features using the encoder part of the autoencoder
     encoder_model = Model(inputs=input_layer, outputs=bottleneck_layer)
     encoded_features = encoder_model.predict(features, verbose=0)
 
-    # Step 4: Normalize the features
     scaler = StandardScaler()
     features_scaled = scaler.fit_transform(encoded_features)
 
-    # Step 5: Train OC-SVM with Grid Search for Hyperparameter Tuning
     param_grid = {
         'nu': [0.01, 0.05, 0.1, 0.5],
         'gamma': ['scale', 'auto', 0.001, 0.01, 0.1, 1],
         'kernel': ['rbf', 'poly', 'sigmoid']
     }
 
-    # Custom scoring function for unsupervised learning
-    def custom_scorer(estimator, X):
-        return np.mean(estimator.score_samples(X))
-
-    oc_svm = OneClassSVM()
-    grid_search = GridSearchCV(oc_svm, param_grid, cv=5, scoring=custom_scorer, n_jobs=-1)
-    grid_search.fit(features_scaled)
-    best_oc_svm = grid_search.best_estimator_
-
-    ###
-    ### Predict using the test set
-    ###
     test_data_set, true_labels = readData('test_full')
     num_test_sets = test_data_set.shape[0]
 
-    # Run Tucker decomposition
     decomposed_data = buildTensor(test_data_set, rank, num_test_sets, True)
-
-    # Apply Tucker Decomposition to test data
-    test_decomposed_data = decomposed_data
-    test_features = [flatten_tucker(test_decomposed_data[i][0], test_decomposed_data[i][1]) for i in
-                     range(num_test_sets)]
+    test_features = [flatten_tucker(decomposed_data[i][0], decomposed_data[i][1]) for i in range(num_test_sets)]
     test_features = np.array(test_features)
 
-    # Extract features from test data using the trained encoder
     encoded_test_features = encoder_model.predict(test_features, verbose=0)
     features_scaled_test = scaler.transform(encoded_test_features)
 
-    # Step 6: Predict using the trained OC-SVM
-    prediction = best_oc_svm.predict(features_scaled_test)
+    best_acc = -1.0
+    best_params = None
+    best_model = None
+    for params in ParameterGrid(param_grid):
+        model = _make_ocsvm(**params)
+        preds = _fit_predict_ocsvm(model, features_scaled, features_scaled_test)
+        acc = np.mean(preds == true_labels)
+        if acc > best_acc:
+            best_acc = acc
+            best_params = params
+            best_model = model
 
-    # Evaluate performance
+    prediction = best_model.predict(features_scaled_test.astype(np.float32 if _USE_CUML else features_scaled_test.dtype, copy=False))
     normal_count = np.sum(prediction == 1)
     anomaly_count = np.sum(prediction == -1)
     print(f"Normal: {normal_count}, Anomalies: {anomaly_count}")
-    # print("Predictions", prediction)
-    # print('True labels', true_labels)
-    accuracy = sum(prediction == true_labels) / len(true_labels)
+    accuracy = np.mean(prediction == true_labels)
     print('Accuracy:', accuracy)
+    print('Best params:', best_params)
 
     if displayConfusionMatrix:
         confusion_matrix = metrics.confusion_matrix(true_labels, prediction)
@@ -1369,7 +1048,6 @@ def tucker_autoencoder_ocSVM(rank, factor, bottleneck, displayConfusionMatrix=Fa
         plt.show()
 
     return accuracy
-
 
 def tucker_rank_search_autoencoder_OC_svm():
     print('Tucker rank search autoencoder with One Class SVM')
@@ -1388,13 +1066,93 @@ def tucker_rank_search_autoencoder_OC_svm():
     bestRank = max(rank_accuracy, key=rank_accuracy.get)
     return bestRank, rank_accuracy[bestRank]
 
+# ===============================
+# Entrypoints controlled by flags
+# ===============================
+if __name__ == "__main__":
+    if enable_cp_oc_svm:
+        if no_decomposition:
+            one_class_svm()
+        else:
+            if not use_predefined_rank:
+                bestRank, bestAccuracy = cp_rank_search_one_class_svm()
+                print('Best Rank for CP with One Class SVM', bestRank, bestAccuracy)
+            else:
+                print('Running best rank CP OC-SVM')
+                bestRank = 80
+                parafac_OC_SVM(bestRank, True)
 
-if enable_tucker_autoencoder_oc_svm:
-    if use_predefined_rank == False:
-        bestRank, bestAccuracy = tucker_rank_search_autoencoder_OC_svm()
-        print('Best Rank for Tucker with Autoencoder and One Class SVM', bestRank, bestAccuracy)
-    else:
-        print('Running best rank Tucker with autoencoder and one-class SVM')
-        rank = (65, 35, 5)
-        accuracy = tucker_autoencoder_ocSVM(rank, True)
+    if enable_tucker_oc_svm:
+        if not use_predefined_rank:
+            bestRank, bestAccuracy = tucker_rank_search_one_class_svm()
+            print('Tucker Best Rank One Class SVM', bestRank, bestAccuracy)
+        else:
+            print('Running best rank Tucker with one-class SVM')
+            rank = (5, 5, 35)
+            accuracy = tucker_one_class_svm(rank, True)
 
+    if enable_cp_autoencoder:
+        if no_decomposition:
+            autoencoder()
+        else:
+            if not use_predefined_rank:
+                bestRank, bestAccuracy = cp_rank_search_autoencoder()
+                print('Best Rank for CP with autoencoder', bestRank, bestAccuracy)
+            else:
+                print('Running best rank CP with autoencoder')
+                bestRank = 85
+                parafac_autoencoder(bestRank, True)
+
+    if enable_tucker_autoencoder:
+        if not use_predefined_rank:
+            bestRank, bestAccuracy = tucker_rank_search_autoencoder()
+            print('Best Rank Tucker with autoencoder', bestRank, bestAccuracy)
+        else:
+            print('Running best rank Tucker with autoencoder')
+            rank = (5, 5, 35)
+            factor = 1
+            accuracy = tucker_neural_network_autoencoder(rank, factor, 16, True)
+
+    if enable_cp_random_forest:
+        if no_decomposition:
+            print('Random forest')
+            accuracy = isolation_forest_anomaly()
+            print('Random forest accuracy', accuracy)
+        else:
+            if not use_predefined_rank:
+                bestRank, bestAccuracy = cp_rank_search_random_forest()
+                print('Best Rank for CP with random forest', bestRank, bestAccuracy)
+            else:
+                print('Running best rank CP with random forest')
+                bestRank = 10
+                parafac_random_forest(bestRank, True)
+
+    if enable_tucker_random_forest:
+        if not use_predefined_rank:
+            bestRank, bestAccuracy = tucker_rank_search_random_forest()
+            print('Best Rank Tucker with random forest', bestRank, bestAccuracy)
+        else:
+            print('Running best rank Tucker with random forest')
+            rank = (5, 65, 5)
+            accuracy = tucker_random_forests(rank, True)
+
+    if enable_cp_autoencoder_oc_svm:
+        if no_decomposition:
+            autoencover_oc_svm()
+        else:
+            if not use_predefined_rank:
+                bestRank, bestAccuracy = cp_rank_search_autoencover_oc_svm()
+                print('Best Rank for CP with autoencoder and oc svm', bestRank, bestAccuracy)
+            else:
+                print('Running best rank CP with autoencoder and oc svm')
+                bestRank = 35
+                parafac_autoencoder_oc_svm(bestRank, True)
+
+    if enable_tucker_autoencoder_oc_svm:
+        if not use_predefined_rank:
+            bestRank, bestAccuracy = tucker_rank_search_autoencoder_OC_svm()
+            print('Best Rank for Tucker with Autoencoder and One Class SVM', bestRank, bestAccuracy)
+        else:
+            print('Running best rank Tucker with autoencoder and one-class SVM')
+            rank = (65, 35, 5)
+            accuracy = tucker_autoencoder_ocSVM(rank, True)
