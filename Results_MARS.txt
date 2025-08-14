@@ -1674,7 +1674,4009 @@ Accuracy: 0.6
 Rank: (64, 64, 64) Factor: 1 Bottleneck: 64
 Normal: 47, Anomalies: 3
 Accuracy: 0.46
-
+Rank: (5, 5, 5) Factor: 2 Bottleneck: 8
+Normal: 16, Anomalies: 34
+Accuracy: 0.64
+Rank: (5, 5, 16) Factor: 2 Bottleneck: 8
+Normal: 40, Anomalies: 10
+Accuracy: 0.36
+Rank: (5, 5, 32) Factor: 2 Bottleneck: 8
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (5, 5, 64) Factor: 2 Bottleneck: 8
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (5, 16, 5) Factor: 2 Bottleneck: 8
+Normal: 17, Anomalies: 33
+Accuracy: 0.42
+Rank: (5, 16, 16) Factor: 2 Bottleneck: 8
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (5, 16, 32) Factor: 2 Bottleneck: 8
+Normal: 14, Anomalies: 36
+Accuracy: 0.44
+Rank: (5, 16, 64) Factor: 2 Bottleneck: 8
+Normal: 18, Anomalies: 32
+Accuracy: 0.48
+Rank: (5, 32, 5) Factor: 2 Bottleneck: 8
+Normal: 14, Anomalies: 36
+Accuracy: 0.4
+Rank: (5, 32, 16) Factor: 2 Bottleneck: 8
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (5, 32, 32) Factor: 2 Bottleneck: 8
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (5, 32, 64) Factor: 2 Bottleneck: 8
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (5, 64, 5) Factor: 2 Bottleneck: 8
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (5, 64, 16) Factor: 2 Bottleneck: 8
+Normal: 10, Anomalies: 40
+Accuracy: 0.44
+Rank: (5, 64, 32) Factor: 2 Bottleneck: 8
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (5, 64, 64) Factor: 2 Bottleneck: 8
+Normal: 8, Anomalies: 42
+Accuracy: 0.48
+Rank: (16, 5, 5) Factor: 2 Bottleneck: 8
+Normal: 15, Anomalies: 35
+Accuracy: 0.46
+Rank: (16, 5, 16) Factor: 2 Bottleneck: 8
+Normal: 24, Anomalies: 26
+Accuracy: 0.44
+Rank: (16, 5, 32) Factor: 2 Bottleneck: 8
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (16, 5, 64) Factor: 2 Bottleneck: 8
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (16, 16, 5) Factor: 2 Bottleneck: 8
+Normal: 14, Anomalies: 36
+Accuracy: 0.44
+Rank: (16, 16, 16) Factor: 2 Bottleneck: 8
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (16, 16, 32) Factor: 2 Bottleneck: 8
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (16, 16, 64) Factor: 2 Bottleneck: 8
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (16, 32, 5) Factor: 2 Bottleneck: 8
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 32, 16) Factor: 2 Bottleneck: 8
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (16, 32, 32) Factor: 2 Bottleneck: 8
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (16, 32, 64) Factor: 2 Bottleneck: 8
+Normal: 10, Anomalies: 40
+Accuracy: 0.44
+Rank: (16, 64, 5) Factor: 2 Bottleneck: 8
+Normal: 3, Anomalies: 47
+Accuracy: 0.54
+Rank: (16, 64, 16) Factor: 2 Bottleneck: 8
+Normal: 6, Anomalies: 44
+Accuracy: 0.48
+Rank: (16, 64, 32) Factor: 2 Bottleneck: 8
+Normal: 7, Anomalies: 43
+Accuracy: 0.46
+Rank: (16, 64, 64) Factor: 2 Bottleneck: 8
+Normal: 3, Anomalies: 47
+Accuracy: 0.54
+Rank: (32, 5, 5) Factor: 2 Bottleneck: 8
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 5, 16) Factor: 2 Bottleneck: 8
+Normal: 14, Anomalies: 36
+Accuracy: 0.4
+Rank: (32, 5, 32) Factor: 2 Bottleneck: 8
+Normal: 19, Anomalies: 31
+Accuracy: 0.42
+Rank: (32, 5, 64) Factor: 2 Bottleneck: 8
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (32, 16, 5) Factor: 2 Bottleneck: 8
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 16, 16) Factor: 2 Bottleneck: 8
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (32, 16, 32) Factor: 2 Bottleneck: 8
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 16, 64) Factor: 2 Bottleneck: 8
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (32, 32, 5) Factor: 2 Bottleneck: 8
+Normal: 7, Anomalies: 43
+Accuracy: 0.46
+Rank: (32, 32, 16) Factor: 2 Bottleneck: 8
+Normal: 5, Anomalies: 45
+Accuracy: 0.5
+Rank: (32, 32, 32) Factor: 2 Bottleneck: 8
+Normal: 5, Anomalies: 45
+Accuracy: 0.5
+Rank: (32, 32, 64) Factor: 2 Bottleneck: 8
+Normal: 8, Anomalies: 42
+Accuracy: 0.44
+Rank: (32, 64, 5) Factor: 2 Bottleneck: 8
+Normal: 1, Anomalies: 49
+Accuracy: 0.58
+Rank: (32, 64, 16) Factor: 2 Bottleneck: 8
+Normal: 6, Anomalies: 44
+Accuracy: 0.48
+Rank: (32, 64, 32) Factor: 2 Bottleneck: 8
+Normal: 3, Anomalies: 47
+Accuracy: 0.54
+Rank: (32, 64, 64) Factor: 2 Bottleneck: 8
+Normal: 2, Anomalies: 48
+Accuracy: 0.56
+Rank: (64, 5, 5) Factor: 2 Bottleneck: 8
+Normal: 8, Anomalies: 42
+Accuracy: 0.44
+Rank: (64, 5, 16) Factor: 2 Bottleneck: 8
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (64, 5, 32) Factor: 2 Bottleneck: 8
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (64, 5, 64) Factor: 2 Bottleneck: 8
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (64, 16, 5) Factor: 2 Bottleneck: 8
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (64, 16, 16) Factor: 2 Bottleneck: 8
+Normal: 4, Anomalies: 46
+Accuracy: 0.52
+Rank: (64, 16, 32) Factor: 2 Bottleneck: 8
+Normal: 7, Anomalies: 43
+Accuracy: 0.46
+Rank: (64, 16, 64) Factor: 2 Bottleneck: 8
+Normal: 5, Anomalies: 45
+Accuracy: 0.5
+Rank: (64, 32, 5) Factor: 2 Bottleneck: 8
+Normal: 5, Anomalies: 45
+Accuracy: 0.5
+Rank: (64, 32, 16) Factor: 2 Bottleneck: 8
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (64, 32, 32) Factor: 2 Bottleneck: 8
+Normal: 2, Anomalies: 48
+Accuracy: 0.56
+Rank: (64, 32, 64) Factor: 2 Bottleneck: 8
+Normal: 4, Anomalies: 46
+Accuracy: 0.52
+Rank: (64, 64, 5) Factor: 2 Bottleneck: 8
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (64, 64, 16) Factor: 2 Bottleneck: 8
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (64, 64, 32) Factor: 2 Bottleneck: 8
+Normal: 1, Anomalies: 49
+Accuracy: 0.58
+Rank: (64, 64, 64) Factor: 2 Bottleneck: 8
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (5, 5, 5) Factor: 2 Bottleneck: 16
+Normal: 19, Anomalies: 31
+Accuracy: 0.42
+Rank: (5, 5, 16) Factor: 2 Bottleneck: 16
+Normal: 18, Anomalies: 32
+Accuracy: 0.6
+Rank: (5, 5, 32) Factor: 2 Bottleneck: 16
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 19, Anomalies: 31
+Accuracy: 0.46
+Rank: (5, 5, 64) Factor: 2 Bottleneck: 16
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 19, Anomalies: 31
+Accuracy: 0.46
+Rank: (5, 16, 5) Factor: 2 Bottleneck: 16
+Normal: 18, Anomalies: 32
+Accuracy: 0.52
+Rank: (5, 16, 16) Factor: 2 Bottleneck: 16
+Normal: 16, Anomalies: 34
+Accuracy: 0.4
+Rank: (5, 16, 32) Factor: 2 Bottleneck: 16
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (5, 16, 64) Factor: 2 Bottleneck: 16
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (5, 32, 5) Factor: 2 Bottleneck: 16
+Normal: 15, Anomalies: 35
+Accuracy: 0.46
+Rank: (5, 32, 16) Factor: 2 Bottleneck: 16
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (5, 32, 32) Factor: 2 Bottleneck: 16
+Normal: 16, Anomalies: 34
+Accuracy: 0.44
+Rank: (5, 32, 64) Factor: 2 Bottleneck: 16
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (5, 64, 5) Factor: 2 Bottleneck: 16
+Normal: 10, Anomalies: 40
+Accuracy: 0.44
+Rank: (5, 64, 16) Factor: 2 Bottleneck: 16
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (5, 64, 32) Factor: 2 Bottleneck: 16
+Normal: 8, Anomalies: 42
+Accuracy: 0.48
+Rank: (5, 64, 64) Factor: 2 Bottleneck: 16
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (16, 5, 5) Factor: 2 Bottleneck: 16
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (16, 5, 16) Factor: 2 Bottleneck: 16
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (16, 5, 32) Factor: 2 Bottleneck: 16
+Normal: 14, Anomalies: 36
+Accuracy: 0.44
+Rank: (16, 5, 64) Factor: 2 Bottleneck: 16
+Normal: 17, Anomalies: 33
+Accuracy: 0.42
+Rank: (16, 16, 5) Factor: 2 Bottleneck: 16
+Normal: 18, Anomalies: 32
+Accuracy: 0.44
+Rank: (16, 16, 16) Factor: 2 Bottleneck: 16
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 16, 32) Factor: 2 Bottleneck: 16
+Normal: 14, Anomalies: 36
+Accuracy: 0.44
+Rank: (16, 16, 64) Factor: 2 Bottleneck: 16
+Normal: 13, Anomalies: 37
+Accuracy: 0.38
+Rank: (16, 32, 5) Factor: 2 Bottleneck: 16
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 32, 16) Factor: 2 Bottleneck: 16
+Normal: 36, Anomalies: 14
+Accuracy: 0.6
+Rank: (16, 32, 32) Factor: 2 Bottleneck: 16
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 32, 64) Factor: 2 Bottleneck: 16
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 64, 5) Factor: 2 Bottleneck: 16
+Normal: 2, Anomalies: 48
+Accuracy: 0.56
+Rank: (16, 64, 16) Factor: 2 Bottleneck: 16
+Normal: 4, Anomalies: 46
+Accuracy: 0.52
+Rank: (16, 64, 32) Factor: 2 Bottleneck: 16
+Normal: 3, Anomalies: 47
+Accuracy: 0.54
+Rank: (16, 64, 64) Factor: 2 Bottleneck: 16
+Normal: 38, Anomalies: 12
+Accuracy: 0.6
+Rank: (32, 5, 5) Factor: 2 Bottleneck: 16
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (32, 5, 16) Factor: 2 Bottleneck: 16
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 5, 32) Factor: 2 Bottleneck: 16
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (32, 5, 64) Factor: 2 Bottleneck: 16
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (32, 16, 5) Factor: 2 Bottleneck: 16
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (32, 16, 16) Factor: 2 Bottleneck: 16
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (32, 16, 32) Factor: 2 Bottleneck: 16
+Normal: 38, Anomalies: 12
+Accuracy: 0.6
+Rank: (32, 16, 64) Factor: 2 Bottleneck: 16
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 32, 5) Factor: 2 Bottleneck: 16
+Normal: 8, Anomalies: 42
+Accuracy: 0.44
+Rank: (32, 32, 16) Factor: 2 Bottleneck: 16
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (32, 32, 32) Factor: 2 Bottleneck: 16
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (32, 32, 64) Factor: 2 Bottleneck: 16
+Normal: 8, Anomalies: 42
+Accuracy: 0.44
+Rank: (32, 64, 5) Factor: 2 Bottleneck: 16
+Normal: 1, Anomalies: 49
+Accuracy: 0.58
+Rank: (32, 64, 16) Factor: 2 Bottleneck: 16
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (32, 64, 32) Factor: 2 Bottleneck: 16
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (32, 64, 64) Factor: 2 Bottleneck: 16
+Normal: 1, Anomalies: 49
+Accuracy: 0.58
+Rank: (64, 5, 5) Factor: 2 Bottleneck: 16
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (64, 5, 16) Factor: 2 Bottleneck: 16
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (64, 5, 32) Factor: 2 Bottleneck: 16
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (64, 5, 64) Factor: 2 Bottleneck: 16
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (64, 16, 5) Factor: 2 Bottleneck: 16
+Normal: 8, Anomalies: 42
+Accuracy: 0.44
+Rank: (64, 16, 16) Factor: 2 Bottleneck: 16
+Normal: 8, Anomalies: 42
+Accuracy: 0.44
+Rank: (64, 16, 32) Factor: 2 Bottleneck: 16
+Normal: 6, Anomalies: 44
+Accuracy: 0.48
+Rank: (64, 16, 64) Factor: 2 Bottleneck: 16
+Normal: 6, Anomalies: 44
+Accuracy: 0.48
+Rank: (64, 32, 5) Factor: 2 Bottleneck: 16
+Normal: 4, Anomalies: 46
+Accuracy: 0.52
+Rank: (64, 32, 16) Factor: 2 Bottleneck: 16
+Normal: 2, Anomalies: 48
+Accuracy: 0.56
+Rank: (64, 32, 32) Factor: 2 Bottleneck: 16
+Normal: 1, Anomalies: 49
+Accuracy: 0.58
+Rank: (64, 32, 64) Factor: 2 Bottleneck: 16
+Normal: 1, Anomalies: 49
+Accuracy: 0.58
+Rank: (64, 64, 5) Factor: 2 Bottleneck: 16
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (64, 64, 16) Factor: 2 Bottleneck: 16
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (64, 64, 32) Factor: 2 Bottleneck: 16
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (64, 64, 64) Factor: 2 Bottleneck: 16
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (5, 5, 5) Factor: 2 Bottleneck: 24
+Normal: 18, Anomalies: 32
+Accuracy: 0.68
+Rank: (5, 5, 16) Factor: 2 Bottleneck: 24
+Normal: 10, Anomalies: 40
+Accuracy: 0.56
+Rank: (5, 5, 32) Factor: 2 Bottleneck: 24
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 29, Anomalies: 21
+Accuracy: 0.58
+Rank: (5, 5, 64) Factor: 2 Bottleneck: 24
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 21, Anomalies: 29
+Accuracy: 0.46
+Rank: (5, 16, 5) Factor: 2 Bottleneck: 24
+Normal: 18, Anomalies: 32
+Accuracy: 0.4
+Rank: (5, 16, 16) Factor: 2 Bottleneck: 24
+Normal: 26, Anomalies: 24
+Accuracy: 0.44
+Rank: (5, 16, 32) Factor: 2 Bottleneck: 24
+Normal: 16, Anomalies: 34
+Accuracy: 0.44
+Rank: (5, 16, 64) Factor: 2 Bottleneck: 24
+Normal: 17, Anomalies: 33
+Accuracy: 0.38
+Rank: (5, 32, 5) Factor: 2 Bottleneck: 24
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (5, 32, 16) Factor: 2 Bottleneck: 24
+Normal: 35, Anomalies: 15
+Accuracy: 0.54
+Rank: (5, 32, 32) Factor: 2 Bottleneck: 24
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (5, 32, 64) Factor: 2 Bottleneck: 24
+Normal: 36, Anomalies: 14
+Accuracy: 0.6
+Rank: (5, 64, 5) Factor: 2 Bottleneck: 24
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (5, 64, 16) Factor: 2 Bottleneck: 24
+Normal: 32, Anomalies: 18
+Accuracy: 0.56
+Rank: (5, 64, 32) Factor: 2 Bottleneck: 24
+Normal: 40, Anomalies: 10
+Accuracy: 0.56
+Rank: (5, 64, 64) Factor: 2 Bottleneck: 24
+Normal: 20, Anomalies: 30
+Accuracy: 0.6
+Rank: (16, 5, 5) Factor: 2 Bottleneck: 24
+Normal: 19, Anomalies: 31
+Accuracy: 0.42
+Rank: (16, 5, 16) Factor: 2 Bottleneck: 24
+Normal: 27, Anomalies: 23
+Accuracy: 0.46
+Rank: (16, 5, 32) Factor: 2 Bottleneck: 24
+Normal: 32, Anomalies: 18
+Accuracy: 0.56
+Rank: (16, 5, 64) Factor: 2 Bottleneck: 24
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (16, 16, 5) Factor: 2 Bottleneck: 24
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (16, 16, 16) Factor: 2 Bottleneck: 24
+Normal: 14, Anomalies: 36
+Accuracy: 0.4
+Rank: (16, 16, 32) Factor: 2 Bottleneck: 24
+Normal: 11, Anomalies: 39
+Accuracy: 0.46
+Rank: (16, 16, 64) Factor: 2 Bottleneck: 24
+Normal: 36, Anomalies: 14
+Accuracy: 0.6
+Rank: (16, 32, 5) Factor: 2 Bottleneck: 24
+Normal: 14, Anomalies: 36
+Accuracy: 0.4
+Rank: (16, 32, 16) Factor: 2 Bottleneck: 24
+Normal: 35, Anomalies: 15
+Accuracy: 0.5
+Rank: (16, 32, 32) Factor: 2 Bottleneck: 24
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 32, 64) Factor: 2 Bottleneck: 24
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 64, 5) Factor: 2 Bottleneck: 24
+Normal: 10, Anomalies: 40
+Accuracy: 0.44
+Rank: (16, 64, 16) Factor: 2 Bottleneck: 24
+Normal: 3, Anomalies: 47
+Accuracy: 0.54
+Rank: (16, 64, 32) Factor: 2 Bottleneck: 24
+Normal: 3, Anomalies: 47
+Accuracy: 0.54
+Rank: (16, 64, 64) Factor: 2 Bottleneck: 24
+Normal: 4, Anomalies: 46
+Accuracy: 0.52
+Rank: (32, 5, 5) Factor: 2 Bottleneck: 24
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (32, 5, 16) Factor: 2 Bottleneck: 24
+Normal: 18, Anomalies: 32
+Accuracy: 0.64
+Rank: (32, 5, 32) Factor: 2 Bottleneck: 24
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (32, 5, 64) Factor: 2 Bottleneck: 24
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (32, 16, 5) Factor: 2 Bottleneck: 24
+Normal: 37, Anomalies: 13
+Accuracy: 0.62
+Rank: (32, 16, 16) Factor: 2 Bottleneck: 24
+Normal: 35, Anomalies: 15
+Accuracy: 0.54
+Rank: (32, 16, 32) Factor: 2 Bottleneck: 24
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 16, 64) Factor: 2 Bottleneck: 24
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (32, 32, 5) Factor: 2 Bottleneck: 24
+Normal: 5, Anomalies: 45
+Accuracy: 0.5
+Rank: (32, 32, 16) Factor: 2 Bottleneck: 24
+Normal: 41, Anomalies: 9
+Accuracy: 0.58
+Rank: (32, 32, 32) Factor: 2 Bottleneck: 24
+Normal: 37, Anomalies: 13
+Accuracy: 0.5
+Rank: (32, 32, 64) Factor: 2 Bottleneck: 24
+Normal: 8, Anomalies: 42
+Accuracy: 0.44
+Rank: (32, 64, 5) Factor: 2 Bottleneck: 24
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (32, 64, 16) Factor: 2 Bottleneck: 24
+Normal: 3, Anomalies: 47
+Accuracy: 0.54
+Rank: (32, 64, 32) Factor: 2 Bottleneck: 24
+Normal: 1, Anomalies: 49
+Accuracy: 0.58
+Rank: (32, 64, 64) Factor: 2 Bottleneck: 24
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (64, 5, 5) Factor: 2 Bottleneck: 24
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (64, 5, 16) Factor: 2 Bottleneck: 24
+Normal: 8, Anomalies: 42
+Accuracy: 0.44
+Rank: (64, 5, 32) Factor: 2 Bottleneck: 24
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (64, 5, 64) Factor: 2 Bottleneck: 24
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (64, 16, 5) Factor: 2 Bottleneck: 24
+Normal: 8, Anomalies: 42
+Accuracy: 0.44
+Rank: (64, 16, 16) Factor: 2 Bottleneck: 24
+Normal: 8, Anomalies: 42
+Accuracy: 0.44
+Rank: (64, 16, 32) Factor: 2 Bottleneck: 24
+Normal: 6, Anomalies: 44
+Accuracy: 0.48
+Rank: (64, 16, 64) Factor: 2 Bottleneck: 24
+Normal: 5, Anomalies: 45
+Accuracy: 0.5
+Rank: (64, 32, 5) Factor: 2 Bottleneck: 24
+Normal: 4, Anomalies: 46
+Accuracy: 0.52
+Rank: (64, 32, 16) Factor: 2 Bottleneck: 24
+Normal: 3, Anomalies: 47
+Accuracy: 0.54
+Rank: (64, 32, 32) Factor: 2 Bottleneck: 24
+Normal: 2, Anomalies: 48
+Accuracy: 0.56
+Rank: (64, 32, 64) Factor: 2 Bottleneck: 24
+Normal: 1, Anomalies: 49
+Accuracy: 0.58
+Rank: (64, 64, 5) Factor: 2 Bottleneck: 24
+Normal: 1, Anomalies: 49
+Accuracy: 0.58
+Rank: (64, 64, 16) Factor: 2 Bottleneck: 24
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (64, 64, 32) Factor: 2 Bottleneck: 24
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (64, 64, 64) Factor: 2 Bottleneck: 24
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (5, 5, 5) Factor: 2 Bottleneck: 32
+Normal: 14, Anomalies: 36
+Accuracy: 0.6
+Rank: (5, 5, 16) Factor: 2 Bottleneck: 32
+Normal: 26, Anomalies: 24
+Accuracy: 0.56
+Rank: (5, 5, 32) Factor: 2 Bottleneck: 32
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 6, Anomalies: 44
+Accuracy: 0.64
+Rank: (5, 5, 64) Factor: 2 Bottleneck: 32
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 20, Anomalies: 30
+Accuracy: 0.64
+Rank: (5, 16, 5) Factor: 2 Bottleneck: 32
+Normal: 16, Anomalies: 34
+Accuracy: 0.4
+Rank: (5, 16, 16) Factor: 2 Bottleneck: 32
+Normal: 28, Anomalies: 22
+Accuracy: 0.64
+Rank: (5, 16, 32) Factor: 2 Bottleneck: 32
+Normal: 26, Anomalies: 24
+Accuracy: 0.44
+Rank: (5, 16, 64) Factor: 2 Bottleneck: 32
+Normal: 32, Anomalies: 18
+Accuracy: 0.64
+Rank: (5, 32, 5) Factor: 2 Bottleneck: 32
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (5, 32, 16) Factor: 2 Bottleneck: 32
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (5, 32, 32) Factor: 2 Bottleneck: 32
+Normal: 22, Anomalies: 28
+Accuracy: 0.64
+Rank: (5, 32, 64) Factor: 2 Bottleneck: 32
+Normal: 26, Anomalies: 24
+Accuracy: 0.56
+Rank: (5, 64, 5) Factor: 2 Bottleneck: 32
+Normal: 16, Anomalies: 34
+Accuracy: 0.68
+Rank: (5, 64, 16) Factor: 2 Bottleneck: 32
+Normal: 21, Anomalies: 29
+Accuracy: 0.5
+Rank: (5, 64, 32) Factor: 2 Bottleneck: 32
+Normal: 32, Anomalies: 18
+Accuracy: 0.48
+Rank: (5, 64, 64) Factor: 2 Bottleneck: 32
+Normal: 34, Anomalies: 16
+Accuracy: 0.56
+Rank: (16, 5, 5) Factor: 2 Bottleneck: 32
+Normal: 29, Anomalies: 21
+Accuracy: 0.54
+Rank: (16, 5, 16) Factor: 2 Bottleneck: 32
+Normal: 20, Anomalies: 30
+Accuracy: 0.52
+Rank: (16, 5, 32) Factor: 2 Bottleneck: 32
+Normal: 5, Anomalies: 45
+Accuracy: 0.58
+Rank: (16, 5, 64) Factor: 2 Bottleneck: 32
+Normal: 27, Anomalies: 23
+Accuracy: 0.62
+Rank: (16, 16, 5) Factor: 2 Bottleneck: 32
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (16, 16, 16) Factor: 2 Bottleneck: 32
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (16, 16, 32) Factor: 2 Bottleneck: 32
+Normal: 13, Anomalies: 37
+Accuracy: 0.38
+Rank: (16, 16, 64) Factor: 2 Bottleneck: 32
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (16, 32, 5) Factor: 2 Bottleneck: 32
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 32, 16) Factor: 2 Bottleneck: 32
+Normal: 33, Anomalies: 17
+Accuracy: 0.54
+Rank: (16, 32, 32) Factor: 2 Bottleneck: 32
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 32, 64) Factor: 2 Bottleneck: 32
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 64, 5) Factor: 2 Bottleneck: 32
+Normal: 6, Anomalies: 44
+Accuracy: 0.48
+Rank: (16, 64, 16) Factor: 2 Bottleneck: 32
+Normal: 7, Anomalies: 43
+Accuracy: 0.46
+Rank: (16, 64, 32) Factor: 2 Bottleneck: 32
+Normal: 5, Anomalies: 45
+Accuracy: 0.5
+Rank: (16, 64, 64) Factor: 2 Bottleneck: 32
+Normal: 6, Anomalies: 44
+Accuracy: 0.48
+Rank: (32, 5, 5) Factor: 2 Bottleneck: 32
+Normal: 37, Anomalies: 13
+Accuracy: 0.58
+Rank: (32, 5, 16) Factor: 2 Bottleneck: 32
+Normal: 28, Anomalies: 22
+Accuracy: 0.56
+Rank: (32, 5, 32) Factor: 2 Bottleneck: 32
+Normal: 22, Anomalies: 28
+Accuracy: 0.64
+Rank: (32, 5, 64) Factor: 2 Bottleneck: 32
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (32, 16, 5) Factor: 2 Bottleneck: 32
+Normal: 12, Anomalies: 38
+Accuracy: 0.44
+Rank: (32, 16, 16) Factor: 2 Bottleneck: 32
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (32, 16, 32) Factor: 2 Bottleneck: 32
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (32, 16, 64) Factor: 2 Bottleneck: 32
+Normal: 38, Anomalies: 12
+Accuracy: 0.6
+Rank: (32, 32, 5) Factor: 2 Bottleneck: 32
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (32, 32, 16) Factor: 2 Bottleneck: 32
+Normal: 39, Anomalies: 11
+Accuracy: 0.58
+Rank: (32, 32, 32) Factor: 2 Bottleneck: 32
+Normal: 9, Anomalies: 41
+Accuracy: 0.46
+Rank: (32, 32, 64) Factor: 2 Bottleneck: 32
+Normal: 42, Anomalies: 8
+Accuracy: 0.56
+Rank: (32, 64, 5) Factor: 2 Bottleneck: 32
+Normal: 1, Anomalies: 49
+Accuracy: 0.58
+Rank: (32, 64, 16) Factor: 2 Bottleneck: 32
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (32, 64, 32) Factor: 2 Bottleneck: 32
+Normal: 46, Anomalies: 4
+Accuracy: 0.36
+Rank: (32, 64, 64) Factor: 2 Bottleneck: 32
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (64, 5, 5) Factor: 2 Bottleneck: 32
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (64, 5, 16) Factor: 2 Bottleneck: 32
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (64, 5, 32) Factor: 2 Bottleneck: 32
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (64, 5, 64) Factor: 2 Bottleneck: 32
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (64, 16, 5) Factor: 2 Bottleneck: 32
+Normal: 12, Anomalies: 38
+Accuracy: 0.44
+Rank: (64, 16, 16) Factor: 2 Bottleneck: 32
+Normal: 7, Anomalies: 43
+Accuracy: 0.46
+Rank: (64, 16, 32) Factor: 2 Bottleneck: 32
+Normal: 5, Anomalies: 45
+Accuracy: 0.5
+Rank: (64, 16, 64) Factor: 2 Bottleneck: 32
+Normal: 5, Anomalies: 45
+Accuracy: 0.5
+Rank: (64, 32, 5) Factor: 2 Bottleneck: 32
+Normal: 3, Anomalies: 47
+Accuracy: 0.54
+Rank: (64, 32, 16) Factor: 2 Bottleneck: 32
+Normal: 4, Anomalies: 46
+Accuracy: 0.52
+Rank: (64, 32, 32) Factor: 2 Bottleneck: 32
+Normal: 5, Anomalies: 45
+Accuracy: 0.5
+Rank: (64, 32, 64) Factor: 2 Bottleneck: 32
+Normal: 45, Anomalies: 5
+Accuracy: 0.42
+Rank: (64, 64, 5) Factor: 2 Bottleneck: 32
+Normal: 1, Anomalies: 49
+Accuracy: 0.58
+Rank: (64, 64, 16) Factor: 2 Bottleneck: 32
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (64, 64, 32) Factor: 2 Bottleneck: 32
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (64, 64, 64) Factor: 2 Bottleneck: 32
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (5, 5, 5) Factor: 2 Bottleneck: 64
+Normal: 16, Anomalies: 34
+Accuracy: 0.72
+Rank: (5, 5, 16) Factor: 2 Bottleneck: 64
+Normal: 27, Anomalies: 23
+Accuracy: 0.66
+Rank: (5, 5, 32) Factor: 2 Bottleneck: 64
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 24, Anomalies: 26
+Accuracy: 0.56
+Rank: (5, 5, 64) Factor: 2 Bottleneck: 64
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 19, Anomalies: 31
+Accuracy: 0.5
+Rank: (5, 16, 5) Factor: 2 Bottleneck: 64
+Normal: 20, Anomalies: 30
+Accuracy: 0.56
+Rank: (5, 16, 16) Factor: 2 Bottleneck: 64
+Normal: 21, Anomalies: 29
+Accuracy: 0.54
+Rank: (5, 16, 32) Factor: 2 Bottleneck: 64
+Normal: 26, Anomalies: 24
+Accuracy: 0.48
+Rank: (5, 16, 64) Factor: 2 Bottleneck: 64
+Normal: 21, Anomalies: 29
+Accuracy: 0.46
+Rank: (5, 32, 5) Factor: 2 Bottleneck: 64
+Normal: 13, Anomalies: 37
+Accuracy: 0.58
+Rank: (5, 32, 16) Factor: 2 Bottleneck: 64
+Normal: 25, Anomalies: 25
+Accuracy: 0.58
+Rank: (5, 32, 32) Factor: 2 Bottleneck: 64
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (5, 32, 64) Factor: 2 Bottleneck: 64
+Normal: 23, Anomalies: 27
+Accuracy: 0.46
+Rank: (5, 64, 5) Factor: 2 Bottleneck: 64
+Normal: 33, Anomalies: 17
+Accuracy: 0.58
+Rank: (5, 64, 16) Factor: 2 Bottleneck: 64
+Normal: 11, Anomalies: 39
+Accuracy: 0.54
+Rank: (5, 64, 32) Factor: 2 Bottleneck: 64
+Normal: 21, Anomalies: 29
+Accuracy: 0.54
+Rank: (5, 64, 64) Factor: 2 Bottleneck: 64
+Normal: 27, Anomalies: 23
+Accuracy: 0.54
+Rank: (16, 5, 5) Factor: 2 Bottleneck: 64
+Normal: 25, Anomalies: 25
+Accuracy: 0.5
+Rank: (16, 5, 16) Factor: 2 Bottleneck: 64
+Normal: 19, Anomalies: 31
+Accuracy: 0.54
+Rank: (16, 5, 32) Factor: 2 Bottleneck: 64
+Normal: 15, Anomalies: 35
+Accuracy: 0.5
+Rank: (16, 5, 64) Factor: 2 Bottleneck: 64
+Normal: 18, Anomalies: 32
+Accuracy: 0.6
+Rank: (16, 16, 5) Factor: 2 Bottleneck: 64
+Normal: 24, Anomalies: 26
+Accuracy: 0.64
+Rank: (16, 16, 16) Factor: 2 Bottleneck: 64
+Normal: 21, Anomalies: 29
+Accuracy: 0.54
+Rank: (16, 16, 32) Factor: 2 Bottleneck: 64
+Normal: 19, Anomalies: 31
+Accuracy: 0.54
+Rank: (16, 16, 64) Factor: 2 Bottleneck: 64
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (16, 32, 5) Factor: 2 Bottleneck: 64
+Normal: 28, Anomalies: 22
+Accuracy: 0.56
+Rank: (16, 32, 16) Factor: 2 Bottleneck: 64
+Normal: 28, Anomalies: 22
+Accuracy: 0.64
+Rank: (16, 32, 32) Factor: 2 Bottleneck: 64
+Normal: 20, Anomalies: 30
+Accuracy: 0.64
+Rank: (16, 32, 64) Factor: 2 Bottleneck: 64
+Normal: 18, Anomalies: 32
+Accuracy: 0.52
+Rank: (16, 64, 5) Factor: 2 Bottleneck: 64
+Normal: 6, Anomalies: 44
+Accuracy: 0.48
+Rank: (16, 64, 16) Factor: 2 Bottleneck: 64
+Normal: 35, Anomalies: 15
+Accuracy: 0.54
+Rank: (16, 64, 32) Factor: 2 Bottleneck: 64
+Normal: 39, Anomalies: 11
+Accuracy: 0.46
+Rank: (16, 64, 64) Factor: 2 Bottleneck: 64
+Normal: 29, Anomalies: 21
+Accuracy: 0.54
+Rank: (32, 5, 5) Factor: 2 Bottleneck: 64
+Normal: 17, Anomalies: 33
+Accuracy: 0.58
+Rank: (32, 5, 16) Factor: 2 Bottleneck: 64
+Normal: 24, Anomalies: 26
+Accuracy: 0.48
+Rank: (32, 5, 32) Factor: 2 Bottleneck: 64
+Normal: 28, Anomalies: 22
+Accuracy: 0.56
+Rank: (32, 5, 64) Factor: 2 Bottleneck: 64
+Normal: 16, Anomalies: 34
+Accuracy: 0.68
+Rank: (32, 16, 5) Factor: 2 Bottleneck: 64
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (32, 16, 16) Factor: 2 Bottleneck: 64
+Normal: 22, Anomalies: 28
+Accuracy: 0.6
+Rank: (32, 16, 32) Factor: 2 Bottleneck: 64
+Normal: 30, Anomalies: 20
+Accuracy: 0.6
+Rank: (32, 16, 64) Factor: 2 Bottleneck: 64
+Normal: 23, Anomalies: 27
+Accuracy: 0.7
+Rank: (32, 32, 5) Factor: 2 Bottleneck: 64
+Normal: 41, Anomalies: 9
+Accuracy: 0.54
+Rank: (32, 32, 16) Factor: 2 Bottleneck: 64
+Normal: 35, Anomalies: 15
+Accuracy: 0.58
+Rank: (32, 32, 32) Factor: 2 Bottleneck: 64
+Normal: 36, Anomalies: 14
+Accuracy: 0.56
+Rank: (32, 32, 64) Factor: 2 Bottleneck: 64
+Normal: 36, Anomalies: 14
+Accuracy: 0.6
+Rank: (32, 64, 5) Factor: 2 Bottleneck: 64
+Normal: 27, Anomalies: 23
+Accuracy: 0.54
+Rank: (32, 64, 16) Factor: 2 Bottleneck: 64
+Normal: 38, Anomalies: 12
+Accuracy: 0.52
+Rank: (32, 64, 32) Factor: 2 Bottleneck: 64
+Normal: 2, Anomalies: 48
+Accuracy: 0.56
+Rank: (32, 64, 64) Factor: 2 Bottleneck: 64
+Normal: 5, Anomalies: 45
+Accuracy: 0.5
+Rank: (64, 5, 5) Factor: 2 Bottleneck: 64
+Normal: 28, Anomalies: 22
+Accuracy: 0.64
+Rank: (64, 5, 16) Factor: 2 Bottleneck: 64
+Normal: 30, Anomalies: 20
+Accuracy: 0.68
+Rank: (64, 5, 32) Factor: 2 Bottleneck: 64
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (64, 5, 64) Factor: 2 Bottleneck: 64
+Normal: 24, Anomalies: 26
+Accuracy: 0.52
+Rank: (64, 16, 5) Factor: 2 Bottleneck: 64
+Normal: 10, Anomalies: 40
+Accuracy: 0.44
+Rank: (64, 16, 16) Factor: 2 Bottleneck: 64
+Normal: 24, Anomalies: 26
+Accuracy: 0.56
+Rank: (64, 16, 32) Factor: 2 Bottleneck: 64
+Normal: 5, Anomalies: 45
+Accuracy: 0.5
+Rank: (64, 16, 64) Factor: 2 Bottleneck: 64
+Normal: 5, Anomalies: 45
+Accuracy: 0.5
+Rank: (64, 32, 5) Factor: 2 Bottleneck: 64
+Normal: 41, Anomalies: 9
+Accuracy: 0.46
+Rank: (64, 32, 16) Factor: 2 Bottleneck: 64
+Normal: 39, Anomalies: 11
+Accuracy: 0.42
+Rank: (64, 32, 32) Factor: 2 Bottleneck: 64
+Normal: 35, Anomalies: 15
+Accuracy: 0.54
+Rank: (64, 32, 64) Factor: 2 Bottleneck: 64
+Normal: 39, Anomalies: 11
+Accuracy: 0.54
+Rank: (64, 64, 5) Factor: 2 Bottleneck: 64
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (64, 64, 16) Factor: 2 Bottleneck: 64
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (64, 64, 32) Factor: 2 Bottleneck: 64
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (64, 64, 64) Factor: 2 Bottleneck: 64
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (5, 5, 5) Factor: 3 Bottleneck: 8
+Normal: 26, Anomalies: 24
+Accuracy: 0.4
+Rank: (5, 5, 16) Factor: 3 Bottleneck: 8
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (5, 5, 32) Factor: 3 Bottleneck: 8
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (5, 5, 64) Factor: 3 Bottleneck: 8
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 22, Anomalies: 28
+Accuracy: 0.48
+Rank: (5, 16, 5) Factor: 3 Bottleneck: 8
+Normal: 22, Anomalies: 28
+Accuracy: 0.48
+Rank: (5, 16, 16) Factor: 3 Bottleneck: 8
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (5, 16, 32) Factor: 3 Bottleneck: 8
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (5, 16, 64) Factor: 3 Bottleneck: 8
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (5, 32, 5) Factor: 3 Bottleneck: 8
+Normal: 18, Anomalies: 32
+Accuracy: 0.48
+Rank: (5, 32, 16) Factor: 3 Bottleneck: 8
+Normal: 17, Anomalies: 33
+Accuracy: 0.42
+Rank: (5, 32, 32) Factor: 3 Bottleneck: 8
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (5, 32, 64) Factor: 3 Bottleneck: 8
+Normal: 14, Anomalies: 36
+Accuracy: 0.4
+Rank: (5, 64, 5) Factor: 3 Bottleneck: 8
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (5, 64, 16) Factor: 3 Bottleneck: 8
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (5, 64, 32) Factor: 3 Bottleneck: 8
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (5, 64, 64) Factor: 3 Bottleneck: 8
+Normal: 14, Anomalies: 36
+Accuracy: 0.4
+Rank: (16, 5, 5) Factor: 3 Bottleneck: 8
+Normal: 18, Anomalies: 32
+Accuracy: 0.48
+Rank: (16, 5, 16) Factor: 3 Bottleneck: 8
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (16, 5, 32) Factor: 3 Bottleneck: 8
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (16, 5, 64) Factor: 3 Bottleneck: 8
+Normal: 18, Anomalies: 32
+Accuracy: 0.4
+Rank: (16, 16, 5) Factor: 3 Bottleneck: 8
+Normal: 19, Anomalies: 31
+Accuracy: 0.42
+Rank: (16, 16, 16) Factor: 3 Bottleneck: 8
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (16, 16, 32) Factor: 3 Bottleneck: 8
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (16, 16, 64) Factor: 3 Bottleneck: 8
+Normal: 13, Anomalies: 37
+Accuracy: 0.38
+Rank: (16, 32, 5) Factor: 3 Bottleneck: 8
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (16, 32, 16) Factor: 3 Bottleneck: 8
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (16, 32, 32) Factor: 3 Bottleneck: 8
+Normal: 13, Anomalies: 37
+Accuracy: 0.38
+Rank: (16, 32, 64) Factor: 3 Bottleneck: 8
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 64, 5) Factor: 3 Bottleneck: 8
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 64, 16) Factor: 3 Bottleneck: 8
+Normal: 8, Anomalies: 42
+Accuracy: 0.44
+Rank: (16, 64, 32) Factor: 3 Bottleneck: 8
+Normal: 4, Anomalies: 46
+Accuracy: 0.52
+Rank: (16, 64, 64) Factor: 3 Bottleneck: 8
+Normal: 8, Anomalies: 42
+Accuracy: 0.44
+Rank: (32, 5, 5) Factor: 3 Bottleneck: 8
+Normal: 14, Anomalies: 36
+Accuracy: 0.44
+Rank: (32, 5, 16) Factor: 3 Bottleneck: 8
+Normal: 30, Anomalies: 20
+Accuracy: 0.56
+Rank: (32, 5, 32) Factor: 3 Bottleneck: 8
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (32, 5, 64) Factor: 3 Bottleneck: 8
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (32, 16, 5) Factor: 3 Bottleneck: 8
+Normal: 14, Anomalies: 36
+Accuracy: 0.44
+Rank: (32, 16, 16) Factor: 3 Bottleneck: 8
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (32, 16, 32) Factor: 3 Bottleneck: 8
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (32, 16, 64) Factor: 3 Bottleneck: 8
+Normal: 11, Anomalies: 39
+Accuracy: 0.38
+Rank: (32, 32, 5) Factor: 3 Bottleneck: 8
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 32, 16) Factor: 3 Bottleneck: 8
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 32, 32) Factor: 3 Bottleneck: 8
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 32, 64) Factor: 3 Bottleneck: 8
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (32, 64, 5) Factor: 3 Bottleneck: 8
+Normal: 8, Anomalies: 42
+Accuracy: 0.44
+Rank: (32, 64, 16) Factor: 3 Bottleneck: 8
+Normal: 7, Anomalies: 43
+Accuracy: 0.46
+Rank: (32, 64, 32) Factor: 3 Bottleneck: 8
+Normal: 2, Anomalies: 48
+Accuracy: 0.56
+Rank: (32, 64, 64) Factor: 3 Bottleneck: 8
+Normal: 8, Anomalies: 42
+Accuracy: 0.48
+Rank: (64, 5, 5) Factor: 3 Bottleneck: 8
+Normal: 9, Anomalies: 41
+Accuracy: 0.46
+Rank: (64, 5, 16) Factor: 3 Bottleneck: 8
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (64, 5, 32) Factor: 3 Bottleneck: 8
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (64, 5, 64) Factor: 3 Bottleneck: 8
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (64, 16, 5) Factor: 3 Bottleneck: 8
+Normal: 12, Anomalies: 38
+Accuracy: 0.44
+Rank: (64, 16, 16) Factor: 3 Bottleneck: 8
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (64, 16, 32) Factor: 3 Bottleneck: 8
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (64, 16, 64) Factor: 3 Bottleneck: 8
+Normal: 12, Anomalies: 38
+Accuracy: 0.44
+Rank: (64, 32, 5) Factor: 3 Bottleneck: 8
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (64, 32, 16) Factor: 3 Bottleneck: 8
+Normal: 3, Anomalies: 47
+Accuracy: 0.54
+Rank: (64, 32, 32) Factor: 3 Bottleneck: 8
+Normal: 10, Anomalies: 40
+Accuracy: 0.44
+Rank: (64, 32, 64) Factor: 3 Bottleneck: 8
+Normal: 7, Anomalies: 43
+Accuracy: 0.46
+Rank: (64, 64, 5) Factor: 3 Bottleneck: 8
+Normal: 1, Anomalies: 49
+Accuracy: 0.58
+Rank: (64, 64, 16) Factor: 3 Bottleneck: 8
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (64, 64, 32) Factor: 3 Bottleneck: 8
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (64, 64, 64) Factor: 3 Bottleneck: 8
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (5, 5, 5) Factor: 3 Bottleneck: 16
+Normal: 22, Anomalies: 28
+Accuracy: 0.44
+Rank: (5, 5, 16) Factor: 3 Bottleneck: 16
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (5, 5, 32) Factor: 3 Bottleneck: 16
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 21, Anomalies: 29
+Accuracy: 0.46
+Rank: (5, 5, 64) Factor: 3 Bottleneck: 16
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 22, Anomalies: 28
+Accuracy: 0.4
+Rank: (5, 16, 5) Factor: 3 Bottleneck: 16
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (5, 16, 16) Factor: 3 Bottleneck: 16
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (5, 16, 32) Factor: 3 Bottleneck: 16
+Normal: 16, Anomalies: 34
+Accuracy: 0.44
+Rank: (5, 16, 64) Factor: 3 Bottleneck: 16
+Normal: 18, Anomalies: 32
+Accuracy: 0.4
+Rank: (5, 32, 5) Factor: 3 Bottleneck: 16
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (5, 32, 16) Factor: 3 Bottleneck: 16
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (5, 32, 32) Factor: 3 Bottleneck: 16
+Normal: 16, Anomalies: 34
+Accuracy: 0.44
+Rank: (5, 32, 64) Factor: 3 Bottleneck: 16
+Normal: 16, Anomalies: 34
+Accuracy: 0.4
+Rank: (5, 64, 5) Factor: 3 Bottleneck: 16
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (5, 64, 16) Factor: 3 Bottleneck: 16
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (5, 64, 32) Factor: 3 Bottleneck: 16
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (5, 64, 64) Factor: 3 Bottleneck: 16
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 5, 5) Factor: 3 Bottleneck: 16
+Normal: 18, Anomalies: 32
+Accuracy: 0.44
+Rank: (16, 5, 16) Factor: 3 Bottleneck: 16
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (16, 5, 32) Factor: 3 Bottleneck: 16
+Normal: 16, Anomalies: 34
+Accuracy: 0.4
+Rank: (16, 5, 64) Factor: 3 Bottleneck: 16
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (16, 16, 5) Factor: 3 Bottleneck: 16
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (16, 16, 16) Factor: 3 Bottleneck: 16
+Normal: 16, Anomalies: 34
+Accuracy: 0.4
+Rank: (16, 16, 32) Factor: 3 Bottleneck: 16
+Normal: 13, Anomalies: 37
+Accuracy: 0.46
+Rank: (16, 16, 64) Factor: 3 Bottleneck: 16
+Normal: 16, Anomalies: 34
+Accuracy: 0.44
+Rank: (16, 32, 5) Factor: 3 Bottleneck: 16
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (16, 32, 16) Factor: 3 Bottleneck: 16
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (16, 32, 32) Factor: 3 Bottleneck: 16
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 32, 64) Factor: 3 Bottleneck: 16
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (16, 64, 5) Factor: 3 Bottleneck: 16
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 64, 16) Factor: 3 Bottleneck: 16
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (16, 64, 32) Factor: 3 Bottleneck: 16
+Normal: 7, Anomalies: 43
+Accuracy: 0.46
+Rank: (16, 64, 64) Factor: 3 Bottleneck: 16
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (32, 5, 5) Factor: 3 Bottleneck: 16
+Normal: 14, Anomalies: 36
+Accuracy: 0.44
+Rank: (32, 5, 16) Factor: 3 Bottleneck: 16
+Normal: 14, Anomalies: 36
+Accuracy: 0.4
+Rank: (32, 5, 32) Factor: 3 Bottleneck: 16
+Normal: 14, Anomalies: 36
+Accuracy: 0.4
+Rank: (32, 5, 64) Factor: 3 Bottleneck: 16
+Normal: 23, Anomalies: 27
+Accuracy: 0.5
+Rank: (32, 16, 5) Factor: 3 Bottleneck: 16
+Normal: 14, Anomalies: 36
+Accuracy: 0.44
+Rank: (32, 16, 16) Factor: 3 Bottleneck: 16
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (32, 16, 32) Factor: 3 Bottleneck: 16
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (32, 16, 64) Factor: 3 Bottleneck: 16
+Normal: 13, Anomalies: 37
+Accuracy: 0.38
+Rank: (32, 32, 5) Factor: 3 Bottleneck: 16
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 32, 16) Factor: 3 Bottleneck: 16
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (32, 32, 32) Factor: 3 Bottleneck: 16
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (32, 32, 64) Factor: 3 Bottleneck: 16
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 64, 5) Factor: 3 Bottleneck: 16
+Normal: 2, Anomalies: 48
+Accuracy: 0.56
+Rank: (32, 64, 16) Factor: 3 Bottleneck: 16
+Rank: (32, 64, 16) Factor: 3 Bottleneck: 16
+Normal: 3, Anomalies: 47
+Accuracy: 0.54
+Rank: (32, 64, 32) Factor: 3 Bottleneck: 16
+Normal: 10, Anomalies: 40
+Accuracy: 0.44
+Rank: (32, 64, 64) Factor: 3 Bottleneck: 16
+Normal: 5, Anomalies: 45
+Accuracy: 0.5
+Rank: (64, 5, 5) Factor: 3 Bottleneck: 16
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (64, 5, 16) Factor: 3 Bottleneck: 16
+Normal: 11, Anomalies: 39
+Accuracy: 0.46
+Rank: (64, 5, 32) Factor: 3 Bottleneck: 16
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (64, 5, 64) Factor: 3 Bottleneck: 16
+Normal: 33, Anomalies: 17
+Accuracy: 0.62
+Rank: (64, 16, 5) Factor: 3 Bottleneck: 16
+Normal: 10, Anomalies: 40
+Accuracy: 0.44
+Rank: (64, 16, 16) Factor: 3 Bottleneck: 16
+Normal: 8, Anomalies: 42
+Accuracy: 0.44
+Rank: (64, 16, 32) Factor: 3 Bottleneck: 16
+Normal: 31, Anomalies: 19
+Accuracy: 0.62
+Rank: (64, 16, 64) Factor: 3 Bottleneck: 16
+Normal: 8, Anomalies: 42
+Accuracy: 0.44
+Rank: (64, 32, 5) Factor: 3 Bottleneck: 16
+Normal: 6, Anomalies: 44
+Accuracy: 0.48
+Rank: (64, 32, 16) Factor: 3 Bottleneck: 16
+Normal: 2, Anomalies: 48
+Accuracy: 0.56
+Rank: (64, 32, 32) Factor: 3 Bottleneck: 16
+Normal: 2, Anomalies: 48
+Accuracy: 0.56
+Rank: (64, 32, 64) Factor: 3 Bottleneck: 16
+Normal: 10, Anomalies: 40
+Accuracy: 0.44
+Rank: (64, 64, 5) Factor: 3 Bottleneck: 16
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (64, 64, 16) Factor: 3 Bottleneck: 16
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (64, 64, 32) Factor: 3 Bottleneck: 16
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (64, 64, 64) Factor: 3 Bottleneck: 16
+Normal: 1, Anomalies: 49
+Accuracy: 0.58
+Rank: (5, 5, 5) Factor: 3 Bottleneck: 24
+Normal: 15, Anomalies: 35
+Accuracy: 0.7
+Rank: (5, 5, 16) Factor: 3 Bottleneck: 24
+Normal: 13, Anomalies: 37
+Accuracy: 0.62
+Rank: (5, 5, 32) Factor: 3 Bottleneck: 24
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 20, Anomalies: 30
+Accuracy: 0.56
+Rank: (5, 5, 64) Factor: 3 Bottleneck: 24
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 20, Anomalies: 30
+Accuracy: 0.6
+Rank: (5, 16, 5) Factor: 3 Bottleneck: 24
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (5, 16, 16) Factor: 3 Bottleneck: 24
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (5, 16, 32) Factor: 3 Bottleneck: 24
+Normal: 18, Anomalies: 32
+Accuracy: 0.44
+Rank: (5, 16, 64) Factor: 3 Bottleneck: 24
+Normal: 35, Anomalies: 15
+Accuracy: 0.54
+Rank: (5, 32, 5) Factor: 3 Bottleneck: 24
+Normal: 17, Anomalies: 33
+Accuracy: 0.42
+Rank: (5, 32, 16) Factor: 3 Bottleneck: 24
+Normal: 17, Anomalies: 33
+Accuracy: 0.38
+Rank: (5, 32, 32) Factor: 3 Bottleneck: 24
+Normal: 19, Anomalies: 31
+Accuracy: 0.46
+Rank: (5, 32, 64) Factor: 3 Bottleneck: 24
+Normal: 17, Anomalies: 33
+Accuracy: 0.42
+Rank: (5, 64, 5) Factor: 3 Bottleneck: 24
+Normal: 38, Anomalies: 12
+Accuracy: 0.56
+Rank: (5, 64, 16) Factor: 3 Bottleneck: 24
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (5, 64, 32) Factor: 3 Bottleneck: 24
+Normal: 35, Anomalies: 15
+Accuracy: 0.62
+Rank: (5, 64, 64) Factor: 3 Bottleneck: 24
+Normal: 32, Anomalies: 18
+Accuracy: 0.64
+Rank: (16, 5, 5) Factor: 3 Bottleneck: 24
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (16, 5, 16) Factor: 3 Bottleneck: 24
+Normal: 29, Anomalies: 21
+Accuracy: 0.62
+Rank: (16, 5, 32) Factor: 3 Bottleneck: 24
+Normal: 19, Anomalies: 31
+Accuracy: 0.42
+Rank: (16, 5, 64) Factor: 3 Bottleneck: 24
+Normal: 19, Anomalies: 31
+Accuracy: 0.42
+Rank: (16, 16, 5) Factor: 3 Bottleneck: 24
+Normal: 16, Anomalies: 34
+Accuracy: 0.48
+Rank: (16, 16, 16) Factor: 3 Bottleneck: 24
+Normal: 17, Anomalies: 33
+Accuracy: 0.38
+Rank: (16, 16, 32) Factor: 3 Bottleneck: 24
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (16, 16, 64) Factor: 3 Bottleneck: 24
+Normal: 12, Anomalies: 38
+Accuracy: 0.44
+Rank: (16, 32, 5) Factor: 3 Bottleneck: 24
+Normal: 34, Anomalies: 16
+Accuracy: 0.6
+Rank: (16, 32, 16) Factor: 3 Bottleneck: 24
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 32, 32) Factor: 3 Bottleneck: 24
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (16, 32, 64) Factor: 3 Bottleneck: 24
+Normal: 13, Anomalies: 37
+Accuracy: 0.38
+Rank: (16, 64, 5) Factor: 3 Bottleneck: 24
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (16, 64, 16) Factor: 3 Bottleneck: 24
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (16, 64, 32) Factor: 3 Bottleneck: 24
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (16, 64, 64) Factor: 3 Bottleneck: 24
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (32, 5, 5) Factor: 3 Bottleneck: 24
+Normal: 15, Anomalies: 35
+Accuracy: 0.46
+Rank: (32, 5, 16) Factor: 3 Bottleneck: 24
+Normal: 14, Anomalies: 36
+Accuracy: 0.4
+Rank: (32, 5, 32) Factor: 3 Bottleneck: 24
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (32, 5, 64) Factor: 3 Bottleneck: 24
+Normal: 18, Anomalies: 32
+Accuracy: 0.52
+Rank: (32, 16, 5) Factor: 3 Bottleneck: 24
+Normal: 25, Anomalies: 25
+Accuracy: 0.62
+Rank: (32, 16, 16) Factor: 3 Bottleneck: 24
+Normal: 38, Anomalies: 12
+Accuracy: 0.6
+Rank: (32, 16, 32) Factor: 3 Bottleneck: 24
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 16, 64) Factor: 3 Bottleneck: 24
+Normal: 27, Anomalies: 23
+Accuracy: 0.58
+Rank: (32, 32, 5) Factor: 3 Bottleneck: 24
+Normal: 10, Anomalies: 40
+Accuracy: 0.44
+Rank: (32, 32, 16) Factor: 3 Bottleneck: 24
+Normal: 8, Anomalies: 42
+Accuracy: 0.44
+Rank: (32, 32, 32) Factor: 3 Bottleneck: 24
+Normal: 7, Anomalies: 43
+Accuracy: 0.46
+Rank: (32, 32, 64) Factor: 3 Bottleneck: 24
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (32, 64, 5) Factor: 3 Bottleneck: 24
+Normal: 7, Anomalies: 43
+Accuracy: 0.46
+Rank: (32, 64, 16) Factor: 3 Bottleneck: 24
+Normal: 8, Anomalies: 42
+Accuracy: 0.44
+Rank: (32, 64, 32) Factor: 3 Bottleneck: 24
+Normal: 41, Anomalies: 9
+Accuracy: 0.5
+Rank: (32, 64, 64) Factor: 3 Bottleneck: 24
+Normal: 37, Anomalies: 13
+Accuracy: 0.58
+Rank: (64, 5, 5) Factor: 3 Bottleneck: 24
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (64, 5, 16) Factor: 3 Bottleneck: 24
+Normal: 12, Anomalies: 38
+Accuracy: 0.44
+Rank: (64, 5, 32) Factor: 3 Bottleneck: 24
+Normal: 14, Anomalies: 36
+Accuracy: 0.44
+Rank: (64, 5, 64) Factor: 3 Bottleneck: 24
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (64, 16, 5) Factor: 3 Bottleneck: 24
+Normal: 35, Anomalies: 15
+Accuracy: 0.62
+Rank: (64, 16, 16) Factor: 3 Bottleneck: 24
+Normal: 8, Anomalies: 42
+Accuracy: 0.44
+Rank: (64, 16, 32) Factor: 3 Bottleneck: 24
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (64, 16, 64) Factor: 3 Bottleneck: 24
+Normal: 7, Anomalies: 43
+Accuracy: 0.46
+Rank: (64, 32, 5) Factor: 3 Bottleneck: 24
+Normal: 7, Anomalies: 43
+Accuracy: 0.46
+Rank: (64, 32, 16) Factor: 3 Bottleneck: 24
+Normal: 45, Anomalies: 5
+Accuracy: 0.5
+Rank: (64, 32, 32) Factor: 3 Bottleneck: 24
+Normal: 3, Anomalies: 47
+Accuracy: 0.54
+Rank: (64, 32, 64) Factor: 3 Bottleneck: 24
+Normal: 5, Anomalies: 45
+Accuracy: 0.54
+Rank: (64, 64, 5) Factor: 3 Bottleneck: 24
+Normal: 5, Anomalies: 45
+Accuracy: 0.5
+Rank: (64, 64, 16) Factor: 3 Bottleneck: 24
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (64, 64, 32) Factor: 3 Bottleneck: 24
+Normal: 4, Anomalies: 46
+Accuracy: 0.52
+Rank: (64, 64, 64) Factor: 3 Bottleneck: 24
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (5, 5, 5) Factor: 3 Bottleneck: 32
+Normal: 16, Anomalies: 34
+Accuracy: 0.68
+Rank: (5, 5, 16) Factor: 3 Bottleneck: 32
+Normal: 18, Anomalies: 32
+Accuracy: 0.68
+Rank: (5, 5, 32) Factor: 3 Bottleneck: 32
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 21, Anomalies: 29
+Accuracy: 0.54
+Rank: (5, 5, 64) Factor: 3 Bottleneck: 32
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 21, Anomalies: 29
+Accuracy: 0.54
+Rank: (5, 16, 5) Factor: 3 Bottleneck: 32
+Normal: 24, Anomalies: 26
+Accuracy: 0.64
+Rank: (5, 16, 16) Factor: 3 Bottleneck: 32
+Normal: 19, Anomalies: 31
+Accuracy: 0.46
+Rank: (5, 16, 32) Factor: 3 Bottleneck: 32
+Normal: 26, Anomalies: 24
+Accuracy: 0.56
+Rank: (5, 16, 64) Factor: 3 Bottleneck: 32
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (5, 32, 5) Factor: 3 Bottleneck: 32
+Normal: 19, Anomalies: 31
+Accuracy: 0.46
+Rank: (5, 32, 16) Factor: 3 Bottleneck: 32
+Normal: 16, Anomalies: 34
+Accuracy: 0.48
+Rank: (5, 32, 32) Factor: 3 Bottleneck: 32
+Normal: 14, Anomalies: 36
+Accuracy: 0.44
+Rank: (5, 32, 64) Factor: 3 Bottleneck: 32
+Normal: 30, Anomalies: 20
+Accuracy: 0.48
+Rank: (5, 64, 5) Factor: 3 Bottleneck: 32
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (5, 64, 16) Factor: 3 Bottleneck: 32
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (5, 64, 32) Factor: 3 Bottleneck: 32
+Normal: 14, Anomalies: 36
+Accuracy: 0.44
+Rank: (5, 64, 64) Factor: 3 Bottleneck: 32
+Normal: 36, Anomalies: 14
+Accuracy: 0.56
+Rank: (16, 5, 5) Factor: 3 Bottleneck: 32
+Normal: 16, Anomalies: 34
+Accuracy: 0.64
+Rank: (16, 5, 16) Factor: 3 Bottleneck: 32
+Normal: 16, Anomalies: 34
+Accuracy: 0.4
+Rank: (16, 5, 32) Factor: 3 Bottleneck: 32
+Normal: 9, Anomalies: 41
+Accuracy: 0.54
+Rank: (16, 5, 64) Factor: 3 Bottleneck: 32
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (16, 16, 5) Factor: 3 Bottleneck: 32
+Normal: 33, Anomalies: 17
+Accuracy: 0.58
+Rank: (16, 16, 16) Factor: 3 Bottleneck: 32
+Normal: 33, Anomalies: 17
+Accuracy: 0.62
+Rank: (16, 16, 32) Factor: 3 Bottleneck: 32
+Normal: 16, Anomalies: 34
+Accuracy: 0.4
+Rank: (16, 16, 64) Factor: 3 Bottleneck: 32
+Normal: 14, Anomalies: 36
+Accuracy: 0.4
+Rank: (16, 32, 5) Factor: 3 Bottleneck: 32
+Normal: 12, Anomalies: 38
+Accuracy: 0.44
+Rank: (16, 32, 16) Factor: 3 Bottleneck: 32
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 32, 32) Factor: 3 Bottleneck: 32
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (16, 32, 64) Factor: 3 Bottleneck: 32
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 64, 5) Factor: 3 Bottleneck: 32
+Normal: 34, Anomalies: 16
+Accuracy: 0.56
+Rank: (16, 64, 16) Factor: 3 Bottleneck: 32
+Normal: 6, Anomalies: 44
+Accuracy: 0.48
+Rank: (16, 64, 32) Factor: 3 Bottleneck: 32
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (16, 64, 64) Factor: 3 Bottleneck: 32
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (32, 5, 5) Factor: 3 Bottleneck: 32
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (32, 5, 16) Factor: 3 Bottleneck: 32
+Normal: 34, Anomalies: 16
+Accuracy: 0.6
+Rank: (32, 5, 32) Factor: 3 Bottleneck: 32
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (32, 5, 64) Factor: 3 Bottleneck: 32
+Normal: 14, Anomalies: 36
+Accuracy: 0.4
+Rank: (32, 16, 5) Factor: 3 Bottleneck: 32
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (32, 16, 16) Factor: 3 Bottleneck: 32
+Normal: 37, Anomalies: 13
+Accuracy: 0.58
+Rank: (32, 16, 32) Factor: 3 Bottleneck: 32
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 16, 64) Factor: 3 Bottleneck: 32
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 32, 5) Factor: 3 Bottleneck: 32
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 32, 16) Factor: 3 Bottleneck: 32
+Normal: 31, Anomalies: 19
+Accuracy: 0.5
+Rank: (32, 32, 32) Factor: 3 Bottleneck: 32
+Normal: 28, Anomalies: 22
+Accuracy: 0.6
+Rank: (32, 32, 64) Factor: 3 Bottleneck: 32
+Normal: 9, Anomalies: 41
+Accuracy: 0.46
+Rank: (32, 64, 5) Factor: 3 Bottleneck: 32
+Normal: 36, Anomalies: 14
+Accuracy: 0.52
+Rank: (32, 64, 16) Factor: 3 Bottleneck: 32
+Normal: 10, Anomalies: 40
+Accuracy: 0.44
+Rank: (32, 64, 32) Factor: 3 Bottleneck: 32
+Normal: 9, Anomalies: 41
+Accuracy: 0.46
+Rank: (32, 64, 64) Factor: 3 Bottleneck: 32
+Normal: 4, Anomalies: 46
+Accuracy: 0.52
+Rank: (64, 5, 5) Factor: 3 Bottleneck: 32
+Normal: 32, Anomalies: 18
+Accuracy: 0.64
+Rank: (64, 5, 16) Factor: 3 Bottleneck: 32
+Normal: 27, Anomalies: 23
+Accuracy: 0.58
+Rank: (64, 5, 32) Factor: 3 Bottleneck: 32
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (64, 5, 64) Factor: 3 Bottleneck: 32
+Normal: 30, Anomalies: 20
+Accuracy: 0.56
+Rank: (64, 16, 5) Factor: 3 Bottleneck: 32
+Normal: 12, Anomalies: 38
+Accuracy: 0.44
+Rank: (64, 16, 16) Factor: 3 Bottleneck: 32
+Normal: 20, Anomalies: 30
+Accuracy: 0.56
+Rank: (64, 16, 32) Factor: 3 Bottleneck: 32
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (64, 16, 64) Factor: 3 Bottleneck: 32
+Normal: 11, Anomalies: 39
+Accuracy: 0.38
+Rank: (64, 32, 5) Factor: 3 Bottleneck: 32
+Normal: 32, Anomalies: 18
+Accuracy: 0.56
+Rank: (64, 32, 16) Factor: 3 Bottleneck: 32
+Normal: 39, Anomalies: 11
+Accuracy: 0.58
+Rank: (64, 32, 32) Factor: 3 Bottleneck: 32
+Normal: 29, Anomalies: 21
+Accuracy: 0.58
+Rank: (64, 32, 64) Factor: 3 Bottleneck: 32
+Normal: 8, Anomalies: 42
+Accuracy: 0.44
+Rank: (64, 64, 5) Factor: 3 Bottleneck: 32
+Normal: 47, Anomalies: 3
+Accuracy: 0.46
+Rank: (64, 64, 16) Factor: 3 Bottleneck: 32
+Normal: 5, Anomalies: 45
+Accuracy: 0.5
+Rank: (64, 64, 32) Factor: 3 Bottleneck: 32
+Normal: 1, Anomalies: 49
+Accuracy: 0.58
+Rank: (64, 64, 64) Factor: 3 Bottleneck: 32
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (5, 5, 5) Factor: 3 Bottleneck: 64
+Normal: 8, Anomalies: 42
+Accuracy: 0.68
+Rank: (5, 5, 16) Factor: 3 Bottleneck: 64
+Normal: 15, Anomalies: 35
+Accuracy: 0.62
+Rank: (5, 5, 32) Factor: 3 Bottleneck: 64
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 22, Anomalies: 28
+Accuracy: 0.56
+Rank: (5, 5, 64) Factor: 3 Bottleneck: 64
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 17, Anomalies: 33
+Accuracy: 0.58
+Rank: (5, 16, 5) Factor: 3 Bottleneck: 64
+Normal: 27, Anomalies: 23
+Accuracy: 0.54
+Rank: (5, 16, 16) Factor: 3 Bottleneck: 64
+Normal: 31, Anomalies: 19
+Accuracy: 0.5
+Rank: (5, 16, 32) Factor: 3 Bottleneck: 64
+Normal: 19, Anomalies: 31
+Accuracy: 0.7
+Rank: (5, 16, 64) Factor: 3 Bottleneck: 64
+Normal: 21, Anomalies: 29
+Accuracy: 0.5
+Rank: (5, 32, 5) Factor: 3 Bottleneck: 64
+Normal: 22, Anomalies: 28
+Accuracy: 0.52
+Rank: (5, 32, 16) Factor: 3 Bottleneck: 64
+Normal: 25, Anomalies: 25
+Accuracy: 0.58
+Rank: (5, 32, 32) Factor: 3 Bottleneck: 64
+Normal: 28, Anomalies: 22
+Accuracy: 0.6
+Rank: (5, 32, 64) Factor: 3 Bottleneck: 64
+Normal: 15, Anomalies: 35
+Accuracy: 0.38
+Rank: (5, 64, 5) Factor: 3 Bottleneck: 64
+Normal: 32, Anomalies: 18
+Accuracy: 0.6
+Rank: (5, 64, 16) Factor: 3 Bottleneck: 64
+Normal: 26, Anomalies: 24
+Accuracy: 0.56
+Rank: (5, 64, 32) Factor: 3 Bottleneck: 64
+Normal: 14, Anomalies: 36
+Accuracy: 0.52
+Rank: (5, 64, 64) Factor: 3 Bottleneck: 64
+Normal: 23, Anomalies: 27
+Accuracy: 0.54
+Rank: (16, 5, 5) Factor: 3 Bottleneck: 64
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (16, 5, 16) Factor: 3 Bottleneck: 64
+Normal: 28, Anomalies: 22
+Accuracy: 0.52
+Rank: (16, 5, 32) Factor: 3 Bottleneck: 64
+Normal: 19, Anomalies: 31
+Accuracy: 0.5
+Rank: (16, 5, 64) Factor: 3 Bottleneck: 64
+Normal: 26, Anomalies: 24
+Accuracy: 0.4
+Rank: (16, 16, 5) Factor: 3 Bottleneck: 64
+Normal: 23, Anomalies: 27
+Accuracy: 0.58
+Rank: (16, 16, 16) Factor: 3 Bottleneck: 64
+Normal: 34, Anomalies: 16
+Accuracy: 0.6
+Rank: (16, 16, 32) Factor: 3 Bottleneck: 64
+Normal: 21, Anomalies: 29
+Accuracy: 0.58
+Rank: (16, 16, 64) Factor: 3 Bottleneck: 64
+Normal: 19, Anomalies: 31
+Accuracy: 0.54
+Rank: (16, 32, 5) Factor: 3 Bottleneck: 64
+Normal: 33, Anomalies: 17
+Accuracy: 0.54
+Rank: (16, 32, 16) Factor: 3 Bottleneck: 64
+Normal: 24, Anomalies: 26
+Accuracy: 0.52
+Rank: (16, 32, 32) Factor: 3 Bottleneck: 64
+Normal: 31, Anomalies: 19
+Accuracy: 0.58
+Rank: (16, 32, 64) Factor: 3 Bottleneck: 64
+Normal: 30, Anomalies: 20
+Accuracy: 0.6
+Rank: (16, 64, 5) Factor: 3 Bottleneck: 64
+Normal: 34, Anomalies: 16
+Accuracy: 0.6
+Rank: (16, 64, 16) Factor: 3 Bottleneck: 64
+Normal: 32, Anomalies: 18
+Accuracy: 0.64
+Rank: (16, 64, 32) Factor: 3 Bottleneck: 64
+Normal: 7, Anomalies: 43
+Accuracy: 0.46
+Rank: (16, 64, 64) Factor: 3 Bottleneck: 64
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (32, 5, 5) Factor: 3 Bottleneck: 64
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (32, 5, 16) Factor: 3 Bottleneck: 64
+Normal: 26, Anomalies: 24
+Accuracy: 0.56
+Rank: (32, 5, 32) Factor: 3 Bottleneck: 64
+Normal: 35, Anomalies: 15
+Accuracy: 0.62
+Rank: (32, 5, 64) Factor: 3 Bottleneck: 64
+Normal: 28, Anomalies: 22
+Accuracy: 0.64
+Rank: (32, 16, 5) Factor: 3 Bottleneck: 64
+Normal: 30, Anomalies: 20
+Accuracy: 0.56
+Rank: (32, 16, 16) Factor: 3 Bottleneck: 64
+Normal: 22, Anomalies: 28
+Accuracy: 0.68
+Rank: (32, 16, 32) Factor: 3 Bottleneck: 64
+Normal: 21, Anomalies: 29
+Accuracy: 0.5
+Rank: (32, 16, 64) Factor: 3 Bottleneck: 64
+Normal: 29, Anomalies: 21
+Accuracy: 0.62
+Rank: (32, 32, 5) Factor: 3 Bottleneck: 64
+Normal: 23, Anomalies: 27
+Accuracy: 0.58
+Rank: (32, 32, 16) Factor: 3 Bottleneck: 64
+Normal: 26, Anomalies: 24
+Accuracy: 0.56
+Rank: (32, 32, 32) Factor: 3 Bottleneck: 64
+Normal: 26, Anomalies: 24
+Accuracy: 0.56
+Rank: (32, 32, 64) Factor: 3 Bottleneck: 64
+Normal: 29, Anomalies: 21
+Accuracy: 0.58
+Rank: (32, 64, 5) Factor: 3 Bottleneck: 64
+Normal: 35, Anomalies: 15
+Accuracy: 0.62
+Rank: (32, 64, 16) Factor: 3 Bottleneck: 64
+Normal: 41, Anomalies: 9
+Accuracy: 0.5
+Rank: (32, 64, 32) Factor: 3 Bottleneck: 64
+Normal: 27, Anomalies: 23
+Accuracy: 0.5
+Rank: (32, 64, 64) Factor: 3 Bottleneck: 64
+Normal: 3, Anomalies: 47
+Accuracy: 0.54
+Rank: (64, 5, 5) Factor: 3 Bottleneck: 64
+Normal: 16, Anomalies: 34
+Accuracy: 0.64
+Rank: (64, 5, 16) Factor: 3 Bottleneck: 64
+Normal: 22, Anomalies: 28
+Accuracy: 0.56
+Rank: (64, 5, 32) Factor: 3 Bottleneck: 64
+Normal: 27, Anomalies: 23
+Accuracy: 0.5
+Rank: (64, 5, 64) Factor: 3 Bottleneck: 64
+Normal: 32, Anomalies: 18
+Accuracy: 0.52
+Rank: (64, 16, 5) Factor: 3 Bottleneck: 64
+Normal: 30, Anomalies: 20
+Accuracy: 0.56
+Rank: (64, 16, 16) Factor: 3 Bottleneck: 64
+Normal: 30, Anomalies: 20
+Accuracy: 0.56
+Rank: (64, 16, 32) Factor: 3 Bottleneck: 64
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (64, 16, 64) Factor: 3 Bottleneck: 64
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (64, 32, 5) Factor: 3 Bottleneck: 64
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (64, 32, 16) Factor: 3 Bottleneck: 64
+Normal: 5, Anomalies: 45
+Accuracy: 0.5
+Rank: (64, 32, 32) Factor: 3 Bottleneck: 64
+Normal: 32, Anomalies: 18
+Accuracy: 0.56
+Rank: (64, 32, 64) Factor: 3 Bottleneck: 64
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (64, 64, 5) Factor: 3 Bottleneck: 64
+Normal: 49, Anomalies: 1
+Accuracy: 0.38
+Rank: (64, 64, 16) Factor: 3 Bottleneck: 64
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank: (64, 64, 32) Factor: 3 Bottleneck: 64
+Normal: 31, Anomalies: 19
+Accuracy: 0.58
+Rank: (64, 64, 64) Factor: 3 Bottleneck: 64
+Normal: 42, Anomalies: 8
+Accuracy: 0.56
+Rank: (5, 5, 5) Factor: 4 Bottleneck: 8
+Normal: 22, Anomalies: 28
+Accuracy: 0.48
+Rank: (5, 5, 16) Factor: 4 Bottleneck: 8
+Normal: 23, Anomalies: 27
+Accuracy: 0.5
+Rank: (5, 5, 32) Factor: 4 Bottleneck: 8
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 33, Anomalies: 17
+Accuracy: 0.46
+Rank: (5, 5, 64) Factor: 4 Bottleneck: 8
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 24, Anomalies: 26
+Accuracy: 0.48
+Rank: (5, 16, 5) Factor: 4 Bottleneck: 8
+Normal: 20, Anomalies: 30
+Accuracy: 0.48
+Rank: (5, 16, 16) Factor: 4 Bottleneck: 8
+Normal: 18, Anomalies: 32
+Accuracy: 0.44
+Rank: (5, 16, 32) Factor: 4 Bottleneck: 8
+Normal: 22, Anomalies: 28
+Accuracy: 0.4
+Rank: (5, 16, 64) Factor: 4 Bottleneck: 8
+Normal: 19, Anomalies: 31
+Accuracy: 0.42
+Rank: (5, 32, 5) Factor: 4 Bottleneck: 8
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (5, 32, 16) Factor: 4 Bottleneck: 8
+Normal: 21, Anomalies: 29
+Accuracy: 0.46
+Rank: (5, 32, 32) Factor: 4 Bottleneck: 8
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (5, 32, 64) Factor: 4 Bottleneck: 8
+Normal: 21, Anomalies: 29
+Accuracy: 0.46
+Rank: (5, 64, 5) Factor: 4 Bottleneck: 8
+Normal: 16, Anomalies: 34
+Accuracy: 0.44
+Rank: (5, 64, 16) Factor: 4 Bottleneck: 8
+Normal: 12, Anomalies: 38
+Accuracy: 0.44
+Rank: (5, 64, 32) Factor: 4 Bottleneck: 8
+Normal: 16, Anomalies: 34
+Accuracy: 0.44
+Rank: (5, 64, 64) Factor: 4 Bottleneck: 8
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (16, 5, 5) Factor: 4 Bottleneck: 8
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (16, 5, 16) Factor: 4 Bottleneck: 8
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (16, 5, 32) Factor: 4 Bottleneck: 8
+Normal: 16, Anomalies: 34
+Accuracy: 0.44
+Rank: (16, 5, 64) Factor: 4 Bottleneck: 8
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (16, 16, 5) Factor: 4 Bottleneck: 8
+Normal: 17, Anomalies: 33
+Accuracy: 0.42
+Rank: (16, 16, 16) Factor: 4 Bottleneck: 8
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (16, 16, 32) Factor: 4 Bottleneck: 8
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (16, 16, 64) Factor: 4 Bottleneck: 8
+Normal: 19, Anomalies: 31
+Accuracy: 0.42
+Rank: (16, 32, 5) Factor: 4 Bottleneck: 8
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (16, 32, 16) Factor: 4 Bottleneck: 8
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (16, 32, 32) Factor: 4 Bottleneck: 8
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (16, 32, 64) Factor: 4 Bottleneck: 8
+Normal: 14, Anomalies: 36
+Accuracy: 0.4
+Rank: (16, 64, 5) Factor: 4 Bottleneck: 8
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 64, 16) Factor: 4 Bottleneck: 8
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (16, 64, 32) Factor: 4 Bottleneck: 8
+Normal: 11, Anomalies: 39
+Accuracy: 0.38
+Rank: (16, 64, 64) Factor: 4 Bottleneck: 8
+Normal: 8, Anomalies: 42
+Accuracy: 0.44
+Rank: (32, 5, 5) Factor: 4 Bottleneck: 8
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (32, 5, 16) Factor: 4 Bottleneck: 8
+Normal: 16, Anomalies: 34
+Accuracy: 0.44
+Rank: (32, 5, 32) Factor: 4 Bottleneck: 8
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (32, 5, 64) Factor: 4 Bottleneck: 8
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (32, 16, 5) Factor: 4 Bottleneck: 8
+Normal: 16, Anomalies: 34
+Accuracy: 0.44
+Rank: (32, 16, 16) Factor: 4 Bottleneck: 8
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (32, 16, 32) Factor: 4 Bottleneck: 8
+Normal: 12, Anomalies: 38
+Accuracy: 0.44
+Rank: (32, 16, 64) Factor: 4 Bottleneck: 8
+Normal: 16, Anomalies: 34
+Accuracy: 0.44
+Rank: (32, 32, 5) Factor: 4 Bottleneck: 8
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 32, 16) Factor: 4 Bottleneck: 8
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 32, 32) Factor: 4 Bottleneck: 8
+Normal: 7, Anomalies: 43
+Accuracy: 0.46
+Rank: (32, 32, 64) Factor: 4 Bottleneck: 8
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 64, 5) Factor: 4 Bottleneck: 8
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (32, 64, 16) Factor: 4 Bottleneck: 8
+Normal: 8, Anomalies: 42
+Accuracy: 0.48
+Rank: (32, 64, 32) Factor: 4 Bottleneck: 8
+Normal: 5, Anomalies: 45
+Accuracy: 0.5
+Rank: (32, 64, 64) Factor: 4 Bottleneck: 8
+Normal: 3, Anomalies: 47
+Accuracy: 0.54
+Rank: (64, 5, 5) Factor: 4 Bottleneck: 8
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (64, 5, 16) Factor: 4 Bottleneck: 8
+Normal: 12, Anomalies: 38
+Accuracy: 0.44
+Rank: (64, 5, 32) Factor: 4 Bottleneck: 8
+Normal: 13, Anomalies: 37
+Accuracy: 0.46
+Rank: (64, 5, 64) Factor: 4 Bottleneck: 8
+Normal: 12, Anomalies: 38
+Accuracy: 0.44
+Rank: (64, 16, 5) Factor: 4 Bottleneck: 8
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (64, 16, 16) Factor: 4 Bottleneck: 8
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (64, 16, 32) Factor: 4 Bottleneck: 8
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (64, 16, 64) Factor: 4 Bottleneck: 8
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (64, 32, 5) Factor: 4 Bottleneck: 8
+Normal: 8, Anomalies: 42
+Accuracy: 0.48
+Rank: (64, 32, 16) Factor: 4 Bottleneck: 8
+Normal: 5, Anomalies: 45
+Accuracy: 0.5
+Rank: (64, 32, 32) Factor: 4 Bottleneck: 8
+Normal: 7, Anomalies: 43
+Accuracy: 0.46
+Rank: (64, 32, 64) Factor: 4 Bottleneck: 8
+Normal: 2, Anomalies: 48
+Accuracy: 0.56
+Rank: (64, 64, 5) Factor: 4 Bottleneck: 8
+Normal: 6, Anomalies: 44
+Accuracy: 0.48
+Rank: (64, 64, 16) Factor: 4 Bottleneck: 8
+Normal: 2, Anomalies: 48
+Accuracy: 0.56
+Rank: (64, 64, 32) Factor: 4 Bottleneck: 8
+Normal: 2, Anomalies: 48
+Accuracy: 0.56
+Rank: (64, 64, 64) Factor: 4 Bottleneck: 8
+Normal: 2, Anomalies: 48
+Accuracy: 0.56
+Rank: (5, 5, 5) Factor: 4 Bottleneck: 16
+Normal: 42, Anomalies: 8
+Accuracy: 0.28
+Rank: (5, 5, 16) Factor: 4 Bottleneck: 16
+Normal: 22, Anomalies: 28
+Accuracy: 0.44
+Rank: (5, 5, 32) Factor: 4 Bottleneck: 16
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 21, Anomalies: 29
+Accuracy: 0.42
+Rank: (5, 5, 64) Factor: 4 Bottleneck: 16
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 25, Anomalies: 25
+Accuracy: 0.58
+Rank: (5, 16, 5) Factor: 4 Bottleneck: 16
+Normal: 19, Anomalies: 31
+Accuracy: 0.46
+Rank: (5, 16, 16) Factor: 4 Bottleneck: 16
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (5, 16, 32) Factor: 4 Bottleneck: 16
+Normal: 19, Anomalies: 31
+Accuracy: 0.42
+Rank: (5, 16, 64) Factor: 4 Bottleneck: 16
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (5, 32, 5) Factor: 4 Bottleneck: 16
+Normal: 16, Anomalies: 34
+Accuracy: 0.4
+Rank: (5, 32, 16) Factor: 4 Bottleneck: 16
+Normal: 16, Anomalies: 34
+Accuracy: 0.4
+Rank: (5, 32, 32) Factor: 4 Bottleneck: 16
+Normal: 17, Anomalies: 33
+Accuracy: 0.42
+Rank: (5, 32, 64) Factor: 4 Bottleneck: 16
+Normal: 22, Anomalies: 28
+Accuracy: 0.48
+Rank: (5, 64, 5) Factor: 4 Bottleneck: 16
+Normal: 12, Anomalies: 38
+Accuracy: 0.44
+Rank: (5, 64, 16) Factor: 4 Bottleneck: 16
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (5, 64, 32) Factor: 4 Bottleneck: 16
+Normal: 14, Anomalies: 36
+Accuracy: 0.44
+Rank: (5, 64, 64) Factor: 4 Bottleneck: 16
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (16, 5, 5) Factor: 4 Bottleneck: 16
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (16, 5, 16) Factor: 4 Bottleneck: 16
+Normal: 32, Anomalies: 18
+Accuracy: 0.56
+Rank: (16, 5, 32) Factor: 4 Bottleneck: 16
+Normal: 19, Anomalies: 31
+Accuracy: 0.46
+Rank: (16, 5, 64) Factor: 4 Bottleneck: 16
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (16, 16, 5) Factor: 4 Bottleneck: 16
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (16, 16, 16) Factor: 4 Bottleneck: 16
+Normal: 16, Anomalies: 34
+Accuracy: 0.44
+Rank: (16, 16, 32) Factor: 4 Bottleneck: 16
+Normal: 16, Anomalies: 34
+Accuracy: 0.44
+Rank: (16, 16, 64) Factor: 4 Bottleneck: 16
+Normal: 16, Anomalies: 34
+Accuracy: 0.44
+Rank: (16, 32, 5) Factor: 4 Bottleneck: 16
+Normal: 32, Anomalies: 18
+Accuracy: 0.6
+Rank: (16, 32, 16) Factor: 4 Bottleneck: 16
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (16, 32, 32) Factor: 4 Bottleneck: 16
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 32, 64) Factor: 4 Bottleneck: 16
+Normal: 14, Anomalies: 36
+Accuracy: 0.4
+Rank: (16, 64, 5) Factor: 4 Bottleneck: 16
+Normal: 2, Anomalies: 48
+Accuracy: 0.56
+Rank: (16, 64, 16) Factor: 4 Bottleneck: 16
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (16, 64, 32) Factor: 4 Bottleneck: 16
+Normal: 39, Anomalies: 11
+Accuracy: 0.62
+Rank: (16, 64, 64) Factor: 4 Bottleneck: 16
+Normal: 7, Anomalies: 43
+Accuracy: 0.46
+Rank: (32, 5, 5) Factor: 4 Bottleneck: 16
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (32, 5, 16) Factor: 4 Bottleneck: 16
+Normal: 16, Anomalies: 34
+Accuracy: 0.44
+Rank: (32, 5, 32) Factor: 4 Bottleneck: 16
+Normal: 17, Anomalies: 33
+Accuracy: 0.42
+Rank: (32, 5, 64) Factor: 4 Bottleneck: 16
+Normal: 16, Anomalies: 34
+Accuracy: 0.44
+Rank: (32, 16, 5) Factor: 4 Bottleneck: 16
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 16, 16) Factor: 4 Bottleneck: 16
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (32, 16, 32) Factor: 4 Bottleneck: 16
+Normal: 14, Anomalies: 36
+Accuracy: 0.44
+Rank: (32, 16, 64) Factor: 4 Bottleneck: 16
+Normal: 15, Anomalies: 35
+Accuracy: 0.38
+Rank: (32, 32, 5) Factor: 4 Bottleneck: 16
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (32, 32, 16) Factor: 4 Bottleneck: 16
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (32, 32, 32) Factor: 4 Bottleneck: 16
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 32, 64) Factor: 4 Bottleneck: 16
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (32, 64, 5) Factor: 4 Bottleneck: 16
+Normal: 10, Anomalies: 40
+Accuracy: 0.44
+Rank: (32, 64, 16) Factor: 4 Bottleneck: 16
+Normal: 37, Anomalies: 13
+Accuracy: 0.58
+Rank: (32, 64, 32) Factor: 4 Bottleneck: 16
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (32, 64, 64) Factor: 4 Bottleneck: 16
+Normal: 5, Anomalies: 45
+Accuracy: 0.54
+Rank: (64, 5, 5) Factor: 4 Bottleneck: 16
+Normal: 12, Anomalies: 38
+Accuracy: 0.44
+Rank: (64, 5, 16) Factor: 4 Bottleneck: 16
+Normal: 12, Anomalies: 38
+Accuracy: 0.48
+Rank: (64, 5, 32) Factor: 4 Bottleneck: 16
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (64, 5, 64) Factor: 4 Bottleneck: 16
+Normal: 14, Anomalies: 36
+Accuracy: 0.44
+Rank: (64, 16, 5) Factor: 4 Bottleneck: 16
+Normal: 12, Anomalies: 38
+Accuracy: 0.44
+Rank: (64, 16, 16) Factor: 4 Bottleneck: 16
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (64, 16, 32) Factor: 4 Bottleneck: 16
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (64, 16, 64) Factor: 4 Bottleneck: 16
+Normal: 12, Anomalies: 38
+Accuracy: 0.36
+Rank: (64, 32, 5) Factor: 4 Bottleneck: 16
+Normal: 7, Anomalies: 43
+Accuracy: 0.46
+Rank: (64, 32, 16) Factor: 4 Bottleneck: 16
+Normal: 4, Anomalies: 46
+Accuracy: 0.52
+Rank: (64, 32, 32) Factor: 4 Bottleneck: 16
+Normal: 2, Anomalies: 48
+Accuracy: 0.56
+Rank: (64, 32, 64) Factor: 4 Bottleneck: 16
+Normal: 9, Anomalies: 41
+Accuracy: 0.46
+Rank: (64, 64, 5) Factor: 4 Bottleneck: 16
+Normal: 2, Anomalies: 48
+Accuracy: 0.56
+Rank: (64, 64, 16) Factor: 4 Bottleneck: 16
+Normal: 4, Anomalies: 46
+Accuracy: 0.52
+Rank: (64, 64, 32) Factor: 4 Bottleneck: 16
+Normal: 3, Anomalies: 47
+Accuracy: 0.54
+Rank: (64, 64, 64) Factor: 4 Bottleneck: 16
+Normal: 6, Anomalies: 44
+Accuracy: 0.48
+Rank: (5, 5, 5) Factor: 4 Bottleneck: 24
+Normal: 19, Anomalies: 31
+Accuracy: 0.62
+Rank: (5, 5, 16) Factor: 4 Bottleneck: 24
+Normal: 22, Anomalies: 28
+Accuracy: 0.44
+Rank: (5, 5, 32) Factor: 4 Bottleneck: 24
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 24, Anomalies: 26
+Accuracy: 0.48
+Rank: (5, 5, 64) Factor: 4 Bottleneck: 24
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 17, Anomalies: 33
+Accuracy: 0.62
+Rank: (5, 16, 5) Factor: 4 Bottleneck: 24
+Normal: 20, Anomalies: 30
+Accuracy: 0.48
+Rank: (5, 16, 16) Factor: 4 Bottleneck: 24
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (5, 16, 32) Factor: 4 Bottleneck: 24
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (5, 16, 64) Factor: 4 Bottleneck: 24
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (5, 32, 5) Factor: 4 Bottleneck: 24
+Normal: 30, Anomalies: 20
+Accuracy: 0.6
+Rank: (5, 32, 16) Factor: 4 Bottleneck: 24
+Normal: 18, Anomalies: 32
+Accuracy: 0.4
+Rank: (5, 32, 32) Factor: 4 Bottleneck: 24
+Normal: 16, Anomalies: 34
+Accuracy: 0.4
+Rank: (5, 32, 64) Factor: 4 Bottleneck: 24
+Normal: 18, Anomalies: 32
+Accuracy: 0.44
+Rank: (5, 64, 5) Factor: 4 Bottleneck: 24
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (5, 64, 16) Factor: 4 Bottleneck: 24
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (5, 64, 32) Factor: 4 Bottleneck: 24
+Normal: 12, Anomalies: 38
+Accuracy: 0.44
+Rank: (5, 64, 64) Factor: 4 Bottleneck: 24
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (16, 5, 5) Factor: 4 Bottleneck: 24
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (16, 5, 16) Factor: 4 Bottleneck: 24
+Normal: 18, Anomalies: 32
+Accuracy: 0.4
+Rank: (16, 5, 32) Factor: 4 Bottleneck: 24
+Normal: 26, Anomalies: 24
+Accuracy: 0.48
+Rank: (16, 5, 64) Factor: 4 Bottleneck: 24
+Normal: 29, Anomalies: 21
+Accuracy: 0.54
+Rank: (16, 16, 5) Factor: 4 Bottleneck: 24
+Normal: 26, Anomalies: 24
+Accuracy: 0.56
+Rank: (16, 16, 16) Factor: 4 Bottleneck: 24
+Normal: 16, Anomalies: 34
+Accuracy: 0.44
+Rank: (16, 16, 32) Factor: 4 Bottleneck: 24
+Normal: 16, Anomalies: 34
+Accuracy: 0.44
+Rank: (16, 16, 64) Factor: 4 Bottleneck: 24
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (16, 32, 5) Factor: 4 Bottleneck: 24
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (16, 32, 16) Factor: 4 Bottleneck: 24
+Normal: 33, Anomalies: 17
+Accuracy: 0.62
+Rank: (16, 32, 32) Factor: 4 Bottleneck: 24
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (16, 32, 64) Factor: 4 Bottleneck: 24
+Normal: 34, Anomalies: 16
+Accuracy: 0.56
+Rank: (16, 64, 5) Factor: 4 Bottleneck: 24
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 64, 16) Factor: 4 Bottleneck: 24
+Normal: 32, Anomalies: 18
+Accuracy: 0.64
+Rank: (16, 64, 32) Factor: 4 Bottleneck: 24
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 64, 64) Factor: 4 Bottleneck: 24
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (32, 5, 5) Factor: 4 Bottleneck: 24
+Normal: 15, Anomalies: 35
+Accuracy: 0.38
+Rank: (32, 5, 16) Factor: 4 Bottleneck: 24
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (32, 5, 32) Factor: 4 Bottleneck: 24
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (32, 5, 64) Factor: 4 Bottleneck: 24
+Normal: 14, Anomalies: 36
+Accuracy: 0.4
+Rank: (32, 16, 5) Factor: 4 Bottleneck: 24
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 16, 16) Factor: 4 Bottleneck: 24
+Normal: 13, Anomalies: 37
+Accuracy: 0.38
+Rank: (32, 16, 32) Factor: 4 Bottleneck: 24
+Normal: 13, Anomalies: 37
+Accuracy: 0.38
+Rank: (32, 16, 64) Factor: 4 Bottleneck: 24
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (32, 32, 5) Factor: 4 Bottleneck: 24
+Normal: 35, Anomalies: 15
+Accuracy: 0.58
+Rank: (32, 32, 16) Factor: 4 Bottleneck: 24
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 32, 32) Factor: 4 Bottleneck: 24
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (32, 32, 64) Factor: 4 Bottleneck: 24
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (32, 64, 5) Factor: 4 Bottleneck: 24
+Normal: 8, Anomalies: 42
+Accuracy: 0.44
+Rank: (32, 64, 16) Factor: 4 Bottleneck: 24
+Normal: 4, Anomalies: 46
+Accuracy: 0.52
+Rank: (32, 64, 32) Factor: 4 Bottleneck: 24
+Normal: 4, Anomalies: 46
+Accuracy: 0.52
+Rank: (32, 64, 64) Factor: 4 Bottleneck: 24
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (64, 5, 5) Factor: 4 Bottleneck: 24
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (64, 5, 16) Factor: 4 Bottleneck: 24
+Normal: 36, Anomalies: 14
+Accuracy: 0.56
+Rank: (64, 5, 32) Factor: 4 Bottleneck: 24
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (64, 5, 64) Factor: 4 Bottleneck: 24
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (64, 16, 5) Factor: 4 Bottleneck: 24
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (64, 16, 16) Factor: 4 Bottleneck: 24
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (64, 16, 32) Factor: 4 Bottleneck: 24
+Normal: 38, Anomalies: 12
+Accuracy: 0.6
+Rank: (64, 16, 64) Factor: 4 Bottleneck: 24
+Normal: 11, Anomalies: 39
+Accuracy: 0.38
+Rank: (64, 32, 5) Factor: 4 Bottleneck: 24
+Normal: 6, Anomalies: 44
+Accuracy: 0.48
+Rank: (64, 32, 16) Factor: 4 Bottleneck: 24
+Normal: 10, Anomalies: 40
+Accuracy: 0.44
+Rank: (64, 32, 32) Factor: 4 Bottleneck: 24
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (64, 32, 64) Factor: 4 Bottleneck: 24
+Normal: 4, Anomalies: 46
+Accuracy: 0.52
+Rank: (64, 64, 5) Factor: 4 Bottleneck: 24
+Normal: 5, Anomalies: 45
+Accuracy: 0.5
+Rank: (64, 64, 16) Factor: 4 Bottleneck: 24
+Normal: 2, Anomalies: 48
+Accuracy: 0.56
+Rank: (64, 64, 32) Factor: 4 Bottleneck: 24
+Normal: 5, Anomalies: 45
+Accuracy: 0.5
+Rank: (64, 64, 64) Factor: 4 Bottleneck: 24
+Normal: 1, Anomalies: 49
+Accuracy: 0.58
+Rank: (5, 5, 5) Factor: 4 Bottleneck: 32
+Normal: 22, Anomalies: 28
+Accuracy: 0.44
+Rank: (5, 5, 16) Factor: 4 Bottleneck: 32
+Normal: 12, Anomalies: 38
+Accuracy: 0.64
+Rank: (5, 5, 32) Factor: 4 Bottleneck: 32
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 21, Anomalies: 29
+Accuracy: 0.46
+Rank: (5, 5, 64) Factor: 4 Bottleneck: 32
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 26, Anomalies: 24
+Accuracy: 0.56
+Rank: (5, 16, 5) Factor: 4 Bottleneck: 32
+Normal: 21, Anomalies: 29
+Accuracy: 0.46
+Rank: (5, 16, 16) Factor: 4 Bottleneck: 32
+Normal: 18, Anomalies: 32
+Accuracy: 0.48
+Rank: (5, 16, 32) Factor: 4 Bottleneck: 32
+Normal: 17, Anomalies: 33
+Accuracy: 0.42
+Rank: (5, 16, 64) Factor: 4 Bottleneck: 32
+Normal: 18, Anomalies: 32
+Accuracy: 0.48
+Rank: (5, 32, 5) Factor: 4 Bottleneck: 32
+Normal: 33, Anomalies: 17
+Accuracy: 0.58
+Rank: (5, 32, 16) Factor: 4 Bottleneck: 32
+Normal: 18, Anomalies: 32
+Accuracy: 0.44
+Rank: (5, 32, 32) Factor: 4 Bottleneck: 32
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (5, 32, 64) Factor: 4 Bottleneck: 32
+Normal: 19, Anomalies: 31
+Accuracy: 0.58
+Rank: (5, 64, 5) Factor: 4 Bottleneck: 32
+Normal: 12, Anomalies: 38
+Accuracy: 0.44
+Rank: (5, 64, 16) Factor: 4 Bottleneck: 32
+Normal: 12, Anomalies: 38
+Accuracy: 0.44
+Rank: (5, 64, 32) Factor: 4 Bottleneck: 32
+Normal: 13, Anomalies: 37
+Accuracy: 0.46
+Rank: (5, 64, 64) Factor: 4 Bottleneck: 32
+Normal: 12, Anomalies: 38
+Accuracy: 0.44
+Rank: (16, 5, 5) Factor: 4 Bottleneck: 32
+Normal: 29, Anomalies: 21
+Accuracy: 0.58
+Rank: (16, 5, 16) Factor: 4 Bottleneck: 32
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (16, 5, 32) Factor: 4 Bottleneck: 32
+Normal: 25, Anomalies: 25
+Accuracy: 0.54
+Rank: (16, 5, 64) Factor: 4 Bottleneck: 32
+Normal: 17, Anomalies: 33
+Accuracy: 0.58
+Rank: (16, 16, 5) Factor: 4 Bottleneck: 32
+Normal: 19, Anomalies: 31
+Accuracy: 0.42
+Rank: (16, 16, 16) Factor: 4 Bottleneck: 32
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (16, 16, 32) Factor: 4 Bottleneck: 32
+Normal: 30, Anomalies: 20
+Accuracy: 0.64
+Rank: (16, 16, 64) Factor: 4 Bottleneck: 32
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (16, 32, 5) Factor: 4 Bottleneck: 32
+Normal: 13, Anomalies: 37
+Accuracy: 0.38
+Rank: (16, 32, 16) Factor: 4 Bottleneck: 32
+Normal: 14, Anomalies: 36
+Accuracy: 0.4
+Rank: (16, 32, 32) Factor: 4 Bottleneck: 32
+Normal: 27, Anomalies: 23
+Accuracy: 0.46
+Rank: (16, 32, 64) Factor: 4 Bottleneck: 32
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 64, 5) Factor: 4 Bottleneck: 32
+Normal: 33, Anomalies: 17
+Accuracy: 0.58
+Rank: (16, 64, 16) Factor: 4 Bottleneck: 32
+Normal: 32, Anomalies: 18
+Accuracy: 0.52
+Rank: (16, 64, 32) Factor: 4 Bottleneck: 32
+Normal: 23, Anomalies: 27
+Accuracy: 0.46
+Rank: (16, 64, 64) Factor: 4 Bottleneck: 32
+Normal: 25, Anomalies: 25
+Accuracy: 0.54
+Rank: (32, 5, 5) Factor: 4 Bottleneck: 32
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (32, 5, 16) Factor: 4 Bottleneck: 32
+Normal: 16, Anomalies: 34
+Accuracy: 0.44
+Rank: (32, 5, 32) Factor: 4 Bottleneck: 32
+Normal: 29, Anomalies: 21
+Accuracy: 0.58
+Rank: (32, 5, 64) Factor: 4 Bottleneck: 32
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (32, 16, 5) Factor: 4 Bottleneck: 32
+Normal: 35, Anomalies: 15
+Accuracy: 0.54
+Rank: (32, 16, 16) Factor: 4 Bottleneck: 32
+Normal: 15, Anomalies: 35
+Accuracy: 0.38
+Rank: (32, 16, 32) Factor: 4 Bottleneck: 32
+Normal: 14, Anomalies: 36
+Accuracy: 0.4
+Rank: (32, 16, 64) Factor: 4 Bottleneck: 32
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (32, 32, 5) Factor: 4 Bottleneck: 32
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 32, 16) Factor: 4 Bottleneck: 32
+Normal: 10, Anomalies: 40
+Accuracy: 0.44
+Rank: (32, 32, 32) Factor: 4 Bottleneck: 32
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 32, 64) Factor: 4 Bottleneck: 32
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 64, 5) Factor: 4 Bottleneck: 32
+Normal: 7, Anomalies: 43
+Accuracy: 0.46
+Rank: (32, 64, 16) Factor: 4 Bottleneck: 32
+Normal: 10, Anomalies: 40
+Accuracy: 0.44
+Rank: (32, 64, 32) Factor: 4 Bottleneck: 32
+Normal: 9, Anomalies: 41
+Accuracy: 0.46
+Rank: (32, 64, 64) Factor: 4 Bottleneck: 32
+Normal: 5, Anomalies: 45
+Accuracy: 0.5
+Rank: (64, 5, 5) Factor: 4 Bottleneck: 32
+Normal: 37, Anomalies: 13
+Accuracy: 0.58
+Rank: (64, 5, 16) Factor: 4 Bottleneck: 32
+Normal: 14, Anomalies: 36
+Accuracy: 0.44
+Rank: (64, 5, 32) Factor: 4 Bottleneck: 32
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (64, 5, 64) Factor: 4 Bottleneck: 32
+Normal: 33, Anomalies: 17
+Accuracy: 0.62
+Rank: (64, 16, 5) Factor: 4 Bottleneck: 32
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (64, 16, 16) Factor: 4 Bottleneck: 32
+Normal: 5, Anomalies: 45
+Accuracy: 0.5
+Rank: (64, 16, 32) Factor: 4 Bottleneck: 32
+Normal: 34, Anomalies: 16
+Accuracy: 0.64
+Rank: (64, 16, 64) Factor: 4 Bottleneck: 32
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (64, 32, 5) Factor: 4 Bottleneck: 32
+Normal: 5, Anomalies: 45
+Accuracy: 0.5
+Rank: (64, 32, 16) Factor: 4 Bottleneck: 32
+Normal: 10, Anomalies: 40
+Accuracy: 0.44
+Rank: (64, 32, 32) Factor: 4 Bottleneck: 32
+Normal: 40, Anomalies: 10
+Accuracy: 0.56
+Rank: (64, 32, 64) Factor: 4 Bottleneck: 32
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (64, 64, 5) Factor: 4 Bottleneck: 32
+Normal: 7, Anomalies: 43
+Accuracy: 0.5
+Rank: (64, 64, 16) Factor: 4 Bottleneck: 32
+Normal: 7, Anomalies: 43
+Accuracy: 0.5
+Rank: (64, 64, 32) Factor: 4 Bottleneck: 32
+Normal: 4, Anomalies: 46
+Accuracy: 0.52
+Rank: (64, 64, 64) Factor: 4 Bottleneck: 32
+Normal: 2, Anomalies: 48
+Accuracy: 0.56
+Rank: (5, 5, 5) Factor: 4 Bottleneck: 64
+Normal: 22, Anomalies: 28
+Accuracy: 0.48
+Rank: (5, 5, 16) Factor: 4 Bottleneck: 64
+Normal: 12, Anomalies: 38
+Accuracy: 0.6
+Rank: (5, 5, 32) Factor: 4 Bottleneck: 64
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 21, Anomalies: 29
+Accuracy: 0.62
+Rank: (5, 5, 64) Factor: 4 Bottleneck: 64
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 19, Anomalies: 31
+Accuracy: 0.58
+Rank: (5, 16, 5) Factor: 4 Bottleneck: 64
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (5, 16, 16) Factor: 4 Bottleneck: 64
+Normal: 26, Anomalies: 24
+Accuracy: 0.6
+Rank: (5, 16, 32) Factor: 4 Bottleneck: 64
+Normal: 15, Anomalies: 35
+Accuracy: 0.58
+Rank: (5, 16, 64) Factor: 4 Bottleneck: 64
+Normal: 31, Anomalies: 19
+Accuracy: 0.62
+Rank: (5, 32, 5) Factor: 4 Bottleneck: 64
+Normal: 23, Anomalies: 27
+Accuracy: 0.62
+Rank: (5, 32, 16) Factor: 4 Bottleneck: 64
+Normal: 17, Anomalies: 33
+Accuracy: 0.42
+Rank: (5, 32, 32) Factor: 4 Bottleneck: 64
+Normal: 34, Anomalies: 16
+Accuracy: 0.6
+Rank: (5, 32, 64) Factor: 4 Bottleneck: 64
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (5, 64, 5) Factor: 4 Bottleneck: 64
+Normal: 33, Anomalies: 17
+Accuracy: 0.62
+Rank: (5, 64, 16) Factor: 4 Bottleneck: 64
+Normal: 21, Anomalies: 29
+Accuracy: 0.46
+Rank: (5, 64, 32) Factor: 4 Bottleneck: 64
+Normal: 17, Anomalies: 33
+Accuracy: 0.62
+Rank: (5, 64, 64) Factor: 4 Bottleneck: 64
+Normal: 11, Anomalies: 39
+Accuracy: 0.58
+Rank: (16, 5, 5) Factor: 4 Bottleneck: 64
+Normal: 21, Anomalies: 29
+Accuracy: 0.46
+Rank: (16, 5, 16) Factor: 4 Bottleneck: 64
+Normal: 10, Anomalies: 40
+Accuracy: 0.64
+Rank: (16, 5, 32) Factor: 4 Bottleneck: 64
+Normal: 32, Anomalies: 18
+Accuracy: 0.6
+Rank: (16, 5, 64) Factor: 4 Bottleneck: 64
+Normal: 8, Anomalies: 42
+Accuracy: 0.52
+Rank: (16, 16, 5) Factor: 4 Bottleneck: 64
+Normal: 30, Anomalies: 20
+Accuracy: 0.6
+Rank: (16, 16, 16) Factor: 4 Bottleneck: 64
+Normal: 12, Anomalies: 38
+Accuracy: 0.64
+Rank: (16, 16, 32) Factor: 4 Bottleneck: 64
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (16, 16, 64) Factor: 4 Bottleneck: 64
+Normal: 30, Anomalies: 20
+Accuracy: 0.6
+Rank: (16, 32, 5) Factor: 4 Bottleneck: 64
+Normal: 37, Anomalies: 13
+Accuracy: 0.62
+Rank: (16, 32, 16) Factor: 4 Bottleneck: 64
+Normal: 21, Anomalies: 29
+Accuracy: 0.58
+Rank: (16, 32, 32) Factor: 4 Bottleneck: 64
+Normal: 30, Anomalies: 20
+Accuracy: 0.64
+Rank: (16, 32, 64) Factor: 4 Bottleneck: 64
+Normal: 22, Anomalies: 28
+Accuracy: 0.64
+Rank: (16, 64, 5) Factor: 4 Bottleneck: 64
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (16, 64, 16) Factor: 4 Bottleneck: 64
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (16, 64, 32) Factor: 4 Bottleneck: 64
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (16, 64, 64) Factor: 4 Bottleneck: 64
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (32, 5, 5) Factor: 4 Bottleneck: 64
+Normal: 15, Anomalies: 35
+Accuracy: 0.62
+Rank: (32, 5, 16) Factor: 4 Bottleneck: 64
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (32, 5, 32) Factor: 4 Bottleneck: 64
+Normal: 15, Anomalies: 35
+Accuracy: 0.58
+Rank: (32, 5, 64) Factor: 4 Bottleneck: 64
+Normal: 25, Anomalies: 25
+Accuracy: 0.54
+Rank: (32, 16, 5) Factor: 4 Bottleneck: 64
+Normal: 28, Anomalies: 22
+Accuracy: 0.56
+Rank: (32, 16, 16) Factor: 4 Bottleneck: 64
+Normal: 19, Anomalies: 31
+Accuracy: 0.58
+Rank: (32, 16, 32) Factor: 4 Bottleneck: 64
+Normal: 24, Anomalies: 26
+Accuracy: 0.6
+Rank: (32, 16, 64) Factor: 4 Bottleneck: 64
+Normal: 25, Anomalies: 25
+Accuracy: 0.54
+Rank: (32, 32, 5) Factor: 4 Bottleneck: 64
+Normal: 32, Anomalies: 18
+Accuracy: 0.52
+Rank: (32, 32, 16) Factor: 4 Bottleneck: 64
+Normal: 10, Anomalies: 40
+Accuracy: 0.44
+Rank: (32, 32, 32) Factor: 4 Bottleneck: 64
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (32, 32, 64) Factor: 4 Bottleneck: 64
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 64, 5) Factor: 4 Bottleneck: 64
+Normal: 31, Anomalies: 19
+Accuracy: 0.62
+Rank: (32, 64, 16) Factor: 4 Bottleneck: 64
+Normal: 29, Anomalies: 21
+Accuracy: 0.38
+Rank: (32, 64, 32) Factor: 4 Bottleneck: 64
+Normal: 4, Anomalies: 46
+Accuracy: 0.52
+Rank: (32, 64, 64) Factor: 4 Bottleneck: 64
+Normal: 30, Anomalies: 20
+Accuracy: 0.52
+Rank: (64, 5, 5) Factor: 4 Bottleneck: 64
+Normal: 35, Anomalies: 15
+Accuracy: 0.58
+Rank: (64, 5, 16) Factor: 4 Bottleneck: 64
+Normal: 32, Anomalies: 18
+Accuracy: 0.68
+Rank: (64, 5, 32) Factor: 4 Bottleneck: 64
+Normal: 29, Anomalies: 21
+Accuracy: 0.62
+Rank: (64, 5, 64) Factor: 4 Bottleneck: 64
+Normal: 26, Anomalies: 24
+Accuracy: 0.6
+Rank: (64, 16, 5) Factor: 4 Bottleneck: 64
+Normal: 30, Anomalies: 20
+Accuracy: 0.6
+Rank: (64, 16, 16) Factor: 4 Bottleneck: 64
+Normal: 23, Anomalies: 27
+Accuracy: 0.62
+Rank: (64, 16, 32) Factor: 4 Bottleneck: 64
+Normal: 23, Anomalies: 27
+Accuracy: 0.66
+Rank: (64, 16, 64) Factor: 4 Bottleneck: 64
+Normal: 29, Anomalies: 21
+Accuracy: 0.58
+Rank: (64, 32, 5) Factor: 4 Bottleneck: 64
+Normal: 24, Anomalies: 26
+Accuracy: 0.52
+Rank: (64, 32, 16) Factor: 4 Bottleneck: 64
+Normal: 33, Anomalies: 17
+Accuracy: 0.58
+Rank: (64, 32, 32) Factor: 4 Bottleneck: 64
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (64, 32, 64) Factor: 4 Bottleneck: 64
+Normal: 26, Anomalies: 24
+Accuracy: 0.64
+Rank: (64, 64, 5) Factor: 4 Bottleneck: 64
+Normal: 44, Anomalies: 6
+Accuracy: 0.48
+Rank: (64, 64, 16) Factor: 4 Bottleneck: 64
+Normal: 43, Anomalies: 7
+Accuracy: 0.5
+Rank: (64, 64, 32) Factor: 4 Bottleneck: 64
+Normal: 5, Anomalies: 45
+Accuracy: 0.5
+Rank: (64, 64, 64) Factor: 4 Bottleneck: 64
+Normal: 3, Anomalies: 47
+Accuracy: 0.54
+Rank: (5, 5, 5) Factor: 5 Bottleneck: 8
+Normal: 23, Anomalies: 27
+Accuracy: 0.46
+Rank: (5, 5, 16) Factor: 5 Bottleneck: 8
+Normal: 21, Anomalies: 29
+Accuracy: 0.42
+Rank: (5, 5, 32) Factor: 5 Bottleneck: 8
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 21, Anomalies: 29
+Accuracy: 0.46
+Rank: (5, 5, 64) Factor: 5 Bottleneck: 8
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (5, 16, 5) Factor: 5 Bottleneck: 8
+Normal: 19, Anomalies: 31
+Accuracy: 0.46
+Rank: (5, 16, 16) Factor: 5 Bottleneck: 8
+Normal: 23, Anomalies: 27
+Accuracy: 0.42
+Rank: (5, 16, 32) Factor: 5 Bottleneck: 8
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (5, 16, 64) Factor: 5 Bottleneck: 8
+Normal: 22, Anomalies: 28
+Accuracy: 0.48
+Rank: (5, 32, 5) Factor: 5 Bottleneck: 8
+Normal: 17, Anomalies: 33
+Accuracy: 0.42
+Rank: (5, 32, 16) Factor: 5 Bottleneck: 8
+Normal: 17, Anomalies: 33
+Accuracy: 0.42
+Rank: (5, 32, 32) Factor: 5 Bottleneck: 8
+Normal: 16, Anomalies: 34
+Accuracy: 0.48
+Rank: (5, 32, 64) Factor: 5 Bottleneck: 8
+Normal: 17, Anomalies: 33
+Accuracy: 0.42
+Rank: (5, 64, 5) Factor: 5 Bottleneck: 8
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (5, 64, 16) Factor: 5 Bottleneck: 8
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (5, 64, 32) Factor: 5 Bottleneck: 8
+Normal: 14, Anomalies: 36
+Accuracy: 0.44
+Rank: (5, 64, 64) Factor: 5 Bottleneck: 8
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (16, 5, 5) Factor: 5 Bottleneck: 8
+Normal: 21, Anomalies: 29
+Accuracy: 0.46
+Rank: (16, 5, 16) Factor: 5 Bottleneck: 8
+Normal: 19, Anomalies: 31
+Accuracy: 0.42
+Rank: (16, 5, 32) Factor: 5 Bottleneck: 8
+Normal: 18, Anomalies: 32
+Accuracy: 0.48
+Rank: (16, 5, 64) Factor: 5 Bottleneck: 8
+Normal: 19, Anomalies: 31
+Accuracy: 0.46
+Rank: (16, 16, 5) Factor: 5 Bottleneck: 8
+Normal: 16, Anomalies: 34
+Accuracy: 0.44
+Rank: (16, 16, 16) Factor: 5 Bottleneck: 8
+Normal: 14, Anomalies: 36
+Accuracy: 0.4
+Rank: (16, 16, 32) Factor: 5 Bottleneck: 8
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (16, 16, 64) Factor: 5 Bottleneck: 8
+Normal: 18, Anomalies: 32
+Accuracy: 0.44
+Rank: (16, 32, 5) Factor: 5 Bottleneck: 8
+Normal: 14, Anomalies: 36
+Accuracy: 0.4
+Rank: (16, 32, 16) Factor: 5 Bottleneck: 8
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (16, 32, 32) Factor: 5 Bottleneck: 8
+Normal: 16, Anomalies: 34
+Accuracy: 0.4
+Rank: (16, 32, 64) Factor: 5 Bottleneck: 8
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (16, 64, 5) Factor: 5 Bottleneck: 8
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (16, 64, 16) Factor: 5 Bottleneck: 8
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (16, 64, 32) Factor: 5 Bottleneck: 8
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 64, 64) Factor: 5 Bottleneck: 8
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (32, 5, 5) Factor: 5 Bottleneck: 8
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (32, 5, 16) Factor: 5 Bottleneck: 8
+Normal: 18, Anomalies: 32
+Accuracy: 0.44
+Rank: (32, 5, 32) Factor: 5 Bottleneck: 8
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (32, 5, 64) Factor: 5 Bottleneck: 8
+Normal: 14, Anomalies: 36
+Accuracy: 0.4
+Rank: (32, 16, 5) Factor: 5 Bottleneck: 8
+Normal: 16, Anomalies: 34
+Accuracy: 0.44
+Rank: (32, 16, 16) Factor: 5 Bottleneck: 8
+Normal: 16, Anomalies: 34
+Accuracy: 0.4
+Rank: (32, 16, 32) Factor: 5 Bottleneck: 8
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (32, 16, 64) Factor: 5 Bottleneck: 8
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (32, 32, 5) Factor: 5 Bottleneck: 8
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 32, 16) Factor: 5 Bottleneck: 8
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 32, 32) Factor: 5 Bottleneck: 8
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (32, 32, 64) Factor: 5 Bottleneck: 8
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (32, 64, 5) Factor: 5 Bottleneck: 8
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 64, 16) Factor: 5 Bottleneck: 8
+Normal: 4, Anomalies: 46
+Accuracy: 0.52
+Rank: (32, 64, 32) Factor: 5 Bottleneck: 8
+Normal: 6, Anomalies: 44
+Accuracy: 0.48
+Rank: (32, 64, 64) Factor: 5 Bottleneck: 8
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (64, 5, 5) Factor: 5 Bottleneck: 8
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (64, 5, 16) Factor: 5 Bottleneck: 8
+Normal: 14, Anomalies: 36
+Accuracy: 0.44
+Rank: (64, 5, 32) Factor: 5 Bottleneck: 8
+Normal: 12, Anomalies: 38
+Accuracy: 0.44
+Rank: (64, 5, 64) Factor: 5 Bottleneck: 8
+Normal: 12, Anomalies: 38
+Accuracy: 0.44
+Rank: (64, 16, 5) Factor: 5 Bottleneck: 8
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (64, 16, 16) Factor: 5 Bottleneck: 8
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (64, 16, 32) Factor: 5 Bottleneck: 8
+Normal: 12, Anomalies: 38
+Accuracy: 0.36
+Rank: (64, 16, 64) Factor: 5 Bottleneck: 8
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (64, 32, 5) Factor: 5 Bottleneck: 8
+Normal: 10, Anomalies: 40
+Accuracy: 0.44
+Rank: (64, 32, 16) Factor: 5 Bottleneck: 8
+Normal: 7, Anomalies: 43
+Accuracy: 0.46
+Rank: (64, 32, 32) Factor: 5 Bottleneck: 8
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (64, 32, 64) Factor: 5 Bottleneck: 8
+Normal: 10, Anomalies: 40
+Accuracy: 0.44
+Rank: (64, 64, 5) Factor: 5 Bottleneck: 8
+Normal: 4, Anomalies: 46
+Accuracy: 0.56
+Rank: (64, 64, 16) Factor: 5 Bottleneck: 8
+Normal: 1, Anomalies: 49
+Accuracy: 0.58
+Rank: (64, 64, 32) Factor: 5 Bottleneck: 8
+Normal: 7, Anomalies: 43
+Accuracy: 0.46
+Rank: (64, 64, 64) Factor: 5 Bottleneck: 8
+Normal: 1, Anomalies: 49
+Accuracy: 0.58
+Rank: (5, 5, 5) Factor: 5 Bottleneck: 16
+Normal: 23, Anomalies: 27
+Accuracy: 0.46
+Rank: (5, 5, 16) Factor: 5 Bottleneck: 16
+Normal: 21, Anomalies: 29
+Accuracy: 0.46
+Rank: (5, 5, 32) Factor: 5 Bottleneck: 16
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 22, Anomalies: 28
+Accuracy: 0.44
+Rank: (5, 5, 64) Factor: 5 Bottleneck: 16
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 23, Anomalies: 27
+Accuracy: 0.46
+Rank: (5, 16, 5) Factor: 5 Bottleneck: 16
+Normal: 29, Anomalies: 21
+Accuracy: 0.54
+Rank: (5, 16, 16) Factor: 5 Bottleneck: 16
+Normal: 20, Anomalies: 30
+Accuracy: 0.48
+Rank: (5, 16, 32) Factor: 5 Bottleneck: 16
+Normal: 20, Anomalies: 30
+Accuracy: 0.48
+Rank: (5, 16, 64) Factor: 5 Bottleneck: 16
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (5, 32, 5) Factor: 5 Bottleneck: 16
+Normal: 16, Anomalies: 34
+Accuracy: 0.4
+Rank: (5, 32, 16) Factor: 5 Bottleneck: 16
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (5, 32, 32) Factor: 5 Bottleneck: 16
+Normal: 19, Anomalies: 31
+Accuracy: 0.46
+Rank: (5, 32, 64) Factor: 5 Bottleneck: 16
+Normal: 16, Anomalies: 34
+Accuracy: 0.44
+Rank: (5, 64, 5) Factor: 5 Bottleneck: 16
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (5, 64, 16) Factor: 5 Bottleneck: 16
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (5, 64, 32) Factor: 5 Bottleneck: 16
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (5, 64, 64) Factor: 5 Bottleneck: 16
+Normal: 12, Anomalies: 38
+Accuracy: 0.44
+Rank: (16, 5, 5) Factor: 5 Bottleneck: 16
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (16, 5, 16) Factor: 5 Bottleneck: 16
+Normal: 23, Anomalies: 27
+Accuracy: 0.54
+Rank: (16, 5, 32) Factor: 5 Bottleneck: 16
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (16, 5, 64) Factor: 5 Bottleneck: 16
+Normal: 21, Anomalies: 29
+Accuracy: 0.46
+Rank: (16, 16, 5) Factor: 5 Bottleneck: 16
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (16, 16, 16) Factor: 5 Bottleneck: 16
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (16, 16, 32) Factor: 5 Bottleneck: 16
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (16, 16, 64) Factor: 5 Bottleneck: 16
+Normal: 19, Anomalies: 31
+Accuracy: 0.42
+Rank: (16, 32, 5) Factor: 5 Bottleneck: 16
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 32, 16) Factor: 5 Bottleneck: 16
+Normal: 14, Anomalies: 36
+Accuracy: 0.44
+Rank: (16, 32, 32) Factor: 5 Bottleneck: 16
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (16, 32, 64) Factor: 5 Bottleneck: 16
+Normal: 13, Anomalies: 37
+Accuracy: 0.38
+Rank: (16, 64, 5) Factor: 5 Bottleneck: 16
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (16, 64, 16) Factor: 5 Bottleneck: 16
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 64, 32) Factor: 5 Bottleneck: 16
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (16, 64, 64) Factor: 5 Bottleneck: 16
+Normal: 35, Anomalies: 15
+Accuracy: 0.66
+Rank: (32, 5, 5) Factor: 5 Bottleneck: 16
+Normal: 18, Anomalies: 32
+Accuracy: 0.44
+Rank: (32, 5, 16) Factor: 5 Bottleneck: 16
+Normal: 14, Anomalies: 36
+Accuracy: 0.4
+Rank: (32, 5, 32) Factor: 5 Bottleneck: 16
+Normal: 32, Anomalies: 18
+Accuracy: 0.64
+Rank: (32, 5, 64) Factor: 5 Bottleneck: 16
+Normal: 17, Anomalies: 33
+Accuracy: 0.42
+Rank: (32, 16, 5) Factor: 5 Bottleneck: 16
+Normal: 14, Anomalies: 36
+Accuracy: 0.44
+Rank: (32, 16, 16) Factor: 5 Bottleneck: 16
+Normal: 13, Anomalies: 37
+Accuracy: 0.38
+Rank: (32, 16, 32) Factor: 5 Bottleneck: 16
+Normal: 15, Anomalies: 35
+Accuracy: 0.38
+Rank: (32, 16, 64) Factor: 5 Bottleneck: 16
+Normal: 14, Anomalies: 36
+Accuracy: 0.4
+Rank: (32, 32, 5) Factor: 5 Bottleneck: 16
+Normal: 12, Anomalies: 38
+Accuracy: 0.44
+Rank: (32, 32, 16) Factor: 5 Bottleneck: 16
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 32, 32) Factor: 5 Bottleneck: 16
+Normal: 12, Anomalies: 38
+Accuracy: 0.44
+Rank: (32, 32, 64) Factor: 5 Bottleneck: 16
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (32, 64, 5) Factor: 5 Bottleneck: 16
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (32, 64, 16) Factor: 5 Bottleneck: 16
+Normal: 7, Anomalies: 43
+Accuracy: 0.46
+Rank: (32, 64, 32) Factor: 5 Bottleneck: 16
+Normal: 10, Anomalies: 40
+Accuracy: 0.44
+Rank: (32, 64, 64) Factor: 5 Bottleneck: 16
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (64, 5, 5) Factor: 5 Bottleneck: 16
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (64, 5, 16) Factor: 5 Bottleneck: 16
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (64, 5, 32) Factor: 5 Bottleneck: 16
+Normal: 12, Anomalies: 38
+Accuracy: 0.44
+Rank: (64, 5, 64) Factor: 5 Bottleneck: 16
+Normal: 12, Anomalies: 38
+Accuracy: 0.44
+Rank: (64, 16, 5) Factor: 5 Bottleneck: 16
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (64, 16, 16) Factor: 5 Bottleneck: 16
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (64, 16, 32) Factor: 5 Bottleneck: 16
+Normal: 11, Anomalies: 39
+Accuracy: 0.38
+Rank: (64, 16, 64) Factor: 5 Bottleneck: 16
+Normal: 12, Anomalies: 38
+Accuracy: 0.36
+Rank: (64, 32, 5) Factor: 5 Bottleneck: 16
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (64, 32, 16) Factor: 5 Bottleneck: 16
+Normal: 10, Anomalies: 40
+Accuracy: 0.44
+Rank: (64, 32, 32) Factor: 5 Bottleneck: 16
+Normal: 8, Anomalies: 42
+Accuracy: 0.44
+Rank: (64, 32, 64) Factor: 5 Bottleneck: 16
+Normal: 10, Anomalies: 40
+Accuracy: 0.44
+Rank: (64, 64, 5) Factor: 5 Bottleneck: 16
+Normal: 2, Anomalies: 48
+Accuracy: 0.56
+Rank: (64, 64, 16) Factor: 5 Bottleneck: 16
+Normal: 3, Anomalies: 47
+Accuracy: 0.54
+Rank: (64, 64, 32) Factor: 5 Bottleneck: 16
+Normal: 3, Anomalies: 47
+Accuracy: 0.54
+Rank: (64, 64, 64) Factor: 5 Bottleneck: 16
+Normal: 5, Anomalies: 45
+Accuracy: 0.5
+Rank: (5, 5, 5) Factor: 5 Bottleneck: 24
+Normal: 20, Anomalies: 30
+Accuracy: 0.52
+Rank: (5, 5, 16) Factor: 5 Bottleneck: 24
+Normal: 22, Anomalies: 28
+Accuracy: 0.56
+Rank: (5, 5, 32) Factor: 5 Bottleneck: 24
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 27, Anomalies: 23
+Accuracy: 0.5
+Rank: (5, 5, 64) Factor: 5 Bottleneck: 24
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 29, Anomalies: 21
+Accuracy: 0.54
+Rank: (5, 16, 5) Factor: 5 Bottleneck: 24
+Normal: 19, Anomalies: 31
+Accuracy: 0.42
+Rank: (5, 16, 16) Factor: 5 Bottleneck: 24
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (5, 16, 32) Factor: 5 Bottleneck: 24
+Normal: 18, Anomalies: 32
+Accuracy: 0.44
+Rank: (5, 16, 64) Factor: 5 Bottleneck: 24
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (5, 32, 5) Factor: 5 Bottleneck: 24
+Normal: 17, Anomalies: 33
+Accuracy: 0.42
+Rank: (5, 32, 16) Factor: 5 Bottleneck: 24
+Normal: 18, Anomalies: 32
+Accuracy: 0.44
+Rank: (5, 32, 32) Factor: 5 Bottleneck: 24
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (5, 32, 64) Factor: 5 Bottleneck: 24
+Normal: 16, Anomalies: 34
+Accuracy: 0.44
+Rank: (5, 64, 5) Factor: 5 Bottleneck: 24
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (5, 64, 16) Factor: 5 Bottleneck: 24
+Normal: 36, Anomalies: 14
+Accuracy: 0.6
+Rank: (5, 64, 32) Factor: 5 Bottleneck: 24
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (5, 64, 64) Factor: 5 Bottleneck: 24
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (16, 5, 5) Factor: 5 Bottleneck: 24
+Normal: 18, Anomalies: 32
+Accuracy: 0.44
+Rank: (16, 5, 16) Factor: 5 Bottleneck: 24
+Normal: 23, Anomalies: 27
+Accuracy: 0.58
+Rank: (16, 5, 32) Factor: 5 Bottleneck: 24
+Normal: 19, Anomalies: 31
+Accuracy: 0.42
+Rank: (16, 5, 64) Factor: 5 Bottleneck: 24
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (16, 16, 5) Factor: 5 Bottleneck: 24
+Normal: 19, Anomalies: 31
+Accuracy: 0.42
+Rank: (16, 16, 16) Factor: 5 Bottleneck: 24
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (16, 16, 32) Factor: 5 Bottleneck: 24
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (16, 16, 64) Factor: 5 Bottleneck: 24
+Normal: 23, Anomalies: 27
+Accuracy: 0.62
+Rank: (16, 32, 5) Factor: 5 Bottleneck: 24
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (16, 32, 16) Factor: 5 Bottleneck: 24
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (16, 32, 32) Factor: 5 Bottleneck: 24
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 32, 64) Factor: 5 Bottleneck: 24
+Normal: 30, Anomalies: 20
+Accuracy: 0.52
+Rank: (16, 64, 5) Factor: 5 Bottleneck: 24
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (16, 64, 16) Factor: 5 Bottleneck: 24
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (16, 64, 32) Factor: 5 Bottleneck: 24
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 64, 64) Factor: 5 Bottleneck: 24
+Normal: 32, Anomalies: 18
+Accuracy: 0.56
+Rank: (32, 5, 5) Factor: 5 Bottleneck: 24
+Normal: 33, Anomalies: 17
+Accuracy: 0.54
+Rank: (32, 5, 16) Factor: 5 Bottleneck: 24
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (32, 5, 32) Factor: 5 Bottleneck: 24
+Normal: 16, Anomalies: 34
+Accuracy: 0.44
+Rank: (32, 5, 64) Factor: 5 Bottleneck: 24
+Normal: 17, Anomalies: 33
+Accuracy: 0.46
+Rank: (32, 16, 5) Factor: 5 Bottleneck: 24
+Normal: 29, Anomalies: 21
+Accuracy: 0.58
+Rank: (32, 16, 16) Factor: 5 Bottleneck: 24
+Normal: 16, Anomalies: 34
+Accuracy: 0.36
+Rank: (32, 16, 32) Factor: 5 Bottleneck: 24
+Normal: 14, Anomalies: 36
+Accuracy: 0.4
+Rank: (32, 16, 64) Factor: 5 Bottleneck: 24
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (32, 32, 5) Factor: 5 Bottleneck: 24
+Normal: 12, Anomalies: 38
+Accuracy: 0.44
+Rank: (32, 32, 16) Factor: 5 Bottleneck: 24
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 32, 32) Factor: 5 Bottleneck: 24
+Normal: 34, Anomalies: 16
+Accuracy: 0.6
+Rank: (32, 32, 64) Factor: 5 Bottleneck: 24
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 64, 5) Factor: 5 Bottleneck: 24
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 64, 16) Factor: 5 Bottleneck: 24
+Normal: 10, Anomalies: 40
+Accuracy: 0.44
+Rank: (32, 64, 32) Factor: 5 Bottleneck: 24
+Normal: 38, Anomalies: 12
+Accuracy: 0.52
+Rank: (32, 64, 64) Factor: 5 Bottleneck: 24
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (64, 5, 5) Factor: 5 Bottleneck: 24
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (64, 5, 16) Factor: 5 Bottleneck: 24
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (64, 5, 32) Factor: 5 Bottleneck: 24
+Normal: 12, Anomalies: 38
+Accuracy: 0.44
+Rank: (64, 5, 64) Factor: 5 Bottleneck: 24
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (64, 16, 5) Factor: 5 Bottleneck: 24
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (64, 16, 16) Factor: 5 Bottleneck: 24
+Normal: 29, Anomalies: 21
+Accuracy: 0.58
+Rank: (64, 16, 32) Factor: 5 Bottleneck: 24
+Normal: 11, Anomalies: 39
+Accuracy: 0.38
+Rank: (64, 16, 64) Factor: 5 Bottleneck: 24
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (64, 32, 5) Factor: 5 Bottleneck: 24
+Normal: 10, Anomalies: 40
+Accuracy: 0.44
+Rank: (64, 32, 16) Factor: 5 Bottleneck: 24
+Normal: 10, Anomalies: 40
+Accuracy: 0.44
+Rank: (64, 32, 32) Factor: 5 Bottleneck: 24
+Normal: 10, Anomalies: 40
+Accuracy: 0.44
+Rank: (64, 32, 64) Factor: 5 Bottleneck: 24
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (64, 64, 5) Factor: 5 Bottleneck: 24
+Normal: 3, Anomalies: 47
+Accuracy: 0.54
+Rank: (64, 64, 16) Factor: 5 Bottleneck: 24
+Normal: 5, Anomalies: 45
+Accuracy: 0.5
+Rank: (64, 64, 32) Factor: 5 Bottleneck: 24
+Normal: 4, Anomalies: 46
+Accuracy: 0.52
+Rank: (64, 64, 64) Factor: 5 Bottleneck: 24
+Normal: 4, Anomalies: 46
+Accuracy: 0.52
+Rank: (5, 5, 5) Factor: 5 Bottleneck: 32
+Normal: 22, Anomalies: 28
+Accuracy: 0.44
+Rank: (5, 5, 16) Factor: 5 Bottleneck: 32
+Normal: 21, Anomalies: 29
+Accuracy: 0.42
+Rank: (5, 5, 32) Factor: 5 Bottleneck: 32
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 21, Anomalies: 29
+Accuracy: 0.62
+Rank: (5, 5, 64) Factor: 5 Bottleneck: 32
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 21, Anomalies: 29
+Accuracy: 0.42
+Rank: (5, 16, 5) Factor: 5 Bottleneck: 32
+Normal: 20, Anomalies: 30
+Accuracy: 0.48
+Rank: (5, 16, 16) Factor: 5 Bottleneck: 32
+Normal: 26, Anomalies: 24
+Accuracy: 0.52
+Rank: (5, 16, 32) Factor: 5 Bottleneck: 32
+Normal: 19, Anomalies: 31
+Accuracy: 0.46
+Rank: (5, 16, 64) Factor: 5 Bottleneck: 32
+Normal: 21, Anomalies: 29
+Accuracy: 0.46
+Rank: (5, 32, 5) Factor: 5 Bottleneck: 32
+Normal: 19, Anomalies: 31
+Accuracy: 0.42
+Rank: (5, 32, 16) Factor: 5 Bottleneck: 32
+Normal: 28, Anomalies: 22
+Accuracy: 0.52
+Rank: (5, 32, 32) Factor: 5 Bottleneck: 32
+Normal: 18, Anomalies: 32
+Accuracy: 0.44
+Rank: (5, 32, 64) Factor: 5 Bottleneck: 32
+Normal: 25, Anomalies: 25
+Accuracy: 0.5
+Rank: (5, 64, 5) Factor: 5 Bottleneck: 32
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (5, 64, 16) Factor: 5 Bottleneck: 32
+Normal: 14, Anomalies: 36
+Accuracy: 0.44
+Rank: (5, 64, 32) Factor: 5 Bottleneck: 32
+Normal: 13, Anomalies: 37
+Accuracy: 0.42
+Rank: (5, 64, 64) Factor: 5 Bottleneck: 32
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 5, 5) Factor: 5 Bottleneck: 32
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (16, 5, 16) Factor: 5 Bottleneck: 32
+Normal: 19, Anomalies: 31
+Accuracy: 0.42
+Rank: (16, 5, 32) Factor: 5 Bottleneck: 32
+Normal: 18, Anomalies: 32
+Accuracy: 0.56
+Rank: (16, 5, 64) Factor: 5 Bottleneck: 32
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (16, 16, 5) Factor: 5 Bottleneck: 32
+Normal: 37, Anomalies: 13
+Accuracy: 0.58
+Rank: (16, 16, 16) Factor: 5 Bottleneck: 32
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (16, 16, 32) Factor: 5 Bottleneck: 32
+Normal: 16, Anomalies: 34
+Accuracy: 0.4
+Rank: (16, 16, 64) Factor: 5 Bottleneck: 32
+Normal: 18, Anomalies: 32
+Accuracy: 0.48
+Rank: (16, 32, 5) Factor: 5 Bottleneck: 32
+Normal: 14, Anomalies: 36
+Accuracy: 0.44
+Rank: (16, 32, 16) Factor: 5 Bottleneck: 32
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (16, 32, 32) Factor: 5 Bottleneck: 32
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (16, 32, 64) Factor: 5 Bottleneck: 32
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (16, 64, 5) Factor: 5 Bottleneck: 32
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 64, 16) Factor: 5 Bottleneck: 32
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (16, 64, 32) Factor: 5 Bottleneck: 32
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (16, 64, 64) Factor: 5 Bottleneck: 32
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (32, 5, 5) Factor: 5 Bottleneck: 32
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (32, 5, 16) Factor: 5 Bottleneck: 32
+Normal: 16, Anomalies: 34
+Accuracy: 0.4
+Rank: (32, 5, 32) Factor: 5 Bottleneck: 32
+Normal: 25, Anomalies: 25
+Accuracy: 0.58
+Rank: (32, 5, 64) Factor: 5 Bottleneck: 32
+Normal: 14, Anomalies: 36
+Accuracy: 0.4
+Rank: (32, 16, 5) Factor: 5 Bottleneck: 32
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (32, 16, 16) Factor: 5 Bottleneck: 32
+Normal: 33, Anomalies: 17
+Accuracy: 0.58
+Rank: (32, 16, 32) Factor: 5 Bottleneck: 32
+Normal: 14, Anomalies: 36
+Accuracy: 0.4
+Rank: (32, 16, 64) Factor: 5 Bottleneck: 32
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (32, 32, 5) Factor: 5 Bottleneck: 32
+Normal: 10, Anomalies: 40
+Accuracy: 0.44
+Rank: (32, 32, 16) Factor: 5 Bottleneck: 32
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 32, 32) Factor: 5 Bottleneck: 32
+Normal: 36, Anomalies: 14
+Accuracy: 0.56
+Rank: (32, 32, 64) Factor: 5 Bottleneck: 32
+Normal: 34, Anomalies: 16
+Accuracy: 0.52
+Rank: (32, 64, 5) Factor: 5 Bottleneck: 32
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 64, 16) Factor: 5 Bottleneck: 32
+Normal: 8, Anomalies: 42
+Accuracy: 0.44
+Rank: (32, 64, 32) Factor: 5 Bottleneck: 32
+Normal: 10, Anomalies: 40
+Accuracy: 0.44
+Rank: (32, 64, 64) Factor: 5 Bottleneck: 32
+Normal: 7, Anomalies: 43
+Accuracy: 0.46
+Rank: (64, 5, 5) Factor: 5 Bottleneck: 32
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (64, 5, 16) Factor: 5 Bottleneck: 32
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (64, 5, 32) Factor: 5 Bottleneck: 32
+Normal: 14, Anomalies: 36
+Accuracy: 0.44
+Rank: (64, 5, 64) Factor: 5 Bottleneck: 32
+Normal: 14, Anomalies: 36
+Accuracy: 0.44
+Rank: (64, 16, 5) Factor: 5 Bottleneck: 32
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (64, 16, 16) Factor: 5 Bottleneck: 32
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (64, 16, 32) Factor: 5 Bottleneck: 32
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (64, 16, 64) Factor: 5 Bottleneck: 32
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (64, 32, 5) Factor: 5 Bottleneck: 32
+Normal: 39, Anomalies: 11
+Accuracy: 0.58
+Rank: (64, 32, 16) Factor: 5 Bottleneck: 32
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (64, 32, 32) Factor: 5 Bottleneck: 32
+Normal: 11, Anomalies: 39
+Accuracy: 0.46
+Rank: (64, 32, 64) Factor: 5 Bottleneck: 32
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (64, 64, 5) Factor: 5 Bottleneck: 32
+Normal: 6, Anomalies: 44
+Accuracy: 0.48
+Rank: (64, 64, 16) Factor: 5 Bottleneck: 32
+Normal: 2, Anomalies: 48
+Accuracy: 0.56
+Rank: (64, 64, 32) Factor: 5 Bottleneck: 32
+Normal: 5, Anomalies: 45
+Accuracy: 0.5
+Rank: (64, 64, 64) Factor: 5 Bottleneck: 32
+Normal: 7, Anomalies: 43
+Accuracy: 0.46
+Rank: (5, 5, 5) Factor: 5 Bottleneck: 64
+Normal: 20, Anomalies: 30
+Accuracy: 0.6
+Rank: (5, 5, 16) Factor: 5 Bottleneck: 64
+Normal: 16, Anomalies: 34
+Accuracy: 0.6
+Rank: (5, 5, 32) Factor: 5 Bottleneck: 64
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 26, Anomalies: 24
+Accuracy: 0.6
+Rank: (5, 5, 64) Factor: 5 Bottleneck: 64
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
+  warnings.warn(
+Normal: 17, Anomalies: 33
+Accuracy: 0.62
+Rank: (5, 16, 5) Factor: 5 Bottleneck: 64
+Normal: 32, Anomalies: 18
+Accuracy: 0.6
+Rank: (5, 16, 16) Factor: 5 Bottleneck: 64
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (5, 16, 32) Factor: 5 Bottleneck: 64
+Normal: 21, Anomalies: 29
+Accuracy: 0.46
+Rank: (5, 16, 64) Factor: 5 Bottleneck: 64
+Normal: 20, Anomalies: 30
+Accuracy: 0.6
+Rank: (5, 32, 5) Factor: 5 Bottleneck: 64
+Normal: 30, Anomalies: 20
+Accuracy: 0.56
+Rank: (5, 32, 16) Factor: 5 Bottleneck: 64
+Normal: 29, Anomalies: 21
+Accuracy: 0.5
+Rank: (5, 32, 32) Factor: 5 Bottleneck: 64
+Normal: 21, Anomalies: 29
+Accuracy: 0.58
+Rank: (5, 32, 64) Factor: 5 Bottleneck: 64
+Normal: 18, Anomalies: 32
+Accuracy: 0.44
+Rank: (5, 64, 5) Factor: 5 Bottleneck: 64
+Normal: 24, Anomalies: 26
+Accuracy: 0.56
+Rank: (5, 64, 16) Factor: 5 Bottleneck: 64
+Normal: 12, Anomalies: 38
+Accuracy: 0.56
+Rank: (5, 64, 32) Factor: 5 Bottleneck: 64
+Normal: 21, Anomalies: 29
+Accuracy: 0.42
+Rank: (5, 64, 64) Factor: 5 Bottleneck: 64
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (16, 5, 5) Factor: 5 Bottleneck: 64
+Normal: 20, Anomalies: 30
+Accuracy: 0.44
+Rank: (16, 5, 16) Factor: 5 Bottleneck: 64
+Normal: 25, Anomalies: 25
+Accuracy: 0.62
+Rank: (16, 5, 32) Factor: 5 Bottleneck: 64
+Normal: 22, Anomalies: 28
+Accuracy: 0.52
+Rank: (16, 5, 64) Factor: 5 Bottleneck: 64
+Normal: 27, Anomalies: 23
+Accuracy: 0.58
+Rank: (16, 16, 5) Factor: 5 Bottleneck: 64
+Normal: 14, Anomalies: 36
+Accuracy: 0.44
+Rank: (16, 16, 16) Factor: 5 Bottleneck: 64
+Normal: 23, Anomalies: 27
+Accuracy: 0.5
+Rank: (16, 16, 32) Factor: 5 Bottleneck: 64
+Normal: 19, Anomalies: 31
+Accuracy: 0.7
+Rank: (16, 16, 64) Factor: 5 Bottleneck: 64
+Normal: 33, Anomalies: 17
+Accuracy: 0.62
+Rank: (16, 32, 5) Factor: 5 Bottleneck: 64
+Normal: 26, Anomalies: 24
+Accuracy: 0.56
+Rank: (16, 32, 16) Factor: 5 Bottleneck: 64
+Normal: 14, Anomalies: 36
+Accuracy: 0.56
+Rank: (16, 32, 32) Factor: 5 Bottleneck: 64
+Normal: 14, Anomalies: 36
+Accuracy: 0.52
+Rank: (16, 32, 64) Factor: 5 Bottleneck: 64
+Normal: 23, Anomalies: 27
+Accuracy: 0.62
+Rank: (16, 64, 5) Factor: 5 Bottleneck: 64
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (16, 64, 16) Factor: 5 Bottleneck: 64
+Normal: 34, Anomalies: 16
+Accuracy: 0.56
+Rank: (16, 64, 32) Factor: 5 Bottleneck: 64
+Normal: 24, Anomalies: 26
+Accuracy: 0.68
+Rank: (16, 64, 64) Factor: 5 Bottleneck: 64
+Normal: 8, Anomalies: 42
+Accuracy: 0.44
+Rank: (32, 5, 5) Factor: 5 Bottleneck: 64
+Normal: 24, Anomalies: 26
+Accuracy: 0.52
+Rank: (32, 5, 16) Factor: 5 Bottleneck: 64
+Normal: 15, Anomalies: 35
+Accuracy: 0.7
+Rank: (32, 5, 32) Factor: 5 Bottleneck: 64
+Normal: 27, Anomalies: 23
+Accuracy: 0.58
+Rank: (32, 5, 64) Factor: 5 Bottleneck: 64
+Normal: 18, Anomalies: 32
+Accuracy: 0.48
+Rank: (32, 16, 5) Factor: 5 Bottleneck: 64
+Normal: 15, Anomalies: 35
+Accuracy: 0.42
+Rank: (32, 16, 16) Factor: 5 Bottleneck: 64
+Normal: 14, Anomalies: 36
+Accuracy: 0.4
+Rank: (32, 16, 32) Factor: 5 Bottleneck: 64
+Normal: 25, Anomalies: 25
+Accuracy: 0.46
+Rank: (32, 16, 64) Factor: 5 Bottleneck: 64
+Normal: 18, Anomalies: 32
+Accuracy: 0.56
+Rank: (32, 32, 5) Factor: 5 Bottleneck: 64
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 32, 16) Factor: 5 Bottleneck: 64
+Normal: 31, Anomalies: 19
+Accuracy: 0.54
+Rank: (32, 32, 32) Factor: 5 Bottleneck: 64
+Normal: 12, Anomalies: 38
+Accuracy: 0.4
+Rank: (32, 32, 64) Factor: 5 Bottleneck: 64
+Normal: 11, Anomalies: 39
+Accuracy: 0.42
+Rank: (32, 64, 5) Factor: 5 Bottleneck: 64
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (32, 64, 16) Factor: 5 Bottleneck: 64
+Normal: 37, Anomalies: 13
+Accuracy: 0.62
+Rank: (32, 64, 32) Factor: 5 Bottleneck: 64
+Normal: 34, Anomalies: 16
+Accuracy: 0.52
+Rank: (32, 64, 64) Factor: 5 Bottleneck: 64
+Normal: 9, Anomalies: 41
+Accuracy: 0.46
+Rank: (64, 5, 5) Factor: 5 Bottleneck: 64
+Normal: 21, Anomalies: 29
+Accuracy: 0.54
+Rank: (64, 5, 16) Factor: 5 Bottleneck: 64
+Normal: 27, Anomalies: 23
+Accuracy: 0.5
+Rank: (64, 5, 32) Factor: 5 Bottleneck: 64
+Normal: 8, Anomalies: 42
+Accuracy: 0.64
+Rank: (64, 5, 64) Factor: 5 Bottleneck: 64
+Normal: 25, Anomalies: 25
+Accuracy: 0.54
+Rank: (64, 16, 5) Factor: 5 Bottleneck: 64
+Normal: 22, Anomalies: 28
+Accuracy: 0.56
+Rank: (64, 16, 16) Factor: 5 Bottleneck: 64
+Normal: 32, Anomalies: 18
+Accuracy: 0.52
+Rank: (64, 16, 32) Factor: 5 Bottleneck: 64
+Normal: 19, Anomalies: 31
+Accuracy: 0.46
+Rank: (64, 16, 64) Factor: 5 Bottleneck: 64
+Normal: 10, Anomalies: 40
+Accuracy: 0.4
+Rank: (64, 32, 5) Factor: 5 Bottleneck: 64
+Normal: 9, Anomalies: 41
+Accuracy: 0.42
+Rank: (64, 32, 16) Factor: 5 Bottleneck: 64
+Normal: 34, Anomalies: 16
+Accuracy: 0.56
+Rank: (64, 32, 32) Factor: 5 Bottleneck: 64
+Normal: 21, Anomalies: 29
+Accuracy: 0.58
+Rank: (64, 32, 64) Factor: 5 Bottleneck: 64
+Normal: 25, Anomalies: 25
+Accuracy: 0.54
+Rank: (64, 64, 5) Factor: 5 Bottleneck: 64
+Normal: 6, Anomalies: 44
+Accuracy: 0.48
+Rank: (64, 64, 16) Factor: 5 Bottleneck: 64
+Normal: 7, Anomalies: 43
+Accuracy: 0.46
+Rank: (64, 64, 32) Factor: 5 Bottleneck: 64
+Normal: 3, Anomalies: 47
+Accuracy: 0.54
+Rank: (64, 64, 64) Factor: 5 Bottleneck: 64
+Normal: 0, Anomalies: 50
+Accuracy: 0.6
+Rank accuracy {((5, 5, 5), 2, 8): 0.64, ((5, 5, 16), 2, 8): 0.36, ((5, 5, 32), 2, 8): 0.44, ((5, 5, 64), 2, 8): 0.44, ((5, 16, 5), 2, 8): 0.42, ((5, 16, 16), 2, 8): 0.46, ((5, 16, 32), 2, 8): 0.44, ((5, 16, 64), 2, 8): 0.48, ((5, 32, 5), 2, 8): 0.4, ((5, 32, 16), 2, 8): 0.4, ((5, 32, 32), 2, 8): 0.4, ((5, 32, 64), 2, 8): 0.42, ((5, 64, 5), 2, 8): 0.42, ((5, 64, 16), 2, 8): 0.44, ((5, 64, 32), 2, 8): 0.42, ((5, 64, 64), 2, 8): 0.48, ((16, 5, 5), 2, 8): 0.46, ((16, 5, 16), 2, 8): 0.44, ((16, 5, 32), 2, 8): 0.46, ((16, 5, 64), 2, 8): 0.4, ((16, 16, 5), 2, 8): 0.44, ((16, 16, 16), 2, 8): 0.4, ((16, 16, 32), 2, 8): 0.42, ((16, 16, 64), 2, 8): 0.42, ((16, 32, 5), 2, 8): 0.42, ((16, 32, 16), 2, 8): 0.42, ((16, 32, 32), 2, 8): 0.42, ((16, 32, 64), 2, 8): 0.44, ((16, 64, 5), 2, 8): 0.54, ((16, 64, 16), 2, 8): 0.48, ((16, 64, 32), 2, 8): 0.46, ((16, 64, 64), 2, 8): 0.54, ((32, 5, 5), 2, 8): 0.42, ((32, 5, 16), 2, 8): 0.4, ((32, 5, 32), 2, 8): 0.42, ((32, 5, 64), 2, 8): 0.4, ((32, 16, 5), 2, 8): 0.42, ((32, 16, 16), 2, 8): 0.42, ((32, 16, 32), 2, 8): 0.42, ((32, 16, 64), 2, 8): 0.4, ((32, 32, 5), 2, 8): 0.46, ((32, 32, 16), 2, 8): 0.5, ((32, 32, 32), 2, 8): 0.5, ((32, 32, 64), 2, 8): 0.44, ((32, 64, 5), 2, 8): 0.58, ((32, 64, 16), 2, 8): 0.48, ((32, 64, 32), 2, 8): 0.54, ((32, 64, 64), 2, 8): 0.56, ((64, 5, 5), 2, 8): 0.44, ((64, 5, 16), 2, 8): 0.42, ((64, 5, 32), 2, 8): 0.4, ((64, 5, 64), 2, 8): 0.42, ((64, 16, 5), 2, 8): 0.42, ((64, 16, 16), 2, 8): 0.52, ((64, 16, 32), 2, 8): 0.46, ((64, 16, 64), 2, 8): 0.5, ((64, 32, 5), 2, 8): 0.5, ((64, 32, 16), 2, 8): 0.6, ((64, 32, 32), 2, 8): 0.56, ((64, 32, 64), 2, 8): 0.52, ((64, 64, 5), 2, 8): 0.6, ((64, 64, 16), 2, 8): 0.6, ((64, 64, 32), 2, 8): 0.58, ((64, 64, 64), 2, 8): 0.6, ((5, 5, 5), 2, 16): 0.42, ((5, 5, 16), 2, 16): 0.6, ((5, 5, 32), 2, 16): 0.46, ((5, 5, 64), 2, 16): 0.46, ((5, 16, 5), 2, 16): 0.52, ((5, 16, 16), 2, 16): 0.4, ((5, 16, 32), 2, 16): 0.46, ((5, 16, 64), 2, 16): 0.42, ((5, 32, 5), 2, 16): 0.46, ((5, 32, 16), 2, 16): 0.4, ((5, 32, 32), 2, 16): 0.44, ((5, 32, 64), 2, 16): 0.42, ((5, 64, 5), 2, 16): 0.44, ((5, 64, 16), 2, 16): 0.42, ((5, 64, 32), 2, 16): 0.48, ((5, 64, 64), 2, 16): 0.4, ((16, 5, 5), 2, 16): 0.4, ((16, 5, 16), 2, 16): 0.42, ((16, 5, 32), 2, 16): 0.44, ((16, 5, 64), 2, 16): 0.42, ((16, 16, 5), 2, 16): 0.44, ((16, 16, 16), 2, 16): 0.42, ((16, 16, 32), 2, 16): 0.44, ((16, 16, 64), 2, 16): 0.38, ((16, 32, 5), 2, 16): 0.42, ((16, 32, 16), 2, 16): 0.6, ((16, 32, 32), 2, 16): 0.42, ((16, 32, 64), 2, 16): 0.42, ((16, 64, 5), 2, 16): 0.56, ((16, 64, 16), 2, 16): 0.52, ((16, 64, 32), 2, 16): 0.54, ((16, 64, 64), 2, 16): 0.6, ((32, 5, 5), 2, 16): 0.4, ((32, 5, 16), 2, 16): 0.42, ((32, 5, 32), 2, 16): 0.4, ((32, 5, 64), 2, 16): 0.42, ((32, 16, 5), 2, 16): 0.42, ((32, 16, 16), 2, 16): 0.42, ((32, 16, 32), 2, 16): 0.6, ((32, 16, 64), 2, 16): 0.42, ((32, 32, 5), 2, 16): 0.44, ((32, 32, 16), 2, 16): 0.42, ((32, 32, 32), 2, 16): 0.4, ((32, 32, 64), 2, 16): 0.44, ((32, 64, 5), 2, 16): 0.58, ((32, 64, 16), 2, 16): 0.6, ((32, 64, 32), 2, 16): 0.6, ((32, 64, 64), 2, 16): 0.58, ((64, 5, 5), 2, 16): 0.42, ((64, 5, 16), 2, 16): 0.42, ((64, 5, 32), 2, 16): 0.4, ((64, 5, 64), 2, 16): 0.4, ((64, 16, 5), 2, 16): 0.44, ((64, 16, 16), 2, 16): 0.44, ((64, 16, 32), 2, 16): 0.48, ((64, 16, 64), 2, 16): 0.48, ((64, 32, 5), 2, 16): 0.52, ((64, 32, 16), 2, 16): 0.56, ((64, 32, 32), 2, 16): 0.58, ((64, 32, 64), 2, 16): 0.58, ((64, 64, 5), 2, 16): 0.6, ((64, 64, 16), 2, 16): 0.6, ((64, 64, 32), 2, 16): 0.6, ((64, 64, 64), 2, 16): 0.6, ((5, 5, 5), 2, 24): 0.68, ((5, 5, 16), 2, 24): 0.56, ((5, 5, 32), 2, 24): 0.58, ((5, 5, 64), 2, 24): 0.46, ((5, 16, 5), 2, 24): 0.4, ((5, 16, 16), 2, 24): 0.44, ((5, 16, 32), 2, 24): 0.44, ((5, 16, 64), 2, 24): 0.38, ((5, 32, 5), 2, 24): 0.4, ((5, 32, 16), 2, 24): 0.54, ((5, 32, 32), 2, 24): 0.4, ((5, 32, 64), 2, 24): 0.6, ((5, 64, 5), 2, 24): 0.42, ((5, 64, 16), 2, 24): 0.56, ((5, 64, 32), 2, 24): 0.56, ((5, 64, 64), 2, 24): 0.6, ((16, 5, 5), 2, 24): 0.42, ((16, 5, 16), 2, 24): 0.46, ((16, 5, 32), 2, 24): 0.56, ((16, 5, 64), 2, 24): 0.46, ((16, 16, 5), 2, 24): 0.42, ((16, 16, 16), 2, 24): 0.4, ((16, 16, 32), 2, 24): 0.46, ((16, 16, 64), 2, 24): 0.6, ((16, 32, 5), 2, 24): 0.4, ((16, 32, 16), 2, 24): 0.5, ((16, 32, 32), 2, 24): 0.42, ((16, 32, 64), 2, 24): 0.42, ((16, 64, 5), 2, 24): 0.44, ((16, 64, 16), 2, 24): 0.54, ((16, 64, 32), 2, 24): 0.54, ((16, 64, 64), 2, 24): 0.52, ((32, 5, 5), 2, 24): 0.4, ((32, 5, 16), 2, 24): 0.64, ((32, 5, 32), 2, 24): 0.4, ((32, 5, 64), 2, 24): 0.42, ((32, 16, 5), 2, 24): 0.62, ((32, 16, 16), 2, 24): 0.54, ((32, 16, 32), 2, 24): 0.42, ((32, 16, 64), 2, 24): 0.4, ((32, 32, 5), 2, 24): 0.5, ((32, 32, 16), 2, 24): 0.58, ((32, 32, 32), 2, 24): 0.5, ((32, 32, 64), 2, 24): 0.44, ((32, 64, 5), 2, 24): 0.6, ((32, 64, 16), 2, 24): 0.54, ((32, 64, 32), 2, 24): 0.58, ((32, 64, 64), 2, 24): 0.6, ((64, 5, 5), 2, 24): 0.42, ((64, 5, 16), 2, 24): 0.44, ((64, 5, 32), 2, 24): 0.42, ((64, 5, 64), 2, 24): 0.42, ((64, 16, 5), 2, 24): 0.44, ((64, 16, 16), 2, 24): 0.44, ((64, 16, 32), 2, 24): 0.48, ((64, 16, 64), 2, 24): 0.5, ((64, 32, 5), 2, 24): 0.52, ((64, 32, 16), 2, 24): 0.54, ((64, 32, 32), 2, 24): 0.56, ((64, 32, 64), 2, 24): 0.58, ((64, 64, 5), 2, 24): 0.58, ((64, 64, 16), 2, 24): 0.6, ((64, 64, 32), 2, 24): 0.6, ((64, 64, 64), 2, 24): 0.6, ((5, 5, 5), 2, 32): 0.6, ((5, 5, 16), 2, 32): 0.56, ((5, 5, 32), 2, 32): 0.64, ((5, 5, 64), 2, 32): 0.64, ((5, 16, 5), 2, 32): 0.4, ((5, 16, 16), 2, 32): 0.64, ((5, 16, 32), 2, 32): 0.44, ((5, 16, 64), 2, 32): 0.64, ((5, 32, 5), 2, 32): 0.42, ((5, 32, 16), 2, 32): 0.42, ((5, 32, 32), 2, 32): 0.64, ((5, 32, 64), 2, 32): 0.56, ((5, 64, 5), 2, 32): 0.68, ((5, 64, 16), 2, 32): 0.5, ((5, 64, 32), 2, 32): 0.48, ((5, 64, 64), 2, 32): 0.56, ((16, 5, 5), 2, 32): 0.54, ((16, 5, 16), 2, 32): 0.52, ((16, 5, 32), 2, 32): 0.58, ((16, 5, 64), 2, 32): 0.62, ((16, 16, 5), 2, 32): 0.42, ((16, 16, 16), 2, 32): 0.4, ((16, 16, 32), 2, 32): 0.38, ((16, 16, 64), 2, 32): 0.4, ((16, 32, 5), 2, 32): 0.42, ((16, 32, 16), 2, 32): 0.54, ((16, 32, 32), 2, 32): 0.42, ((16, 32, 64), 2, 32): 0.42, ((16, 64, 5), 2, 32): 0.48, ((16, 64, 16), 2, 32): 0.46, ((16, 64, 32), 2, 32): 0.5, ((16, 64, 64), 2, 32): 0.48, ((32, 5, 5), 2, 32): 0.58, ((32, 5, 16), 2, 32): 0.56, ((32, 5, 32), 2, 32): 0.64, ((32, 5, 64), 2, 32): 0.4, ((32, 16, 5), 2, 32): 0.44, ((32, 16, 16), 2, 32): 0.4, ((32, 16, 32), 2, 32): 0.4, ((32, 16, 64), 2, 32): 0.6, ((32, 32, 5), 2, 32): 0.42, ((32, 32, 16), 2, 32): 0.58, ((32, 32, 32), 2, 32): 0.46, ((32, 32, 64), 2, 32): 0.56, ((32, 64, 5), 2, 32): 0.58, ((32, 64, 16), 2, 32): 0.6, ((32, 64, 32), 2, 32): 0.36, ((32, 64, 64), 2, 32): 0.6, ((64, 5, 5), 2, 32): 0.42, ((64, 5, 16), 2, 32): 0.42, ((64, 5, 32), 2, 32): 0.42, ((64, 5, 64), 2, 32): 0.4, ((64, 16, 5), 2, 32): 0.44, ((64, 16, 16), 2, 32): 0.46, ((64, 16, 32), 2, 32): 0.5, ((64, 16, 64), 2, 32): 0.5, ((64, 32, 5), 2, 32): 0.54, ((64, 32, 16), 2, 32): 0.52, ((64, 32, 32), 2, 32): 0.5, ((64, 32, 64), 2, 32): 0.42, ((64, 64, 5), 2, 32): 0.58, ((64, 64, 16), 2, 32): 0.6, ((64, 64, 32), 2, 32): 0.6, ((64, 64, 64), 2, 32): 0.6, ((5, 5, 5), 2, 64): 0.72, ((5, 5, 16), 2, 64): 0.66, ((5, 5, 32), 2, 64): 0.56, ((5, 5, 64), 2, 64): 0.5, ((5, 16, 5), 2, 64): 0.56, ((5, 16, 16), 2, 64): 0.54, ((5, 16, 32), 2, 64): 0.48, ((5, 16, 64), 2, 64): 0.46, ((5, 32, 5), 2, 64): 0.58, ((5, 32, 16), 2, 64): 0.58, ((5, 32, 32), 2, 64): 0.42, ((5, 32, 64), 2, 64): 0.46, ((5, 64, 5), 2, 64): 0.58, ((5, 64, 16), 2, 64): 0.54, ((5, 64, 32), 2, 64): 0.54, ((5, 64, 64), 2, 64): 0.54, ((16, 5, 5), 2, 64): 0.5, ((16, 5, 16), 2, 64): 0.54, ((16, 5, 32), 2, 64): 0.5, ((16, 5, 64), 2, 64): 0.6, ((16, 16, 5), 2, 64): 0.64, ((16, 16, 16), 2, 64): 0.54, ((16, 16, 32), 2, 64): 0.54, ((16, 16, 64), 2, 64): 0.42, ((16, 32, 5), 2, 64): 0.56, ((16, 32, 16), 2, 64): 0.64, ((16, 32, 32), 2, 64): 0.64, ((16, 32, 64), 2, 64): 0.52, ((16, 64, 5), 2, 64): 0.48, ((16, 64, 16), 2, 64): 0.54, ((16, 64, 32), 2, 64): 0.46, ((16, 64, 64), 2, 64): 0.54, ((32, 5, 5), 2, 64): 0.58, ((32, 5, 16), 2, 64): 0.48, ((32, 5, 32), 2, 64): 0.56, ((32, 5, 64), 2, 64): 0.68, ((32, 16, 5), 2, 64): 0.4, ((32, 16, 16), 2, 64): 0.6, ((32, 16, 32), 2, 64): 0.6, ((32, 16, 64), 2, 64): 0.7, ((32, 32, 5), 2, 64): 0.54, ((32, 32, 16), 2, 64): 0.58, ((32, 32, 32), 2, 64): 0.56, ((32, 32, 64), 2, 64): 0.6, ((32, 64, 5), 2, 64): 0.54, ((32, 64, 16), 2, 64): 0.52, ((32, 64, 32), 2, 64): 0.56, ((32, 64, 64), 2, 64): 0.5, ((64, 5, 5), 2, 64): 0.64, ((64, 5, 16), 2, 64): 0.68, ((64, 5, 32), 2, 64): 0.42, ((64, 5, 64), 2, 64): 0.52, ((64, 16, 5), 2, 64): 0.44, ((64, 16, 16), 2, 64): 0.56, ((64, 16, 32), 2, 64): 0.5, ((64, 16, 64), 2, 64): 0.5, ((64, 32, 5), 2, 64): 0.46, ((64, 32, 16), 2, 64): 0.42, ((64, 32, 32), 2, 64): 0.54, ((64, 32, 64), 2, 64): 0.54, ((64, 64, 5), 2, 64): 0.6, ((64, 64, 16), 2, 64): 0.6, ((64, 64, 32), 2, 64): 0.6, ((64, 64, 64), 2, 64): 0.6, ((5, 5, 5), 3, 8): 0.4, ((5, 5, 16), 3, 8): 0.44, ((5, 5, 32), 3, 8): 0.44, ((5, 5, 64), 3, 8): 0.48, ((5, 16, 5), 3, 8): 0.48, ((5, 16, 16), 3, 8): 0.44, ((5, 16, 32), 3, 8): 0.46, ((5, 16, 64), 3, 8): 0.44, ((5, 32, 5), 3, 8): 0.48, ((5, 32, 16), 3, 8): 0.42, ((5, 32, 32), 3, 8): 0.42, ((5, 32, 64), 3, 8): 0.4, ((5, 64, 5), 3, 8): 0.4, ((5, 64, 16), 3, 8): 0.42, ((5, 64, 32), 3, 8): 0.42, ((5, 64, 64), 3, 8): 0.4, ((16, 5, 5), 3, 8): 0.48, ((16, 5, 16), 3, 8): 0.46, ((16, 5, 32), 3, 8): 0.46, ((16, 5, 64), 3, 8): 0.4, ((16, 16, 5), 3, 8): 0.42, ((16, 16, 16), 3, 8): 0.42, ((16, 16, 32), 3, 8): 0.42, ((16, 16, 64), 3, 8): 0.38, ((16, 32, 5), 3, 8): 0.42, ((16, 32, 16), 3, 8): 0.4, ((16, 32, 32), 3, 8): 0.38, ((16, 32, 64), 3, 8): 0.42, ((16, 64, 5), 3, 8): 0.42, ((16, 64, 16), 3, 8): 0.44, ((16, 64, 32), 3, 8): 0.52, ((16, 64, 64), 3, 8): 0.44, ((32, 5, 5), 3, 8): 0.44, ((32, 5, 16), 3, 8): 0.56, ((32, 5, 32), 3, 8): 0.42, ((32, 5, 64), 3, 8): 0.42, ((32, 16, 5), 3, 8): 0.44, ((32, 16, 16), 3, 8): 0.42, ((32, 16, 32), 3, 8): 0.4, ((32, 16, 64), 3, 8): 0.38, ((32, 32, 5), 3, 8): 0.42, ((32, 32, 16), 3, 8): 0.42, ((32, 32, 32), 3, 8): 0.42, ((32, 32, 64), 3, 8): 0.42, ((32, 64, 5), 3, 8): 0.44, ((32, 64, 16), 3, 8): 0.46, ((32, 64, 32), 3, 8): 0.56, ((32, 64, 64), 3, 8): 0.48, ((64, 5, 5), 3, 8): 0.46, ((64, 5, 16), 3, 8): 0.42, ((64, 5, 32), 3, 8): 0.42, ((64, 5, 64), 3, 8): 0.42, ((64, 16, 5), 3, 8): 0.44, ((64, 16, 16), 3, 8): 0.4, ((64, 16, 32), 3, 8): 0.4, ((64, 16, 64), 3, 8): 0.44, ((64, 32, 5), 3, 8): 0.4, ((64, 32, 16), 3, 8): 0.54, ((64, 32, 32), 3, 8): 0.44, ((64, 32, 64), 3, 8): 0.46, ((64, 64, 5), 3, 8): 0.58, ((64, 64, 16), 3, 8): 0.6, ((64, 64, 32), 3, 8): 0.6, ((64, 64, 64), 3, 8): 0.6, ((5, 5, 5), 3, 16): 0.44, ((5, 5, 16), 3, 16): 0.44, ((5, 5, 32), 3, 16): 0.46, ((5, 5, 64), 3, 16): 0.4, ((5, 16, 5), 3, 16): 0.44, ((5, 16, 16), 3, 16): 0.44, ((5, 16, 32), 3, 16): 0.44, ((5, 16, 64), 3, 16): 0.4, ((5, 32, 5), 3, 16): 0.46, ((5, 32, 16), 3, 16): 0.4, ((5, 32, 32), 3, 16): 0.44, ((5, 32, 64), 3, 16): 0.4, ((5, 64, 5), 3, 16): 0.4, ((5, 64, 16), 3, 16): 0.42, ((5, 64, 32), 3, 16): 0.42, ((5, 64, 64), 3, 16): 0.42, ((16, 5, 5), 3, 16): 0.44, ((16, 5, 16), 3, 16): 0.44, ((16, 5, 32), 3, 16): 0.4, ((16, 5, 64), 3, 16): 0.46, ((16, 16, 5), 3, 16): 0.42, ((16, 16, 16), 3, 16): 0.4, ((16, 16, 32), 3, 16): 0.46, ((16, 16, 64), 3, 16): 0.44, ((16, 32, 5), 3, 16): 0.42, ((16, 32, 16), 3, 16): 0.4, ((16, 32, 32), 3, 16): 0.42, ((16, 32, 64), 3, 16): 0.42, ((16, 64, 5), 3, 16): 0.42, ((16, 64, 16), 3, 16): 0.42, ((16, 64, 32), 3, 16): 0.46, ((16, 64, 64), 3, 16): 0.4, ((32, 5, 5), 3, 16): 0.44, ((32, 5, 16), 3, 16): 0.4, ((32, 5, 32), 3, 16): 0.4, ((32, 5, 64), 3, 16): 0.5, ((32, 16, 5), 3, 16): 0.44, ((32, 16, 16), 3, 16): 0.4, ((32, 16, 32), 3, 16): 0.4, ((32, 16, 64), 3, 16): 0.38, ((32, 32, 5), 3, 16): 0.42, ((32, 32, 16), 3, 16): 0.4, ((32, 32, 32), 3, 16): 0.42, ((32, 32, 64), 3, 16): 0.42, ((32, 64, 5), 3, 16): 0.56, ((32, 64, 16), 3, 16): 0.54, ((32, 64, 32), 3, 16): 0.44, ((32, 64, 64), 3, 16): 0.5, ((64, 5, 5), 3, 16): 0.4, ((64, 5, 16), 3, 16): 0.46, ((64, 5, 32), 3, 16): 0.42, ((64, 5, 64), 3, 16): 0.62, ((64, 16, 5), 3, 16): 0.44, ((64, 16, 16), 3, 16): 0.44, ((64, 16, 32), 3, 16): 0.62, ((64, 16, 64), 3, 16): 0.44, ((64, 32, 5), 3, 16): 0.48, ((64, 32, 16), 3, 16): 0.56, ((64, 32, 32), 3, 16): 0.56, ((64, 32, 64), 3, 16): 0.44, ((64, 64, 5), 3, 16): 0.6, ((64, 64, 16), 3, 16): 0.6, ((64, 64, 32), 3, 16): 0.6, ((64, 64, 64), 3, 16): 0.58, ((5, 5, 5), 3, 24): 0.7, ((5, 5, 16), 3, 24): 0.62, ((5, 5, 32), 3, 24): 0.56, ((5, 5, 64), 3, 24): 0.6, ((5, 16, 5), 3, 24): 0.44, ((5, 16, 16), 3, 24): 0.42, ((5, 16, 32), 3, 24): 0.44, ((5, 16, 64), 3, 24): 0.54, ((5, 32, 5), 3, 24): 0.42, ((5, 32, 16), 3, 24): 0.38, ((5, 32, 32), 3, 24): 0.46, ((5, 32, 64), 3, 24): 0.42, ((5, 64, 5), 3, 24): 0.56, ((5, 64, 16), 3, 24): 0.42, ((5, 64, 32), 3, 24): 0.62, ((5, 64, 64), 3, 24): 0.64, ((16, 5, 5), 3, 24): 0.46, ((16, 5, 16), 3, 24): 0.62, ((16, 5, 32), 3, 24): 0.42, ((16, 5, 64), 3, 24): 0.42, ((16, 16, 5), 3, 24): 0.48, ((16, 16, 16), 3, 24): 0.38, ((16, 16, 32), 3, 24): 0.46, ((16, 16, 64), 3, 24): 0.44, ((16, 32, 5), 3, 24): 0.6, ((16, 32, 16), 3, 24): 0.42, ((16, 32, 32), 3, 24): 0.4, ((16, 32, 64), 3, 24): 0.38, ((16, 64, 5), 3, 24): 0.4, ((16, 64, 16), 3, 24): 0.42, ((16, 64, 32), 3, 24): 0.4, ((16, 64, 64), 3, 24): 0.4, ((32, 5, 5), 3, 24): 0.46, ((32, 5, 16), 3, 24): 0.4, ((32, 5, 32), 3, 24): 0.46, ((32, 5, 64), 3, 24): 0.52, ((32, 16, 5), 3, 24): 0.62, ((32, 16, 16), 3, 24): 0.6, ((32, 16, 32), 3, 24): 0.42, ((32, 16, 64), 3, 24): 0.58, ((32, 32, 5), 3, 24): 0.44, ((32, 32, 16), 3, 24): 0.44, ((32, 32, 32), 3, 24): 0.46, ((32, 32, 64), 3, 24): 0.4, ((32, 64, 5), 3, 24): 0.46, ((32, 64, 16), 3, 24): 0.44, ((32, 64, 32), 3, 24): 0.5, ((32, 64, 64), 3, 24): 0.58, ((64, 5, 5), 3, 24): 0.42, ((64, 5, 16), 3, 24): 0.44, ((64, 5, 32), 3, 24): 0.44, ((64, 5, 64), 3, 24): 0.4, ((64, 16, 5), 3, 24): 0.62, ((64, 16, 16), 3, 24): 0.44, ((64, 16, 32), 3, 24): 0.42, ((64, 16, 64), 3, 24): 0.46, ((64, 32, 5), 3, 24): 0.46, ((64, 32, 16), 3, 24): 0.5, ((64, 32, 32), 3, 24): 0.54, ((64, 32, 64), 3, 24): 0.54, ((64, 64, 5), 3, 24): 0.5, ((64, 64, 16), 3, 24): 0.6, ((64, 64, 32), 3, 24): 0.52, ((64, 64, 64), 3, 24): 0.6, ((5, 5, 5), 3, 32): 0.68, ((5, 5, 16), 3, 32): 0.68, ((5, 5, 32), 3, 32): 0.54, ((5, 5, 64), 3, 32): 0.54, ((5, 16, 5), 3, 32): 0.64, ((5, 16, 16), 3, 32): 0.46, ((5, 16, 32), 3, 32): 0.56, ((5, 16, 64), 3, 32): 0.46, ((5, 32, 5), 3, 32): 0.46, ((5, 32, 16), 3, 32): 0.48, ((5, 32, 32), 3, 32): 0.44, ((5, 32, 64), 3, 32): 0.48, ((5, 64, 5), 3, 32): 0.42, ((5, 64, 16), 3, 32): 0.4, ((5, 64, 32), 3, 32): 0.44, ((5, 64, 64), 3, 32): 0.56, ((16, 5, 5), 3, 32): 0.64, ((16, 5, 16), 3, 32): 0.4, ((16, 5, 32), 3, 32): 0.54, ((16, 5, 64), 3, 32): 0.46, ((16, 16, 5), 3, 32): 0.58, ((16, 16, 16), 3, 32): 0.62, ((16, 16, 32), 3, 32): 0.4, ((16, 16, 64), 3, 32): 0.4, ((16, 32, 5), 3, 32): 0.44, ((16, 32, 16), 3, 32): 0.42, ((16, 32, 32), 3, 32): 0.4, ((16, 32, 64), 3, 32): 0.42, ((16, 64, 5), 3, 32): 0.56, ((16, 64, 16), 3, 32): 0.48, ((16, 64, 32), 3, 32): 0.4, ((16, 64, 64), 3, 32): 0.42, ((32, 5, 5), 3, 32): 0.42, ((32, 5, 16), 3, 32): 0.6, ((32, 5, 32), 3, 32): 0.42, ((32, 5, 64), 3, 32): 0.4, ((32, 16, 5), 3, 32): 0.42, ((32, 16, 16), 3, 32): 0.58, ((32, 16, 32), 3, 32): 0.42, ((32, 16, 64), 3, 32): 0.42, ((32, 32, 5), 3, 32): 0.42, ((32, 32, 16), 3, 32): 0.5, ((32, 32, 32), 3, 32): 0.6, ((32, 32, 64), 3, 32): 0.46, ((32, 64, 5), 3, 32): 0.52, ((32, 64, 16), 3, 32): 0.44, ((32, 64, 32), 3, 32): 0.46, ((32, 64, 64), 3, 32): 0.52, ((64, 5, 5), 3, 32): 0.64, ((64, 5, 16), 3, 32): 0.58, ((64, 5, 32), 3, 32): 0.42, ((64, 5, 64), 3, 32): 0.56, ((64, 16, 5), 3, 32): 0.44, ((64, 16, 16), 3, 32): 0.56, ((64, 16, 32), 3, 32): 0.4, ((64, 16, 64), 3, 32): 0.38, ((64, 32, 5), 3, 32): 0.56, ((64, 32, 16), 3, 32): 0.58, ((64, 32, 32), 3, 32): 0.58, ((64, 32, 64), 3, 32): 0.44, ((64, 64, 5), 3, 32): 0.46, ((64, 64, 16), 3, 32): 0.5, ((64, 64, 32), 3, 32): 0.58, ((64, 64, 64), 3, 32): 0.6, ((5, 5, 5), 3, 64): 0.68, ((5, 5, 16), 3, 64): 0.62, ((5, 5, 32), 3, 64): 0.56, ((5, 5, 64), 3, 64): 0.58, ((5, 16, 5), 3, 64): 0.54, ((5, 16, 16), 3, 64): 0.5, ((5, 16, 32), 3, 64): 0.7, ((5, 16, 64), 3, 64): 0.5, ((5, 32, 5), 3, 64): 0.52, ((5, 32, 16), 3, 64): 0.58, ((5, 32, 32), 3, 64): 0.6, ((5, 32, 64), 3, 64): 0.38, ((5, 64, 5), 3, 64): 0.6, ((5, 64, 16), 3, 64): 0.56, ((5, 64, 32), 3, 64): 0.52, ((5, 64, 64), 3, 64): 0.54, ((16, 5, 5), 3, 64): 0.46, ((16, 5, 16), 3, 64): 0.52, ((16, 5, 32), 3, 64): 0.5, ((16, 5, 64), 3, 64): 0.4, ((16, 16, 5), 3, 64): 0.58, ((16, 16, 16), 3, 64): 0.6, ((16, 16, 32), 3, 64): 0.58, ((16, 16, 64), 3, 64): 0.54, ((16, 32, 5), 3, 64): 0.54, ((16, 32, 16), 3, 64): 0.52, ((16, 32, 32), 3, 64): 0.58, ((16, 32, 64), 3, 64): 0.6, ((16, 64, 5), 3, 64): 0.6, ((16, 64, 16), 3, 64): 0.64, ((16, 64, 32), 3, 64): 0.46, ((16, 64, 64), 3, 64): 0.4, ((32, 5, 5), 3, 64): 0.46, ((32, 5, 16), 3, 64): 0.56, ((32, 5, 32), 3, 64): 0.62, ((32, 5, 64), 3, 64): 0.64, ((32, 16, 5), 3, 64): 0.56, ((32, 16, 16), 3, 64): 0.68, ((32, 16, 32), 3, 64): 0.5, ((32, 16, 64), 3, 64): 0.62, ((32, 32, 5), 3, 64): 0.58, ((32, 32, 16), 3, 64): 0.56, ((32, 32, 32), 3, 64): 0.56, ((32, 32, 64), 3, 64): 0.58, ((32, 64, 5), 3, 64): 0.62, ((32, 64, 16), 3, 64): 0.5, ((32, 64, 32), 3, 64): 0.5, ((32, 64, 64), 3, 64): 0.54, ((64, 5, 5), 3, 64): 0.64, ((64, 5, 16), 3, 64): 0.56, ((64, 5, 32), 3, 64): 0.5, ((64, 5, 64), 3, 64): 0.52, ((64, 16, 5), 3, 64): 0.56, ((64, 16, 16), 3, 64): 0.56, ((64, 16, 32), 3, 64): 0.4, ((64, 16, 64), 3, 64): 0.42, ((64, 32, 5), 3, 64): 0.42, ((64, 32, 16), 3, 64): 0.5, ((64, 32, 32), 3, 64): 0.56, ((64, 32, 64), 3, 64): 0.42, ((64, 64, 5), 3, 64): 0.38, ((64, 64, 16), 3, 64): 0.6, ((64, 64, 32), 3, 64): 0.58, ((64, 64, 64), 3, 64): 0.56, ((5, 5, 5), 4, 8): 0.48, ((5, 5, 16), 4, 8): 0.5, ((5, 5, 32), 4, 8): 0.46, ((5, 5, 64), 4, 8): 0.48, ((5, 16, 5), 4, 8): 0.48, ((5, 16, 16), 4, 8): 0.44, ((5, 16, 32), 4, 8): 0.4, ((5, 16, 64), 4, 8): 0.42, ((5, 32, 5), 4, 8): 0.42, ((5, 32, 16), 4, 8): 0.46, ((5, 32, 32), 4, 8): 0.46, ((5, 32, 64), 4, 8): 0.46, ((5, 64, 5), 4, 8): 0.44, ((5, 64, 16), 4, 8): 0.44, ((5, 64, 32), 4, 8): 0.44, ((5, 64, 64), 4, 8): 0.42, ((16, 5, 5), 4, 8): 0.44, ((16, 5, 16), 4, 8): 0.44, ((16, 5, 32), 4, 8): 0.44, ((16, 5, 64), 4, 8): 0.44, ((16, 16, 5), 4, 8): 0.42, ((16, 16, 16), 4, 8): 0.42, ((16, 16, 32), 4, 8): 0.42, ((16, 16, 64), 4, 8): 0.42, ((16, 32, 5), 4, 8): 0.46, ((16, 32, 16), 4, 8): 0.42, ((16, 32, 32), 4, 8): 0.42, ((16, 32, 64), 4, 8): 0.4, ((16, 64, 5), 4, 8): 0.42, ((16, 64, 16), 4, 8): 0.4, ((16, 64, 32), 4, 8): 0.38, ((16, 64, 64), 4, 8): 0.44, ((32, 5, 5), 4, 8): 0.42, ((32, 5, 16), 4, 8): 0.44, ((32, 5, 32), 4, 8): 0.46, ((32, 5, 64), 4, 8): 0.4, ((32, 16, 5), 4, 8): 0.44, ((32, 16, 16), 4, 8): 0.4, ((32, 16, 32), 4, 8): 0.44, ((32, 16, 64), 4, 8): 0.44, ((32, 32, 5), 4, 8): 0.42, ((32, 32, 16), 4, 8): 0.42, ((32, 32, 32), 4, 8): 0.46, ((32, 32, 64), 4, 8): 0.42, ((32, 64, 5), 4, 8): 0.42, ((32, 64, 16), 4, 8): 0.48, ((32, 64, 32), 4, 8): 0.5, ((32, 64, 64), 4, 8): 0.54, ((64, 5, 5), 4, 8): 0.42, ((64, 5, 16), 4, 8): 0.44, ((64, 5, 32), 4, 8): 0.46, ((64, 5, 64), 4, 8): 0.44, ((64, 16, 5), 4, 8): 0.4, ((64, 16, 16), 4, 8): 0.42, ((64, 16, 32), 4, 8): 0.42, ((64, 16, 64), 4, 8): 0.4, ((64, 32, 5), 4, 8): 0.48, ((64, 32, 16), 4, 8): 0.5, ((64, 32, 32), 4, 8): 0.46, ((64, 32, 64), 4, 8): 0.56, ((64, 64, 5), 4, 8): 0.48, ((64, 64, 16), 4, 8): 0.56, ((64, 64, 32), 4, 8): 0.56, ((64, 64, 64), 4, 8): 0.56, ((5, 5, 5), 4, 16): 0.28, ((5, 5, 16), 4, 16): 0.44, ((5, 5, 32), 4, 16): 0.42, ((5, 5, 64), 4, 16): 0.58, ((5, 16, 5), 4, 16): 0.46, ((5, 16, 16), 4, 16): 0.44, ((5, 16, 32), 4, 16): 0.42, ((5, 16, 64), 4, 16): 0.44, ((5, 32, 5), 4, 16): 0.4, ((5, 32, 16), 4, 16): 0.4, ((5, 32, 32), 4, 16): 0.42, ((5, 32, 64), 4, 16): 0.48, ((5, 64, 5), 4, 16): 0.44, ((5, 64, 16), 4, 16): 0.4, ((5, 64, 32), 4, 16): 0.44, ((5, 64, 64), 4, 16): 0.42, ((16, 5, 5), 4, 16): 0.46, ((16, 5, 16), 4, 16): 0.56, ((16, 5, 32), 4, 16): 0.46, ((16, 5, 64), 4, 16): 0.44, ((16, 16, 5), 4, 16): 0.46, ((16, 16, 16), 4, 16): 0.44, ((16, 16, 32), 4, 16): 0.44, ((16, 16, 64), 4, 16): 0.44, ((16, 32, 5), 4, 16): 0.6, ((16, 32, 16), 4, 16): 0.42, ((16, 32, 32), 4, 16): 0.42, ((16, 32, 64), 4, 16): 0.4, ((16, 64, 5), 4, 16): 0.56, ((16, 64, 16), 4, 16): 0.42, ((16, 64, 32), 4, 16): 0.62, ((16, 64, 64), 4, 16): 0.46, ((32, 5, 5), 4, 16): 0.46, ((32, 5, 16), 4, 16): 0.44, ((32, 5, 32), 4, 16): 0.42, ((32, 5, 64), 4, 16): 0.44, ((32, 16, 5), 4, 16): 0.42, ((32, 16, 16), 4, 16): 0.4, ((32, 16, 32), 4, 16): 0.44, ((32, 16, 64), 4, 16): 0.38, ((32, 32, 5), 4, 16): 0.42, ((32, 32, 16), 4, 16): 0.4, ((32, 32, 32), 4, 16): 0.42, ((32, 32, 64), 4, 16): 0.4, ((32, 64, 5), 4, 16): 0.44, ((32, 64, 16), 4, 16): 0.58, ((32, 64, 32), 4, 16): 0.42, ((32, 64, 64), 4, 16): 0.54, ((64, 5, 5), 4, 16): 0.44, ((64, 5, 16), 4, 16): 0.48, ((64, 5, 32), 4, 16): 0.42, ((64, 5, 64), 4, 16): 0.44, ((64, 16, 5), 4, 16): 0.44, ((64, 16, 16), 4, 16): 0.4, ((64, 16, 32), 4, 16): 0.4, ((64, 16, 64), 4, 16): 0.36, ((64, 32, 5), 4, 16): 0.46, ((64, 32, 16), 4, 16): 0.52, ((64, 32, 32), 4, 16): 0.56, ((64, 32, 64), 4, 16): 0.46, ((64, 64, 5), 4, 16): 0.56, ((64, 64, 16), 4, 16): 0.52, ((64, 64, 32), 4, 16): 0.54, ((64, 64, 64), 4, 16): 0.48, ((5, 5, 5), 4, 24): 0.62, ((5, 5, 16), 4, 24): 0.44, ((5, 5, 32), 4, 24): 0.48, ((5, 5, 64), 4, 24): 0.62, ((5, 16, 5), 4, 24): 0.48, ((5, 16, 16), 4, 24): 0.44, ((5, 16, 32), 4, 24): 0.44, ((5, 16, 64), 4, 24): 0.44, ((5, 32, 5), 4, 24): 0.6, ((5, 32, 16), 4, 24): 0.4, ((5, 32, 32), 4, 24): 0.4, ((5, 32, 64), 4, 24): 0.44, ((5, 64, 5), 4, 24): 0.42, ((5, 64, 16), 4, 24): 0.42, ((5, 64, 32), 4, 24): 0.44, ((5, 64, 64), 4, 24): 0.42, ((16, 5, 5), 4, 24): 0.46, ((16, 5, 16), 4, 24): 0.4, ((16, 5, 32), 4, 24): 0.48, ((16, 5, 64), 4, 24): 0.54, ((16, 16, 5), 4, 24): 0.56, ((16, 16, 16), 4, 24): 0.44, ((16, 16, 32), 4, 24): 0.44, ((16, 16, 64), 4, 24): 0.42, ((16, 32, 5), 4, 24): 0.4, ((16, 32, 16), 4, 24): 0.62, ((16, 32, 32), 4, 24): 0.42, ((16, 32, 64), 4, 24): 0.56, ((16, 64, 5), 4, 24): 0.42, ((16, 64, 16), 4, 24): 0.64, ((16, 64, 32), 4, 24): 0.42, ((16, 64, 64), 4, 24): 0.42, ((32, 5, 5), 4, 24): 0.38, ((32, 5, 16), 4, 24): 0.44, ((32, 5, 32), 4, 24): 0.42, ((32, 5, 64), 4, 24): 0.4, ((32, 16, 5), 4, 24): 0.42, ((32, 16, 16), 4, 24): 0.38, ((32, 16, 32), 4, 24): 0.38, ((32, 16, 64), 4, 24): 0.42, ((32, 32, 5), 4, 24): 0.58, ((32, 32, 16), 4, 24): 0.42, ((32, 32, 32), 4, 24): 0.4, ((32, 32, 64), 4, 24): 0.4, ((32, 64, 5), 4, 24): 0.44, ((32, 64, 16), 4, 24): 0.52, ((32, 64, 32), 4, 24): 0.52, ((32, 64, 64), 4, 24): 0.42, ((64, 5, 5), 4, 24): 0.42, ((64, 5, 16), 4, 24): 0.56, ((64, 5, 32), 4, 24): 0.42, ((64, 5, 64), 4, 24): 0.42, ((64, 16, 5), 4, 24): 0.4, ((64, 16, 16), 4, 24): 0.42, ((64, 16, 32), 4, 24): 0.6, ((64, 16, 64), 4, 24): 0.38, ((64, 32, 5), 4, 24): 0.48, ((64, 32, 16), 4, 24): 0.44, ((64, 32, 32), 4, 24): 0.42, ((64, 32, 64), 4, 24): 0.52, ((64, 64, 5), 4, 24): 0.5, ((64, 64, 16), 4, 24): 0.56, ((64, 64, 32), 4, 24): 0.5, ((64, 64, 64), 4, 24): 0.58, ((5, 5, 5), 4, 32): 0.44, ((5, 5, 16), 4, 32): 0.64, ((5, 5, 32), 4, 32): 0.46, ((5, 5, 64), 4, 32): 0.56, ((5, 16, 5), 4, 32): 0.46, ((5, 16, 16), 4, 32): 0.48, ((5, 16, 32), 4, 32): 0.42, ((5, 16, 64), 4, 32): 0.48, ((5, 32, 5), 4, 32): 0.58, ((5, 32, 16), 4, 32): 0.44, ((5, 32, 32), 4, 32): 0.46, ((5, 32, 64), 4, 32): 0.58, ((5, 64, 5), 4, 32): 0.44, ((5, 64, 16), 4, 32): 0.44, ((5, 64, 32), 4, 32): 0.46, ((5, 64, 64), 4, 32): 0.44, ((16, 5, 5), 4, 32): 0.58, ((16, 5, 16), 4, 32): 0.46, ((16, 5, 32), 4, 32): 0.54, ((16, 5, 64), 4, 32): 0.58, ((16, 16, 5), 4, 32): 0.42, ((16, 16, 16), 4, 32): 0.42, ((16, 16, 32), 4, 32): 0.64, ((16, 16, 64), 4, 32): 0.42, ((16, 32, 5), 4, 32): 0.38, ((16, 32, 16), 4, 32): 0.4, ((16, 32, 32), 4, 32): 0.46, ((16, 32, 64), 4, 32): 0.42, ((16, 64, 5), 4, 32): 0.58, ((16, 64, 16), 4, 32): 0.52, ((16, 64, 32), 4, 32): 0.46, ((16, 64, 64), 4, 32): 0.54, ((32, 5, 5), 4, 32): 0.42, ((32, 5, 16), 4, 32): 0.44, ((32, 5, 32), 4, 32): 0.58, ((32, 5, 64), 4, 32): 0.42, ((32, 16, 5), 4, 32): 0.54, ((32, 16, 16), 4, 32): 0.38, ((32, 16, 32), 4, 32): 0.4, ((32, 16, 64), 4, 32): 0.4, ((32, 32, 5), 4, 32): 0.42, ((32, 32, 16), 4, 32): 0.44, ((32, 32, 32), 4, 32): 0.42, ((32, 32, 64), 4, 32): 0.42, ((32, 64, 5), 4, 32): 0.46, ((32, 64, 16), 4, 32): 0.44, ((32, 64, 32), 4, 32): 0.46, ((32, 64, 64), 4, 32): 0.5, ((64, 5, 5), 4, 32): 0.58, ((64, 5, 16), 4, 32): 0.44, ((64, 5, 32), 4, 32): 0.42, ((64, 5, 64), 4, 32): 0.62, ((64, 16, 5), 4, 32): 0.42, ((64, 16, 16), 4, 32): 0.5, ((64, 16, 32), 4, 32): 0.64, ((64, 16, 64), 4, 32): 0.4, ((64, 32, 5), 4, 32): 0.5, ((64, 32, 16), 4, 32): 0.44, ((64, 32, 32), 4, 32): 0.56, ((64, 32, 64), 4, 32): 0.42, ((64, 64, 5), 4, 32): 0.5, ((64, 64, 16), 4, 32): 0.5, ((64, 64, 32), 4, 32): 0.52, ((64, 64, 64), 4, 32): 0.56, ((5, 5, 5), 4, 64): 0.48, ((5, 5, 16), 4, 64): 0.6, ((5, 5, 32), 4, 64): 0.62, ((5, 5, 64), 4, 64): 0.58, ((5, 16, 5), 4, 64): 0.44, ((5, 16, 16), 4, 64): 0.6, ((5, 16, 32), 4, 64): 0.58, ((5, 16, 64), 4, 64): 0.62, ((5, 32, 5), 4, 64): 0.62, ((5, 32, 16), 4, 64): 0.42, ((5, 32, 32), 4, 64): 0.6, ((5, 32, 64), 4, 64): 0.42, ((5, 64, 5), 4, 64): 0.62, ((5, 64, 16), 4, 64): 0.46, ((5, 64, 32), 4, 64): 0.62, ((5, 64, 64), 4, 64): 0.58, ((16, 5, 5), 4, 64): 0.46, ((16, 5, 16), 4, 64): 0.64, ((16, 5, 32), 4, 64): 0.6, ((16, 5, 64), 4, 64): 0.52, ((16, 16, 5), 4, 64): 0.6, ((16, 16, 16), 4, 64): 0.64, ((16, 16, 32), 4, 64): 0.46, ((16, 16, 64), 4, 64): 0.6, ((16, 32, 5), 4, 64): 0.62, ((16, 32, 16), 4, 64): 0.58, ((16, 32, 32), 4, 64): 0.64, ((16, 32, 64), 4, 64): 0.64, ((16, 64, 5), 4, 64): 0.4, ((16, 64, 16), 4, 64): 0.42, ((16, 64, 32), 4, 64): 0.42, ((16, 64, 64), 4, 64): 0.4, ((32, 5, 5), 4, 64): 0.62, ((32, 5, 16), 4, 64): 0.44, ((32, 5, 32), 4, 64): 0.58, ((32, 5, 64), 4, 64): 0.54, ((32, 16, 5), 4, 64): 0.56, ((32, 16, 16), 4, 64): 0.58, ((32, 16, 32), 4, 64): 0.6, ((32, 16, 64), 4, 64): 0.54, ((32, 32, 5), 4, 64): 0.52, ((32, 32, 16), 4, 64): 0.44, ((32, 32, 32), 4, 64): 0.46, ((32, 32, 64), 4, 64): 0.42, ((32, 64, 5), 4, 64): 0.62, ((32, 64, 16), 4, 64): 0.38, ((32, 64, 32), 4, 64): 0.52, ((32, 64, 64), 4, 64): 0.52, ((64, 5, 5), 4, 64): 0.58, ((64, 5, 16), 4, 64): 0.68, ((64, 5, 32), 4, 64): 0.62, ((64, 5, 64), 4, 64): 0.6, ((64, 16, 5), 4, 64): 0.6, ((64, 16, 16), 4, 64): 0.62, ((64, 16, 32), 4, 64): 0.66, ((64, 16, 64), 4, 64): 0.58, ((64, 32, 5), 4, 64): 0.52, ((64, 32, 16), 4, 64): 0.58, ((64, 32, 32), 4, 64): 0.42, ((64, 32, 64), 4, 64): 0.64, ((64, 64, 5), 4, 64): 0.48, ((64, 64, 16), 4, 64): 0.5, ((64, 64, 32), 4, 64): 0.5, ((64, 64, 64), 4, 64): 0.54, ((5, 5, 5), 5, 8): 0.46, ((5, 5, 16), 5, 8): 0.42, ((5, 5, 32), 5, 8): 0.46, ((5, 5, 64), 5, 8): 0.44, ((5, 16, 5), 5, 8): 0.46, ((5, 16, 16), 5, 8): 0.42, ((5, 16, 32), 5, 8): 0.44, ((5, 16, 64), 5, 8): 0.48, ((5, 32, 5), 5, 8): 0.42, ((5, 32, 16), 5, 8): 0.42, ((5, 32, 32), 5, 8): 0.48, ((5, 32, 64), 5, 8): 0.42, ((5, 64, 5), 5, 8): 0.42, ((5, 64, 16), 5, 8): 0.42, ((5, 64, 32), 5, 8): 0.44, ((5, 64, 64), 5, 8): 0.42, ((16, 5, 5), 5, 8): 0.46, ((16, 5, 16), 5, 8): 0.42, ((16, 5, 32), 5, 8): 0.48, ((16, 5, 64), 5, 8): 0.46, ((16, 16, 5), 5, 8): 0.44, ((16, 16, 16), 5, 8): 0.4, ((16, 16, 32), 5, 8): 0.42, ((16, 16, 64), 5, 8): 0.44, ((16, 32, 5), 5, 8): 0.4, ((16, 32, 16), 5, 8): 0.42, ((16, 32, 32), 5, 8): 0.4, ((16, 32, 64), 5, 8): 0.42, ((16, 64, 5), 5, 8): 0.4, ((16, 64, 16), 5, 8): 0.4, ((16, 64, 32), 5, 8): 0.42, ((16, 64, 64), 5, 8): 0.4, ((32, 5, 5), 5, 8): 0.46, ((32, 5, 16), 5, 8): 0.44, ((32, 5, 32), 5, 8): 0.46, ((32, 5, 64), 5, 8): 0.4, ((32, 16, 5), 5, 8): 0.44, ((32, 16, 16), 5, 8): 0.4, ((32, 16, 32), 5, 8): 0.42, ((32, 16, 64), 5, 8): 0.4, ((32, 32, 5), 5, 8): 0.42, ((32, 32, 16), 5, 8): 0.42, ((32, 32, 32), 5, 8): 0.42, ((32, 32, 64), 5, 8): 0.42, ((32, 64, 5), 5, 8): 0.42, ((32, 64, 16), 5, 8): 0.52, ((32, 64, 32), 5, 8): 0.48, ((32, 64, 64), 5, 8): 0.42, ((64, 5, 5), 5, 8): 0.42, ((64, 5, 16), 5, 8): 0.44, ((64, 5, 32), 5, 8): 0.44, ((64, 5, 64), 5, 8): 0.44, ((64, 16, 5), 5, 8): 0.42, ((64, 16, 16), 5, 8): 0.4, ((64, 16, 32), 5, 8): 0.36, ((64, 16, 64), 5, 8): 0.4, ((64, 32, 5), 5, 8): 0.44, ((64, 32, 16), 5, 8): 0.46, ((64, 32, 32), 5, 8): 0.42, ((64, 32, 64), 5, 8): 0.44, ((64, 64, 5), 5, 8): 0.56, ((64, 64, 16), 5, 8): 0.58, ((64, 64, 32), 5, 8): 0.46, ((64, 64, 64), 5, 8): 0.58, ((5, 5, 5), 5, 16): 0.46, ((5, 5, 16), 5, 16): 0.46, ((5, 5, 32), 5, 16): 0.44, ((5, 5, 64), 5, 16): 0.46, ((5, 16, 5), 5, 16): 0.54, ((5, 16, 16), 5, 16): 0.48, ((5, 16, 32), 5, 16): 0.48, ((5, 16, 64), 5, 16): 0.44, ((5, 32, 5), 5, 16): 0.4, ((5, 32, 16), 5, 16): 0.44, ((5, 32, 32), 5, 16): 0.46, ((5, 32, 64), 5, 16): 0.44, ((5, 64, 5), 5, 16): 0.42, ((5, 64, 16), 5, 16): 0.42, ((5, 64, 32), 5, 16): 0.42, ((5, 64, 64), 5, 16): 0.44, ((16, 5, 5), 5, 16): 0.46, ((16, 5, 16), 5, 16): 0.54, ((16, 5, 32), 5, 16): 0.44, ((16, 5, 64), 5, 16): 0.46, ((16, 16, 5), 5, 16): 0.4, ((16, 16, 16), 5, 16): 0.46, ((16, 16, 32), 5, 16): 0.44, ((16, 16, 64), 5, 16): 0.42, ((16, 32, 5), 5, 16): 0.42, ((16, 32, 16), 5, 16): 0.44, ((16, 32, 32), 5, 16): 0.42, ((16, 32, 64), 5, 16): 0.38, ((16, 64, 5), 5, 16): 0.4, ((16, 64, 16), 5, 16): 0.42, ((16, 64, 32), 5, 16): 0.4, ((16, 64, 64), 5, 16): 0.66, ((32, 5, 5), 5, 16): 0.44, ((32, 5, 16), 5, 16): 0.4, ((32, 5, 32), 5, 16): 0.64, ((32, 5, 64), 5, 16): 0.42, ((32, 16, 5), 5, 16): 0.44, ((32, 16, 16), 5, 16): 0.38, ((32, 16, 32), 5, 16): 0.38, ((32, 16, 64), 5, 16): 0.4, ((32, 32, 5), 5, 16): 0.44, ((32, 32, 16), 5, 16): 0.42, ((32, 32, 32), 5, 16): 0.44, ((32, 32, 64), 5, 16): 0.4, ((32, 64, 5), 5, 16): 0.42, ((32, 64, 16), 5, 16): 0.46, ((32, 64, 32), 5, 16): 0.44, ((32, 64, 64), 5, 16): 0.42, ((64, 5, 5), 5, 16): 0.42, ((64, 5, 16), 5, 16): 0.42, ((64, 5, 32), 5, 16): 0.44, ((64, 5, 64), 5, 16): 0.44, ((64, 16, 5), 5, 16): 0.42, ((64, 16, 16), 5, 16): 0.42, ((64, 16, 32), 5, 16): 0.38, ((64, 16, 64), 5, 16): 0.36, ((64, 32, 5), 5, 16): 0.42, ((64, 32, 16), 5, 16): 0.44, ((64, 32, 32), 5, 16): 0.44, ((64, 32, 64), 5, 16): 0.44, ((64, 64, 5), 5, 16): 0.56, ((64, 64, 16), 5, 16): 0.54, ((64, 64, 32), 5, 16): 0.54, ((64, 64, 64), 5, 16): 0.5, ((5, 5, 5), 5, 24): 0.52, ((5, 5, 16), 5, 24): 0.56, ((5, 5, 32), 5, 24): 0.5, ((5, 5, 64), 5, 24): 0.54, ((5, 16, 5), 5, 24): 0.42, ((5, 16, 16), 5, 24): 0.44, ((5, 16, 32), 5, 24): 0.44, ((5, 16, 64), 5, 24): 0.44, ((5, 32, 5), 5, 24): 0.42, ((5, 32, 16), 5, 24): 0.44, ((5, 32, 32), 5, 24): 0.42, ((5, 32, 64), 5, 24): 0.44, ((5, 64, 5), 5, 24): 0.4, ((5, 64, 16), 5, 24): 0.6, ((5, 64, 32), 5, 24): 0.42, ((5, 64, 64), 5, 24): 0.42, ((16, 5, 5), 5, 24): 0.44, ((16, 5, 16), 5, 24): 0.58, ((16, 5, 32), 5, 24): 0.42, ((16, 5, 64), 5, 24): 0.44, ((16, 16, 5), 5, 24): 0.42, ((16, 16, 16), 5, 24): 0.42, ((16, 16, 32), 5, 24): 0.46, ((16, 16, 64), 5, 24): 0.62, ((16, 32, 5), 5, 24): 0.42, ((16, 32, 16), 5, 24): 0.42, ((16, 32, 32), 5, 24): 0.42, ((16, 32, 64), 5, 24): 0.52, ((16, 64, 5), 5, 24): 0.4, ((16, 64, 16), 5, 24): 0.4, ((16, 64, 32), 5, 24): 0.42, ((16, 64, 64), 5, 24): 0.56, ((32, 5, 5), 5, 24): 0.54, ((32, 5, 16), 5, 24): 0.46, ((32, 5, 32), 5, 24): 0.44, ((32, 5, 64), 5, 24): 0.46, ((32, 16, 5), 5, 24): 0.58, ((32, 16, 16), 5, 24): 0.36, ((32, 16, 32), 5, 24): 0.4, ((32, 16, 64), 5, 24): 0.42, ((32, 32, 5), 5, 24): 0.44, ((32, 32, 16), 5, 24): 0.42, ((32, 32, 32), 5, 24): 0.6, ((32, 32, 64), 5, 24): 0.42, ((32, 64, 5), 5, 24): 0.42, ((32, 64, 16), 5, 24): 0.44, ((32, 64, 32), 5, 24): 0.52, ((32, 64, 64), 5, 24): 0.42, ((64, 5, 5), 5, 24): 0.42, ((64, 5, 16), 5, 24): 0.42, ((64, 5, 32), 5, 24): 0.44, ((64, 5, 64), 5, 24): 0.42, ((64, 16, 5), 5, 24): 0.42, ((64, 16, 16), 5, 24): 0.58, ((64, 16, 32), 5, 24): 0.38, ((64, 16, 64), 5, 24): 0.42, ((64, 32, 5), 5, 24): 0.44, ((64, 32, 16), 5, 24): 0.44, ((64, 32, 32), 5, 24): 0.44, ((64, 32, 64), 5, 24): 0.42, ((64, 64, 5), 5, 24): 0.54, ((64, 64, 16), 5, 24): 0.5, ((64, 64, 32), 5, 24): 0.52, ((64, 64, 64), 5, 24): 0.52, ((5, 5, 5), 5, 32): 0.44, ((5, 5, 16), 5, 32): 0.42, ((5, 5, 32), 5, 32): 0.62, ((5, 5, 64), 5, 32): 0.42, ((5, 16, 5), 5, 32): 0.48, ((5, 16, 16), 5, 32): 0.52, ((5, 16, 32), 5, 32): 0.46, ((5, 16, 64), 5, 32): 0.46, ((5, 32, 5), 5, 32): 0.42, ((5, 32, 16), 5, 32): 0.52, ((5, 32, 32), 5, 32): 0.44, ((5, 32, 64), 5, 32): 0.5, ((5, 64, 5), 5, 32): 0.42, ((5, 64, 16), 5, 32): 0.44, ((5, 64, 32), 5, 32): 0.42, ((5, 64, 64), 5, 32): 0.42, ((16, 5, 5), 5, 32): 0.44, ((16, 5, 16), 5, 32): 0.42, ((16, 5, 32), 5, 32): 0.56, ((16, 5, 64), 5, 32): 0.44, ((16, 16, 5), 5, 32): 0.58, ((16, 16, 16), 5, 32): 0.42, ((16, 16, 32), 5, 32): 0.4, ((16, 16, 64), 5, 32): 0.48, ((16, 32, 5), 5, 32): 0.44, ((16, 32, 16), 5, 32): 0.4, ((16, 32, 32), 5, 32): 0.4, ((16, 32, 64), 5, 32): 0.42, ((16, 64, 5), 5, 32): 0.42, ((16, 64, 16), 5, 32): 0.42, ((16, 64, 32), 5, 32): 0.4, ((16, 64, 64), 5, 32): 0.4, ((32, 5, 5), 5, 32): 0.4, ((32, 5, 16), 5, 32): 0.4, ((32, 5, 32), 5, 32): 0.58, ((32, 5, 64), 5, 32): 0.4, ((32, 16, 5), 5, 32): 0.42, ((32, 16, 16), 5, 32): 0.58, ((32, 16, 32), 5, 32): 0.4, ((32, 16, 64), 5, 32): 0.42, ((32, 32, 5), 5, 32): 0.44, ((32, 32, 16), 5, 32): 0.42, ((32, 32, 32), 5, 32): 0.56, ((32, 32, 64), 5, 32): 0.52, ((32, 64, 5), 5, 32): 0.42, ((32, 64, 16), 5, 32): 0.44, ((32, 64, 32), 5, 32): 0.44, ((32, 64, 64), 5, 32): 0.46, ((64, 5, 5), 5, 32): 0.4, ((64, 5, 16), 5, 32): 0.42, ((64, 5, 32), 5, 32): 0.44, ((64, 5, 64), 5, 32): 0.44, ((64, 16, 5), 5, 32): 0.42, ((64, 16, 16), 5, 32): 0.4, ((64, 16, 32), 5, 32): 0.42, ((64, 16, 64), 5, 32): 0.42, ((64, 32, 5), 5, 32): 0.58, ((64, 32, 16), 5, 32): 0.42, ((64, 32, 32), 5, 32): 0.46, ((64, 32, 64), 5, 32): 0.42, ((64, 64, 5), 5, 32): 0.48, ((64, 64, 16), 5, 32): 0.56, ((64, 64, 32), 5, 32): 0.5, ((64, 64, 64), 5, 32): 0.46, ((5, 5, 5), 5, 64): 0.6, ((5, 5, 16), 5, 64): 0.6, ((5, 5, 32), 5, 64): 0.6, ((5, 5, 64), 5, 64): 0.62, ((5, 16, 5), 5, 64): 0.6, ((5, 16, 16), 5, 64): 0.44, ((5, 16, 32), 5, 64): 0.46, ((5, 16, 64), 5, 64): 0.6, ((5, 32, 5), 5, 64): 0.56, ((5, 32, 16), 5, 64): 0.5, ((5, 32, 32), 5, 64): 0.58, ((5, 32, 64), 5, 64): 0.44, ((5, 64, 5), 5, 64): 0.56, ((5, 64, 16), 5, 64): 0.56, ((5, 64, 32), 5, 64): 0.42, ((5, 64, 64), 5, 64): 0.4, ((16, 5, 5), 5, 64): 0.44, ((16, 5, 16), 5, 64): 0.62, ((16, 5, 32), 5, 64): 0.52, ((16, 5, 64), 5, 64): 0.58, ((16, 16, 5), 5, 64): 0.44, ((16, 16, 16), 5, 64): 0.5, ((16, 16, 32), 5, 64): 0.7, ((16, 16, 64), 5, 64): 0.62, ((16, 32, 5), 5, 64): 0.56, ((16, 32, 16), 5, 64): 0.56, ((16, 32, 32), 5, 64): 0.52, ((16, 32, 64), 5, 64): 0.62, ((16, 64, 5), 5, 64): 0.4, ((16, 64, 16), 5, 64): 0.56, ((16, 64, 32), 5, 64): 0.68, ((16, 64, 64), 5, 64): 0.44, ((32, 5, 5), 5, 64): 0.52, ((32, 5, 16), 5, 64): 0.7, ((32, 5, 32), 5, 64): 0.58, ((32, 5, 64), 5, 64): 0.48, ((32, 16, 5), 5, 64): 0.42, ((32, 16, 16), 5, 64): 0.4, ((32, 16, 32), 5, 64): 0.46, ((32, 16, 64), 5, 64): 0.56, ((32, 32, 5), 5, 64): 0.42, ((32, 32, 16), 5, 64): 0.54, ((32, 32, 32), 5, 64): 0.4, ((32, 32, 64), 5, 64): 0.42, ((32, 64, 5), 5, 64): 0.4, ((32, 64, 16), 5, 64): 0.62, ((32, 64, 32), 5, 64): 0.52, ((32, 64, 64), 5, 64): 0.46, ((64, 5, 5), 5, 64): 0.54, ((64, 5, 16), 5, 64): 0.5, ((64, 5, 32), 5, 64): 0.64, ((64, 5, 64), 5, 64): 0.54, ((64, 16, 5), 5, 64): 0.56, ((64, 16, 16), 5, 64): 0.52, ((64, 16, 32), 5, 64): 0.46, ((64, 16, 64), 5, 64): 0.4, ((64, 32, 5), 5, 64): 0.42, ((64, 32, 16), 5, 64): 0.56, ((64, 32, 32), 5, 64): 0.58, ((64, 32, 64), 5, 64): 0.54, ((64, 64, 5), 5, 64): 0.48, ((64, 64, 16), 5, 64): 0.46, ((64, 64, 32), 5, 64): 0.54, ((64, 64, 64), 5, 64): 0.6}
+Best Rank for Tucker with Autoencoder and One Class SVM ((5, 5, 5), 2, 64) 0.72
 
 
 ###########################################################################333
@@ -2197,15 +6199,7 @@ Rank: 64 64 32 Factor 2 Bottleneck: 64 Accuracy: 0.6
 Rank: 64 64 64 Factor 2 Bottleneck: 64 Accuracy: 0.6
 Rank: 5 5 5 Factor 3 Bottleneck: 16 Accuracy: 0.44
 Rank: 5 5 16 Factor 3 Bottleneck: 16 Accuracy: 0.44
-C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
-  warnings.warn(
-C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
-  warnings.warn(
 Rank: 5 5 32 Factor 3 Bottleneck: 16 Accuracy: 0.44
-C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
-  warnings.warn(
-C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
-  warnings.warn(
 Rank: 5 5 64 Factor 3 Bottleneck: 16 Accuracy: 0.44
 Rank: 5 16 5 Factor 3 Bottleneck: 16 Accuracy: 0.42
 Rank: 5 16 16 Factor 3 Bottleneck: 16 Accuracy: 0.42
@@ -2269,15 +6263,7 @@ Rank: 64 64 32 Factor 3 Bottleneck: 16 Accuracy: 0.6
 Rank: 64 64 64 Factor 3 Bottleneck: 16 Accuracy: 0.6
 Rank: 5 5 5 Factor 3 Bottleneck: 32 Accuracy: 0.46
 Rank: 5 5 16 Factor 3 Bottleneck: 32 Accuracy: 0.48
-C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
-  warnings.warn(
-C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
-  warnings.warn(
 Rank: 5 5 32 Factor 3 Bottleneck: 32 Accuracy: 0.44
-C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
-  warnings.warn(
-C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
-  warnings.warn(
 Rank: 5 5 64 Factor 3 Bottleneck: 32 Accuracy: 0.46
 Rank: 5 16 5 Factor 3 Bottleneck: 32 Accuracy: 0.42
 Rank: 5 16 16 Factor 3 Bottleneck: 32 Accuracy: 0.42
@@ -2341,15 +6327,7 @@ Rank: 64 64 32 Factor 3 Bottleneck: 32 Accuracy: 0.6
 Rank: 64 64 64 Factor 3 Bottleneck: 32 Accuracy: 0.6
 Rank: 5 5 5 Factor 3 Bottleneck: 64 Accuracy: 0.44
 Rank: 5 5 16 Factor 3 Bottleneck: 64 Accuracy: 0.48
-C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
-  warnings.warn(
-C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=32, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
-  warnings.warn(
 Rank: 5 5 32 Factor 3 Bottleneck: 64 Accuracy: 0.48
-C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
-  warnings.warn(
-C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorly\tenalg\svd.py:193: UserWarning: Trying to compute SVD with n_eigenvecs=64, which is larger than max(matrix.shape)=25. Setting n_eigenvecs to 25.
-  warnings.warn(
 Rank: 5 5 64 Factor 3 Bottleneck: 64 Accuracy: 0.48
 Rank: 5 16 5 Factor 3 Bottleneck: 64 Accuracy: 0.42
 Rank: 5 16 16 Factor 3 Bottleneck: 64 Accuracy: 0.42
