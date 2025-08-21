@@ -22,6 +22,8 @@ from sklearn.metrics import make_scorer, roc_auc_score
 
 random.seed(1)
 
+train_data = "Data/Reduced/train_full"
+test_data = "Data/Reduced/test_full"
 
 # Step 1: Read the data, build the tensor
 def readData(directory):
@@ -69,11 +71,11 @@ def displayImages(X, imageSetIndx):
 
 # Dataset visualization
 # Training images
-X, true_labels = readData('train_full')
+X, true_labels = readData(train_data)
 displayImages(X, {1, 10, 100})
 
 # Test images
-X, true_labels = readData('test_full')
+X, true_labels = readData(test_data)
 displayImages(X, {1, 10, 20})
 
 
@@ -106,7 +108,7 @@ def plot_signals(X, num_sets):
             axs[i, j].set_title(f'Image set ({index})')
 
 
-data_set, true_labels = readData('train_full')
+data_set, true_labels = readData(train_data)
 plot_signals(data_set, 10)
 
 
@@ -272,7 +274,7 @@ def parafac_OC_SVM(rank, displayConfusionMatrix=False):
     start_time = time.time()
 
     # Training data
-    X_train, _ = readData('train_full')
+    X_train, _ = readData(train_data)
     num_train_sets = X_train.shape[0]
 
     # CP decomposition
@@ -284,7 +286,7 @@ def parafac_OC_SVM(rank, displayConfusionMatrix=False):
     features_train_scaled = scaler.fit_transform(features_train)
 
     # Test data
-    X_test, true_labels = readData('test_full')
+    X_test, true_labels = readData(test_data)
     true_labels = np.array(true_labels)
 
     num_test_sets = X_test.shape[0]
@@ -360,8 +362,8 @@ def ocsvm_raw_geography(displayConfusionMatrix=False):
     from sklearn.model_selection import ParameterGrid
     import numpy as np
 
-    X_train, _ = readData('train_full')
-    X_test, true_labels = readData('test_full')
+    X_train, _ = readData(train_data)
+    X_test, true_labels = readData(test_data)
 
     # Flatten 64x64x6 into 1D vector per sample
     n_train = X_train.shape[0]

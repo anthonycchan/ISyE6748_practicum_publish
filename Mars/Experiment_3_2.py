@@ -23,9 +23,9 @@ from sklearn.metrics import make_scorer, roc_auc_score
 
 random.seed(1)
 
-train_data = "train_full"
-validation_data = "validation_100"
-test_data = "test_full"
+train_data = "Data/Reduced/train_full"
+validation_data = "Data/Reduced/validation_100"
+test_data = "Data/Reduced/test_full"
 
 # Step 1: Read the data, build the tensor
 def readData(directory):
