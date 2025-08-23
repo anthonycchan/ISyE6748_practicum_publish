@@ -22,8 +22,9 @@ from sklearn.metrics import make_scorer, roc_auc_score
 
 random.seed(1)
 
-train_data = "Data/Reduced/train_full"
-test_data = "Data/Reduced/test_full"
+train_data = "Data/Reduced/train_2352"
+test_typical_data = "Data/Full/test_typical"
+test_anomaly_data = "Data/Full/test_novel/all"
 
 # Step 1: Read the data, build the tensor
 def readData(directory):
@@ -37,12 +38,13 @@ def readData(directory):
         filename = os.fsdecode(file)
 
         # If the filename contains _MR_ then it is not an anomaly. If it contains _R#_ it is an anomaly.
-        pattern = re.compile(r"_MR_")
-        found = bool(pattern.search(filename))
-        if found:
-            true_labels.append(1)
-        else:
-            true_labels.append(-1)
+        #pattern = re.compile(r"_MR_")
+        #found = bool(pattern.search(filename))
+        #if found:
+        #    true_labels.append(1)
+        #else:
+        #    true_labels.append(-1)
+        true_labels.append(1)
 
         # Build the images into a tensor
         img_array = np.load(os.fsdecode(directory) + "/" + filename)
@@ -52,6 +54,46 @@ def readData(directory):
 
     return data_set, true_labels
 
+
+def readData_test(typical_dir, anomaly_dir):
+    """
+    Load 64x64x6 .npy tensors from two folders and return a single dataset with labels.
+      - typical_dir: path to folder containing ONLY typical (normal) samples -> label 1
+      - anomaly_dir: path to folder containing ONLY anomaly samples -> label -1
+    Returns:
+      data_set: (N, 64, 64, 6) float32 array, values normalized to [0, 1]
+      true_labels: (N,) int32 array with {1 for typical, -1 for anomaly}
+    """
+    typical_dir = os.fsdecode(typical_dir)
+    anomaly_dir = os.fsdecode(anomaly_dir)
+
+    typical_files = sorted([f for f in os.listdir(typical_dir) if f.endswith(".npy")])
+    anomaly_files = sorted([f for f in os.listdir(anomaly_dir) if f.endswith(".npy")])
+
+    n_typ = len(typical_files)
+    n_ano = len(anomaly_files)
+    n = n_typ + n_ano
+
+    data_set = np.zeros((n, 64, 64, 6), dtype=np.float32)
+    true_labels = np.zeros((n,), dtype=np.int32)
+
+    # Load typical (label 1)
+    for i, fname in enumerate(typical_files):
+        arr = np.load(os.path.join(typical_dir, fname))
+        # Optional: sanity check shape
+        # if arr.shape != (64, 64, 6): raise ValueError(f"Unexpected shape for {fname}: {arr.shape}")
+        data_set[i] = arr / 255.0
+        true_labels[i] = 1
+
+    # Load anomalies (label -1)
+    offset = n_typ
+    for j, fname in enumerate(anomaly_files):
+        arr = np.load(os.path.join(anomaly_dir, fname))
+        # if arr.shape != (64, 64, 6): raise ValueError(f"Unexpected shape for {fname}: {arr.shape}")
+        data_set[offset + j] = arr / 255.0
+        true_labels[offset + j] = -1
+
+    return data_set, true_labels
 
 def displayImages(X, imageSetIndx):
     numSets = 3
@@ -72,11 +114,11 @@ def displayImages(X, imageSetIndx):
 # Dataset visualization
 # Training images
 X, true_labels = readData(train_data)
-displayImages(X, {1, 10, 100})
+displayImages(X, {0, 10, 100})
 
 # Test images
-X, true_labels = readData(test_data)
-displayImages(X, {1, 10, 20})
+X, true_labels = readData(test_anomaly_data)
+#displayImages(X, {0, 10, 20})
 
 
 # Displaying the image sets as signals
@@ -262,6 +304,131 @@ def _pick_threshold_max_accuracy(y_true, scores, positive_label=-1):
     return float(best_th), float(best_acc)
 
 
+# ---- NEW: CP/Tucker visualization helper ----
+def visualize_cp(decomposed_list, rank, sample_index=0, img_side1=64, img_side2=64, max_components=3, verbose=True):
+    """
+    Visualize a single sample's decomposition from buildTensor().
+
+    Inputs
+    ------
+    decomposed_list : list
+        Output of buildTensor(...). For CP, each element is `factors`.
+        For Tucker, each element is `(core, factors)`.
+    rank : int
+        Target rank used for decomposition (for labeling).
+    sample_index : int
+        Which sample from the list to visualize.
+    img_side1, img_side2 : int
+        Spatial sizes if your 1st and 2nd modes correspond to 64x64 images.
+    max_components : int
+        Max number of components to render as heatmaps.
+
+    Behavior
+    --------
+    - Handles CP: `factors` only (list of mode matrices)
+    - Handles Tucker: `(core, factors)` but focuses on factor visualization
+    - Plots line plots for each mode's factor loadings
+    - If two modes match `img_side1` and `img_side2`, also renders
+      per-component heatmaps via outer products A[:,r] ⊗ B[:,r].
+    """
+    import numpy as np
+    import matplotlib.pyplot as plt
+
+    if not isinstance(decomposed_list, (list, tuple)) or len(decomposed_list) == 0:
+        if verbose:
+            print("visualize_cp: decomposed_list is empty or not a sequence; nothing to plot.")
+        return False
+
+    idx = min(max(sample_index, 0), len(decomposed_list) - 1)
+    item = decomposed_list[idx]
+
+    # Extract factors depending on CP or Tucker output
+    factors = None
+    core = None
+    # Tucker: (core, factors)
+    if isinstance(item, (list, tuple)) and len(item) == 2 and isinstance(item[1], (list, tuple)):
+        core, factors = item[0], item[1]
+    # CP: factors-only
+    elif isinstance(item, (list, tuple)):
+        # Heuristic: CP branch (a list of 2D factor matrices)
+        # Confirm we have 2D matrices inside
+        if len(item) > 0 and hasattr(item[0], 'ndim'):
+            factors = item
+        else:
+            if verbose:
+                print("visualize_cp: sequence item doesn't look like CP/Tucker factors; skipping.")
+            return False
+    else:
+        if verbose:
+            print("visualize_cp: unsupported element type in list; skipping.")
+        return False
+
+    # Defensive checks
+    try:
+        F = [np.asarray(Fm) for Fm in factors]
+    except Exception as e:
+        if verbose: print("visualize_cp: could not convert factors to arrays:", e)
+        return False
+
+    if len(F) == 0 or any((Fm.ndim != 2 or Fm.shape[1] < 1) for Fm in F):
+        if verbose: print("visualize_cp: malformed factor list; skipping.")
+        return False
+
+    R = min(int(rank), min(Fm.shape[1] for Fm in F))  # cap by actual columns
+    if R < 1:
+        if verbose: print("visualize_cp: rank has no columns to plot; skipping.")
+        return False
+
+    # Show a small header about what we're plotting
+    if verbose:
+        shapes = [Fm.shape for Fm in F]
+        print(f"visualize_cp: sample={idx}, mode shapes={shapes}, using R={R}")
+
+    # 1) Line plots for each mode's factor loadings
+    for m, Fm in enumerate(F):
+        try:
+            import matplotlib.pyplot as plt
+            plt.figure(figsize=(7, 3.5))
+            for r in range(R):
+                plt.plot(Fm[:, r], label=f'Comp {r+1}')
+            title = f'Mode {m+1} Factor Loadings'
+            if core is not None:
+                title += ' (Tucker)'
+            else:
+                title += ' (CP)'
+            plt.title(title)
+            if Fm.shape[1] > 1:
+                plt.legend(loc='upper right', ncols=2 if R >= 4 else 1, fontsize=8)
+            plt.tight_layout()
+            plt.show()
+        except Exception as e:
+            if verbose: print(f"visualize_cp: line-plot for mode {m+1} skipped:", e)
+
+    # 2) If the first two modes look like 64 and 64, render heatmaps via outer product
+    #    A[:, r] ⊗ B[:, r] -> (img_side1 x img_side2)
+    heatmaps_done = False
+    if len(F) >= 2 and F[0].shape[0] == img_side1 and F[1].shape[0] == img_side2:
+        A, B = F[0], F[1]
+        for r in range(min(R, max_components)):
+            try:
+                comp_img = np.outer(A[:, r], B[:, r]).reshape(img_side1, img_side2)
+                plt.figure(figsize=(4.2, 4.2))
+                plt.imshow(comp_img, cmap='viridis')
+                plt.colorbar()
+                lbl = 'Tucker' if core is not None else 'CP'
+                plt.title(f'{lbl} Spatial Map: Component {r+1} ({img_side1}×{img_side2})')
+                plt.tight_layout()
+                plt.show()
+                heatmaps_done = True
+            except Exception as e:
+                if verbose: print(f"visualize_cp: heatmap for component {r+1} skipped:", e)
+
+    if not heatmaps_done and verbose:
+        print("visualize_cp: no 2D heatmaps (first two mode sizes not", img_side1, "and", img_side2, ").")
+
+    return True
+
+
 def parafac_OC_SVM(rank, displayConfusionMatrix=False):
     import warnings
     import matplotlib.pyplot as plt
@@ -280,14 +447,33 @@ def parafac_OC_SVM(rank, displayConfusionMatrix=False):
     # CP decomposition
     decomposed_train = buildTensor(X_train, rank, num_train_sets, False)
 
+    '''
+    visualize_cp(decomposed_list=decomposed_train,
+                 rank=rank,
+                 sample_index=0,  # change to inspect a different training sample
+                 img_side1=64,
+                 img_side2=64,
+                 max_components=3,
+                 verbose=True)
+    '''
+
     # Feature extraction + scaling
     features_train = extractFeatures(decomposed_train, num_train_sets, False)
     scaler = StandardScaler()
     features_train_scaled = scaler.fit_transform(features_train)
+    print('Training done', time.time() - start_time)
 
     # Test data
-    X_test, true_labels = readData(test_data)
+    X_test, true_labels = readData_test(test_typical_data, test_anomaly_data)
     true_labels = np.array(true_labels)
+
+    # generate a random permutation of indices
+    indices = np.arange(len(true_labels))
+    np.random.shuffle(indices)
+
+    # apply permutation to both features and labels
+    X_test = X_test[indices]
+    true_labels = true_labels[indices]
 
     num_test_sets = X_test.shape[0]
     decomposed_test = buildTensor(X_test, rank, num_test_sets, False)
@@ -363,7 +549,7 @@ def ocsvm_raw_geography(displayConfusionMatrix=False):
     import numpy as np
 
     X_train, _ = readData(train_data)
-    X_test, true_labels = readData(test_data)
+    X_test, true_labels = readData_test(test_typical_data, test_anomaly_data)
 
     # Flatten 64x64x6 into 1D vector per sample
     n_train = X_train.shape[0]
