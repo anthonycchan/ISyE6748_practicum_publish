@@ -24,7 +24,7 @@ random.seed(1)
 
 train_data = "Data/Full/train_typical"
 test_typical_data = "Data/Full/test_typical"
-test_anomaly_data = "Data/Full/test_novel/meteorite"
+test_anomaly_data = "Data/Reduced/test_322"
 
 # Step 1: Read the data, build the tensor
 def readData(directory):
