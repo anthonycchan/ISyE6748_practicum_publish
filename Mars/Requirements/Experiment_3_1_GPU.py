@@ -22,7 +22,7 @@ from sklearn.metrics import make_scorer, roc_auc_score
 
 random.seed(1)
 
-train_data = "Data/Reduced/test_full_orig"
+train_data = "Data/Full/train_typical"
 test_typical_data = "Data/Full/test_typical"
 test_anomaly_data = "Data/Full/test_novel/meteorite"
 
@@ -154,69 +154,112 @@ data_set, true_labels = readData(train_data)
 plot_signals(data_set, 10)
 
 
-# plt.show()
+# GPU-enabled CP (Parafac) and Tucker pipeline with TensorLy + PyTorch
+# - Uses CUDA automatically if available; otherwise falls back to CPU.
+# - Avoids ThreadPoolExecutor for GPU (multiple CUDA contexts/streams per thread
+#   can hurt performance or fail). Iterates on-device instead.
 
-# CP (Parafac) Decomposition and Tucker's Decomposition
+import numpy as np
+import tensorly as tl
+from tensorly.decomposition import parafac, tucker
+
+# --- Backend / device setup ---
+# Use the PyTorch backend so we can dispatch to CUDA
+tl.set_backend('pytorch')
+import torch
+DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+# Helper: move numpy -> backend tensor on the chosen device
+def _to_backend_tensor(x_np):
+    # x_np: numpy array
+    # returns tensorly tensor backed by torch.Tensor on DEVICE
+    x_torch = torch.as_tensor(x_np, dtype=torch.float32, device=DEVICE)
+    return tl.tensor(x_torch)
+
+# Helper: flatten a tensorly/torch tensor back to a NumPy 1D array (on CPU)
+def _flat_to_numpy(x_backend):
+    return tl.to_numpy(x_backend).ravel()
+
+# ---------------- Decompositions ----------------
+
 def decompose_tensor_tucker(tensor, rank):
-    core, factors = tucker(tensor, rank)
+    """
+    tensor: numpy array (e.g., [H, W, C] for one sample)
+    rank: tuple/list of Tucker ranks or int interpreted by tensorly
+    returns: (core_backend, [factor_backend_i])
+    """
+    Xb = _to_backend_tensor(tensor)
+    core, factors = tucker(Xb, rank=rank)  # runs on GPU if available
     return core, factors
 
-
 def decompose_tensor_parafac(tensor, rank):
-    weights, factors = parafac(tensor, rank=rank)
+    """
+    tensor: numpy array (one sample)
+    rank: CP rank (int)
+    returns: [factor_backend_i]
+    """
+    Xb = _to_backend_tensor(tensor)
+    # A few options that tend to be stable/fast on GPU:
+    weights, factors = parafac(
+        Xb,
+        rank=rank,
+        init='random',
+        n_iter_max=200,
+        tol=1e-6,
+        orthogonalise=False,
+        normalize_factors=False,
+        # linesearch can help, but may not always be faster on GPU; enable if you like:
+        # linesearch=True
+    )
     return factors
 
+# ---------------- Feature extraction ----------------
 
 def extract_features_tucker(core, factors):
-    core_flattened = core.ravel()
-    factors_flattened = np.concatenate([factor.ravel() for factor in factors], axis=0)
+    core_flattened = _flat_to_numpy(core)
+    factors_flattened = np.concatenate([_flat_to_numpy(f) for f in factors], axis=0)
     return np.concatenate((core_flattened, factors_flattened), axis=0)
 
-
 def extract_features_cp(factors):
-    return np.concatenate([factor.ravel() for factor in factors], axis=0)
+    return np.concatenate([_flat_to_numpy(f) for f in factors], axis=0)
 
+# ---------------- Batch decomposition wrapper ----------------
 
 def buildTensor(X, rank, num_sets, isTuckerDecomposition=True, ordered=False):
-    if ordered:
-        decomposed_data = [None] * num_sets
-        with ThreadPoolExecutor() as executor:
-            if isTuckerDecomposition:
-                future_to_index = {executor.submit(decompose_tensor_tucker, X[i], rank): i for i in range(num_sets)}
-            else:
-                future_to_index = {executor.submit(decompose_tensor_parafac, X[i], rank): i for i in range(num_sets)}
-
-            for future in as_completed(future_to_index):
-                idx = future_to_index[future]
-                try:
-                    decomposed_data[idx] = future.result()
-                except Exception as e:
-                    print(f"Error in tensor decomposition at index {idx}: {e}")
+    """
+    X: numpy array of shape [num_sets, H, W, C] (or iterable of per-sample arrays)
+    rank: Tucker ranks (tuple/int) or CP rank (int)
+    num_sets: number of samples
+    isTuckerDecomposition: True -> Tucker, False -> CP
+    ordered: preserved for API compatibility; GPU path uses simple for-loop
+    returns:
+      - Tucker: list of (core_backend, [factor_backend_i]) per sample
+      - CP:     list of [factor_backend_i] per sample
+    """
+    decomposed_data = [None] * num_sets
+    if isTuckerDecomposition:
+        for i in range(num_sets):
+            decomposed_data[i] = decompose_tensor_tucker(X[i], rank)
     else:
-        with ThreadPoolExecutor() as executor:
-            if isTuckerDecomposition:
-                decomposed_data = list(executor.map(lambda i: decompose_tensor_tucker(X[i], rank), range(num_sets)))
-            else:
-                decomposed_data = list(executor.map(lambda i: decompose_tensor_parafac(X[i], rank), range(num_sets)))
-
+        for i in range(num_sets):
+            decomposed_data[i] = decompose_tensor_parafac(X[i], rank)
+    # NOTE: we keep tensors on GPU for now; feature extraction will pull to CPU/NumPy.
     return decomposed_data
-
 
 def extractFeatures(decomposed_data, num_sets, isTuckerDecomposition=True):
     if isTuckerDecomposition:
-        with ThreadPoolExecutor() as executor:
-            features = list(executor.map(
-                lambda i: extract_features_tucker(decomposed_data[i][0], decomposed_data[i][1]),
-                range(num_sets)
-            ))
+        features = [
+            extract_features_tucker(decomposed_data[i][0], decomposed_data[i][1])
+            for i in range(num_sets)
+        ]
     else:
-        with ThreadPoolExecutor() as executor:
-            features = list(executor.map(
-                lambda i: extract_features_cp(decomposed_data[i]),
-                range(num_sets)
-            ))
-
+        features = [
+            extract_features_cp(decomposed_data[i])
+            for i in range(num_sets)
+        ]
+    # returns NumPy array on CPU, ready for sklearn
     return np.array(features)
+
 
 
 # Use predefined rank

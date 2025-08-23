@@ -224,7 +224,7 @@ use_predefined_rank = False
 
 # Activation variables
 # Tucker's decomposition with one-class SVM
-enable_tucker_oc_svm = False
+enable_tucker_oc_svm = True
 # Tucker's decomposition with neural-network autoencoders
 enable_tucker_autoencoder = False
 # Tucker's decomposition with random forest
@@ -232,7 +232,7 @@ enable_tucker_random_forest = False
 # Tucker's decomposition with combination of autoencoder and one-class SVM.
 enable_tucker_autoencoder_oc_svm = False
 # CP decomposition with one-class SVM
-enable_cp_oc_svm = True
+enable_cp_oc_svm = False
 # CP decomposition with neural-network autoencoders
 enable_cp_autoencoder = False
 # CP decomposition with random forest
@@ -647,3 +647,132 @@ if enable_cp_oc_svm:
             bestRank = 80
             parafac_OC_SVM(bestRank, True)
 
+############################################
+## Tucker with OC-SVM
+############################################
+def tucker_OC_SVM(rank, displayConfusionMatrix=False):
+    import time
+    import numpy as np
+    import matplotlib.pyplot as plt
+    from sklearn.svm import OneClassSVM
+    from sklearn.preprocessing import StandardScaler
+    from sklearn import metrics
+    from sklearn.model_selection import ParameterGrid
+
+    start_time = time.time()
+
+    # ---- Train ----
+    X_train, _ = readData(train_data)            # uses your global train_data path
+    n_train = X_train.shape[0]
+
+    # Tucker decomposition on train
+    decomposed_train = buildTensor(X_train, rank, n_train, isTuckerDecomposition=True)
+
+    # Feature extraction + scaling
+    features_train = extractFeatures(decomposed_train, n_train, isTuckerDecomposition=True)
+    scaler = StandardScaler()
+    features_train_scaled = scaler.fit_transform(features_train)
+    print('Training (Tucker) done in', time.time() - start_time)
+
+    # ---- Test ----
+    X_test, true_labels = readData_test(test_typical_data, test_anomaly_data)  # uses your global test_* paths
+    true_labels = np.array(true_labels)
+
+    # Shuffle test to break any ordering
+    idx = np.arange(len(true_labels))
+    np.random.shuffle(idx)
+    X_test = X_test[idx]
+    true_labels = true_labels[idx]
+
+    n_test = X_test.shape[0]
+    decomposed_test = buildTensor(X_test, rank, n_test, isTuckerDecomposition=True)
+    features_test = extractFeatures(decomposed_test, n_test, isTuckerDecomposition=True)
+    features_test_scaled = scaler.transform(features_test)
+
+    # ---- Hyperparameter search (same style as CP) ----
+    param_grid = {
+        'nu': [0.05, 0.1, 0.2],
+        'gamma': ['scale', 'auto', 0.001, 0.01, 0.1],
+        'kernel': ['rbf', 'poly', 'sigmoid']
+    }
+    best_acc = -1.0
+    best_model = None
+    best_params = None
+
+    for params in ParameterGrid(param_grid):
+        m = OneClassSVM(**params)
+        m.fit(features_train_scaled)
+        preds = m.predict(features_test_scaled)          # +1 normal, -1 anomaly
+        acc = float(np.mean(preds == true_labels))
+        if acc > best_acc:
+            best_acc = acc
+            best_model = m
+            best_params = params
+
+    print(f"[Tucker] Best accuracy (grid @ default threshold 0): {best_acc:.3f} with params: {best_params}")
+
+    # Refit best (already fit above; harmless to do again)
+    best_model.fit(features_train_scaled)
+
+    # Hard preds & decision scores (OC-SVM: higher score = more NORMAL)
+    y_pred_default = best_model.predict(features_test_scaled)
+    scores_normal = best_model.decision_function(features_test_scaled).ravel()
+
+    # Flip so higher = more ANOMALOUS (since your positive class is -1)
+    scores_anom = -scores_normal
+
+    # Report default-threshold accuracy
+    acc_default = float(np.mean(y_pred_default == true_labels))
+    print("[Tucker] Accuracy @ default cutoff (0):", acc_default)
+
+    # Manual ROC AUC (anomaly is positive label = -1)
+    auc_manual = manual_auc(true_labels, scores_anom, positive_label=-1)
+    print("[Tucker] ROC AUC (manual, anomaly-positive):", auc_manual)
+
+    # Pick threshold that maximizes accuracy on these scores (same helper as CP)
+    th_opt, acc_opt = _pick_threshold_max_accuracy(true_labels, scores_anom, positive_label=-1)
+    print(f"[Tucker] Chosen threshold (max-accuracy on ROC scores): {th_opt:.6f}  |  Accuracy @ chosen: {acc_opt:.3f}")
+
+    # Final preds using tuned threshold (for optional CM)
+    y_pred_thresh = np.where(scores_anom >= th_opt, -1, 1)
+
+    if displayConfusionMatrix:
+        cm = metrics.confusion_matrix(true_labels, y_pred_thresh, labels=[-1, 1])
+        disp = metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["Anomaly", "Normal"])
+        disp.plot()
+        plt.show()
+
+    print('[Tucker] runtime:', time.time() - start_time)
+    # Match CP function’s return behavior: tuned accuracy
+    return acc_opt
+
+
+def tucker_rank_search_one_class_svm():
+    """
+    Simple rank sweep like your CP search, but for Tucker (3-mode ranks).
+    Adjust the rank sets as you like.
+    """
+    print('Tucker rank search One Class SVM')
+    rankSet = sorted({5, 16, 32, 64})
+    rank_accuracy = {}
+    for r1 in rankSet:
+        for r2 in rankSet:
+            for r3 in rankSet:
+                rank = (r1, r2, r3)
+                print('Rank:', rank)
+                acc = tucker_OC_SVM(rank, displayConfusionMatrix=False)
+                rank_accuracy[rank] = acc
+                print('Accuracy:', acc)
+    print('Rank accuracy', rank_accuracy)
+    bestRank = max(rank_accuracy, key=rank_accuracy.get)
+    return bestRank, rank_accuracy[bestRank]
+
+
+if enable_tucker_oc_svm:
+    if use_predefined_rank == False:
+        bestRank, bestAccuracy = tucker_rank_search_one_class_svm()
+        print('Tucker Best Rank One Class SVM', bestRank, bestAccuracy)
+    else:
+        print('Running best rank Tucker with one-class SVM')
+        rank = (5, 5, 35)
+        accuracy = tucker_OC_SVM(rank, True)
