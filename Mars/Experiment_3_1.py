@@ -1,30 +1,46 @@
 # MARS TENSOR DATASET
-import numpy as np
 import os
-import re
 import random
-import time
-from sklearn.svm import OneClassSVM
+from sklearn.metrics import roc_curve, accuracy_score
 from tensorly.decomposition import parafac, tucker
-from sklearn.model_selection import GridSearchCV
 from concurrent.futures import ThreadPoolExecutor, as_completed
-import warnings
-from matplotlib import pyplot as plt
+import time
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.svm import OneClassSVM
 from sklearn.preprocessing import StandardScaler
-from tensorflow.keras import Input, Model, regularizers
 from tensorflow.keras.models import Model, Sequential
 from tensorflow.keras.layers import Dense, Dropout, Input
 from tensorflow.keras.callbacks import EarlyStopping
 from sklearn.ensemble import IsolationForest
 from sklearn import metrics
 from sklearn.model_selection import ParameterGrid
-from sklearn.metrics import make_scorer, roc_auc_score
 
 random.seed(1)
 
-train_data = "Data/Reduced/test_full_orig"
-test_typical_data = "Data/Full/test_typical"
-test_anomaly_data = "Data/Full/test_novel/meteorite"
+train_data = "Data/Reduced/Lean/train"
+test_typical_data = "Data/Reduced/Lean/test_typical"
+test_anomaly_data = "Data/Reduced/Lean/test_novel"
+
+# Use predefined rank
+use_predefined_rank = False
+
+# Activation variables
+# Tucker's decomposition with one-class SVM
+enable_tucker_oc_svm = False
+# Tucker's decomposition with neural-network autoencoders
+enable_tucker_autoencoder = False
+# # Tucker's decomposition with random forest
+enable_tucker_random_forest = False
+
+# CP decomposition with one-class SVM
+enable_cp_oc_svm = True
+# CP decomposition with neural-network autoencoders
+enable_cp_autoencoder = False
+# CP decomposition with random forest
+enable_cp_random_forest = False
+
+no_decomposition = False
 
 # Step 1: Read the data, build the tensor
 def readData(directory):
@@ -114,7 +130,7 @@ def displayImages(X, imageSetIndx):
 # Dataset visualization
 # Training images
 X, true_labels = readData(train_data)
-displayImages(X, {0, 10, 20})
+displayImages(X, {0, 10, 100})
 
 # Test images
 X, true_labels = readData(test_anomaly_data)
@@ -219,36 +235,11 @@ def extractFeatures(decomposed_data, num_sets, isTuckerDecomposition=True):
     return np.array(features)
 
 
-# Use predefined rank
-use_predefined_rank = False
-
-# Activation variables
-# Tucker's decomposition with one-class SVM
-enable_tucker_oc_svm = False
-# Tucker's decomposition with neural-network autoencoders
-enable_tucker_autoencoder = False
-# Tucker's decomposition with random forest
-enable_tucker_random_forest = False
-# Tucker's decomposition with combination of autoencoder and one-class SVM.
-enable_tucker_autoencoder_oc_svm = False
-# CP decomposition with one-class SVM
-enable_cp_oc_svm = True
-# CP decomposition with neural-network autoencoders
-enable_cp_autoencoder = False
-# CP decomposition with random forest
-enable_cp_random_forest = False
-# CP decomposition with combination of autoencoder and one-class SVM.
-enable_cp_autoencoder_oc_svm = False
-
-no_decomposition = False
-
 def manual_auc(y_true, scores, positive_label=-1):
     """
     Manual ROC AUC: probability a random positive has a higher score than a random negative,
     counting ties as 0.5. Returns NaN if only one class present or scores are non-finite.
     """
-    import numpy as np
-
     y_true = np.asarray(y_true)
     scores = np.asarray(scores, dtype=float)
 
@@ -281,9 +272,6 @@ def _pick_threshold_max_accuracy(y_true, scores, positive_label=-1):
     that maximizes accuracy on (y_true, scores).
     Returns (best_threshold, best_accuracy).
     """
-    import numpy as np
-    from sklearn.metrics import roc_curve, accuracy_score
-
     # Build ROC thresholds; sklearn ensures coverage of all operating points
     fpr, tpr, thresholds = roc_curve(y_true, scores, pos_label=positive_label)
 
@@ -331,9 +319,6 @@ def visualize_cp(decomposed_list, rank, sample_index=0, img_side1=64, img_side2=
     - If two modes match `img_side1` and `img_side2`, also renders
       per-component heatmaps via outer products A[:,r] ⊗ B[:,r].
     """
-    import numpy as np
-    import matplotlib.pyplot as plt
-
     if not isinstance(decomposed_list, (list, tuple)) or len(decomposed_list) == 0:
         if verbose:
             print("visualize_cp: decomposed_list is empty or not a sequence; nothing to plot.")
@@ -387,7 +372,6 @@ def visualize_cp(decomposed_list, rank, sample_index=0, img_side1=64, img_side2=
     # 1) Line plots for each mode's factor loadings
     for m, Fm in enumerate(F):
         try:
-            import matplotlib.pyplot as plt
             plt.figure(figsize=(7, 3.5))
             for r in range(R):
                 plt.plot(Fm[:, r], label=f'Comp {r+1}')
@@ -429,125 +413,155 @@ def visualize_cp(decomposed_list, rank, sample_index=0, img_side1=64, img_side2=
     return True
 
 
-def parafac_OC_SVM(rank, displayConfusionMatrix=False):
-    import warnings
-    import matplotlib.pyplot as plt
-    from sklearn.svm import OneClassSVM
-    from sklearn.preprocessing import StandardScaler
-    from sklearn import metrics
-    from sklearn.model_selection import ParameterGrid
+def parafac_OC_SVM(rank, displayConfusionMatrix=False, use_pca_whiten=True, val_fraction=0.5, random_state=42):
+    """
+    CP + One-Class SVM with AUC-driven model selection.
+
+    - Trains on normal-only `train_data`.
+    - Builds a labeled pool from `readData_test(test_typical_data, test_anomaly_data)`.
+    - Splits pool into validation and final sets (stratified).
+    - Selects hyperparameters by maximizing AUC on validation scores.
+    - Reports AUC on the held-out FINAL split, plus default and tuned accuracies.
+    - Returns tuned (thresholded) accuracy on FINAL split to preserve existing call sites.
+
+    Args:
+        rank: int, CP rank
+        displayConfusionMatrix: bool, show CM at tuned threshold on FINAL split
+        use_pca_whiten: bool, apply PCA(whiten=True) after StandardScaler
+        val_fraction: float in (0,1), fraction of labeled pool used for validation
+        random_state: int, reproducibility for splits
+
+    Returns:
+        acc_opt (float): tuned accuracy on FINAL split (at threshold maximizing accuracy on scores).
+    """
+    import time
     import numpy as np
+    import matplotlib.pyplot as plt
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.decomposition import PCA
+    from sklearn.svm import OneClassSVM
+    from sklearn.model_selection import ParameterGrid, StratifiedShuffleSplit
+    from sklearn import metrics
 
     start_time = time.time()
+    rng = np.random.RandomState(random_state)
 
-    # Training data
+    # ----------------------------
+    # 1) TRAIN on normal-only
+    # ----------------------------
     X_train, _ = readData(train_data)
-    num_train_sets = X_train.shape[0]
+    n_train = X_train.shape[0]
 
-    # CP decomposition
-    decomposed_train = buildTensor(X_train, rank, num_train_sets, False)
+    decomposed_train = buildTensor(X_train, rank, n_train, isTuckerDecomposition=False)
+    feats_train = extractFeatures(decomposed_train, n_train, isTuckerDecomposition=False)
 
-    '''
-    visualize_cp(decomposed_list=decomposed_train,
-                 rank=rank,
-                 sample_index=0,  # change to inspect a different training sample
-                 img_side1=64,
-                 img_side2=64,
-                 max_components=3,
-                 verbose=True)
-    '''
-
-    # Feature extraction + scaling
-    features_train = extractFeatures(decomposed_train, num_train_sets, False)
     scaler = StandardScaler()
-    features_train_scaled = scaler.fit_transform(features_train)
-    print('Training done', time.time() - start_time)
+    feats_train_s = scaler.fit_transform(feats_train)
 
-    # Test data
-    X_test, true_labels = readData_test(test_typical_data, test_anomaly_data)
-    true_labels = np.array(true_labels)
+    # Optional PCA whitening (fit on TRAIN only)
+    if use_pca_whiten:
+        pca = PCA(whiten=True, svd_solver='auto', random_state=random_state)
+        feats_train_w = pca.fit_transform(feats_train_s)
+    else:
+        pca = None
+        feats_train_w = feats_train_s
 
-    # generate a random permutation of indices
-    indices = np.arange(len(true_labels))
-    np.random.shuffle(indices)
+    print('Training feature prep done in', round(time.time() - start_time, 2), 's')
 
-    # apply permutation to both features and labels
-    X_test = X_test[indices]
-    true_labels = true_labels[indices]
+    # -------------------------------------------------------
+    # 2) Build labeled pool, STRATIFIED split: VAL / FINAL
+    # -------------------------------------------------------
+    X_pool, y_pool = readData_test(test_typical_data, test_anomaly_data)
+    y_pool = np.array(y_pool, dtype=int)
 
-    num_test_sets = X_test.shape[0]
-    decomposed_test = buildTensor(X_test, rank, num_test_sets, False)
-    features_test = extractFeatures(decomposed_test, num_test_sets, False)
-    features_test_scaled = scaler.transform(features_test)
+    # Shuffle the pool once for randomness (indices kept consistent)
+    idx_all = np.arange(len(y_pool))
+    rng.shuffle(idx_all)
+    X_pool = X_pool[idx_all]
+    y_pool = y_pool[idx_all]
 
+    # Stratified split indices
+    sss = StratifiedShuffleSplit(n_splits=1, test_size=1.0 - val_fraction, random_state=random_state)
+    (val_idx, final_idx) = next(sss.split(np.zeros_like(y_pool), y_pool))
+
+    X_val,   y_val   = X_pool[val_idx],   y_pool[val_idx]
+    X_final, y_final = X_pool[final_idx], y_pool[final_idx]
+
+    # Decompose & featurize VAL and FINAL using the same CP rank
+    n_val = X_val.shape[0]
+    n_fin = X_final.shape[0]
+
+    dec_val   = buildTensor(X_val,   rank, n_val, isTuckerDecomposition=False)
+    feats_val = extractFeatures(dec_val,   n_val, isTuckerDecomposition=False)
+    feats_val_s = scaler.transform(feats_val)
+    feats_val_w = pca.transform(feats_val_s) if pca is not None else feats_val_s
+
+    dec_fin   = buildTensor(X_final, rank, n_fin, isTuckerDecomposition=False)
+    feats_fin = extractFeatures(dec_fin,   n_fin, isTuckerDecomposition=False)
+    feats_fin_s = scaler.transform(feats_fin)
+    feats_fin_w = pca.transform(feats_fin_s) if pca is not None else feats_fin_s
+
+    # ----------------------------------------------
+    # 3) Hyperparameter selection by VAL **AUC**
+    # ----------------------------------------------
     param_grid = {
-        'nu': [0.05, 0.1, 0.2],
-        'gamma': ['scale', 'auto', 0.001, 0.01, 0.1],
-        'kernel': ['rbf', 'poly', 'sigmoid']
+        'kernel': ['rbf'],
+        'gamma':  list(np.logspace(-6, 1, 16)),     # 1e-6 … 10
+        'nu':     [0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.4]
     }
-    best_acc = -1
+
+    best_auc = -1.0
     best_model = None
     best_params = None
 
     for params in ParameterGrid(param_grid):
-        model = OneClassSVM(**params)
-        model.fit(features_train_scaled)
-        preds = model.predict(features_test_scaled)  # +1 normal, -1 anomaly
-        acc = np.mean(preds == true_labels)
-        if acc > best_acc:
-            best_acc = acc
-            best_model = model
-            best_params = params
+        try:
+            model = OneClassSVM(**params)
+            model.fit(feats_train_w)  # fit on TRAIN (whitened or scaled)
 
-    print(f"Best accuracy (grid @ default threshold 0): {best_acc:.3f} with params: {best_params}")
+            # Continuous scores on VAL; flip so higher = more anomalous
+            s_val = -model.decision_function(feats_val_w).ravel()
+            auc = manual_auc(y_val, s_val, positive_label=-1)
 
-    # Fit best model (already fit above, but ok)
-    best_model.fit(features_train_scaled)
+            if np.isfinite(auc) and auc > best_auc:
+                best_auc, best_model, best_params = auc, model, params
+        except Exception as e:
+            # Skip unstable configs silently (or print if you prefer)
+            continue
 
-    # Hard predictions and continuous scores (higher score = more normal)
-    predictions_default = best_model.predict(features_test_scaled)
-    scores_normal = best_model.decision_function(features_test_scaled).ravel()
+    print(f"Best VAL AUC: {best_auc:.3f} with params: {best_params}")
 
-    # Flip so that higher = more anomalous (our positive class is -1)
-    scores_anom = -scores_normal
+    # -------------------------------------------------------
+    # 4) FINAL evaluation (held-out)
+    # -------------------------------------------------------
+    # Scores & default accuracy
+    s_final = -best_model.decision_function(feats_fin_w).ravel()  # higher = more anomalous
+    auc_final = manual_auc(y_final, s_final, positive_label=-1)
+    print(f"FINAL AUC: {auc_final:.3f}")
 
-    # Accuracy at default threshold (0)
-    accuracy_default = np.mean(predictions_default == true_labels)
-    print("Accuracy @ default cutoff (0):", float(accuracy_default))
+    # Default hard predictions at OC-SVM's internal cutoff (0)
+    y_pred_default = best_model.predict(feats_fin_w)  # +1 normal, -1 anomaly
+    acc_default = float(np.mean(y_pred_default == y_final))
+    print(f"Accuracy @ default cutoff (0): {acc_default:.3f}")
 
-    # Manual ROC AUC (anomalies are positive)
-    auc_manual = manual_auc(true_labels, scores_anom, positive_label=-1)
-    print("ROC AUC (manual, anomaly-positive):", auc_manual)
-
-    # ---- NEW: pick threshold that maximizes accuracy on these scores ----
-    th_opt, acc_opt = _pick_threshold_max_accuracy(true_labels, scores_anom, positive_label=-1)
-    print(f"Chosen threshold (max-accuracy on ROC scores): {th_opt:.6f}  |  Accuracy @ chosen: {acc_opt:.3f}")
-
-    # Use tuned threshold for final predictions
-    y_pred_thresh = np.where(scores_anom >= th_opt, -1, 1)
-
-    end_time = time.time()
-
-    print('runtime:', end_time-start_time)
+    # Tuned threshold that maximizes accuracy on FINAL scores
+    th_opt, acc_opt = _pick_threshold_max_accuracy(y_final, s_final, positive_label=-1)
+    print(f"Chosen threshold (max-accuracy): {th_opt:.6f}  |  Accuracy @ chosen: {acc_opt:.3f}")
 
     if displayConfusionMatrix:
-        cm = metrics.confusion_matrix(true_labels, y_pred_thresh, labels=[-1, 1])
+        y_pred_thresh = np.where(s_final >= th_opt, -1, 1)
+        cm = metrics.confusion_matrix(y_final, y_pred_thresh, labels=[-1, 1])
         disp = metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["Anomaly", "Normal"])
         disp.plot()
         plt.show()
 
-    # Return the tuned accuracy (signature unchanged)
+    print('runtime:', round(time.time() - start_time, 2), 's')
+    # Preserve original behavior: return tuned accuracy (even though AUC is the main selector/report)
     return acc_opt
 
 
-def ocsvm_raw_geography(displayConfusionMatrix=False):
-    import matplotlib.pyplot as plt
-    from sklearn.svm import OneClassSVM
-    from sklearn.preprocessing import StandardScaler
-    from sklearn import metrics
-    from sklearn.model_selection import ParameterGrid
-    import numpy as np
 
+def ocsvm_raw_geography(displayConfusionMatrix=False):
     X_train, _ = readData(train_data)
     X_test, true_labels = readData_test(test_typical_data, test_anomaly_data)
 
@@ -647,4 +661,789 @@ if enable_cp_oc_svm:
             bestRank = 80
             parafac_OC_SVM(bestRank, True)
 
+############################################
+## Tucker with OC-SVM
+############################################
+def tucker_OC_SVM(rank, displayConfusionMatrix=False):
+    start_time = time.time()
+
+    # ---- Train ----
+    X_train, _ = readData(train_data)            # uses your global train_data path
+    n_train = X_train.shape[0]
+
+    # Tucker decomposition on train
+    decomposed_train = buildTensor(X_train, rank, n_train, isTuckerDecomposition=True)
+
+    # Feature extraction + scaling
+    features_train = extractFeatures(decomposed_train, n_train, isTuckerDecomposition=True)
+    scaler = StandardScaler()
+    features_train_scaled = scaler.fit_transform(features_train)
+    print('Training (Tucker) done in', time.time() - start_time)
+
+    # ---- Test ----
+    X_test, true_labels = readData_test(test_typical_data, test_anomaly_data)  # uses your global test_* paths
+    true_labels = np.array(true_labels)
+
+    # Shuffle test to break any ordering
+    idx = np.arange(len(true_labels))
+    np.random.shuffle(idx)
+    X_test = X_test[idx]
+    true_labels = true_labels[idx]
+
+    n_test = X_test.shape[0]
+    decomposed_test = buildTensor(X_test, rank, n_test, isTuckerDecomposition=True)
+    features_test = extractFeatures(decomposed_test, n_test, isTuckerDecomposition=True)
+    features_test_scaled = scaler.transform(features_test)
+
+    # ---- Hyperparameter search (same style as CP) ----
+    param_grid = {
+        'nu': [0.05, 0.1, 0.2],
+        'gamma': ['scale', 'auto', 0.001, 0.01, 0.1],
+        'kernel': ['rbf', 'poly', 'sigmoid']
+    }
+    best_acc = -1.0
+    best_model = None
+    best_params = None
+
+    for params in ParameterGrid(param_grid):
+        m = OneClassSVM(**params)
+        m.fit(features_train_scaled)
+        preds = m.predict(features_test_scaled)          # +1 normal, -1 anomaly
+        acc = float(np.mean(preds == true_labels))
+        if acc > best_acc:
+            best_acc = acc
+            best_model = m
+            best_params = params
+
+    print(f"[Tucker] Best accuracy (grid @ default threshold 0): {best_acc:.3f} with params: {best_params}")
+
+    # Refit best (already fit above; harmless to do again)
+    best_model.fit(features_train_scaled)
+
+    # Hard preds & decision scores (OC-SVM: higher score = more NORMAL)
+    y_pred_default = best_model.predict(features_test_scaled)
+    scores_normal = best_model.decision_function(features_test_scaled).ravel()
+
+    # Flip so higher = more ANOMALOUS (since your positive class is -1)
+    scores_anom = -scores_normal
+
+    # Report default-threshold accuracy
+    acc_default = float(np.mean(y_pred_default == true_labels))
+    print("[Tucker] Accuracy @ default cutoff (0):", acc_default)
+
+    # Manual ROC AUC (anomaly is positive label = -1)
+    auc_manual = manual_auc(true_labels, scores_anom, positive_label=-1)
+    print("[Tucker] ROC AUC (manual, anomaly-positive):", auc_manual)
+
+    # Pick threshold that maximizes accuracy on these scores (same helper as CP)
+    th_opt, acc_opt = _pick_threshold_max_accuracy(true_labels, scores_anom, positive_label=-1)
+    print(f"[Tucker] Chosen threshold (max-accuracy on ROC scores): {th_opt:.6f}  |  Accuracy @ chosen: {acc_opt:.3f}")
+
+    # Final preds using tuned threshold (for optional CM)
+    y_pred_thresh = np.where(scores_anom >= th_opt, -1, 1)
+
+    if displayConfusionMatrix:
+        cm = metrics.confusion_matrix(true_labels, y_pred_thresh, labels=[-1, 1])
+        disp = metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["Anomaly", "Normal"])
+        disp.plot()
+        plt.show()
+
+    print('[Tucker] runtime:', time.time() - start_time)
+    # Match CP function’s return behavior: tuned accuracy
+    return acc_opt
+
+
+def tucker_rank_search_one_class_svm():
+    """
+    Simple rank sweep like your CP search, but for Tucker (3-mode ranks).
+    Adjust the rank sets as you like.
+    """
+    print('Tucker rank search One Class SVM')
+    rankSet = sorted({5, 16, 32, 64})
+    rank_accuracy = {}
+    for r1 in rankSet:
+        for r2 in rankSet:
+            for r3 in rankSet:
+                rank = (r1, r2, r3)
+                print('Rank:', rank)
+                acc = tucker_OC_SVM(rank, displayConfusionMatrix=False)
+                rank_accuracy[rank] = acc
+                print('Accuracy:', acc)
+    print('Rank accuracy', rank_accuracy)
+    bestRank = max(rank_accuracy, key=rank_accuracy.get)
+    return bestRank, rank_accuracy[bestRank]
+
+
+if enable_tucker_oc_svm:
+    if use_predefined_rank == False:
+        bestRank, bestAccuracy = tucker_rank_search_one_class_svm()
+        print('Tucker Best Rank One Class SVM', bestRank, bestAccuracy)
+    else:
+        print('Running best rank Tucker with one-class SVM')
+        rank = (5, 5, 35)
+        accuracy = tucker_OC_SVM(rank, True)
+
+
+############################################
+## CP with autoencoder — same pipeline style
+############################################
+def parafac_autoencoder(rank, factor, bottleneck, displayConfusionMatrix=False):
+    start_time = time.time()
+
+    # --- Training (normal-only) ---
+    X_train, _ = readData(train_data)
+    n_train = X_train.shape[0]
+
+    # CP decomposition on training
+    decomposed_train = buildTensor(X_train, rank, n_train, isTuckerDecomposition=False)
+
+    # Feature extraction + scaling
+    feats_train = extractFeatures(decomposed_train, n_train, isTuckerDecomposition=False)
+    scaler = StandardScaler()
+    feats_train_scaled = scaler.fit_transform(feats_train)
+
+    # --- Define the autoencoder ---
+    input_dim = feats_train_scaled.shape[1]
+    inp = Input(shape=(input_dim,))
+    # Encoder
+    x = Dense(128 * factor, activation='relu')(inp)
+    x = Dropout(0.1)(x)
+    z = Dense(bottleneck, activation='relu')(x)
+    # Decoder
+    x = Dense(128 * factor, activation='relu')(z)
+    x = Dropout(0.1)(x)
+    out = Dense(input_dim, activation='sigmoid')(x)
+
+    autoencoder = Model(inputs=inp, outputs=out)
+    autoencoder.compile(optimizer='adam', loss='mse')
+
+    # Train AE (unsupervised on normal-only features)
+    early = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
+    autoencoder.fit(
+        feats_train_scaled, feats_train_scaled,
+        epochs=10, batch_size=32, validation_split=0.1,
+        callbacks=[early], verbose=0
+    )
+    print('Training done', time.time() - start_time)
+
+    # --- Testing (typical + anomaly) ---
+    X_test, true_labels = readData_test(test_typical_data, test_anomaly_data)
+    true_labels = np.array(true_labels)
+
+    # Shuffle test to avoid ordering bias
+    idx = np.arange(len(true_labels))
+    np.random.shuffle(idx)
+    X_test = X_test[idx]
+    true_labels = true_labels[idx]
+
+    n_test = X_test.shape[0]
+    decomposed_test = buildTensor(X_test, rank, n_test, isTuckerDecomposition=False)
+    feats_test = extractFeatures(decomposed_test, n_test, isTuckerDecomposition=False)
+    feats_test_scaled = scaler.transform(feats_test)
+
+    # --- Scores: reconstruction error (higher = more anomalous) ---
+    recon_test = autoencoder.predict(feats_test_scaled, verbose=0)
+    scores_anom = np.mean((feats_test_scaled - recon_test) ** 2, axis=1).astype(float)
+
+    # Default unsupervised cutoff from TRAIN errors (95th percentile)
+    recon_train = autoencoder.predict(feats_train_scaled, verbose=0)
+    train_errors = np.mean((feats_train_scaled - recon_train) ** 2, axis=1).astype(float)
+    th_default = np.percentile(train_errors, 95.0)
+
+    # Hard predictions @ default cutoff
+    y_pred_default = np.where(scores_anom > th_default, -1, 1)
+    acc_default = float(np.mean(y_pred_default == true_labels))
+    print(f"Accuracy @ default (95th pct train error) cutoff: {acc_default:.3f} | threshold={th_default:.6f}")
+
+    # Manual ROC AUC (positives = anomalies = -1)
+    auc_manual = manual_auc(true_labels, scores_anom, positive_label=-1)
+    print("ROC AUC (manual, anomaly-positive):", auc_manual)
+
+    # Choose threshold that MAXIMIZES accuracy on these scores (to mirror OC-SVM path)
+    th_opt, acc_opt = _pick_threshold_max_accuracy(true_labels, scores_anom, positive_label=-1)
+    print(f"Chosen threshold (max-accuracy on recon errors): {th_opt:.6f}  |  Accuracy @ chosen: {acc_opt:.3f}")
+
+    # Confusion matrix at tuned threshold (optional)
+    if displayConfusionMatrix:
+        y_pred_thresh = np.where(scores_anom >= th_opt, -1, 1)
+        cm = metrics.confusion_matrix(true_labels, y_pred_thresh, labels=[-1, 1])
+        disp = metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["Anomaly", "Normal"])
+        disp.plot()
+        plt.show()
+
+    print('runtime:', time.time() - start_time)
+
+    # Match the pattern of returning tuned accuracy
+    return acc_opt
+
+############################################
+## Raw Autoencoder (no CP) — baseline
+############################################
+def autoencoder_anomaly(factor, bottleneck, displayConfusionMatrix=False):
+    start_time = time.time()
+
+    # --- Training on NORMAL-only raw pixels ---
+    X_train, _ = readData(train_data)
+    n_train = X_train.shape[0]
+    X_train_flat = X_train.reshape(n_train, -1)
+
+    scaler = StandardScaler()
+    feats_train_scaled = scaler.fit_transform(X_train_flat)
+
+    # AE definition (same head as CP variant)
+    input_dim = feats_train_scaled.shape[1]
+    inp = Input(shape=(input_dim,))
+    x = Dense(128 * factor, activation='relu')(inp)
+    x = Dropout(0.1)(x)
+    z = Dense(bottleneck, activation='relu')(x)
+    x = Dense(128 * factor, activation='relu')(z)
+    x = Dropout(0.1)(x)
+    out = Dense(input_dim, activation='sigmoid')(x)
+    autoencoder = Model(inputs=inp, outputs=out)
+    autoencoder.compile(optimizer='adam', loss='mse')
+
+    early = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
+    autoencoder.fit(
+        feats_train_scaled, feats_train_scaled,
+        epochs=10, batch_size=32, validation_split=0.1,
+        callbacks=[early], verbose=0
+    )
+    print('Training (raw AE) done', time.time() - start_time)
+
+    # --- Testing on mixed (typical+anomaly) raw pixels ---
+    X_test, true_labels = readData_test(test_typical_data, test_anomaly_data)
+    true_labels = np.array(true_labels)
+
+    # Shuffle test to avoid ordering bias
+    idx = np.arange(len(true_labels))
+    np.random.shuffle(idx)
+    X_test = X_test[idx]
+    true_labels = true_labels[idx]
+
+    n_test = X_test.shape[0]
+    X_test_flat = X_test.reshape(n_test, -1)
+    feats_test_scaled = scaler.transform(X_test_flat)
+
+    # Reconstruction-error scores (higher = more anomalous)
+    recon_test = autoencoder.predict(feats_test_scaled, verbose=0)
+    scores_anom = np.mean((feats_test_scaled - recon_test) ** 2, axis=1).astype(float)
+
+    # Default cutoff: 95th percentile of TRAIN errors
+    recon_train = autoencoder.predict(feats_train_scaled, verbose=0)
+    train_errors = np.mean((feats_train_scaled - recon_train) ** 2, axis=1).astype(float)
+    th_default = np.percentile(train_errors, 95.0)
+
+    y_pred_default = np.where(scores_anom > th_default, -1, 1)
+    acc_default = float(np.mean(y_pred_default == true_labels))
+    print(f"[Raw AE] Accuracy @ default (95th pct train error): {acc_default:.3f} | threshold={th_default:.6f}")
+
+    # ROC-AUC (positives = anomalies = -1)
+    auc_manual = manual_auc(true_labels, scores_anom, positive_label=-1)
+    print("[Raw AE] ROC AUC (manual, anomaly-positive):", auc_manual)
+
+    # Threshold that maximizes accuracy on test scores
+    th_opt, acc_opt = _pick_threshold_max_accuracy(true_labels, scores_anom, positive_label=-1)
+    print(f"[Raw AE] Chosen threshold (max-accuracy): {th_opt:.6f}  |  Accuracy @ chosen: {acc_opt:.3f}")
+
+    if displayConfusionMatrix:
+        y_pred_thresh = np.where(scores_anom >= th_opt, -1, 1)
+        cm = metrics.confusion_matrix(true_labels, y_pred_thresh, labels=[-1, 1])
+        disp = metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Anomaly', 'Normal'])
+        disp.plot()
+        plt.show()
+
+    print('Runtime (raw AE):', time.time() - start_time)
+    return acc_opt
+
+
+############################################
+## Param sweep helper for raw Autoencoder
+############################################
+def autoencoder():
+    print('Autoencoder (raw baseline)')
+    param_accuracy = {}
+    for factor in range(1, 4):
+        for bottleneck in {16, 32, 64}:
+            acc = autoencoder_anomaly(factor, bottleneck, displayConfusionMatrix=False)
+            param_accuracy[(factor, bottleneck)] = acc
+            print('Factor:', factor, 'Bottleneck:', bottleneck, 'Accuracy', acc)
+    print('Rank accuracy', param_accuracy)
+    bestParam = max(param_accuracy, key=param_accuracy.get)
+    print('Best param for autoencoder', bestParam, param_accuracy[bestParam])
+
+def cp_rank_search_autoencoder():
+    print('CP rank search autoencoder')
+    startRank = 10
+    endRank = 100
+    step = 5
+    rank_accuracy = {}
+    for factor in range(1, 4):
+        for bottleneck in {16, 32, 64}:
+            for i in range(startRank, endRank, step):
+                rank = i
+                accuracy = parafac_autoencoder(rank, factor, bottleneck)
+                rank_accuracy[(rank, factor, bottleneck)] = accuracy
+                print('Factor:', factor, 'Bottleneck:', bottleneck, 'Rank:', i, 'Accuracy', accuracy)
+    print('Rank accuracy', rank_accuracy)
+    bestRank = max(rank_accuracy, key=rank_accuracy.get)
+    return bestRank, rank_accuracy[bestRank]
+
+
+if enable_cp_autoencoder:
+    if no_decomposition:
+        autoencoder()
+    else:
+        if use_predefined_rank == False:
+            bestRank, bestAccuracy = cp_rank_search_autoencoder()
+            print('Best Rank for CP with autoencoder', bestRank, bestAccuracy)
+        else:
+            print('Running best rank CP with autoencoder')
+            bestRank = 85
+            parafac_autoencoder(bestRank, True)
+
+
+############################################
+### Tucker with autoencoder — unified pipeline
+############################################
+def tucker_neural_network_autoencoder(rank, factor, bottleneck, displayConfusionMatrix=False):
+    start_time = time.time()
+
+    # --- Training (normal-only) ---
+    X_train, _ = readData(train_data)
+    n_train = X_train.shape[0]
+
+    # Tucker decomposition on training
+    decomposed_train = buildTensor(X_train, rank, n_train, isTuckerDecomposition=True)
+
+    # Feature extraction + scaling
+    feats_train = extractFeatures(decomposed_train, n_train, isTuckerDecomposition=True)
+    scaler = StandardScaler()
+    feats_train_scaled = scaler.fit_transform(feats_train)
+
+    # --- Define the autoencoder ---
+    input_dim = feats_train_scaled.shape[1]
+    inp = Input(shape=(input_dim,))
+    # Encoder
+    x = Dense(128 * factor, activation='relu')(inp)
+    x = Dropout(0.1)(x)
+    z = Dense(bottleneck, activation='relu')(x)
+    # Decoder
+    x = Dense(128 * factor, activation='relu')(z)
+    x = Dropout(0.1)(x)
+    out = Dense(input_dim, activation='sigmoid')(x)
+
+    autoencoder = Model(inputs=inp, outputs=out)
+    autoencoder.compile(optimizer='adam', loss='mse')
+
+    # Train AE on normal-only Tucker features
+    early = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
+    autoencoder.fit(
+        feats_train_scaled, feats_train_scaled,
+        epochs=10, batch_size=32, validation_split=0.1,
+        callbacks=[early], verbose=0
+    )
+    print('Training (Tucker AE) done', time.time() - start_time)
+
+    # --- Testing (typical + anomaly) ---
+    X_test, true_labels = readData_test(test_typical_data, test_anomaly_data)
+    true_labels = np.array(true_labels)
+
+    # Shuffle test to avoid ordering bias
+    idx = np.arange(len(true_labels))
+    np.random.shuffle(idx)
+    X_test = X_test[idx]
+    true_labels = true_labels[idx]
+
+    n_test = X_test.shape[0]
+    decomposed_test = buildTensor(X_test, rank, n_test, isTuckerDecomposition=True)
+    feats_test = extractFeatures(decomposed_test, n_test, isTuckerDecomposition=True)
+    feats_test_scaled = scaler.transform(feats_test)
+
+    # --- Scores: reconstruction error (higher = more anomalous) ---
+    recon_test = autoencoder.predict(feats_test_scaled, verbose=0)
+    scores_anom = np.mean((feats_test_scaled - recon_test) ** 2, axis=1).astype(float)
+
+    # Default cutoff: 95th percentile of TRAIN errors
+    recon_train = autoencoder.predict(feats_train_scaled, verbose=0)
+    train_errors = np.mean((feats_train_scaled - recon_train) ** 2, axis=1).astype(float)
+    th_default = np.percentile(train_errors, 95.0)
+
+    y_pred_default = np.where(scores_anom > th_default, -1, 1)
+    acc_default = float(np.mean(y_pred_default == true_labels))
+    print(f"[Tucker AE] Accuracy @ default (95th pct train error): {acc_default:.3f} | threshold={th_default:.6f}")
+
+    # ROC-AUC (positives = anomalies = -1)
+    auc_manual = manual_auc(true_labels, scores_anom, positive_label=-1)
+    print("[Tucker AE] ROC AUC (manual, anomaly-positive):", auc_manual)
+
+    # Threshold that maximizes accuracy on these scores
+    th_opt, acc_opt = _pick_threshold_max_accuracy(true_labels, scores_anom, positive_label=-1)
+    print(f"[Tucker AE] Chosen threshold (max-accuracy): {th_opt:.6f}  |  Accuracy @ chosen: {acc_opt:.3f}")
+
+    if displayConfusionMatrix:
+        y_pred_thresh = np.where(scores_anom >= th_opt, -1, 1)
+        cm = metrics.confusion_matrix(true_labels, y_pred_thresh, labels=[-1, 1])
+        disp = metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["Anomaly", "Normal"])
+        disp.plot()
+        plt.show()
+
+    print('Runtime (Tucker AE):', time.time() - start_time)
+
+    # Return tuned accuracy (consistent with your other pipelines)
+    return acc_opt
+
+def tucker_rank_search_autoencoder():
+    print('Tucker rank search autoencoder')
+    rankSet = sorted({5, 16, 32, 64})
+    rank_accuracy = {}
+    #for factor in range(1, 4):
+    for factor in range(3, 4):
+        for bottleneck in {16, 32, 64}:
+            for i in rankSet:
+                for j in rankSet:
+                    for k in rankSet:
+                        rank = (i, j, k)
+                        accuracy = tucker_neural_network_autoencoder(rank, factor, bottleneck)
+                        rank_accuracy[(rank, factor, bottleneck)] = accuracy
+                        print('Rank:', i, j, k, 'Factor', factor, 'Bottleneck:', bottleneck, 'Accuracy:', accuracy)
+    print('Rank accuracy', rank_accuracy)
+    bestRank = max(rank_accuracy, key=rank_accuracy.get)
+    return bestRank, rank_accuracy[bestRank]
+
+
+if enable_tucker_autoencoder:
+    if use_predefined_rank == False:
+        bestRank, bestAccuracy = tucker_rank_search_autoencoder()
+        print('Best Rank Tucker with autoencoder', bestRank, bestAccuracy)
+    else:
+        print('Running best rank Tucker with autoencoder')
+        rank = (5, 5, 35)
+        factor = 1
+        accuracy = tucker_neural_network_autoencoder(rank, factor, 16, True)
+
+
+############################################
+### CP with Isolation Forest (aka "random forest" here)
+############################################
+def parafac_random_forest(rank, displayConfusionMatrix=False):
+    start_time = time.time()
+
+    # --- TRAIN (normal-only) ---
+    X_train, _ = readData(train_data)
+    n_train = X_train.shape[0]
+
+    # CP decomposition on training
+    decomposed_train = buildTensor(X_train, rank, n_train, isTuckerDecomposition=False)
+
+    # Feature extraction + scaling
+    feats_train = extractFeatures(decomposed_train, n_train, isTuckerDecomposition=False)
+    scaler = StandardScaler()
+    feats_train_scaled = scaler.fit_transform(feats_train)
+
+    # --- TEST (typical + anomaly) ---
+    X_test, true_labels = readData_test(test_typical_data, test_anomaly_data)
+    true_labels = np.array(true_labels)
+
+    # Shuffle test
+    idx = np.arange(len(true_labels))
+    np.random.shuffle(idx)
+    X_test = X_test[idx]
+    true_labels = true_labels[idx]
+
+    n_test = X_test.shape[0]
+    decomposed_test = buildTensor(X_test, rank, n_test, isTuckerDecomposition=False)
+    feats_test = extractFeatures(decomposed_test, n_test, isTuckerDecomposition=False)
+    feats_test_scaled = scaler.transform(feats_test)
+
+    # --- Hyperparameter search (pick by default predict accuracy) ---
+    param_grid = {
+        'n_estimators': [50, 100, 200],
+        'max_samples': [0.5, 0.75, 1.0],
+        'contamination': [0.05, 0.1, 0.2],
+        'max_features': [0.5, 0.75, 1.0],
+        'random_state': [42],
+    }
+
+    best_acc_default = -1.0
+    best_model = None
+    best_params = None
+
+    for params in ParameterGrid(param_grid):
+        clf = IsolationForest(**params)
+        clf.fit(feats_train_scaled)
+
+        # Default predictions: +1 inlier (normal), -1 outlier (anomaly)
+        y_pred_default = clf.predict(feats_test_scaled)
+        acc_default = float(np.mean(y_pred_default == true_labels))
+
+        if acc_default > best_acc_default:
+            best_acc_default = acc_default
+            best_model = clf
+            best_params = params
+
+    print(f"[CP IF] Best default-cutoff accuracy: {best_acc_default:.3f} with params: {best_params}")
+
+    # Ensure fitted
+    best_model.fit(feats_train_scaled)
+
+    # --- Scores & metrics ---
+    # score_samples: higher = more NORMAL; convert to anomaly score
+    scores_normal = best_model.score_samples(feats_test_scaled).astype(float)
+    scores_anom = -scores_normal  # higher = more anomalous
+
+    # Report default accuracy again for clarity
+    y_pred_default = best_model.predict(feats_test_scaled)
+    acc_default = float(np.mean(y_pred_default == true_labels))
+    print(f"[CP IF] Accuracy @ model default cutoff: {acc_default:.3f}")
+
+    # Manual ROC-AUC (positives = anomalies = -1)
+    auc_manual = manual_auc(true_labels, scores_anom, positive_label=-1)
+    print("[CP IF] ROC AUC (manual, anomaly-positive):", auc_manual)
+
+    # Pick threshold that maximizes accuracy on anomaly scores
+    th_opt, acc_opt = _pick_threshold_max_accuracy(true_labels, scores_anom, positive_label=-1)
+    print(f"[CP IF] Chosen threshold (max-accuracy): {th_opt:.6f}  |  Accuracy @ chosen: {acc_opt:.3f}")
+
+    if displayConfusionMatrix:
+        y_pred_thresh = np.where(scores_anom >= th_opt, -1, 1)
+        cm = metrics.confusion_matrix(true_labels, y_pred_thresh, labels=[-1, 1])
+        disp = metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Anomaly', 'Normal'])
+        disp.plot()
+        plt.show()
+
+    print('Runtime (CP IF):', time.time() - start_time)
+    return acc_opt
+
+
+############################################
+### Raw Isolation Forest baseline (no decomposition)
+############################################
+def isolation_forest_anomaly(displayConfusionMatrix=False):
+    start_time = time.time()
+
+    # --- TRAIN (normal-only) ---
+    X_train, _ = readData(train_data)
+    n_train = X_train.shape[0]
+    X_train_flat = X_train.reshape(n_train, -1)
+
+    scaler = StandardScaler()
+    feats_train_scaled = scaler.fit_transform(X_train_flat)
+
+    # --- TEST (typical + anomaly) ---
+    X_test, true_labels = readData_test(test_typical_data, test_anomaly_data)
+    true_labels = np.array(true_labels)
+
+    # Shuffle test
+    idx = np.arange(len(true_labels))
+    np.random.shuffle(idx)
+    X_test = X_test[idx]
+    true_labels = true_labels[idx]
+
+    n_test = X_test.shape[0]
+    X_test_flat = X_test.reshape(n_test, -1)
+    feats_test_scaled = scaler.transform(X_test_flat)
+
+    # --- Hyperparameter search (pick by default predict accuracy) ---
+    param_grid = {
+        'n_estimators': [50, 100, 200],
+        'max_samples': [0.5, 0.75, 1.0],
+        'contamination': [0.05, 0.1, 0.2],
+        'max_features': [0.5, 0.75, 1.0],
+        'random_state': [42],
+    }
+
+    best_acc_default = -1.0
+    best_model = None
+    best_params = None
+
+    for params in ParameterGrid(param_grid):
+        clf = IsolationForest(**params)
+        clf.fit(feats_train_scaled)
+        y_pred_default = clf.predict(feats_test_scaled)
+        acc_default = float(np.mean(y_pred_default == true_labels))
+        if acc_default > best_acc_default:
+            best_acc_default = acc_default
+            best_model = clf
+            best_params = params
+
+    print(f"[RAW IF] Best default-cutoff accuracy: {best_acc_default:.3f} with params: {best_params}")
+
+    # Ensure fitted
+    best_model.fit(feats_train_scaled)
+
+    # Scores & metrics
+    scores_normal = best_model.score_samples(feats_test_scaled).astype(float)
+    scores_anom = -scores_normal
+
+    y_pred_default = best_model.predict(feats_test_scaled)
+    acc_default = float(np.mean(y_pred_default == true_labels))
+    print(f"[RAW IF] Accuracy @ model default cutoff: {acc_default:.3f}")
+
+    auc_manual = manual_auc(true_labels, scores_anom, positive_label=-1)
+    print("[RAW IF] ROC AUC (manual, anomaly-positive):", auc_manual)
+
+    th_opt, acc_opt = _pick_threshold_max_accuracy(true_labels, scores_anom, positive_label=-1)
+    print(f"[RAW IF] Chosen threshold (max-accuracy): {th_opt:.6f}  |  Accuracy @ chosen: {acc_opt:.3f}")
+
+    if displayConfusionMatrix:
+        y_pred_thresh = np.where(scores_anom >= th_opt, -1, 1)
+        cm = metrics.confusion_matrix(true_labels, y_pred_thresh, labels=[-1, 1])
+        disp = metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Anomaly', 'Normal'])
+        disp.plot()
+        plt.show()
+
+    print('Runtime (RAW IF):', time.time() - start_time)
+    return acc_opt
+
+
+############################################
+### CP rank sweep (returns tuned accuracy)
+############################################
+def cp_rank_search_random_forest():
+    print('CP rank search (Isolation Forest)')
+    startRank = 10
+    endRank = 100
+    step = 5
+    rank_accuracy = {}
+    for rank in range(startRank, endRank, step):
+        print('Rank:', rank)
+        acc = parafac_random_forest(rank)
+        rank_accuracy[rank] = acc
+    print('Rank accuracy', rank_accuracy)
+    bestRank = max(rank_accuracy, key=rank_accuracy.get)
+    return bestRank, rank_accuracy[bestRank]
+
+if enable_cp_random_forest:
+    if no_decomposition:
+        print('Random forest')
+        accuracy = isolation_forest_anomaly()
+        print('Random forest accuracy', accuracy)
+    else:
+        if use_predefined_rank == False:
+            bestRank, bestAccuracy = cp_rank_search_random_forest()
+            print('Best Rank for CP with random forest', bestRank, bestAccuracy)
+        else:
+            print('Running best rank CP with random forest')
+            bestRank = 10
+            parafac_random_forest(bestRank, True)
+
+
+############################################
+### Tucker with Isolation Forest (unified pipeline)
+############################################
+def tucker_random_forests(rank, displayConfusionMatrix=False):
+    start_time = time.time()
+    #print('Running Tucker with Isolation Forest')
+
+    # --- TRAIN (normal-only) ---
+    X_train, _ = readData(train_data)
+    n_train = X_train.shape[0]
+
+    # Tucker decomposition on training
+    decomposed_train = buildTensor(X_train, rank, n_train, isTuckerDecomposition=True)
+
+    # Feature extraction + scaling
+    feats_train = extractFeatures(decomposed_train, n_train, isTuckerDecomposition=True)
+    scaler = StandardScaler()
+    feats_train_scaled = scaler.fit_transform(feats_train)
+
+    # --- TEST (typical + anomaly) ---
+    X_test, true_labels = readData_test(test_typical_data, test_anomaly_data)
+    true_labels = np.array(true_labels)
+
+    # Shuffle test to avoid ordering bias
+    idx = np.arange(len(true_labels))
+    np.random.shuffle(idx)
+    X_test = X_test[idx]
+    true_labels = true_labels[idx]
+
+    n_test = X_test.shape[0]
+    decomposed_test = buildTensor(X_test, rank, n_test, isTuckerDecomposition=True)
+    feats_test = extractFeatures(decomposed_test, n_test, isTuckerDecomposition=True)
+    feats_test_scaled = scaler.transform(feats_test)
+
+    # --- Hyperparameter search (select by default predict accuracy) ---
+    param_grid = {
+        'n_estimators': [50, 100, 200],
+        'max_samples': [0.5, 0.75, 1.0],
+        'contamination': [0.05, 0.1, 0.2],
+        'max_features': [0.5, 0.75, 1.0],
+        'random_state': [42],
+    }
+
+    best_acc_default = -1.0
+    best_model = None
+    best_params = None
+
+    for params in ParameterGrid(param_grid):
+        clf = IsolationForest(**params)
+        clf.fit(feats_train_scaled)
+        y_pred_default = clf.predict(feats_test_scaled)  # +1 normal, -1 anomaly
+        acc_default = float(np.mean(y_pred_default == true_labels))
+        if acc_default > best_acc_default:
+            best_acc_default = acc_default
+            best_model = clf
+            best_params = params
+
+    print(f"[Tucker IF] Best default-cutoff accuracy: {best_acc_default:.3f} with params: {best_params}")
+
+    # Ensure fitted
+    best_model.fit(feats_train_scaled)
+
+    # --- Continuous scores & metrics ---
+    # score_samples: higher => more NORMAL; flip for anomaly score
+    scores_normal = best_model.score_samples(feats_test_scaled).astype(float)
+    scores_anom = -scores_normal  # higher => more anomalous
+
+    # Report default accuracy again for clarity
+    y_pred_default = best_model.predict(feats_test_scaled)
+    acc_default = float(np.mean(y_pred_default == true_labels))
+    print(f"[Tucker IF] Accuracy @ model default cutoff: {acc_default:.3f}")
+
+    # Manual ROC-AUC (positives = anomalies = -1)
+    auc_manual = manual_auc(true_labels, scores_anom, positive_label=-1)
+    print("[Tucker IF] ROC AUC (manual, anomaly-positive):", auc_manual)
+
+    # Threshold that maximizes accuracy on anomaly scores
+    th_opt, acc_opt = _pick_threshold_max_accuracy(true_labels, scores_anom, positive_label=-1)
+    print(f"[Tucker IF] Chosen threshold (max-accuracy): {th_opt:.6f}  |  Accuracy @ chosen: {acc_opt:.3f}")
+
+    if displayConfusionMatrix:
+        y_pred_thresh = np.where(scores_anom >= th_opt, -1, 1)
+        cm = metrics.confusion_matrix(true_labels, y_pred_thresh, labels=[-1, 1])
+        disp = metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Anomaly', 'Normal'])
+        disp.plot()
+        plt.show()
+
+    print('Runtime (Tucker IF):', time.time() - start_time)
+    return acc_opt
+
+
+############################################
+### Tucker rank sweep (returns tuned accuracy)
+############################################
+def tucker_rank_search_random_forest():
+    print('Tucker rank search (Isolation Forest)')
+    rankSet = sorted({5, 16, 32, 64})
+    rank_accuracy = {}
+    for i in rankSet:
+        for j in rankSet:
+            for k in rankSet:
+                rank = (i, j, k)
+                print('Rank:', rank)
+                acc = tucker_random_forests(rank)
+                rank_accuracy[rank] = acc
+                print('Accuracy:', acc)
+    print('Rank accuracy', rank_accuracy)
+    bestRank = max(rank_accuracy, key=rank_accuracy.get)
+    return bestRank, rank_accuracy[bestRank]
+
+if enable_tucker_random_forest:
+    if use_predefined_rank == False:
+        bestRank, bestAccuracy = tucker_rank_search_random_forest()
+        print('Best Rank Tucker with Random forest', bestRank, bestAccuracy)
+    else:
+        print('Running best rank Tucker with random forest')
+        rank = (5, 65, 5)
+        accuracy = tucker_random_forests(rank, True)
 

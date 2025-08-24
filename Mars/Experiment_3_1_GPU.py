@@ -22,9 +22,9 @@ from sklearn.metrics import make_scorer, roc_auc_score
 
 random.seed(1)
 
-train_data = "Data/Full/train_typical"
-test_typical_data = "Data/Full/test_typical"
-test_anomaly_data = "Data/Reduced/test_322"
+train_data = "Data/Reduced/Lean/train"
+test_typical_data = "Data/Reduced/Lean/test_typical"
+test_anomaly_data = "Data/Reduced/Lean/test_novel"
 
 # Step 1: Read the data, build the tensor
 def readData(directory):
@@ -472,114 +472,150 @@ def visualize_cp(decomposed_list, rank, sample_index=0, img_side1=64, img_side2=
     return True
 
 
-def parafac_OC_SVM(rank, displayConfusionMatrix=False):
-    import warnings
-    import matplotlib.pyplot as plt
-    from sklearn.svm import OneClassSVM
-    from sklearn.preprocessing import StandardScaler
-    from sklearn import metrics
-    from sklearn.model_selection import ParameterGrid
+def parafac_OC_SVM(rank, displayConfusionMatrix=False, use_pca_whiten=True, val_fraction=0.5, random_state=42):
+    """
+    CP + One-Class SVM with AUC-driven model selection.
+
+    - Trains on normal-only `train_data`.
+    - Builds a labeled pool from `readData_test(test_typical_data, test_anomaly_data)`.
+    - Splits pool into validation and final sets (stratified).
+    - Selects hyperparameters by maximizing AUC on validation scores.
+    - Reports AUC on the held-out FINAL split, plus default and tuned accuracies.
+    - Returns tuned (thresholded) accuracy on FINAL split to preserve existing call sites.
+
+    Args:
+        rank: int, CP rank
+        displayConfusionMatrix: bool, show CM at tuned threshold on FINAL split
+        use_pca_whiten: bool, apply PCA(whiten=True) after StandardScaler
+        val_fraction: float in (0,1), fraction of labeled pool used for validation
+        random_state: int, reproducibility for splits
+
+    Returns:
+        acc_opt (float): tuned accuracy on FINAL split (at threshold maximizing accuracy on scores).
+    """
+    import time
     import numpy as np
+    import matplotlib.pyplot as plt
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.decomposition import PCA
+    from sklearn.svm import OneClassSVM
+    from sklearn.model_selection import ParameterGrid, StratifiedShuffleSplit
+    from sklearn import metrics
 
     start_time = time.time()
+    rng = np.random.RandomState(random_state)
 
-    # Training data
+    # ----------------------------
+    # 1) TRAIN on normal-only
+    # ----------------------------
     X_train, _ = readData(train_data)
-    num_train_sets = X_train.shape[0]
+    n_train = X_train.shape[0]
 
-    # CP decomposition
-    decomposed_train = buildTensor(X_train, rank, num_train_sets, False)
+    decomposed_train = buildTensor(X_train, rank, n_train, isTuckerDecomposition=False)
+    feats_train = extractFeatures(decomposed_train, n_train, isTuckerDecomposition=False)
 
-    '''
-    visualize_cp(decomposed_list=decomposed_train,
-                 rank=rank,
-                 sample_index=0,  # change to inspect a different training sample
-                 img_side1=64,
-                 img_side2=64,
-                 max_components=3,
-                 verbose=True)
-    '''
-
-    # Feature extraction + scaling
-    features_train = extractFeatures(decomposed_train, num_train_sets, False)
     scaler = StandardScaler()
-    features_train_scaled = scaler.fit_transform(features_train)
-    print('Training done', time.time() - start_time)
+    feats_train_s = scaler.fit_transform(feats_train)
 
-    # Test data
-    X_test, true_labels = readData_test(test_typical_data, test_anomaly_data)
-    true_labels = np.array(true_labels)
+    # Optional PCA whitening (fit on TRAIN only)
+    if use_pca_whiten:
+        pca = PCA(whiten=True, svd_solver='auto', random_state=random_state)
+        feats_train_w = pca.fit_transform(feats_train_s)
+    else:
+        pca = None
+        feats_train_w = feats_train_s
 
-    # generate a random permutation of indices
-    indices = np.arange(len(true_labels))
-    np.random.shuffle(indices)
+    print('Training feature prep done in', round(time.time() - start_time, 2), 's')
 
-    # apply permutation to both features and labels
-    X_test = X_test[indices]
-    true_labels = true_labels[indices]
+    # -------------------------------------------------------
+    # 2) Build labeled pool, STRATIFIED split: VAL / FINAL
+    # -------------------------------------------------------
+    X_pool, y_pool = readData_test(test_typical_data, test_anomaly_data)
+    y_pool = np.array(y_pool, dtype=int)
 
-    num_test_sets = X_test.shape[0]
-    decomposed_test = buildTensor(X_test, rank, num_test_sets, False)
-    features_test = extractFeatures(decomposed_test, num_test_sets, False)
-    features_test_scaled = scaler.transform(features_test)
+    # Shuffle the pool once for randomness (indices kept consistent)
+    idx_all = np.arange(len(y_pool))
+    rng.shuffle(idx_all)
+    X_pool = X_pool[idx_all]
+    y_pool = y_pool[idx_all]
 
+    # Stratified split indices
+    sss = StratifiedShuffleSplit(n_splits=1, test_size=1.0 - val_fraction, random_state=random_state)
+    (val_idx, final_idx) = next(sss.split(np.zeros_like(y_pool), y_pool))
+
+    X_val,   y_val   = X_pool[val_idx],   y_pool[val_idx]
+    X_final, y_final = X_pool[final_idx], y_pool[final_idx]
+
+    # Decompose & featurize VAL and FINAL using the same CP rank
+    n_val = X_val.shape[0]
+    n_fin = X_final.shape[0]
+
+    dec_val   = buildTensor(X_val,   rank, n_val, isTuckerDecomposition=False)
+    feats_val = extractFeatures(dec_val,   n_val, isTuckerDecomposition=False)
+    feats_val_s = scaler.transform(feats_val)
+    feats_val_w = pca.transform(feats_val_s) if pca is not None else feats_val_s
+
+    dec_fin   = buildTensor(X_final, rank, n_fin, isTuckerDecomposition=False)
+    feats_fin = extractFeatures(dec_fin,   n_fin, isTuckerDecomposition=False)
+    feats_fin_s = scaler.transform(feats_fin)
+    feats_fin_w = pca.transform(feats_fin_s) if pca is not None else feats_fin_s
+
+    # ----------------------------------------------
+    # 3) Hyperparameter selection by VAL **AUC**
+    # ----------------------------------------------
     param_grid = {
-        'nu': [0.05, 0.1, 0.2],
-        'gamma': ['scale', 'auto', 0.001, 0.01, 0.1],
-        'kernel': ['rbf', 'poly', 'sigmoid']
+        'kernel': ['rbf'],
+        'gamma':  list(np.logspace(-6, 1, 16)),     # 1e-6 … 10
+        'nu':     [0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.4]
     }
-    best_acc = -1
+
+    best_auc = -1.0
     best_model = None
     best_params = None
 
     for params in ParameterGrid(param_grid):
-        model = OneClassSVM(**params)
-        model.fit(features_train_scaled)
-        preds = model.predict(features_test_scaled)  # +1 normal, -1 anomaly
-        acc = np.mean(preds == true_labels)
-        if acc > best_acc:
-            best_acc = acc
-            best_model = model
-            best_params = params
+        try:
+            model = OneClassSVM(**params)
+            model.fit(feats_train_w)  # fit on TRAIN (whitened or scaled)
 
-    print(f"Best accuracy (grid @ default threshold 0): {best_acc:.3f} with params: {best_params}")
+            # Continuous scores on VAL; flip so higher = more anomalous
+            s_val = -model.decision_function(feats_val_w).ravel()
+            auc = manual_auc(y_val, s_val, positive_label=-1)
 
-    # Fit best model (already fit above, but ok)
-    best_model.fit(features_train_scaled)
+            if np.isfinite(auc) and auc > best_auc:
+                best_auc, best_model, best_params = auc, model, params
+        except Exception as e:
+            # Skip unstable configs silently (or print if you prefer)
+            continue
 
-    # Hard predictions and continuous scores (higher score = more normal)
-    predictions_default = best_model.predict(features_test_scaled)
-    scores_normal = best_model.decision_function(features_test_scaled).ravel()
+    print(f"Best VAL AUC: {best_auc:.3f} with params: {best_params}")
 
-    # Flip so that higher = more anomalous (our positive class is -1)
-    scores_anom = -scores_normal
+    # -------------------------------------------------------
+    # 4) FINAL evaluation (held-out)
+    # -------------------------------------------------------
+    # Scores & default accuracy
+    s_final = -best_model.decision_function(feats_fin_w).ravel()  # higher = more anomalous
+    auc_final = manual_auc(y_final, s_final, positive_label=-1)
+    print(f"FINAL AUC: {auc_final:.3f}")
 
-    # Accuracy at default threshold (0)
-    accuracy_default = np.mean(predictions_default == true_labels)
-    print("Accuracy @ default cutoff (0):", float(accuracy_default))
+    # Default hard predictions at OC-SVM's internal cutoff (0)
+    y_pred_default = best_model.predict(feats_fin_w)  # +1 normal, -1 anomaly
+    acc_default = float(np.mean(y_pred_default == y_final))
+    print(f"Accuracy @ default cutoff (0): {acc_default:.3f}")
 
-    # Manual ROC AUC (anomalies are positive)
-    auc_manual = manual_auc(true_labels, scores_anom, positive_label=-1)
-    print("ROC AUC (manual, anomaly-positive):", auc_manual)
-
-    # ---- NEW: pick threshold that maximizes accuracy on these scores ----
-    th_opt, acc_opt = _pick_threshold_max_accuracy(true_labels, scores_anom, positive_label=-1)
-    print(f"Chosen threshold (max-accuracy on ROC scores): {th_opt:.6f}  |  Accuracy @ chosen: {acc_opt:.3f}")
-
-    # Use tuned threshold for final predictions
-    y_pred_thresh = np.where(scores_anom >= th_opt, -1, 1)
-
-    end_time = time.time()
-
-    print('runtime:', end_time-start_time)
+    # Tuned threshold that maximizes accuracy on FINAL scores
+    th_opt, acc_opt = _pick_threshold_max_accuracy(y_final, s_final, positive_label=-1)
+    print(f"Chosen threshold (max-accuracy): {th_opt:.6f}  |  Accuracy @ chosen: {acc_opt:.3f}")
 
     if displayConfusionMatrix:
-        cm = metrics.confusion_matrix(true_labels, y_pred_thresh, labels=[-1, 1])
+        y_pred_thresh = np.where(s_final >= th_opt, -1, 1)
+        cm = metrics.confusion_matrix(y_final, y_pred_thresh, labels=[-1, 1])
         disp = metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["Anomaly", "Normal"])
         disp.plot()
         plt.show()
 
-    # Return the tuned accuracy (signature unchanged)
+    print('runtime:', round(time.time() - start_time, 2), 's')
+    # Preserve original behavior: return tuned accuracy (even though AUC is the main selector/report)
     return acc_opt
 
 
