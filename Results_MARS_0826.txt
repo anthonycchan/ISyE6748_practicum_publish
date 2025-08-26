@@ -1,0 +1,152 @@
+C:\Users\Anthony\anaconda3\envs\isye6740\python.exe C:/OMSA/ISyE6748_practicum_publish/Mars/Experiment_3_3.py
+[tensorly] Backend: pytorch (CUDA)
+CP rank search One Class SVM
+Rank: 10
+[sanity] TRAIN std: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN std: min=-4.229620, max=5.458745
+[sanity] POOL std: N=400, NaNs=False, Infs=False
+[sanity] POOL std: min=-4.032901, max=8.337173
+[CP+OCSVM] VAL AUC=0.747 with params={'gamma': 1.0, 'kernel': 'rbf', 'nu': 0.01}
+[CP+OCSVM] FINAL AUC=0.763
+[CP+OCSVM] Chosen threshold=0.006175 | Accuracy=0.725
+runtime: 355.87 s
+Rank: 15
+[sanity] TRAIN std: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN std: min=-4.229620, max=5.458745
+[sanity] POOL std: N=400, NaNs=False, Infs=False
+[sanity] POOL std: min=-4.032901, max=8.337173
+[CP+OCSVM] VAL AUC=0.724 with params={'gamma': 0.6666666666666666, 'kernel': 'rbf', 'nu': 0.01}
+[CP+OCSVM] FINAL AUC=0.736
+[CP+OCSVM] Chosen threshold=0.014585 | Accuracy=0.705
+runtime: 449.87 s
+Rank: 20
+[sanity] TRAIN std: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN std: min=-4.229620, max=5.458745
+[sanity] POOL std: N=400, NaNs=False, Infs=False
+[sanity] POOL std: min=-4.032901, max=8.337173
+[CP+OCSVM] VAL AUC=0.802 with params={'gamma': 0.5, 'kernel': 'rbf', 'nu': 0.05}
+[CP+OCSVM] FINAL AUC=0.793
+[CP+OCSVM] Chosen threshold=0.076736 | Accuracy=0.735
+runtime: 496.47 s
+Rank: 25
+[sanity] TRAIN std: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN std: min=-4.229620, max=5.458745
+[sanity] POOL std: N=400, NaNs=False, Infs=False
+[sanity] POOL std: min=-4.032901, max=8.337173
+[CP+OCSVM] VAL AUC=0.827 with params={'gamma': 0.4, 'kernel': 'rbf', 'nu': 0.05}
+[CP+OCSVM] FINAL AUC=0.814
+[CP+OCSVM] Chosen threshold=0.089511 | Accuracy=0.760
+runtime: 725.53 s
+Rank: 30
+[sanity] TRAIN std: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN std: min=-4.229620, max=5.458745
+[sanity] POOL std: N=400, NaNs=False, Infs=False
+[sanity] POOL std: min=-4.032901, max=8.337173
+[CP+OCSVM] VAL AUC=0.831 with params={'gamma': 0.3333333333333333, 'kernel': 'rbf', 'nu': 0.1}
+[CP+OCSVM] FINAL AUC=0.817
+[CP+OCSVM] Chosen threshold=0.160482 | Accuracy=0.775
+runtime: 704.52 s
+Rank: 35
+[sanity] TRAIN std: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN std: min=-4.229620, max=5.458745
+[sanity] POOL std: N=400, NaNs=False, Infs=False
+[sanity] POOL std: min=-4.032901, max=8.337173
+[CP+OCSVM] VAL AUC=0.815 with params={'gamma': 0.2857142857142857, 'kernel': 'rbf', 'nu': 0.01}
+[CP+OCSVM] FINAL AUC=0.810
+[CP+OCSVM] Chosen threshold=0.017590 | Accuracy=0.760
+runtime: 621.44 s
+Rank: 40
+[sanity] TRAIN std: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN std: min=-4.229620, max=5.458745
+[sanity] POOL std: N=400, NaNs=False, Infs=False
+[sanity] POOL std: min=-4.032901, max=8.337173
+
+[CP+OCSVM] VAL AUC=0.817 with params={'gamma': 0.25, 'kernel': 'rbf', 'nu': 0.02}
+[CP+OCSVM] FINAL AUC=0.820
+[CP+OCSVM] Chosen threshold=0.034153 | Accuracy=0.775
+runtime: 958.08 s
+Rank: 45
+[sanity] TRAIN std: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN std: min=-4.229620, max=5.458745
+[sanity] POOL std: N=400, NaNs=False, Infs=False
+[sanity] POOL std: min=-4.032901, max=8.337173
+[CP+OCSVM] VAL AUC=0.809 with params={'gamma': 0.22222222222222224, 'kernel': 'rbf', 'nu': 0.01}
+[CP+OCSVM] FINAL AUC=0.812
+[CP+OCSVM] Chosen threshold=0.016688 | Accuracy=0.775
+runtime: 1175.66 s
+Rank: 50
+[sanity] TRAIN std: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN std: min=-4.229620, max=5.458745
+[sanity] POOL std: N=400, NaNs=False, Infs=False
+[sanity] POOL std: min=-4.032901, max=8.337173
+[CP+OCSVM] VAL AUC=0.803 with params={'gamma': 0.2, 'kernel': 'rbf', 'nu': 0.01}
+[CP+OCSVM] FINAL AUC=0.816
+[CP+OCSVM] Chosen threshold=0.016361 | Accuracy=0.760
+runtime: 914.25 s
+Rank: 55
+[sanity] TRAIN std: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN std: min=-4.229620, max=5.458745
+[sanity] POOL std: N=400, NaNs=False, Infs=False
+[sanity] POOL std: min=-4.032901, max=8.337173
+[CP+OCSVM] VAL AUC=0.796 with params={'gamma': 0.18181818181818182, 'kernel': 'rbf', 'nu': 0.1}
+[CP+OCSVM] FINAL AUC=0.817
+[CP+OCSVM] Chosen threshold=0.155907 | Accuracy=0.765
+runtime: 831.04 s
+Rank: 60
+[sanity] TRAIN std: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN std: min=-4.229620, max=5.458745
+[sanity] POOL std: N=400, NaNs=False, Infs=False
+[sanity] POOL std: min=-4.032901, max=8.337173
+[CP+OCSVM] VAL AUC=0.797 with params={'gamma': 0.16666666666666666, 'kernel': 'rbf', 'nu': 0.1}
+[CP+OCSVM] FINAL AUC=0.814
+[CP+OCSVM] Chosen threshold=0.154644 | Accuracy=0.755
+runtime: 855.39 s
+Rank: 65
+[sanity] TRAIN std: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN std: min=-4.229620, max=5.458745
+[sanity] POOL std: N=400, NaNs=False, Infs=False
+[sanity] POOL std: min=-4.032901, max=8.337173
+[CP+OCSVM] VAL AUC=0.810 with params={'gamma': 0.15384615384615385, 'kernel': 'rbf', 'nu': 0.02}
+[CP+OCSVM] FINAL AUC=0.829
+[CP+OCSVM] Chosen threshold=0.030727 | Accuracy=0.765
+runtime: 951.98 s
+Rank: 70
+[sanity] TRAIN std: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN std: min=-4.229620, max=5.458745
+[sanity] POOL std: N=400, NaNs=False, Infs=False
+[sanity] POOL std: min=-4.032901, max=8.337173
+[CP+OCSVM] VAL AUC=0.810 with params={'gamma': 0.14285714285714285, 'kernel': 'rbf', 'nu': 0.01}
+[CP+OCSVM] FINAL AUC=0.821
+[CP+OCSVM] Chosen threshold=0.015195 | Accuracy=0.775
+runtime: 977.28 s
+Rank: 75
+[sanity] TRAIN std: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN std: min=-4.229620, max=5.458745
+[sanity] POOL std: N=400, NaNs=False, Infs=False
+[sanity] POOL std: min=-4.032901, max=8.337173
+[CP+OCSVM] VAL AUC=0.814 with params={'gamma': 0.13333333333333333, 'kernel': 'rbf', 'nu': 0.05}
+[CP+OCSVM] FINAL AUC=0.821
+[CP+OCSVM] Chosen threshold=0.074994 | Accuracy=0.755
+runtime: 1066.05 s
+Rank: 80
+[sanity] TRAIN std: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN std: min=-4.229620, max=5.458745
+[sanity] POOL std: N=400, NaNs=False, Infs=False
+[sanity] POOL std: min=-4.032901, max=8.337173
+[CP+OCSVM] VAL AUC=0.806 with params={'gamma': 0.125, 'kernel': 'rbf', 'nu': 0.01}
+[CP+OCSVM] FINAL AUC=0.818
+[CP+OCSVM] Chosen threshold=0.014876 | Accuracy=0.750
+runtime: 1131.47 s
+Rank: 85
+[sanity] TRAIN std: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN std: min=-4.229620, max=5.458745
+[sanity] POOL std: N=400, NaNs=False, Infs=False
+[sanity] POOL std: min=-4.032901, max=8.337173
+[CP+OCSVM] VAL AUC=0.803 with params={'gamma': 0.11764705882352941, 'kernel': 'rbf', 'nu': 0.05}
+[CP+OCSVM] FINAL AUC=0.814
+[CP+OCSVM] Chosen threshold=0.073113 | Accuracy=0.750
+runtime: 911.28 s
+Rank accuracy {10: 0.725, 15: 0.705, 20: 0.735, 25: 0.76, 30: 0.775, 35: 0.76, 40: 0.775, 45: 0.775, 50: 0.76, 55: 0.765, 60: 0.755, 65: 0.765, 70: 0.775, 75: 0.755, 80: 0.75, 85: 0.75}
+Best Rank for CP with One Class SVM 30 0.775
+
+Process finished with exit code 0
