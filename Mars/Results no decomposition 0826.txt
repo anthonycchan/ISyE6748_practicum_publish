@@ -1,0 +1,11 @@
+C:\Users\Anthony\anaconda3\envs\isye6740\python.exe C:/OMSA/ISyE6748_practicum_publish/Mars/Experiment_3_3_1.py
+[tensorly] Backend: pytorch (CUDA)
+One Class SVM
+Best accuracy (grid @ default threshold 0): 0.585 with params: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.2}
+Accuracy @ default cutoff (0): 0.585
+ROC AUC (manual, anomaly-positive): 0.637
+Chosen threshold (max-accuracy on ROC scores): -3.346087  |  Accuracy @ chosen: 0.637
+One class SVM best accuracy: 0.6375 param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.2}
+
+Process finished with exit code 0
+
