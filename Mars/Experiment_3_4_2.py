@@ -28,6 +28,8 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input, Dense, Dropout
 from tensorflow.keras.callbacks import EarlyStopping
 
+from sklearn.ensemble import IsolationForest
+from sklearn.metrics import make_scorer  # (not strictly required but safe to have)
 
 random.seed(1)
 
@@ -41,11 +43,11 @@ use_predefined_rank = False
 enable_tucker_oc_svm = False
 enable_tucker_autoencoder = False
 enable_tucker_random_forest = False
-enable_cp_oc_svm = True
+enable_cp_oc_svm = False
 enable_cp_autoencoder = False
-enable_cp_random_forest = False
+enable_cp_random_forest = True
 
-no_decomposition = False  # set to False to run CP-based pipeline
+no_decomposition = True  # set to False to run CP-based pipeline
 
 # Optional: standardize bands using TRAIN stats (recommended)
 USE_BAND_STANDARDIZE = True
@@ -55,7 +57,7 @@ USE_BAND_STANDARDIZE = True
 USE_SINGLE_CP_COMPONENT = False
 
 # ====== Dataset reduction controls ===========================================
-REDUCE_DATASETS = True
+REDUCE_DATASETS = False
 REDUCE_TRAIN_N = 1500
 REDUCE_VAL_N = 200
 REDUCE_TEST_TYP_N = 200
@@ -1496,6 +1498,322 @@ def cp_rank_search_autoencoder(data_bundle):
     bestRank = max(rank_accuracy, key=rank_accuracy.get)
     return bestRank, rank_accuracy[bestRank]
 
+# =============================================================================
+# === NEW STRATEGY: Tucker with Autoencoder (converted with minimal changes) ==
+# =============================================================================
+def tucker_neural_network_autoencoder(rank, factor, bottleneck, data_bundle,
+                                      displayConfusionMatrix=False):
+    """
+    Converted from your snippet to use the common data/validation path and
+    to print AUC + max-accuracy threshold (parity with other strategies).
+    """
+    # ---- Common split & standardization
+    X_train, X_val, X_fin, _, y_fin, _, _ = get_splits(data_bundle, standardize=USE_BAND_STANDARDIZE)
+    y_fin = np.asarray(y_fin, dtype=int)
+
+    # ---- Tucker decomposition per split
+    n_tr, n_va, n_fi = X_train.shape[0], X_val.shape[0], X_fin.shape[0]
+    decomp_tr = buildTensor(X_train, rank, n_tr, isTuckerDecomposition=True)
+    decomp_va = buildTensor(X_val,   rank, n_va, isTuckerDecomposition=True)
+    decomp_fi = buildTensor(X_fin,   rank, n_fi, isTuckerDecomposition=True)
+
+    # ---- Extract and normalize features (fit scaler on TRAIN only)
+    Feat_tr = extractFeatures(decomp_tr, n_tr, isTuckerDecomposition=True)
+    Feat_va = extractFeatures(decomp_va, n_va, isTuckerDecomposition=True)
+    Feat_fi = extractFeatures(decomp_fi, n_fi, isTuckerDecomposition=True)
+
+    scaler = StandardScaler()
+    Z_tr = scaler.fit_transform(Feat_tr)
+    Z_va = scaler.transform(Feat_va)
+    Z_fi = scaler.transform(Feat_fi)
+
+    # ---- Define the autoencoder model
+    input_dim = Z_tr.shape[1]
+    input_layer = Input(shape=(input_dim,))
+
+    # Encoder
+    encoder = Dense(128 * factor, activation='relu')(input_layer)
+    encoder = Dropout(0.1)(encoder)
+    encoder = Dense(bottleneck, activation='relu')(encoder)
+
+    # Decoder
+    decoder = Dense(128 * factor, activation='relu')(encoder)
+    decoder = Dropout(0.1)(decoder)
+    decoder = Dense(input_dim, activation='sigmoid')(decoder)
+
+    autoencoder = Model(inputs=input_layer, outputs=decoder)
+    autoencoder.compile(optimizer='adam', loss='mse')
+
+    # Early stopping callback (use separate VAL split)
+    early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
+
+    # Fit the model
+    autoencoder.fit(Z_tr, Z_tr, epochs=10, batch_size=32,
+                    validation_data=(Z_va, Z_va),
+                    callbacks=[early_stopping], verbose=0)
+
+    # ---- Threshold from VAL (typical-only directory, if provided)
+    recon_va = autoencoder.predict(Z_va, verbose=0)
+    err_va = np.mean(np.square(Z_va - recon_va), axis=1)
+    threshold = np.percentile(err_va, 95)  # assume anomalies rare / typical-heavy VAL
+
+    # ---- Predict on FINAL
+    recon_fi = autoencoder.predict(Z_fi, verbose=0)
+    err_fi = np.mean(np.square(Z_fi - recon_fi), axis=1)  # anomaly-positive scores
+
+    # Default threshold accuracy
+    predictions = (err_fi > threshold).astype(int)
+    predictions[predictions == 1] = -1
+    predictions[predictions == 0] = 1
+    accuracy_default = float(np.mean(predictions == y_fin))
+    print(f"[Tucker+AE] Accuracy @ VAL-derived threshold: {accuracy_default:.3f}")
+
+    # AUC + max-accuracy threshold (for parity with other strategies)
+    auc_fin = manual_auc(y_fin, err_fi, positive_label=-1)
+    print(f"[Tucker+AE] FINAL AUC={auc_fin:.3f}")
+
+    th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, err_fi, positive_label=-1)
+    print(f"[Tucker+AE] Chosen threshold (max-accuracy on recon error): {th_opt:.6f} | Accuracy={acc_opt:.3f}")
+
+    if displayConfusionMatrix:
+        y_pred_thresh = np.where(err_fi >= th_opt, -1, 1)
+        cm = metrics.confusion_matrix(y_fin, y_pred_thresh, labels=[-1, 1])
+        metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Anomaly', 'Normal']).plot()
+        plt.show()
+
+    return accuracy_default
+
+
+def tucker_rank_search_autoencoder(data_bundle):
+    """
+    Minimal-conversion sweep using your original loop structure.
+    """
+    print('Tucker rank search autoencoder')
+    rankSet = sorted({5, 16, 32, 64})
+    rank_accuracy = {}
+    # for factor in range(1, 4):
+    for factor in range(3, 4):  # keep your original choice
+        for bottleneck in {16, 32, 64}:
+            for i in rankSet:
+                for j in rankSet:
+                    for k in sorted({5, 16}):
+                        rank = (i, j, k)
+                        accuracy = tucker_neural_network_autoencoder(rank, factor, bottleneck, data_bundle)
+                        rank_accuracy[(rank, factor, bottleneck)] = accuracy
+                        print('Rank:', i, j, k, 'Factor', factor, 'Bottleneck:', bottleneck, 'Accuracy:', accuracy)
+    print('Rank accuracy', rank_accuracy)
+    bestRank = max(rank_accuracy, key=rank_accuracy.get)
+    return bestRank, rank_accuracy[bestRank]
+
+def _if_mean_score_scorer(estimator, X, y=None):
+    # Higher is better (less "anomalous" on average)
+    try:
+        return float(np.mean(estimator.score_samples(X)))
+    except Exception:
+        return -np.inf
+
+# =============================================================================
+# === CP (global basis) + Isolation Forest ====================================
+# =============================================================================
+def parafac_random_forest(rank, data_bundle,
+                          displayConfusionMatrix=False,
+                          random_state=42,
+                          cp_basis_max_train_samples=None,
+                          use_pca_whiten=False):
+    """
+    CP features via the shared global CP basis -> project to H, then IsolationForest.
+    Evaluates on FINAL (test pool) with labels y_fin; prints AUC and returns accuracy.
+    """
+    # Common split & standardization
+    X_train, X_val, X_fin, _, y_fin, _, _ = get_splits(data_bundle, standardize=USE_BAND_STANDARDIZE)
+    y_fin = np.asarray(y_fin, dtype=int)
+
+    # Global CP fit + project to coefficients (H)
+    (A, B, C), H_train, H_val, H_fin = cp_fit_and_project(
+        X_train, X_val, X_fin, rank,
+        random_state=random_state,
+        cp_basis_max_train_samples=cp_basis_max_train_samples
+    )
+
+    # Scale (fit on TRAIN only)
+    scaler = StandardScaler()
+    Htr_s = scaler.fit_transform(H_train)
+    Hva_s = scaler.transform(H_val)
+    Hfi_s = scaler.transform(H_fin)
+
+    # Optional PCA whitening on H (kept off by default for minimal changes)
+    if use_pca_whiten:
+        pca = PCA(whiten=True, svd_solver='auto', random_state=random_state)
+        Z_tr = pca.fit_transform(Htr_s)
+        Z_va = pca.transform(Hva_s)
+        Z_fi = pca.transform(Hfi_s)
+    else:
+        Z_tr, Z_va, Z_fi = Htr_s, Hva_s, Hfi_s
+
+    # Hyperparameter tuning (unsupervised) on TRAIN only
+    warnings.filterwarnings('ignore', category=UserWarning)
+    param_grid = {
+        'n_estimators': [50, 100, 200],
+        'max_samples':  [0.5, 0.75, 1.0],
+        'contamination':[0.05, 0.10, 0.20],
+        'max_features': [0.5, 0.75, 1.0],
+        'bootstrap':    [False, True],
+        'random_state': [random_state],
+        'n_jobs':       [-1],
+    }
+    iso = IsolationForest()
+    grid = GridSearchCV(
+        estimator=iso,
+        param_grid=param_grid,
+        cv=3,
+        scoring=_if_mean_score_scorer,
+        verbose=0,
+        n_jobs=-1
+    )
+    grid.fit(Z_tr)
+
+    best_if = grid.best_estimator_
+    best_params = grid.best_params_
+
+    # Predict on FINAL
+    preds = best_if.predict(Z_fi)                 # {-1, +1}
+    acc = float(np.mean(preds == y_fin))
+    scores = -best_if.score_samples(Z_fi)         # anomaly-positive
+    auc_fin = manual_auc(y_fin, scores, positive_label=-1)
+
+    print(f"[CP+IF] FINAL AUC={auc_fin:.3f} | Acc={acc:.3f} | params={best_params}")
+
+    if displayConfusionMatrix:
+        cm = metrics.confusion_matrix(y_fin, preds, labels=[-1, 1])
+        metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["Anomaly", "Normal"]).plot()
+        plt.show()
+
+    return acc
+
+def cp_rank_search_random_forest(data_bundle):
+    print('CP rank search (Isolation Forest)')
+    startRank = 10; endRank = 100; step = 5
+    rank_accuracy = {}
+    for rank in range(startRank, endRank, step):
+        print('Rank:', rank)
+        acc = parafac_random_forest(rank, data_bundle, displayConfusionMatrix=False)
+        rank_accuracy[rank] = acc
+    print('Rank accuracy', rank_accuracy)
+    bestRank = max(rank_accuracy, key=rank_accuracy.get)
+    return bestRank, rank_accuracy[bestRank]
+
+# Raw-pixel IsolationForest (no decomposition), using shared data path
+def isolation_forest_anomaly(data_bundle, displayConfusionMatrix=False, random_state=42):
+    X_train, X_val, X_fin, _, y_fin, _, _ = get_splits(data_bundle, standardize=USE_BAND_STANDARDIZE)
+    y_fin = np.asarray(y_fin, dtype=int)
+
+    # Flatten + scale (fit on TRAIN)
+    n_tr = X_train.shape[0]
+    scaler = StandardScaler()
+    Z_tr = scaler.fit_transform(X_train.reshape(n_tr, -1))
+
+    n_fi = X_fin.shape[0]
+    Z_fi = scaler.transform(X_fin.reshape(n_fi, -1))
+
+    warnings.filterwarnings('ignore', category=UserWarning)
+    param_grid = {
+        'n_estimators': [50, 100, 200],
+        'max_samples':  [0.5, 0.75, 1.0],
+        'contamination':[0.05, 0.10, 0.20],
+        'max_features': [0.5, 0.75, 1.0],
+        'bootstrap':    [False, True],
+        'random_state': [random_state],
+        'n_jobs':       [-1],
+    }
+    iso = IsolationForest()
+    grid = GridSearchCV(iso, param_grid=param_grid, cv=3, scoring=_if_mean_score_scorer, n_jobs=-1, verbose=0)
+    grid.fit(Z_tr)
+
+    best_if = grid.best_estimator_
+    preds = best_if.predict(Z_fi)
+    acc = float(np.mean(preds == y_fin))
+    scores = -best_if.score_samples(Z_fi)
+    auc_fin = manual_auc(y_fin, scores, positive_label=-1)
+
+    print(f"[IF(raw)] FINAL AUC={auc_fin:.3f} | Acc={acc:.3f} | params={grid.best_params_}")
+
+    if displayConfusionMatrix:
+        cm = metrics.confusion_matrix(y_fin, preds, labels=[-1, 1])
+        metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Anomaly', 'Normal']).plot()
+        plt.show()
+
+    return acc
+
+# =============================================================================
+# === Tucker + Isolation Forest ===============================================
+# =============================================================================
+def tucker_random_forests(rank, data_bundle, displayConfusionMatrix=False, random_state=42):
+    """
+    Tucker features (core + factors via extractFeatures) -> IsolationForest.
+    """
+    # Common split & standardization
+    X_train, X_val, X_fin, _, y_fin, _, _ = get_splits(data_bundle, standardize=USE_BAND_STANDARDIZE)
+    y_fin = np.asarray(y_fin, dtype=int)
+
+    # Tucker decomposition per split
+    n_tr, n_fi = X_train.shape[0], X_fin.shape[0]
+    decomp_tr = buildTensor(X_train, rank, n_tr, isTuckerDecomposition=True)
+    decomp_fi = buildTensor(X_fin,   rank, n_fi, isTuckerDecomposition=True)
+
+    # Feature extraction + scaling (fit on TRAIN)
+    Feat_tr = extractFeatures(decomp_tr, n_tr, isTuckerDecomposition=True)
+    Feat_fi = extractFeatures(decomp_fi, n_fi, isTuckerDecomposition=True)
+
+    scaler = StandardScaler()
+    Z_tr = scaler.fit_transform(Feat_tr)
+    Z_fi = scaler.transform(Feat_fi)
+
+    # Hyperparameter tuning (unsupervised) on TRAIN only
+    warnings.filterwarnings('ignore', category=UserWarning)
+    param_grid = {
+        'n_estimators': [50, 100, 200],
+        'max_samples':  [0.5, 0.75, 1.0],
+        'contamination':[0.05, 0.10, 0.20],
+        'max_features': [0.5, 0.75, 1.0],
+        'bootstrap':    [False, True],
+        'random_state': [random_state],
+        'n_jobs':       [-1],
+    }
+    iso = IsolationForest()
+    grid = GridSearchCV(iso, param_grid=param_grid, cv=3, scoring=_if_mean_score_scorer, n_jobs=-1, verbose=0)
+    grid.fit(Z_tr)
+
+    best_if = grid.best_estimator_
+    preds = best_if.predict(Z_fi)
+    acc = float(np.mean(preds == y_fin))
+    scores = -best_if.score_samples(Z_fi)
+    auc_fin = manual_auc(y_fin, scores, positive_label=-1)
+
+    print(f"[Tucker+IF] FINAL AUC={auc_fin:.3f} | Acc={acc:.3f} | params={grid.best_params_}")
+
+    if displayConfusionMatrix:
+        cm = metrics.confusion_matrix(y_fin, preds, labels=[-1, 1])
+        metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["Anomaly", "Normal"]).plot()
+        plt.show()
+
+    return acc
+
+def tucker_rank_search_random_forest(data_bundle):
+    print('Tucker rank search (Isolation Forest)')
+    rankSet = sorted({5, 16, 32, 64})
+    rank_accuracy = {}
+    for i in rankSet:
+        for j in rankSet:
+            for k in sorted({5, 16}):  # keep k modest (band mode)
+                r = (i, j, k)
+                print('Rank:', r)
+                acc = tucker_random_forests(r, data_bundle)
+                rank_accuracy[r] = acc
+    print('Rank accuracy', rank_accuracy)
+    bestRank = max(rank_accuracy, key=rank_accuracy.get)
+    return bestRank, rank_accuracy[bestRank]
+
+
 # ====== Entry (reads once, then passes data to pipelines) ====================
 data_bundle = prepare_data_once(val_fraction=VAL_FRACTION, random_state=42)
 
@@ -1537,3 +1855,36 @@ if enable_cp_autoencoder:
             print('Running best rank CP with autoencoder')
             bestRank = 85
             parafac_autoencoder(bestRank, factor=2, bottleneck=32, data_bundle=data_bundle)
+
+if enable_tucker_autoencoder:
+    if use_predefined_rank == False:
+        bestRank, bestAccuracy = tucker_rank_search_autoencoder(data_bundle)
+        print('Best Rank Tucker with autoencoder', bestRank, bestAccuracy)
+    else:
+        print('Running best rank Tucker with autoencoder')
+        rank = (5, 5, 35)
+        factor = 1
+        accuracy = tucker_neural_network_autoencoder(rank, factor, 16, data_bundle, True)
+
+if enable_cp_random_forest:
+    if no_decomposition:
+        print('Isolation Forest (raw pixels)')
+        accuracy = isolation_forest_anomaly(data_bundle)
+        print('IsolationForest (raw) accuracy', accuracy)
+    else:
+        if use_predefined_rank == False:
+            bestRank, bestAccuracy = cp_rank_search_random_forest(data_bundle)
+            print('Best Rank for CP with Isolation Forest', bestRank, bestAccuracy)
+        else:
+            print('Running best rank CP with Isolation Forest')
+            bestRank = 24
+            parafac_random_forest(bestRank, data_bundle, True)
+
+if enable_tucker_random_forest:
+    if use_predefined_rank == False:
+        bestRank, bestAccuracy = tucker_rank_search_random_forest(data_bundle)
+        print('Best Rank Tucker with Isolation Forest', bestRank, bestAccuracy)
+    else:
+        print('Running best rank Tucker with Isolation Forest')
+        rank = (5, 65, 5)
+        accuracy = tucker_random_forests(rank, data_bundle, True)

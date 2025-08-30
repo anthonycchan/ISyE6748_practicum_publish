@@ -28,6 +28,8 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input, Dense, Dropout
 from tensorflow.keras.callbacks import EarlyStopping
 
+from tensorly.decomposition import partial_tucker as _tl_partial_tucker
+
 
 random.seed(1)
 
@@ -1172,31 +1174,60 @@ def pca_OC_SVM(data_bundle,
 # === NEW: Tucker with OC-SVM (now uses common data via data_bundle) ==========
 # =============================================================================
 # ====== NEW: Global Tucker basis + projection, CP-style ======================
-def fit_global_tucker_basis(X_train, ranks, *, fast_hosvd=True, random_state=42):
+def fit_global_tucker_basis(X_train, ranks, fast_hosvd=True, random_state=42):
     """
-    Fit a single global Tucker model to TRAIN tensor (N,64,64,6) with ranks (R1,R2,R3,R4).
+    Fit a global Tucker basis on TRAIN by factoring only the per-tile modes
+    (64,64,6). We intentionally skip the batch axis (N) using partial_tucker.
     Returns:
-      core G (R1,R2,R3,R4) and factor mats [U1 (N×R1), A (64×R2), B (64×R3), C (6×R4)] as float32.
+      G  : core from the aggregated fit
+      U  : [U1 (64xr1), U2 (64xr2), U3 (6xr3)]
     """
-    # Try current backend first (PyTorch if set), then fall back to NumPy.
+    # Normalize/clip ranks to mode sizes
+    if isinstance(ranks, int):
+        r1 = r2 = r3 = int(ranks)
+    else:
+        r1, r2, r3 = map(int, tuple(ranks))
+    r1 = max(1, min(r1, X_train.shape[1]))  # 64
+    r2 = max(1, min(r2, X_train.shape[2]))  # 64
+    r3 = max(1, min(r3, X_train.shape[3]))  # 6
+    ranks = (r1, r2, r3)
+
+    n_iter_max = 1 if fast_hosvd else 100
+    tol = 0 if fast_hosvd else 1e-5
+
+    def _partial_tucker_compat(X, modes, ranks_tuple):
+        """Call partial_tucker with 'rank' (old TL) or 'ranks' (newer TL)."""
+        try:
+            # Most TensorLy versions use 'rank'
+            return _tl_partial_tucker(
+                X, modes=modes, rank=ranks_tuple, init="svd",
+                n_iter_max=n_iter_max, tol=tol
+            )
+        except TypeError:
+            # Some versions accept 'ranks'
+            return _tl_partial_tucker(
+                X, modes=modes, ranks=ranks_tuple, init="svd",
+                n_iter_max=n_iter_max, tol=tol
+            )
+
+    # Try current backend first
     try:
         Xb = _to_backend(X_train, use_float64=False)
-        if fast_hosvd:
-            G, U = _tl_tucker(Xb, ranks, init="svd", n_iter_max=1, tol=0)
-        else:
-            G, U = _tl_tucker(Xb, ranks, init="svd", n_iter_max=50, tol=1e-5)
-        G_np = _to_numpy(G).astype(np.float32)
-        U_np = [ _to_numpy(Um).astype(np.float32) for Um in U ]
-        return G_np, U_np
+        core, factors = _partial_tucker_compat(Xb, modes=(1, 2, 3), ranks_tuple=ranks)
+        G = _to_numpy(core).astype(np.float32, copy=False)
+        U = [_to_numpy(F).astype(np.float32, copy=False) for F in factors]
+        return G, U
     except Exception:
+        # Fallback to numpy backend
         old = tl.get_backend()
         try:
             tl.set_backend("numpy")
-            if fast_hosvd:
-                G, U = _tl_tucker(X_train.astype(np.float32), ranks, init="svd", n_iter_max=1, tol=0)
-            else:
-                G, U = _tl_tucker(X_train.astype(np.float32), ranks, init="svd", n_iter_max=50, tol=1e-5)
-            return G.astype(np.float32), [Um.astype(np.float32) for Um in U]
+            core, factors = _partial_tucker_compat(
+                X_train.astype(np.float32), modes=(1, 2, 3), ranks_tuple=ranks
+            )
+            G = core.astype(np.float32, copy=False)
+            U = [F.astype(np.float32, copy=False) for F in factors]
+            return G, U
         finally:
             tl.set_backend(old)
 

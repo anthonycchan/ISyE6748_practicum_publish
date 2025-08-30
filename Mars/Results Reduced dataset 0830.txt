@@ -1,0 +1,1122 @@
+REDUCED LEAN with VAL
+
+C:\Users\Anthony\anaconda3\envs\isye6740\python.exe C:/OMSA/ISyE6748_practicum_publish/Mars/Experiment_3_4_2.py
+[tensorly] Backend: pytorch (CUDA)
+[VAL] Using separate validation dir (typical-only): Data/Reduced/Lean/validation (N=200)
+CP rank search One Class SVM
+Rank: 10
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=7 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.05} with FP=0.000, P95=-0.7611, mean=-1.3663
+[CP+OCSVM] FINAL AUC=0.678
+[CP+OCSVM] Chosen threshold=-1.248763 | Accuracy=0.642
+runtime: 26.81 s
+Rank: 15
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=9 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.01} with FP=0.000, P95=-0.0139, mean=-0.1834
+[CP+OCSVM] FINAL AUC=0.550
+[CP+OCSVM] Chosen threshold=-0.007449 | Accuracy=0.583
+runtime: 74.2 s
+Rank: 20
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=2 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.05} with FP=0.005, P95=-0.0032, mean=-0.2538
+[CP+OCSVM] FINAL AUC=0.466
+[CP+OCSVM] Chosen threshold=0.007318 | Accuracy=0.517
+runtime: 59.59 s
+Rank: 25
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=14 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.1} with FP=0.000, P95=-3.5063, mean=-4.5973
+[CP+OCSVM] FINAL AUC=0.682
+[CP+OCSVM] Chosen threshold=-4.630582 | Accuracy=0.662
+runtime: 105.45 s
+Rank: 30
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=2 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.1} with FP=0.000, P95=-2.9150, mean=-3.3782
+[CP+OCSVM] FINAL AUC=0.709
+[CP+OCSVM] Chosen threshold=-3.094379 | Accuracy=0.695
+runtime: 146.98 s
+Rank: 35
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=8 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.01} with FP=0.000, P95=-0.1309, mean=-0.2733
+[CP+OCSVM] FINAL AUC=0.718
+[CP+OCSVM] Chosen threshold=0.041803 | Accuracy=0.718
+runtime: 93.62 s
+Rank: 40
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=11 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.01} with FP=0.000, P95=-0.1467, mean=-0.2424
+[CP+OCSVM] FINAL AUC=0.752
+[CP+OCSVM] Chosen threshold=0.008681 | Accuracy=0.740
+runtime: 150.87 s
+Rank: 45
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=24 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.05} with FP=0.000, P95=-0.5358, mean=-0.9664
+[CP+OCSVM] FINAL AUC=0.739
+[CP+OCSVM] Chosen threshold=0.065763 | Accuracy=0.725
+runtime: 184.06 s
+Rank: 50
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=26 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0016, mean=-0.1231
+[CP+OCSVM] FINAL AUC=0.373
+[CP+OCSVM] Chosen threshold=-0.000573 | Accuracy=0.507
+runtime: 197.7 s
+Rank: 55
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=30 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.3, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0003, mean=-0.0739
+[CP+OCSVM] FINAL AUC=0.479
+[CP+OCSVM] Chosen threshold=-0.002923 | Accuracy=0.530
+runtime: 181.81 s
+Rank: 60
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=8 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.3, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0007, mean=-0.0228
+[CP+OCSVM] FINAL AUC=0.622
+[CP+OCSVM] Chosen threshold=-0.006171 | Accuracy=0.630
+runtime: 225.23 s
+Rank: 65
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=41 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.05} with FP=0.000, P95=-0.8983, mean=-1.3712
+[CP+OCSVM] FINAL AUC=0.759
+[CP+OCSVM] Chosen threshold=-0.309511 | Accuracy=0.740
+runtime: 139.53 s
+Rank: 70
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=62 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.1} with FP=0.000, P95=-1.6015, mean=-4.5720
+[CP+OCSVM] FINAL AUC=0.706
+[CP+OCSVM] Chosen threshold=0.810802 | Accuracy=0.735
+runtime: 205.51 s
+Rank: 75
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=65 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.3, 'kernel': 'rbf', 'nu': 0.1} with FP=0.000, P95=-0.9187, mean=-2.2205
+[CP+OCSVM] FINAL AUC=0.771
+[CP+OCSVM] Chosen threshold=1.467637 | Accuracy=0.730
+runtime: 235.57 s
+Rank: 80
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=11 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.1872, mean=-0.3630
+[CP+OCSVM] FINAL AUC=0.733
+[CP+OCSVM] Chosen threshold=0.078287 | Accuracy=0.725
+runtime: 220.45 s
+Rank: 85
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=36 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0014, mean=-0.1282
+[CP+OCSVM] FINAL AUC=0.371
+[CP+OCSVM] Chosen threshold=-0.000049 | Accuracy=0.512
+runtime: 258.12 s
+Rank: 90
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=13 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.2729, mean=-0.4667
+[CP+OCSVM] FINAL AUC=0.702
+[CP+OCSVM] Chosen threshold=0.043498 | Accuracy=0.693
+runtime: 204.39 s
+Rank: 95
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=63 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.01} with FP=0.000, P95=-0.1364, mean=-0.2450
+[CP+OCSVM] FINAL AUC=0.733
+[CP+OCSVM] Chosen threshold=0.026355 | Accuracy=0.703
+runtime: 263.52 s
+Rank: 100
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=34 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0013, mean=-0.1146
+[CP+OCSVM] FINAL AUC=0.490
+[CP+OCSVM] Chosen threshold=-0.002708 | Accuracy=0.520
+runtime: 251.25 s
+Rank: 105
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=5 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0002, mean=-0.0887
+[CP+OCSVM] FINAL AUC=0.503
+[CP+OCSVM] Chosen threshold=-0.084421 | Accuracy=0.520
+runtime: 261.84 s
+Rank: 110
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=26 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.05} with FP=0.000, P95=-1.0993, mean=-1.4289
+[CP+OCSVM] FINAL AUC=0.743
+[CP+OCSVM] Chosen threshold=-0.538178 | Accuracy=0.725
+runtime: 351.41 s
+Rank: 115
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=0 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0004, mean=-0.1407
+[CP+OCSVM] FINAL AUC=0.460
+[CP+OCSVM] Chosen threshold=-0.401822 | Accuracy=0.515
+runtime: 450.63 s
+Rank: 120
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=50 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0004, mean=-0.1195
+[CP+OCSVM] FINAL AUC=0.482
+[CP+OCSVM] Chosen threshold=-0.361234 | Accuracy=0.527
+runtime: 445.98 s
+Rank: 125
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=8 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0006, mean=-0.1103
+[CP+OCSVM] FINAL AUC=0.412
+[CP+OCSVM] Chosen threshold=-0.371554 | Accuracy=0.510
+runtime: 438.9 s
+Rank: 130
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=101 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0004, mean=-0.1147
+[CP+OCSVM] FINAL AUC=0.551
+[CP+OCSVM] Chosen threshold=-0.275365 | Accuracy=0.552
+runtime: 436.11 s
+Rank: 135
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=3 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0009, mean=-0.0937
+[CP+OCSVM] FINAL AUC=0.493
+[CP+OCSVM] Chosen threshold=-0.009093 | Accuracy=0.537
+runtime: 254.73 s
+Rank: 140
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=131 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.1515, mean=-0.3764
+[CP+OCSVM] FINAL AUC=0.682
+[CP+OCSVM] Chosen threshold=-0.001005 | Accuracy=0.677
+runtime: 522.43 s
+Rank: 145
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=33 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0007, mean=-0.0863
+[CP+OCSVM] FINAL AUC=0.451
+[CP+OCSVM] Chosen threshold=-0.000121 | Accuracy=0.512
+runtime: 240.01 s
+Rank: 150
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=6 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0014, mean=-0.0759
+[CP+OCSVM] FINAL AUC=0.404
+[CP+OCSVM] Chosen threshold=-0.000033 | Accuracy=0.502
+runtime: 301.36 s
+Rank: 155
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=32 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0052, mean=-0.1675
+[CP+OCSVM] FINAL AUC=0.423
+[CP+OCSVM] Chosen threshold=0.075849 | Accuracy=0.502
+runtime: 339.24 s
+Rank: 160
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=49 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0006, mean=-0.1200
+[CP+OCSVM] FINAL AUC=0.448
+[CP+OCSVM] Chosen threshold=-0.389692 | Accuracy=0.512
+runtime: 340.9 s
+Rank: 165
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=4 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.01} with FP=0.000, P95=-0.0025, mean=-0.0706
+[CP+OCSVM] FINAL AUC=0.463
+[CP+OCSVM] Chosen threshold=-0.237983 | Accuracy=0.517
+runtime: 345.04 s
+Rank: 170
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=116 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0015, mean=-0.1181
+[CP+OCSVM] FINAL AUC=0.455
+[CP+OCSVM] Chosen threshold=-0.000134 | Accuracy=0.520
+runtime: 416.34 s
+Rank: 175
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=17 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0008, mean=-0.1146
+[CP+OCSVM] FINAL AUC=0.394
+[CP+OCSVM] Chosen threshold=-0.000523 | Accuracy=0.522
+runtime: 393.93 s
+Rank: 180
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=0 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0010, mean=-0.1052
+[CP+OCSVM] FINAL AUC=0.466
+[CP+OCSVM] Chosen threshold=-0.000023 | Accuracy=0.515
+runtime: 408.52 s
+Rank: 185
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=71 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0008, mean=-0.1107
+[CP+OCSVM] FINAL AUC=0.498
+[CP+OCSVM] Chosen threshold=-0.001424 | Accuracy=0.545
+runtime: 373.26 s
+Rank: 190
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=13 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0029, mean=-0.1494
+[CP+OCSVM] FINAL AUC=0.489
+[CP+OCSVM] Chosen threshold=-0.187256 | Accuracy=0.515
+runtime: 434.92 s
+Rank: 195
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=37 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0008, mean=-0.0935
+[CP+OCSVM] FINAL AUC=0.485
+[CP+OCSVM] Chosen threshold=-0.008932 | Accuracy=0.530
+runtime: 426.46 s
+Rank: 200
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=0 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0017, mean=-0.0950
+[CP+OCSVM] FINAL AUC=0.482
+[CP+OCSVM] Chosen threshold=-0.000025 | Accuracy=0.512
+runtime: 443.22 s
+Rank: 205
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=43 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0004, mean=-0.1088
+[CP+OCSVM] FINAL AUC=0.501
+[CP+OCSVM] Chosen threshold=-0.082975 | Accuracy=0.520
+runtime: 469.4 s
+Rank: 210
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=35 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0003, mean=-0.0879
+[CP+OCSVM] FINAL AUC=0.431
+[CP+OCSVM] Chosen threshold=-0.000325 | Accuracy=0.517
+runtime: 698.98 s
+Rank: 215
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=29 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0012, mean=-0.1627
+[CP+OCSVM] FINAL AUC=0.482
+[CP+OCSVM] Chosen threshold=-0.197673 | Accuracy=0.520
+runtime: 323.86 s
+Rank: 220
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=19 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0023, mean=-0.1588
+[CP+OCSVM] FINAL AUC=0.454
+[CP+OCSVM] Chosen threshold=-0.447321 | Accuracy=0.525
+runtime: 419.65 s
+Rank: 225
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=26 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0004, mean=-0.0757
+[CP+OCSVM] FINAL AUC=0.455
+[CP+OCSVM] Chosen threshold=0.238719 | Accuracy=0.507
+runtime: 440.65 s
+Rank: 230
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=21 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0004, mean=-0.0854
+[CP+OCSVM] FINAL AUC=0.444
+[CP+OCSVM] Chosen threshold=-0.001558 | Accuracy=0.530
+runtime: 447.99 s
+Rank: 235
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=52 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0004, mean=-0.0882
+[CP+OCSVM] FINAL AUC=0.461
+[CP+OCSVM] Chosen threshold=-0.000085 | Accuracy=0.522
+runtime: 489.29 s
+Rank: 240
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=25 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0014, mean=-0.0796
+[CP+OCSVM] FINAL AUC=0.486
+[CP+OCSVM] Chosen threshold=-0.025205 | Accuracy=0.545
+runtime: 522.17 s
+Rank: 245
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=4 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0004, mean=-0.1178
+[CP+OCSVM] FINAL AUC=0.556
+[CP+OCSVM] Chosen threshold=-0.035037 | Accuracy=0.593
+runtime: 346.61 s
+Rank: 250
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=24 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0031, mean=-0.1509
+[CP+OCSVM] FINAL AUC=0.408
+[CP+OCSVM] Chosen threshold=0.052126 | Accuracy=0.522
+runtime: 267.04 s
+Rank: 255
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+OCSVM] Using single CP component k=20 (auto-selected)
+[CP+OCSVM] VAL (one-class) picked params={'gamma': 0.1, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.0001, mean=-0.0903
+[CP+OCSVM] FINAL AUC=0.440
+[CP+OCSVM] Chosen threshold=-0.000032 | Accuracy=0.507
+runtime: 273.64 s
+Rank accuracy {10: 0.6425, 15: 0.5825, 20: 0.5175, 25: 0.6625, 30: 0.695, 35: 0.7175, 40: 0.74, 45: 0.725, 50: 0.5075, 55: 0.53, 60: 0.63, 65: 0.74, 70: 0.735, 75: 0.73, 80: 0.725, 85: 0.5125, 90: 0.6925, 95: 0.7025, 100: 0.52, 105: 0.52, 110: 0.725, 115: 0.515, 120: 0.5275, 125: 0.51, 130: 0.5525, 135: 0.5375, 140: 0.6775, 145: 0.5125, 150: 0.5025, 155: 0.5025, 160: 0.5125, 165: 0.5175, 170: 0.52, 175: 0.5225, 180: 0.515, 185: 0.545, 190: 0.515, 195: 0.53, 200: 0.5125, 205: 0.52, 210: 0.5175, 215: 0.52, 220: 0.525, 225: 0.5075, 230: 0.53, 235: 0.5225, 240: 0.545, 245: 0.5925, 250: 0.5225, 255: 0.5075}
+Best Rank for CP with One Class SVM 40 0.74
+
+Process finished with exit code 0
+
+
+C:\Users\Anthony\anaconda3\envs\isye6740\python.exe C:/OMSA/ISyE6748_practicum_publish/Mars/Experiment_3_4_1.py
+[tensorly] Backend: pytorch (CUDA)
+One Class SVM
+Best accuracy (grid @ default threshold 0): 0.585 with params: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.2}
+Accuracy @ default cutoff (0): 0.585
+ROC AUC (manual, anomaly-positive): 0.636975
+Chosen threshold (max-accuracy on ROC scores): -3.348248  |  Accuracy @ chosen: 0.637
+One class SVM best accuracy: 0.6375 param: {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.2}
+
+Process finished with exit code 0
+
+
+
+C:\Users\Anthony\anaconda3\envs\isye6740\python.exe C:/OMSA/ISyE6748_practicum_publish/Mars/Experiment_3_4_1.py
+[tensorly] Backend: pytorch (CUDA)
+[VAL] Using separate validation dir (typical-only): Data/Reduced/Lean/validation (N=200)
+Tucker rank search One Class SVM
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 41.46 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 0.00012578616352201257, 'kernel': 'rbf', 'nu': 0.01} with FP=0.020, P95=-0.0957, mean=-0.4307
+[Tucker+OCSVM] FINAL AUC=0.658 | Acc@best=0.630
+Rank: 5 5 5 Accuracy: 0.63
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 558.78 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 0.00012106537530266345, 'kernel': 'rbf', 'nu': 0.01} with FP=0.035, P95=-0.0872, mean=-0.4369
+[Tucker+OCSVM] FINAL AUC=0.640 | Acc@best=0.610
+Rank: 5 5 16 Accuracy: 0.61
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 51.36 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 0.00016910935738444192, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.7186, mean=-1.6018
+[Tucker+OCSVM] FINAL AUC=0.612 | Acc@best=0.580
+Rank: 5 16 5 Accuracy: 0.58
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 539.43 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 5.3763440860215054e-05, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.3576, mean=-0.9265
+[Tucker+OCSVM] FINAL AUC=0.590 | Acc@best=0.568
+Rank: 5 16 16 Accuracy: 0.5675
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 54.33 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 3.1269543464665416e-05, 'kernel': 'rbf', 'nu': 0.01} with FP=0.000, P95=-0.3967, mean=-0.6488
+[Tucker+OCSVM] FINAL AUC=0.442 | Acc@best=0.517
+Rank: 5 32 5 Accuracy: 0.5175
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 523.36 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 8.917954815695599e-05, 'kernel': 'rbf', 'nu': 0.05} with FP=0.000, P95=-2.1344, mean=-4.1007
+[Tucker+OCSVM] FINAL AUC=0.574 | Acc@best=0.585
+Rank: 5 32 16 Accuracy: 0.585
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 63.75 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 1.6539861065167053e-05, 'kernel': 'rbf', 'nu': 0.01} with FP=0.005, P95=-0.9527, mean=-1.3818
+[Tucker+OCSVM] FINAL AUC=0.406 | Acc@best=0.545
+Rank: 5 64 5 Accuracy: 0.545
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 518.76 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 4.7080979284369114e-05, 'kernel': 'rbf', 'nu': 0.05} with FP=0.000, P95=-1.5168, mean=-3.8577
+[Tucker+OCSVM] FINAL AUC=0.593 | Acc@best=0.605
+Rank: 5 64 16 Accuracy: 0.605
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 50.21 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 5.636978579481398e-05, 'kernel': 'rbf', 'nu': 0.02} with FP=0.005, P95=-0.2784, mean=-0.8430
+[Tucker+OCSVM] FINAL AUC=0.632 | Acc@best=0.605
+Rank: 16 5 5 Accuracy: 0.605
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 514.15 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 5.3763440860215054e-05, 'kernel': 'rbf', 'nu': 0.02} with FP=0.015, P95=-0.1836, mean=-0.8308
+[Tucker+OCSVM] FINAL AUC=0.599 | Acc@best=0.580
+Rank: 16 5 16 Accuracy: 0.58
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 58.44 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 8.933889219773676e-05, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-1.3853, mean=-2.5974
+[Tucker+OCSVM] FINAL AUC=0.665 | Acc@best=0.632
+Rank: 16 16 5 Accuracy: 0.6325
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 515.63 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 8.287292817679558e-05, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-1.3150, mean=-2.5058
+[Tucker+OCSVM] FINAL AUC=0.636 | Acc@best=0.610
+Rank: 16 16 16 Accuracy: 0.61
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 61.93 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 5.298481102084069e-05, 'kernel': 'rbf', 'nu': 0.1} with FP=0.000, P95=-5.9237, mean=-10.6674
+[Tucker+OCSVM] FINAL AUC=0.612 | Acc@best=0.598
+Rank: 16 32 5 Accuracy: 0.5975
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 519.79 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 4.8543689320388346e-05, 'kernel': 'rbf', 'nu': 0.1} with FP=0.000, P95=-5.6506, mean=-10.7429
+[Tucker+OCSVM] FINAL AUC=0.593 | Acc@best=0.588
+Rank: 16 32 16 Accuracy: 0.5875
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 71.47 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 2.9211295034079844e-05, 'kernel': 'rbf', 'nu': 0.1} with FP=0.000, P95=-7.8067, mean=-14.1954
+[Tucker+OCSVM] FINAL AUC=0.670 | Acc@best=0.632
+Rank: 16 64 5 Accuracy: 0.6325
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 547.88 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 2.6548672566371683e-05, 'kernel': 'rbf', 'nu': 0.1} with FP=0.000, P95=-8.1127, mean=-14.6635
+[Tucker+OCSVM] FINAL AUC=0.662 | Acc@best=0.627
+Rank: 16 64 16 Accuracy: 0.6275
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 54.06 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 9.380863039399625e-05, 'kernel': 'rbf', 'nu': 0.02} with FP=0.005, P95=-1.1611, mean=-1.7648
+[Tucker+OCSVM] FINAL AUC=0.473 | Acc@best=0.520
+Rank: 32 5 5 Accuracy: 0.52
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 525.36 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 8.917954815695599e-05, 'kernel': 'rbf', 'nu': 0.05} with FP=0.000, P95=-1.9223, mean=-3.6825
+[Tucker+OCSVM] FINAL AUC=0.553 | Acc@best=0.573
+Rank: 32 5 16 Accuracy: 0.5725
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 62.47 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 5.298481102084069e-05, 'kernel': 'rbf', 'nu': 0.05} with FP=0.000, P95=-3.4612, mean=-5.7270
+[Tucker+OCSVM] FINAL AUC=0.649 | Acc@best=0.637
+Rank: 32 16 5 Accuracy: 0.6375
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 527.46 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 4.8543689320388346e-05, 'kernel': 'rbf', 'nu': 0.05} with FP=0.000, P95=-3.4741, mean=-5.8171
+[Tucker+OCSVM] FINAL AUC=0.625 | Acc@best=0.627
+Rank: 32 16 16 Accuracy: 0.6275
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 65.05 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 3.244646333549643e-05, 'kernel': 'rbf', 'nu': 0.2} with FP=0.000, P95=-8.5852, mean=-20.0437
+[Tucker+OCSVM] FINAL AUC=0.594 | Acc@best=0.595
+Rank: 32 32 5 Accuracy: 0.595
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 544.18 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 2.9194239003503307e-05, 'kernel': 'rbf', 'nu': 0.2} with FP=0.000, P95=-8.3845, mean=-19.7672
+[Tucker+OCSVM] FINAL AUC=0.581 | Acc@best=0.588
+Rank: 32 32 16 Accuracy: 0.5875
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 75.74 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 6.092360180333862e-06, 'kernel': 'rbf', 'nu': 0.05} with FP=0.000, P95=-5.0643, mean=-8.8425
+[Tucker+OCSVM] FINAL AUC=0.598 | Acc@best=0.610
+Rank: 32 64 5 Accuracy: 0.61
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 689.66 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 5.414771496642842e-06, 'kernel': 'rbf', 'nu': 0.05} with FP=0.000, P95=-5.4027, mean=-9.0989
+[Tucker+OCSVM] FINAL AUC=0.593 | Acc@best=0.615
+Rank: 32 64 16 Accuracy: 0.615
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 63.15 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 1.6539861065167053e-05, 'kernel': 'rbf', 'nu': 0.01} with FP=0.005, P95=-0.6474, mean=-0.9704
+[Tucker+OCSVM] FINAL AUC=0.385 | Acc@best=0.557
+Rank: 64 5 5 Accuracy: 0.5575
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 525.21 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 4.7080979284369114e-05, 'kernel': 'rbf', 'nu': 0.05} with FP=0.000, P95=-1.3937, mean=-3.1168
+[Tucker+OCSVM] FINAL AUC=0.573 | Acc@best=0.573
+Rank: 64 5 16 Accuracy: 0.5725
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 71.06 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 2.9211295034079844e-05, 'kernel': 'rbf', 'nu': 0.1} with FP=0.000, P95=-6.6194, mean=-10.6975
+[Tucker+OCSVM] FINAL AUC=0.643 | Acc@best=0.627
+Rank: 64 16 5 Accuracy: 0.6275
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 542.39 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 2.6548672566371683e-05, 'kernel': 'rbf', 'nu': 0.1} with FP=0.000, P95=-6.3128, mean=-10.7443
+[Tucker+OCSVM] FINAL AUC=0.638 | Acc@best=0.625
+Rank: 64 16 16 Accuracy: 0.625
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 74.66 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 1.8277080541001583e-05, 'kernel': 'rbf', 'nu': 0.1} with FP=0.000, P95=-6.7162, mean=-13.2294
+[Tucker+OCSVM] FINAL AUC=0.597 | Acc@best=0.583
+Rank: 64 32 5 Accuracy: 0.5825
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 646.92 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 1.6244314489928523e-05, 'kernel': 'rbf', 'nu': 0.1} with FP=0.000, P95=-6.6078, mean=-13.3033
+[Tucker+OCSVM] FINAL AUC=0.590 | Acc@best=0.585
+Rank: 64 32 16 Accuracy: 0.585
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 84.61 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 3.484077764615706e-06, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-3.9947, mean=-5.6839
+[Tucker+OCSVM] FINAL AUC=0.592 | Acc@best=0.613
+Rank: 64 64 5 Accuracy: 0.6125
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+Decomposition time: 1030.10 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 3.048408730642605e-06, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-3.8555, mean=-5.6615
+[Tucker+OCSVM] FINAL AUC=0.592 | Acc@best=0.615
+Rank: 64 64 16 Accuracy: 0.615
+Rank accuracy {(5, 5, 5): 0.63, (5, 5, 16): 0.61, (5, 16, 5): 0.58, (5, 16, 16): 0.5675, (5, 32, 5): 0.5175, (5, 32, 16): 0.585, (5, 64, 5): 0.545, (5, 64, 16): 0.605, (16, 5, 5): 0.605, (16, 5, 16): 0.58, (16, 16, 5): 0.6325, (16, 16, 16): 0.61, (16, 32, 5): 0.5975, (16, 32, 16): 0.5875, (16, 64, 5): 0.6325, (16, 64, 16): 0.6275, (32, 5, 5): 0.52, (32, 5, 16): 0.5725, (32, 16, 5): 0.6375, (32, 16, 16): 0.6275, (32, 32, 5): 0.595, (32, 32, 16): 0.5875, (32, 64, 5): 0.61, (32, 64, 16): 0.615, (64, 5, 5): 0.5575, (64, 5, 16): 0.5725, (64, 16, 5): 0.6275, (64, 16, 16): 0.625, (64, 32, 5): 0.5825, (64, 32, 16): 0.585, (64, 64, 5): 0.6125, (64, 64, 16): 0.615}
+Tucker Best Rank One Class SVM (32, 16, 5) 0.6375
+
+Process finished with exit code 0
+
+
+C:\Users\Anthony\anaconda3\envs\isye6740\python.exe C:/OMSA/ISyE6748_practicum_publish/Mars/Experiment_3_4_2.py
+[tensorly] Backend: pytorch (CUDA)
+[VAL] Using separate validation dir (typical-only): Data/Reduced/Lean/validation (N=200)
+CP rank search (Isolation Forest)
+Rank: 10
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+IF] FINAL AUC=0.613 | Acc=0.502 | params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.75, 'max_samples': 0.75, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42}
+Rank: 15
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+IF] FINAL AUC=0.629 | Acc=0.505 | params={'bootstrap': False, 'contamination': 0.05, 'max_features': 1.0, 'max_samples': 0.75, 'n_estimators': 100, 'n_jobs': -1, 'random_state': 42}
+Rank: 20
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+IF] FINAL AUC=0.604 | Acc=0.502 | params={'bootstrap': False, 'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100, 'n_jobs': -1, 'random_state': 42}
+Rank: 25
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+IF] FINAL AUC=0.619 | Acc=0.485 | params={'bootstrap': False, 'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100, 'n_jobs': -1, 'random_state': 42}
+Rank: 30
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+IF] FINAL AUC=0.644 | Acc=0.515 | params={'bootstrap': False, 'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 200, 'n_jobs': -1, 'random_state': 42}
+Rank: 35
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+IF] FINAL AUC=0.720 | Acc=0.515 | params={'bootstrap': False, 'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100, 'n_jobs': -1, 'random_state': 42}
+Rank: 40
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+IF] FINAL AUC=0.631 | Acc=0.492 | params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.75, 'max_samples': 0.75, 'n_estimators': 100, 'n_jobs': -1, 'random_state': 42}
+Rank: 45
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+IF] FINAL AUC=0.647 | Acc=0.510 | params={'bootstrap': False, 'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 200, 'n_jobs': -1, 'random_state': 42}
+Rank: 50
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+IF] FINAL AUC=0.690 | Acc=0.510 | params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.75, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42}
+Rank: 55
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+IF] FINAL AUC=0.617 | Acc=0.502 | params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.75, 'max_samples': 1.0, 'n_estimators': 100, 'n_jobs': -1, 'random_state': 42}
+Rank: 60
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+IF] FINAL AUC=0.676 | Acc=0.485 | params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.75, 'n_estimators': 100, 'n_jobs': -1, 'random_state': 42}
+Rank: 65
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+IF] FINAL AUC=0.683 | Acc=0.517 | params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.75, 'max_samples': 0.75, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42}
+Rank: 70
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+IF] FINAL AUC=0.713 | Acc=0.530 | params={'bootstrap': False, 'contamination': 0.05, 'max_features': 1.0, 'max_samples': 0.75, 'n_estimators': 100, 'n_jobs': -1, 'random_state': 42}
+Rank: 75
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+IF] FINAL AUC=0.627 | Acc=0.507 | params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 1.0, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42}
+Rank: 80
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+IF] FINAL AUC=0.661 | Acc=0.507 | params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 1.0, 'n_estimators': 100, 'n_jobs': -1, 'random_state': 42}
+Rank: 85
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+IF] FINAL AUC=0.689 | Acc=0.510 | params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.75, 'n_estimators': 100, 'n_jobs': -1, 'random_state': 42}
+Rank: 90
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+IF] FINAL AUC=0.709 | Acc=0.515 | params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.75, 'max_samples': 1.0, 'n_estimators': 100, 'n_jobs': -1, 'random_state': 42}
+Rank: 95
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[CP+IF] FINAL AUC=0.640 | Acc=0.517 | params={'bootstrap': False, 'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 100, 'n_jobs': -1, 'random_state': 42}
+Rank accuracy {10: 0.5025, 15: 0.505, 20: 0.5025, 25: 0.485, 30: 0.515, 35: 0.515, 40: 0.4925, 45: 0.51, 50: 0.51, 55: 0.5025, 60: 0.485, 65: 0.5175, 70: 0.53, 75: 0.5075, 80: 0.5075, 85: 0.51, 90: 0.515, 95: 0.5175}
+Best Rank for CP with Isolation Forest 70 0.53
+
+Process finished with exit code 0
+
+C:\Users\Anthony\anaconda3\envs\isye6740\python.exe C:/OMSA/ISyE6748_practicum_publish/Mars/Experiment_3_4_2.py
+[tensorly] Backend: pytorch (CUDA)
+[VAL] Using separate validation dir (typical-only): Data/Reduced/Lean/validation (N=200)
+Isolation Forest (raw pixels)
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[IF(raw)] FINAL AUC=0.684 | Acc=0.540 | params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 1.0, 'n_estimators': 100, 'n_jobs': -1, 'random_state': 42}
+IsolationForest (raw) accuracy 0.54
+
+Process finished with exit code 0

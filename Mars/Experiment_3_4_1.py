@@ -45,7 +45,7 @@ enable_cp_oc_svm = False
 enable_cp_autoencoder = False
 enable_cp_random_forest = False
 
-no_decomposition = False  # set to False to run CP-based pipeline
+no_decomposition = True  # set to False to run CP-based pipeline
 
 # Optional: standardize bands using TRAIN stats (recommended)
 USE_BAND_STANDARDIZE = True
@@ -55,7 +55,7 @@ USE_BAND_STANDARDIZE = True
 USE_SINGLE_CP_COMPONENT = False
 
 # ====== Dataset reduction controls ===========================================
-REDUCE_DATASETS = True
+REDUCE_DATASETS = False
 REDUCE_TRAIN_N = 1500
 REDUCE_VAL_N = 200
 REDUCE_TEST_TYP_N = 200
