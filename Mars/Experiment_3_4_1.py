@@ -38,10 +38,10 @@ test_typical_data = "Data/Reduced/Lean/test_typical" # typical
 test_anomaly_data = "Data/Reduced/Lean/test_novel"   # novel
 
 use_predefined_rank = False
-enable_tucker_oc_svm = False
+enable_tucker_oc_svm = True
 enable_tucker_autoencoder = False
 enable_tucker_random_forest = False
-enable_cp_oc_svm = True
+enable_cp_oc_svm = False
 enable_cp_autoencoder = False
 enable_cp_random_forest = False
 

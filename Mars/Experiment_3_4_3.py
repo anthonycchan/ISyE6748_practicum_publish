@@ -41,8 +41,8 @@ use_predefined_rank = False
 enable_tucker_oc_svm = False
 enable_tucker_autoencoder = False
 enable_tucker_random_forest = False
-enable_cp_oc_svm = True
-enable_cp_autoencoder = False
+enable_cp_oc_svm = False
+enable_cp_autoencoder = True
 enable_cp_random_forest = False
 
 no_decomposition = False  # set to False to run CP-based pipeline

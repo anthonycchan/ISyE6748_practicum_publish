@@ -19,6 +19,7 @@ from sklearn.model_selection import ParameterGrid
 random.seed(1)
 
 train_data = "Data/Reduced/Lean/train"
+validation_data   = "Data/Reduced/Lean/validation"   # typical only
 test_typical_data = "Data/Reduced/Lean/test_typical"
 test_anomaly_data = "Data/Reduced/Lean/test_novel"
 

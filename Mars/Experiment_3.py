@@ -181,13 +181,13 @@ use_predefined_rank = False
 # Tucker's decomposition with one-class SVM
 enable_tucker_oc_svm = False
 # Tucker's decomposition with neural-network autoencoders
-enable_tucker_autoencoder = True
+enable_tucker_autoencoder = False
 # Tucker's decomposition with random forest
 enable_tucker_random_forest = False
 # Tucker's decomposition with combination of autoencoder and one-class SVM.
 enable_tucker_autoencoder_oc_svm = False
 # CP decomposition with one-class SVM
-enable_cp_oc_svm = False
+enable_cp_oc_svm = True
 # CP decomposition with neural-network autoencoders
 enable_cp_autoencoder = False
 # CP decomposition with random forest

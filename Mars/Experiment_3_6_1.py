@@ -38,10 +38,10 @@ test_typical_data = "Data/Reduced/Lean/test_typical" # typical
 test_anomaly_data = "Data/Reduced/Lean/test_novel"   # novel
 
 use_predefined_rank = False
-enable_tucker_oc_svm = False
+enable_tucker_oc_svm = True
 enable_tucker_autoencoder = False
 enable_tucker_random_forest = False
-enable_cp_oc_svm = True
+enable_cp_oc_svm = False
 enable_cp_autoencoder = False
 enable_cp_random_forest = False
 
@@ -1171,43 +1171,132 @@ def pca_OC_SVM(data_bundle,
 # =============================================================================
 # === NEW: Tucker with OC-SVM (now uses common data via data_bundle) ==========
 # =============================================================================
-def tucker_one_class_svm(rank, data_bundle, displayConfusionMatrix=False, random_state=42, val_fraction=0.5):
+# ====== NEW: Global Tucker basis + projection, CP-style ======================
+def fit_global_tucker_basis(X_train, ranks, *, fast_hosvd=True, random_state=42):
     """
-    Tucker + OC-SVM now shares the same read/standardize path via data_bundle.
+    Fit a single global Tucker model to TRAIN tensor (N,64,64,6) with ranks (R1,R2,R3,R4).
+    Returns:
+      core G (R1,R2,R3,R4) and factor mats [U1 (N×R1), A (64×R2), B (64×R3), C (6×R4)] as float32.
     """
-    # ---- Common split & standardization
-    X_train, X_val, X_fin, y_val, y_fin, _, _ = get_splits(data_bundle, standardize=USE_BAND_STANDARDIZE)
+    # Try current backend first (PyTorch if set), then fall back to NumPy.
+    try:
+        Xb = _to_backend(X_train, use_float64=False)
+        if fast_hosvd:
+            G, U = _tl_tucker(Xb, ranks, init="svd", n_iter_max=1, tol=0)
+        else:
+            G, U = _tl_tucker(Xb, ranks, init="svd", n_iter_max=50, tol=1e-5)
+        G_np = _to_numpy(G).astype(np.float32)
+        U_np = [ _to_numpy(Um).astype(np.float32) for Um in U ]
+        return G_np, U_np
+    except Exception:
+        old = tl.get_backend()
+        try:
+            tl.set_backend("numpy")
+            if fast_hosvd:
+                G, U = _tl_tucker(X_train.astype(np.float32), ranks, init="svd", n_iter_max=1, tol=0)
+            else:
+                G, U = _tl_tucker(X_train.astype(np.float32), ranks, init="svd", n_iter_max=50, tol=1e-5)
+            return G.astype(np.float32), [Um.astype(np.float32) for Um in U]
+        finally:
+            tl.set_backend(old)
 
-    # ---- Tucker decompositions
-    n_tr, n_va, n_fi = X_train.shape[0], X_val.shape[0], X_fin.shape[0]
+
+def _tucker_templates(A, B, C, G):
+    """
+    Build per-r1 templates D[r,:,:,:] = sum_{a,b,c} G[r,a,b,c] * A[:,a] ∘ B[:,b] ∘ C[:,c]
+    Returns D_flat with shape (R1, D) where D=64*64*6.
+    """
+    # A:(I2×R2), B:(I3×R3), C:(I4×R4), G:(R1,R2,R3,R4)
+    # Vectorized contraction -> D:(R1,I2,I3,I4)
+    D = np.einsum('rabc,ia,jb,kc->rijk', G, A, B, C, optimize=True)
+    D_flat = D.reshape(D.shape[0], -1).astype(np.float64)  # keep double for Gram stability
+    return D_flat
+
+
+def precompute_tucker_projection(A, B, C, G, eps=1e-8):
+    """
+    Precompute LS projection pieces for Tucker (analogue of CP's Ginv):
+      - D_flat: (R1, D) templates flattened
+      - S_inv:  (D^T D)^{-1} in the reduced space == (D_flat @ D_flat^T + eps I)^{-1}
+    """
+    D_flat = _tucker_templates(A, B, C, G)            # (R1, D)
+    S = D_flat @ D_flat.T                             # (R1, R1)
+    S = S + eps * np.eye(S.shape[0], dtype=S.dtype)
+    S_inv = np.linalg.inv(S)
+    return D_flat.astype(np.float32), S_inv.astype(np.float64)
+
+
+def project_tucker_coeffs_from_templates(X, D_flat, S_inv, batch=512):
+    """
+    Project batch X: (N,64,64,6) onto fixed Tucker basis (A,B,C,G) via templates.
+    LS solution per sample: z = (D^T D)^{-1} D^T x
+      where columns of D are the flattened templates {d_r}.
+    Implements batched: H = (X_flat @ D_flat^T) @ S_inv
+    Returns H: (N, R1) float32.
+    """
+    N = X.shape[0]
+    D = X.reshape(N, -1).astype(np.float32)                 # (N, D)
+    g = D @ D_flat.T                                       # (N, R1) with g[n,r] = <x_n, d_r>
+    H = g @ S_inv                                          # (N, R1)
+    return H.astype(np.float32)
+
+
+def tucker_fit_and_project(X_train, X_val, X_fin, ranks, random_state=42, fast_hosvd=True):
+    """
+    Fit global Tucker on TRAIN, precompute projection, and produce H for TRAIN/VAL/FINAL.
+    Returns:
+      (A,B, C, G), H_train, H_val, H_fin
+      where A:64×R2, B:64×R3, C:6×R4, G:R1×R2×R3×R4 and H_* : N×R1
+    """
+    G, U = fit_global_tucker_basis(X_train, ranks, fast_hosvd=fast_hosvd, random_state=random_state)
+    U1, A, B, C = U  # U1 is sample-mode; we'll recompute H via projection for consistency
+    D_flat, S_inv = precompute_tucker_projection(A, B, C, G)
+    H_train = project_tucker_coeffs_from_templates(X_train, D_flat, S_inv)
+    H_val   = project_tucker_coeffs_from_templates(X_val,   D_flat, S_inv)
+    H_fin   = project_tucker_coeffs_from_templates(X_fin,   D_flat, S_inv)
+    return (A, B, C, G), H_train, H_val, H_fin
+
+def tucker_one_class_svm(rank, data_bundle, displayConfusionMatrix=False, random_state=42, use_pca_whiten=True):
+    """
+    Tucker + OC-SVM using a single global Tucker basis fit on TRAIN, then projecting
+    VAL/FINAL onto the sample-mode coefficient space H (analogous to CP's cp_fit_and_project).
+    """
     start_time = time.time()
-    decomp_tr = buildTensor(X_train, rank, n_tr, isTuckerDecomposition=True)
-    decomp_va = buildTensor(X_val,   rank, n_va, isTuckerDecomposition=True)
-    decomp_fi = buildTensor(X_fin,   rank, n_fi, isTuckerDecomposition=True)
-    print(f"Decomposition time: {time.time() - start_time:.2f} seconds")
 
-    # ---- Feature extraction + scaling (fit on TRAIN only)
-    Feat_tr = extractFeatures(decomp_tr, n_tr, isTuckerDecomposition=True)
-    Feat_va = extractFeatures(decomp_va, n_va, isTuckerDecomposition=True)
-    Feat_fi = extractFeatures(decomp_fi, n_fi, isTuckerDecomposition=True)
+    # ---- Shared read + standardize
+    X_train, X_val, X_fin, y_val, y_fin, _, _ = get_splits(data_bundle, standardize=USE_BAND_STANDARDIZE)
+    y_fin = np.asarray(y_fin, dtype=int)
 
+    # ---- GLOBAL Tucker -> H matrices (COMMON Tucker path)
+    (A, B, C, G), H_tr, H_va, H_fi = tucker_fit_and_project(
+        X_train, X_val, X_fin, rank, random_state=random_state, fast_hosvd=True
+    )
+
+    # ---- Scale (fit on TRAIN only) + optional PCA whitening
     scaler = StandardScaler()
-    Z_tr = scaler.fit_transform(Feat_tr)
-    Z_va = scaler.transform(Feat_va)
-    Z_fi = scaler.transform(Feat_fi)
+    Htr_s  = scaler.fit_transform(H_tr)
+    Hva_s  = scaler.transform(H_va)
+    Hfi_s  = scaler.transform(H_fi)
 
-    # ---- Hyperparameter search on VAL
-    d = Z_tr.shape[1]
-    gamma_grid = [1.0 / max(d, 1) * t for t in (0.1, 0.3, 1.0, 3.0, 10.0)] + ["scale"]
+    if use_pca_whiten:
+        pca   = PCA(whiten=True, svd_solver='auto', random_state=random_state)
+        Z_tr  = pca.fit_transform(Htr_s)
+        Z_va  = pca.transform(Hva_s)
+        Z_fi  = pca.transform(Hfi_s)
+        feat_dim = Z_tr.shape[1]
+    else:
+        Z_tr, Z_va, Z_fi = Htr_s, Hva_s, Hfi_s
+        feat_dim = Z_tr.shape[1]
+
+    # ---- Hyperparameter search (γ scaled by 1/d), VAL selection policy as in CP
     param_grid = {
         "kernel": ["rbf"],
-        "gamma":  gamma_grid,
+        "gamma":  ocsvm_gamma_grid_for_dim(feat_dim),
         "nu":     [0.01, 0.02, 0.05, 0.1, 0.2],
     }
-
     use_auc_on_val = (y_val is not None) and (np.isin(-1, y_val).any() and np.isin(1, y_val).any())
 
-    best_tuple = None      # objective tuple to minimize
+    best_tuple = None
     best_model = None
     best_params = None
     best_aux = ""
@@ -1226,6 +1315,7 @@ def tucker_one_class_svm(rank, data_bundle, displayConfusionMatrix=False, random
                 obj = (-auc,)  # maximize AUC
                 aux = f"AUC={auc:.3f}"
             else:
+                # typical-only VAL: minimize FP@0 (then P95, mean) as proxy
                 fp  = float((s_val >= 0.0).mean())
                 p95 = float(np.percentile(s_val, 95))
                 mean_s = float(np.mean(s_val))
@@ -1242,7 +1332,7 @@ def tucker_one_class_svm(rank, data_bundle, displayConfusionMatrix=False, random
 
     if best_model is None:
         # reasonable defaults if VAL selection fails
-        for p in [{"kernel": "rbf", "gamma": 1.0 / max(d, 1), "nu": 0.1},
+        for p in [{"kernel": "rbf", "gamma": 1.0 / max(feat_dim, 1), "nu": 0.1},
                   {"kernel": "rbf", "gamma": "scale",           "nu": 0.1}]:
             try:
                 best_model = OneClassSVM(**p).fit(Z_tr)
@@ -1252,22 +1342,22 @@ def tucker_one_class_svm(rank, data_bundle, displayConfusionMatrix=False, random
             except Exception:
                 pass
         if best_model is None:
-            # last-resort: distance-to-mean scorer on FINAL
+            # last-resort: distance-to-mean on FINAL
             mu = Z_tr.mean(axis=0, keepdims=True)
             s_fin = np.linalg.norm(Z_fi - mu, axis=1)
             auc_fin = manual_auc(y_fin, s_fin, positive_label=-1)
             th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, s_fin, positive_label=-1)
-            print(f"[Tucker+OCSVM Fallback] FINAL AUC={auc_fin:.3f} | Acc={acc_opt:.3f}")
+            print(f"[Tucker(global)+OCSVM Fallback] FINAL AUC={auc_fin:.3f} | Acc={acc_opt:.3f}")
             return acc_opt
 
     sel_mode = "AUC" if use_auc_on_val else "one-class"
-    print(f"[Tucker+OCSVM] VAL ({sel_mode}) picked params={best_params} with {best_aux}")
+    print(f"[Tucker(global)+OCSVM] VAL ({sel_mode}) picked params={best_params} with {best_aux}")
 
     # ---- FINAL evaluation
     s_fin = -best_model.decision_function(Z_fi).ravel()
     auc_fin = manual_auc(y_fin, s_fin, positive_label=-1)
     th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, s_fin, positive_label=-1)
-    print(f"[Tucker+OCSVM] FINAL AUC={auc_fin:.3f} | Acc@best={acc_opt:.3f}")
+    print(f"[Tucker(global)+OCSVM] FINAL AUC={auc_fin:.3f} | Acc@best={acc_opt:.3f}")
 
     if displayConfusionMatrix:
         y_pred = np.where(s_fin >= th_opt, -1, 1)
@@ -1275,27 +1365,25 @@ def tucker_one_class_svm(rank, data_bundle, displayConfusionMatrix=False, random
         metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["Anomaly", "Normal"]).plot()
         plt.show()
 
+    print('runtime:', round(time.time() - start_time, 2), 's')
     return acc_opt
 
 
 def tucker_rank_search_one_class_svm(data_bundle):
-    """
-    Grid over Tucker rank triples; each trial uses the validation-aware
-    `tucker_one_class_svm` above. Chooses the rank with highest FINAL accuracy.
-    """
     print('Tucker rank search One Class SVM')
     rankSet = sorted({5, 16, 32, 64})
     rank_accuracy = {}
     for i in rankSet:
         for j in rankSet:
             for k in sorted({5, 16}):
-                r = (i, j, k)
+                r = (i, j, k)  # (R1, R2, R3, R4) with your dims ordering (sample, 64, 64, 6)
                 acc = tucker_one_class_svm(r, data_bundle)
                 rank_accuracy[r] = acc
                 print('Rank:', i, j, k, 'Accuracy:', acc)
     print('Rank accuracy', rank_accuracy)
     bestRank = max(rank_accuracy, key=rank_accuracy.get)
     return bestRank, rank_accuracy[bestRank]
+
 
 # ===============================================
 # CP with Autoencoder (now uses common CP fit/proj + common data)
