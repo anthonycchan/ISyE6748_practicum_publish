@@ -1,0 +1,15 @@
+RAW:
+C:\Users\Anthony\anaconda3\envs\isye6740\python.exe C:/OMSA/ISyE6748_practicum_publish/Mars/make_table.py
+Factor: 1 Bottleneck: 16 | ValAcc: 0.537 | FinalAcc: 0.603 | AUC: 0.625
+Factor: 1 Bottleneck: 32 | ValAcc: 0.537 | FinalAcc: 0.595 | AUC: 0.607
+Factor: 1 Bottleneck: 64 | ValAcc: 0.537 | FinalAcc: 0.605 | AUC: 0.623
+Factor: 2 Bottleneck: 16 | ValAcc: 0.537 | FinalAcc: 0.605 | AUC: 0.622
+Factor: 2 Bottleneck: 32 | ValAcc: 0.537 | FinalAcc: 0.595 | AUC: 0.618
+Factor: 2 Bottleneck: 64 | ValAcc: 0.537 | FinalAcc: 0.590 | AUC: 0.614
+Factor: 3 Bottleneck: 16 | ValAcc: 0.537 | FinalAcc: 0.598 | AUC: 0.620
+Factor: 3 Bottleneck: 32 | ValAcc: 0.537 | FinalAcc: 0.593 | AUC: 0.618
+Factor: 3 Bottleneck: 64 | ValAcc: 0.537 | FinalAcc: 0.603 | AUC: 0.620
+Best by FinalAcc: (Factor=1, Bottleneck=64) (FinalAcc=0.605, AUC=0.623, ValAcc=0.537)
+Best by AUC: (Factor=1, Bottleneck=16) (AUC=0.625, FinalAcc=0.603, ValAcc=0.537)
+
+Process finished with exit code 0

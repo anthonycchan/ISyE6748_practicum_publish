@@ -1,105 +1,110 @@
 #!/usr/bin/env python3
-"""
-Build a wide table: one row per rank (r1,r2,r3) and one Accuracy column per Bottleneck.
-- Preserves the order of ranks as they FIRST appear in the input text.
-- Robust to extra lines between "Rank: ..." and "Accuracy: ..."(e.g., warnings).
-- Writes a CSV with columns: rank, Bottleneck 8, Bottleneck 16, ...
+# Parses "Autoencoder (raw-pixel) — sweeping factors and bottlenecks" logs.
+# The AE metrics lines come BEFORE the "Factor: X Bottleneck: Y Accuracy Z" line.
+# Input: data.txt
+# Output (per block):
+#   Factor: <f> Bottleneck: <b> | ValAcc: <v> | FinalAcc: <fa> | AUC: <auc>
+# Then summary lines for best FinalAcc and best AUC.
 
-Usage:
-  python make_table.py -i data.txt -o table.csv
-  # optionally fix the bottleneck column order (comma-separated)
-  python make_table.py -i data.txt -o table.csv --bn-order 8,16,24,32,64
-"""
-
-import argparse
 import re
-import sys
-from collections import OrderedDict
-import csv
+import math
 
-RANK_BLOCK_RE = re.compile(
-    r"Rank:\s*\((\d+),\s*(\d+),\s*(\d+)\)\s*Factor:\s*\d+\s*Bottleneck:\s*(\d+)",
-    re.MULTILINE,
-)
-ACC_RE = re.compile(r"Accuracy:\s*([0-9.]+)")
+NUM = r'([+-]?(?:\d+(?:\.\d*)?|\.\d+)|nan)'
 
-def parse_runs(text: str):
-    """Yield tuples (rank_tuple, bottleneck_int, accuracy_float) in encounter order."""
-    matches = list(RANK_BLOCK_RE.finditer(text))
-    for i, m in enumerate(matches):
-        r1, r2, r3, b = m.groups()
-        r = (int(r1), int(r2), int(r3))
-        b = int(b)
-        # search for the first Accuracy: inside the block until the next Rank:
-        start = m.end()
-        end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
-        chunk = text[start:end]
-        acc_m = ACC_RE.search(chunk)
-        if not acc_m:
-            print(f"[warn] No Accuracy found for rank {r} bottleneck {b}", file=sys.stderr)
+VALACC_RE    = re.compile(r'\[AE\(raw\)\]\s*Accuracy\s*@\s*VAL-derived\s*threshold\s*:\s*' + NUM, re.IGNORECASE)
+AUC_RE       = re.compile(r'\[AE\(raw\)\]\s*FINAL\s*AUC\s*=\s*' + NUM, re.IGNORECASE)
+FINALACC_RE  = re.compile(r'\[AE\(raw\)\]\s*Chosen\s+threshold.*?\|\s*Accuracy\s*=\s*' + NUM, re.IGNORECASE)
+FACTOR_RE    = re.compile(r'(?m)^\s*Factor:\s*(\d+)\s+Bottleneck:\s*(\d+)\s+Accuracy\s+' + NUM + r'\s*$')
+
+def _to_float(s: str) -> float:
+    try:
+        return float(s)
+    except Exception:
+        return float('nan')
+
+def _fmt(x: float) -> str:
+    return "nan" if math.isnan(x) else f"{x:.3f}"
+
+def parse_stream(text: str):
+    """
+    Walk the file once, remembering the most recent AE metrics.
+    When a 'Factor: ... Bottleneck: ... Accuracy ...' line appears, pair it
+    with the latest metrics observed above it.
+    """
+    last_val_acc   = float('nan')
+    last_final_auc = float('nan')
+    last_final_acc = float('nan')
+    rows = []
+
+    for raw in text.splitlines():
+        line = raw.strip()
+
+        m = VALACC_RE.search(line)
+        if m:
+            last_val_acc = _to_float(m.group(1))
             continue
-        acc = float(acc_m.group(1))
-        yield r, b, acc
 
-def build_table(rows, bn_order=None):
-    """
-    rows: iterable of (rank_tuple, bottleneck_int, accuracy_float)
-    bn_order: list[int] to force bottleneck column order, else sorted ascending
-    returns: (header: list[str], table_rows: list[list])
-    """
-    rank_map = OrderedDict()     # rank_str -> {bn: acc}
-    seen_bns = OrderedDict()     # preserve first-seen order (fallback)
+        m = AUC_RE.search(line)
+        if m:
+            last_final_auc = _to_float(m.group(1))
+            continue
 
-    for r, b, acc in rows:
-        rank_str = f"({r[0]}, {r[1]}, {r[2]})"
-        if rank_str not in rank_map:
-            rank_map[rank_str] = {}
-        # remember bottleneck and set accuracy
-        seen_bns.setdefault(b, None)
-        rank_map[rank_str][b] = acc
+        m = FINALACC_RE.search(line)
+        if m:
+            last_final_acc = _to_float(m.group(1))
+            continue
 
-    # decide bottleneck column order
-    if bn_order:
-        bns = [int(x) for x in bn_order]
-    else:
-        # default to numeric ascending of all seen bns
-        bns = sorted(seen_bns.keys())
+        m = FACTOR_RE.search(line)
+        if m:
+            f  = int(m.group(1))
+            bn = int(m.group(2))
+            trailing = _to_float(m.group(3))  # accuracy on the Factor line
+            rows.append({
+                "factor": f,
+                "bottleneck": bn,
+                "val_acc": last_val_acc if not math.isnan(last_val_acc) else trailing,
+                "final_acc": last_final_acc,
+                "auc": last_final_auc,
+                "factor_line_acc": trailing
+            })
+            # Do not reset metrics; logs typically repeat the metric trio before each Factor line
 
-    header = ["rank"] + [f"Bottleneck {b}" for b in bns]
-    table_rows = []
-    for rank_str, bn_to_acc in rank_map.items():
-        row = [rank_str] + [bn_to_acc.get(b, "") for b in bns]
-        table_rows.append(row)
-
-    return header, table_rows
+    return rows
 
 def main():
-    ap = argparse.ArgumentParser(description="Make wide rank-by-bottleneck accuracy table.")
-    ap.add_argument("-i", "--input", required=True, help="Path to the raw log text")
-    ap.add_argument("-o", "--output", required=True, help="Path to write the CSV table")
-    ap.add_argument(
-        "--bn-order",
-        help="Comma-separated bottleneck order, e.g. 8,16,24,32,64 (default: auto-detect & sort)",
-    )
-    args = ap.parse_args()
-
-    with open(args.input, "r", encoding="utf-8") as f:
+    with open("data.txt", "r", encoding="utf-8") as f:
         text = f.read()
 
-    rows = list(parse_runs(text))
-    if not rows:
-        print("[error] No (Rank,Bottleneck,Accuracy) triples parsed.", file=sys.stderr)
-        sys.exit(1)
+    rows = parse_stream(text)
 
-    bn_order = [int(x.strip()) for x in args.bn_order.split(",")] if args.bn_order else None
-    header, table_rows = build_table(rows, bn_order)
+    # Print each parsed row
+    for r in rows:
+        print(
+            f"Factor: {r['factor']} Bottleneck: {r['bottleneck']} | "
+            f"ValAcc: {_fmt(r['val_acc'])} | FinalAcc: {_fmt(r['final_acc'])} | AUC: {_fmt(r['auc'])}"
+        )
 
-    with open(args.output, "w", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)
-        writer.writerow(header)
-        writer.writerows(table_rows)
+    # Best by FinalAcc (ignore NaNs)
+    valid_final = [r for r in rows if not math.isnan(r["final_acc"])]
+    if valid_final:
+        best_final = max(valid_final, key=lambda x: x["final_acc"])
+        print(
+            f"Best by FinalAcc: (Factor={best_final['factor']}, Bottleneck={best_final['bottleneck']}) "
+            f"(FinalAcc={_fmt(best_final['final_acc'])}, AUC={_fmt(best_final['auc'])}, ValAcc={_fmt(best_final['val_acc'])})"
+        )
+    else:
+        print("Best by FinalAcc: N/A")
 
-    print(f"[ok] Wrote {len(table_rows)} rows to {args.output}")
+    # Best by AUC (ignore NaNs)
+    valid_auc = [r for r in rows if not math.isnan(r["auc"])]
+    if valid_auc:
+        best_auc = max(valid_auc, key=lambda x: x["auc"])
+        print(
+            f"Best by AUC: (Factor={best_auc['factor']}, Bottleneck={best_auc['bottleneck']}) "
+            f"(AUC={_fmt(best_auc['auc'])}, FinalAcc={_fmt(best_auc['final_acc'])}, ValAcc={_fmt(best_auc['val_acc'])})"
+        )
+    else:
+        print("Best by AUC: N/A")
 
 if __name__ == "__main__":
     main()

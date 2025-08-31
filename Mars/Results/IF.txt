@@ -1,0 +1,42 @@
+RAW:
+C:\Users\Anthony\anaconda3\envs\isye6740\python.exe C:/OMSA/ISyE6748_practicum_publish/Mars/Experiment_3_4_2.py
+[tensorly] Backend: pytorch (CUDA)
+[VAL] Using separate validation dir (typical-only): Data/Reduced/Lean/validation (N=200)
+Isolation Forest (raw pixels)
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.032901, max=8.337173
+[IF(raw)] FINAL AUC=0.684 | Acc=0.540 | params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 1.0, 'n_estimators': 100, 'n_jobs': -1, 'random_state': 42}
+IsolationForest (raw) accuracy 0.54
+
+CP
+C:\Users\Anthony\anaconda3\envs\isye6740\python.exe C:/OMSA/ISyE6748_practicum_publish/Mars/make_table.py
+Rank: 10 | Accuracy: 0.502 | AUC: 0.613
+Rank: 15 | Accuracy: 0.505 | AUC: 0.629
+Rank: 20 | Accuracy: 0.502 | AUC: 0.604
+Rank: 25 | Accuracy: 0.485 | AUC: 0.619
+Rank: 30 | Accuracy: 0.515 | AUC: 0.644
+Rank: 35 | Accuracy: 0.515 | AUC: 0.720
+Rank: 40 | Accuracy: 0.492 | AUC: 0.631
+Rank: 45 | Accuracy: 0.510 | AUC: 0.647
+Rank: 50 | Accuracy: 0.510 | AUC: 0.690
+Rank: 55 | Accuracy: 0.502 | AUC: 0.617
+Rank: 60 | Accuracy: 0.485 | AUC: 0.676
+Rank: 65 | Accuracy: 0.517 | AUC: 0.683
+Rank: 70 | Accuracy: 0.530 | AUC: 0.713
+Rank: 75 | Accuracy: 0.507 | AUC: 0.627
+Rank: 80 | Accuracy: 0.507 | AUC: 0.661
+Rank: 85 | Accuracy: 0.510 | AUC: 0.689
+Rank: 90 | Accuracy: 0.515 | AUC: 0.709
+Rank: 95 | Accuracy: 0.517 | AUC: 0.640
+Rank with highest Accuracy: 70 (Accuracy=0.530, AUC=0.713)
+Rank with highest AUC: 35 (AUC=0.720, Accuracy=0.515)
+
+Process finished with exit code 0
+
+
+TUCKER
+
