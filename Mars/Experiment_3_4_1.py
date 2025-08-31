@@ -49,6 +49,8 @@ enable_cp_isolation_forest = False
 
 no_decomposition = False  # set to False to run CP-based pipeline
 
+RUN_VISUALIZATION = True
+
 # Optional: standardize bands using TRAIN stats (recommended)
 USE_BAND_STANDARDIZE = True
 
@@ -391,66 +393,119 @@ def _pick_threshold_max_accuracy(y_true, scores, positive_label=-1):
     return float(best_th), float(best_acc)
 
 # ====== (Optional) CP/Tucker viz helper ======================================
-def visualize_cp(decomposed_list, rank, sample_index=0, img_side1=64, img_side2=64, max_components=3, verbose=True):
-    if not isinstance(decomposed_list, (list, tuple)) or len(decomposed_list) == 0:
-        if verbose: print("visualize_cp: decomposed_list is empty or not a sequence; nothing to plot.")
-        return False
-    idx = min(max(sample_index, 0), len(decomposed_list) - 1)
-    item = decomposed_list[idx]
-    factors = None; core = None
-    if isinstance(item, (list, tuple)) and len(item) == 2 and isinstance(item[1], (list, tuple)):
-        core, factors = item[0], item[1]
-    elif isinstance(item, (list, tuple)):
-        if len(item) > 0 and hasattr(item[0], 'ndim'):
-            factors = item
+def visualize_cp_scores(H, labels=None, title="CP sample coefficients (H)", use_pca=True):
+    """
+    Visualize CP sample coefficients (H).
+    H: (n_samples, rank)
+    labels: optional array-like for coloring points (e.g., +1 typical, -1 anomaly)
+    """
+    import numpy as np
+    import matplotlib.pyplot as plt
+    from sklearn.preprocessing import StandardScaler
+
+    H = np.asarray(H)
+    n, r = H.shape
+
+    # Heatmap (samples x components)
+    H_std = StandardScaler(with_mean=True, with_std=True).fit_transform(H)
+    plt.figure()
+    plt.imshow(H_std, aspect='auto', interpolation='nearest')
+    plt.xlabel("Component (r)")
+    plt.ylabel("Sample")
+    plt.title(f"{title} — heatmap (z-scored per component)")
+    plt.colorbar()
+    plt.tight_layout()
+
+    # 2D view of samples in component space
+    if r >= 2:
+        if use_pca and r > 2:
+            from sklearn.decomposition import PCA
+            XY = PCA(n_components=2, random_state=0).fit_transform(H_std)
+            subtitle = "PCA(2) of H"
         else:
-            if verbose: print("visualize_cp: sequence item doesn't look like CP/Tucker factors; skipping.")
-            return False
+            XY = H_std[:, :2]
+            subtitle = "Components [0,1] of H"
+
+        plt.figure()
+        if labels is None:
+            plt.scatter(XY[:, 0], XY[:, 1], s=12, alpha=0.8)
+        else:
+            # Map labels to colors/markers
+            labels = np.asarray(labels)
+            for val in np.unique(labels):
+                m = labels == val
+                plt.scatter(XY[m, 0], XY[m, 1], s=14, alpha=0.85, label=str(val))
+            plt.legend(title="label")
+        plt.title(f"{title} — {subtitle}")
+        plt.xlabel("X")
+        plt.ylabel("Y")
+        plt.tight_layout()
     else:
-        if verbose: print("visualize_cp: unsupported element type in list; skipping.")
-        return False
-    try:
-        F = [np.asarray(Fm) for Fm in factors]
-    except Exception as e:
-        if verbose: print("visualize_cp: could not convert factors to arrays:", e)
-        return False
-    if len(F) == 0 or any((Fm.ndim != 2 or Fm.shape[1] < 1) for Fm in F):
-        if verbose: print("visualize_cp: malformed factor list; skipping.")
-        return False
-    R = min(int(rank), min(Fm.shape[1] for Fm in F))
-    if R < 1:
-        if verbose: print("visualize_cp: rank has no columns to plot; skipping.")
-        return False
-    if verbose:
-        shapes = [Fm.shape for Fm in F]
-        print(f"visualize_cp: sample={idx}, mode shapes={shapes}, using R={R}")
-    for m, Fm in enumerate(F):
-        try:
-            plt.figure(figsize=(7, 3.5))
-            for r in range(R):
-                plt.plot(Fm[:, r], label=f'Comp {r+1}')
-            title = f'Mode {m+1} Factor Loadings' + (' (Tucker)' if core is not None else ' (CP)')
-            plt.title(title)
-            if Fm.shape[1] > 1:
-                plt.legend(loc='upper right', ncols=2 if R >= 4 else 1, fontsize=8)
-            plt.tight_layout(); plt.show()
-        except Exception as e:
-            if verbose: print(f"visualize_cp: line-plot for mode {m+1} skipped:", e)
-    heatmaps_done = False
-    if len(F) >= 2 and F[0].shape[0] == img_side1 and F[1].shape[0] == img_side2:
-        A, B = F[0], F[1]
-        for r in range(min(R, max_components)):
-            try:
-                comp_img = np.outer(A[:, r], B[:, r]).reshape(img_side1, img_side2)
-                plt.figure(figsize=(4.2, 4.2)); plt.imshow(comp_img, cmap='viridis'); plt.colorbar()
-                lbl = 'Tucker' if core is not None else 'CP'
-                plt.title(f'{lbl} Spatial Map: Component {r+1} ({img_side1}×{img_side2})')
-                plt.tight_layout(); plt.show(); heatmaps_done = True
-            except Exception as e:
-                if verbose: print(f"visualize_cp: heatmap for component {r+1} skipped:", e)
-    if not heatmaps_done and verbose:
-        print("visualize_cp: no 2D heatmaps (first two mode sizes not", img_side1, "and", img_side2, ").")
-    return True
+        # rank == 1: show histogram of the lone coefficient
+        plt.figure()
+        if labels is None:
+            plt.hist(H_std[:, 0], bins=30)
+        else:
+            for val in np.unique(labels):
+                m = labels == val
+                plt.hist(H_std[m, 0], bins=30, alpha=0.6, label=str(val))
+            plt.legend(title="label")
+        plt.title(f"{title} — component 0 distribution")
+        plt.xlabel("z-scored coefficient")
+        plt.ylabel("count")
+        plt.tight_layout()
+    plt.show()
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+def cp_reconstruct_tile(A, B, C, h):
+    """
+    Reconstruct one tile from CP basis (A,B,C) and sample coefficients h.
+    Shapes assumed: A:(I,R), B:(J,R), C:(K,R), h:(R,)
+    Returns: Xhat:(I,J,K)
+    """
+    A = np.asarray(A); B = np.asarray(B); C = np.asarray(C); h = np.asarray(h).reshape(-1)
+    # scale A’s columns by h_r, then sum over r of (a_r ⊗ b_r ⊗ c_r)
+    Ah = A * h[np.newaxis, :]                        # (I,R)
+    Xhat = np.einsum('ir,jr,kr->ijk', Ah, B, C, optimize=True)
+    return Xhat
+
+def visualize_cp_reconstruction(A, B, C, H, X_ref=None, idx=0, bands=(0,1,2,3,4,5), title_prefix=""):
+    """
+    Reconstruct tile `idx` from H and optionally show original beside it.
+    - A,B,C: CP basis
+    - H: (n_samples, R)
+    - X_ref: optional original data array (n_samples, I, J, K) for side-by-side
+    - bands: which spectral bands to display
+    """
+    h = np.asarray(H)[idx]
+    Xhat = cp_reconstruct_tile(A, B, C, h)
+
+    n = len(bands)
+    plt.figure(figsize=(3*n, 6))
+    for i, b in enumerate(bands):
+        # Top: original (if provided) or reconstruction
+        ax = plt.subplot(2, n, i+1)
+        if X_ref is not None:
+            ax.imshow(np.asarray(X_ref)[idx, :, :, b], interpolation='nearest')
+            ax.set_title(f"orig band {b}")
+        else:
+            ax.imshow(Xhat[:, :, b], interpolation='nearest')
+            ax.set_title(f"recon band {b}")
+        ax.axis('off')
+
+        # Bottom: reconstruction
+        ax = plt.subplot(2, n, n+i+1)
+        ax.imshow(Xhat[:, :, b], interpolation='nearest')
+        ax.set_title(f"recon band {b}")
+        ax.axis('off')
+
+    supt = f"{title_prefix} CP reconstruction (idx={idx})"
+    plt.suptitle(supt)
+    plt.tight_layout()
+    plt.show()
+
 
 # ====== Global CP basis + projection for OC-SVM ==============================
 def fit_global_cp_basis(X_train, rank, random_state=42, max_train_samples=None, use_gpu=USE_GPU_CP):
@@ -764,6 +819,10 @@ def parafac_OC_SVM(rank, data_bundle,
         random_state=random_state,
         cp_basis_max_train_samples=cp_basis_max_train_samples
     )
+
+    if RUN_VISUALIZATION:
+        visualize_cp_scores(H_train, labels=None, title=f"H_train (rank={rank})")
+        visualize_cp_reconstruction(A, B, C, H_train, X_ref=X_train, idx=0, bands=(0, 1, 2))
 
     # ---- Scale
     scaler = StandardScaler()
