@@ -1,91 +1,360 @@
-Autoencoder (raw-pixel) — sweeping factors and bottlenecks
+C:\Users\Anthony\anaconda3\envs\isye6740\python.exe C:/OMSA/ISyE6748_practicum_publish/Mars/Experiment_3_4_2.py
+[tensorly] Backend: pytorch (CUDA)
+[VAL] Using separate validation dir (typical-only): Data/Reduced/Lean/validation (N=200)
+Tucker rank search One Class SVM
+Rank: 5 5 5
 [sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] TRAIN: min=-4.239054, max=5.502750
 [sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] VAL: min=-4.211028, max=1.982713
 [sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.032901, max=8.337173
-[AE(raw)] Accuracy @ VAL-derived threshold: 0.537
-[AE(raw)] FINAL AUC=0.625
-[AE(raw)] Chosen threshold (max-accuracy on recon error): 0.303170 | Accuracy=0.603
-Factor: 1 Bottleneck: 16 Accuracy 0.5375
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 113.38 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 0.00012578616352201257, 'kernel': 'rbf', 'nu': 0.01} with FP=0.020, P95=-0.1092, mean=-0.4271
+[Tucker+OCSVM] FINAL AUC=0.637 | Acc@best=0.623
+Accuracy: 0.6225 AUC 0.636675
+Rank: 5 5 16
 [sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] TRAIN: min=-4.239054, max=5.502750
 [sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] VAL: min=-4.211028, max=1.982713
 [sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.032901, max=8.337173
-[AE(raw)] Accuracy @ VAL-derived threshold: 0.537
-[AE(raw)] FINAL AUC=0.607
-[AE(raw)] Chosen threshold (max-accuracy on recon error): 0.425471 | Accuracy=0.595
-Factor: 1 Bottleneck: 32 Accuracy 0.5375
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 533.26 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 0.00012106537530266345, 'kernel': 'rbf', 'nu': 0.01} with FP=0.030, P95=-0.0958, mean=-0.4379
+[Tucker+OCSVM] FINAL AUC=0.624 | Acc@best=0.605
+Accuracy: 0.605 AUC 0.6236
+Rank: 5 16 5
 [sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] TRAIN: min=-4.239054, max=5.502750
 [sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] VAL: min=-4.211028, max=1.982713
 [sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.032901, max=8.337173
-[AE(raw)] Accuracy @ VAL-derived threshold: 0.537
-[AE(raw)] FINAL AUC=0.623
-[AE(raw)] Chosen threshold (max-accuracy on recon error): 0.283313 | Accuracy=0.605
-Factor: 1 Bottleneck: 64 Accuracy 0.5375
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 126.56 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 5.636978579481398e-05, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.4850, mean=-0.9471
+[Tucker+OCSVM] FINAL AUC=0.588 | Acc@best=0.575
+Accuracy: 0.575 AUC 0.588275
+Rank: 5 16 16
 [sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] TRAIN: min=-4.239054, max=5.502750
 [sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] VAL: min=-4.211028, max=1.982713
 [sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.032901, max=8.337173
-[AE(raw)] Accuracy @ VAL-derived threshold: 0.537
-[AE(raw)] FINAL AUC=0.622
-[AE(raw)] Chosen threshold (max-accuracy on recon error): 0.277300 | Accuracy=0.605
-Factor: 2 Bottleneck: 16 Accuracy 0.5375
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 535.80 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 5.3763440860215054e-05, 'kernel': 'rbf', 'nu': 0.01} with FP=0.005, P95=-0.2211, mean=-0.4881
+[Tucker+OCSVM] FINAL AUC=0.571 | Acc@best=0.570
+Accuracy: 0.57 AUC 0.5707
+Rank: 5 32 5
 [sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] TRAIN: min=-4.239054, max=5.502750
 [sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] VAL: min=-4.211028, max=1.982713
 [sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.032901, max=8.337173
-[AE(raw)] Accuracy @ VAL-derived threshold: 0.537
-[AE(raw)] FINAL AUC=0.618
-[AE(raw)] Chosen threshold (max-accuracy on recon error): 0.268932 | Accuracy=0.595
-Factor: 2 Bottleneck: 32 Accuracy 0.5375
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 116.05 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 9.380863039399625e-05, 'kernel': 'rbf', 'nu': 0.02} with FP=0.005, P95=-1.0396, mean=-1.9261
+[Tucker+OCSVM] FINAL AUC=0.424 | Acc@best=0.510
+Accuracy: 0.51 AUC 0.424025
+Rank: 5 32 16
 [sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] TRAIN: min=-4.239054, max=5.502750
 [sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] VAL: min=-4.211028, max=1.982713
 [sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.032901, max=8.337173
-[AE(raw)] Accuracy @ VAL-derived threshold: 0.537
-[AE(raw)] FINAL AUC=0.614
-[AE(raw)] Chosen threshold (max-accuracy on recon error): 0.511435 | Accuracy=0.590
-Factor: 2 Bottleneck: 64 Accuracy 0.5375
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 530.70 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 8.917954815695599e-05, 'kernel': 'rbf', 'nu': 0.05} with FP=0.000, P95=-2.3450, mean=-4.2266
+[Tucker+OCSVM] FINAL AUC=0.539 | Acc@best=0.565
+Accuracy: 0.565 AUC 0.53895
+Rank: 5 64 5
 [sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] TRAIN: min=-4.239054, max=5.502750
 [sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] VAL: min=-4.211028, max=1.982713
 [sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.032901, max=8.337173
-[AE(raw)] Accuracy @ VAL-derived threshold: 0.537
-[AE(raw)] FINAL AUC=0.620
-[AE(raw)] Chosen threshold (max-accuracy on recon error): 0.268856 | Accuracy=0.598
-Factor: 3 Bottleneck: 16 Accuracy 0.5375
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 126.20 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 1.6539861065167053e-05, 'kernel': 'rbf', 'nu': 0.02} with FP=0.005, P95=-1.3478, mean=-2.2222
+[Tucker+OCSVM] FINAL AUC=0.397 | Acc@best=0.545
+Accuracy: 0.545 AUC 0.39705
+Rank: 5 64 16
 [sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] TRAIN: min=-4.239054, max=5.502750
 [sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] VAL: min=-4.211028, max=1.982713
 [sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.032901, max=8.337173
-[AE(raw)] Accuracy @ VAL-derived threshold: 0.537
-[AE(raw)] FINAL AUC=0.618
-[AE(raw)] Chosen threshold (max-accuracy on recon error): 0.573009 | Accuracy=0.593
-Factor: 3 Bottleneck: 32 Accuracy 0.5375
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 539.28 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 4.7080979284369114e-05, 'kernel': 'rbf', 'nu': 0.05} with FP=0.000, P95=-1.6241, mean=-3.8465
+[Tucker+OCSVM] FINAL AUC=0.582 | Acc@best=0.600
+Accuracy: 0.6 AUC 0.582275
+Rank: 16 5 5
 [sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.229620, max=5.458745
+[sanity] TRAIN: min=-4.239054, max=5.502750
 [sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.201517, max=2.009151
+[sanity] VAL: min=-4.211028, max=1.982713
 [sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.032901, max=8.337173
-[AE(raw)] Accuracy @ VAL-derived threshold: 0.537
-[AE(raw)] FINAL AUC=0.620
-[AE(raw)] Chosen threshold (max-accuracy on recon error): 0.274541 | Accuracy=0.603
-Factor: 3 Bottleneck: 64 Accuracy 0.5375
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 107.72 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 5.636978579481398e-05, 'kernel': 'rbf', 'nu': 0.02} with FP=0.005, P95=-0.2760, mean=-0.8274
+[Tucker+OCSVM] FINAL AUC=0.614 | Acc@best=0.598
+Accuracy: 0.5975 AUC 0.613575
+Rank: 16 5 16
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.239054, max=5.502750
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.211028, max=1.982713
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 546.40 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 5.3763440860215054e-05, 'kernel': 'rbf', 'nu': 0.01} with FP=0.010, P95=-0.1305, mean=-0.4263
+[Tucker+OCSVM] FINAL AUC=0.585 | Acc@best=0.578
+Accuracy: 0.5775 AUC 0.585125
+Rank: 16 16 5
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.239054, max=5.502750
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.211028, max=1.982713
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 79.80 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 8.933889219773676e-05, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-1.4005, mean=-2.6124
+[Tucker+OCSVM] FINAL AUC=0.645 | Acc@best=0.615
+Accuracy: 0.615 AUC 0.645175
+Rank: 16 16 16
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.239054, max=5.502750
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.211028, max=1.982713
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 553.90 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 8.287292817679558e-05, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-1.3341, mean=-2.5263
+[Tucker+OCSVM] FINAL AUC=0.617 | Acc@best=0.603
+Accuracy: 0.6025 AUC 0.616925
+Rank: 16 32 5
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.239054, max=5.502750
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.211028, max=1.982713
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 221.82 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 5.298481102084069e-05, 'kernel': 'rbf', 'nu': 0.1} with FP=0.000, P95=-6.1342, mean=-10.8370
+[Tucker+OCSVM] FINAL AUC=0.595 | Acc@best=0.578
+Accuracy: 0.5775 AUC 0.594525
+Rank: 16 32 16
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.239054, max=5.502750
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.211028, max=1.982713
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 554.61 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 4.8543689320388346e-05, 'kernel': 'rbf', 'nu': 0.1} with FP=0.000, P95=-6.1358, mean=-11.0012
+[Tucker+OCSVM] FINAL AUC=0.577 | Acc@best=0.578
+Accuracy: 0.5775 AUC 0.576625
+Rank: 16 64 5
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.239054, max=5.502750
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.211028, max=1.982713
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 218.12 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 2.9211295034079844e-05, 'kernel': 'rbf', 'nu': 0.1} with FP=0.000, P95=-7.8512, mean=-14.2136
+[Tucker+OCSVM] FINAL AUC=0.644 | Acc@best=0.613
+Accuracy: 0.6125 AUC 0.6444
+Rank: 16 64 16
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.239054, max=5.502750
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.211028, max=1.982713
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 588.02 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 2.6548672566371683e-05, 'kernel': 'rbf', 'nu': 0.1} with FP=0.000, P95=-8.2488, mean=-14.7920
+[Tucker+OCSVM] FINAL AUC=0.644 | Acc@best=0.615
+Accuracy: 0.615 AUC 0.64425
+Rank: 32 5 5
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.239054, max=5.502750
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.211028, max=1.982713
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 80.86 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 9.380863039399625e-05, 'kernel': 'rbf', 'nu': 0.02} with FP=0.005, P95=-1.1994, mean=-1.8195
+[Tucker+OCSVM] FINAL AUC=0.465 | Acc@best=0.517
+Accuracy: 0.5175 AUC 0.4645
+Rank: 32 5 16
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.239054, max=5.502750
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.211028, max=1.982713
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 533.66 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 8.917954815695599e-05, 'kernel': 'rbf', 'nu': 0.05} with FP=0.000, P95=-2.0007, mean=-3.7326
+[Tucker+OCSVM] FINAL AUC=0.539 | Acc@best=0.565
+Accuracy: 0.565 AUC 0.539475
+Rank: 32 16 5
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.239054, max=5.502750
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.211028, max=1.982713
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 218.27 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 5.298481102084069e-05, 'kernel': 'rbf', 'nu': 0.05} with FP=0.000, P95=-3.6954, mean=-5.8884
+[Tucker+OCSVM] FINAL AUC=0.635 | Acc@best=0.625
+Accuracy: 0.625 AUC 0.6355
+Rank: 32 16 16
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.239054, max=5.502750
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.211028, max=1.982713
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 538.26 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 4.8543689320388346e-05, 'kernel': 'rbf', 'nu': 0.05} with FP=0.000, P95=-3.6455, mean=-5.9358
+[Tucker+OCSVM] FINAL AUC=0.613 | Acc@best=0.615
+Accuracy: 0.615 AUC 0.612575
+Rank: 32 32 5
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.239054, max=5.502750
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.211028, max=1.982713
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 227.71 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 3.244646333549643e-05, 'kernel': 'rbf', 'nu': 0.2} with FP=0.000, P95=-8.6363, mean=-20.2040
+[Tucker+OCSVM] FINAL AUC=0.582 | Acc@best=0.590
+Accuracy: 0.59 AUC 0.5821
+Rank: 32 32 16
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.239054, max=5.502750
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.211028, max=1.982713
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 560.12 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 2.9194239003503307e-05, 'kernel': 'rbf', 'nu': 0.2} with FP=0.000, P95=-8.9540, mean=-20.0179
+[Tucker+OCSVM] FINAL AUC=0.570 | Acc@best=0.583
+Accuracy: 0.5825 AUC 0.5702
+Rank: 32 64 5
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.239054, max=5.502750
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.211028, max=1.982713
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 92.09 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 6.092360180333862e-06, 'kernel': 'rbf', 'nu': 0.05} with FP=0.000, P95=-5.1731, mean=-8.9676
+[Tucker+OCSVM] FINAL AUC=0.589 | Acc@best=0.613
+Accuracy: 0.6125 AUC 0.58935
+Rank: 32 64 16
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.239054, max=5.502750
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.211028, max=1.982713
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 648.93 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 5.414771496642842e-06, 'kernel': 'rbf', 'nu': 0.05} with FP=0.000, P95=-5.4789, mean=-9.1822
+[Tucker+OCSVM] FINAL AUC=0.586 | Acc@best=0.615
+Accuracy: 0.615 AUC 0.586125
+Rank: 64 5 5
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.239054, max=5.502750
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.211028, max=1.982713
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 63.27 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 4.961958319550116e-05, 'kernel': 'rbf', 'nu': 0.02} with FP=0.010, P95=-1.0738, mean=-2.2765
+[Tucker+OCSVM] FINAL AUC=0.385 | Acc@best=0.547
+Accuracy: 0.5475 AUC 0.385275
+Rank: 64 5 16
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.239054, max=5.502750
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.211028, max=1.982713
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 519.51 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 4.7080979284369114e-05, 'kernel': 'rbf', 'nu': 0.05} with FP=0.005, P95=-1.2764, mean=-3.1106
+[Tucker+OCSVM] FINAL AUC=0.567 | Acc@best=0.570
+Accuracy: 0.57 AUC 0.56695
+Rank: 64 16 5
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.239054, max=5.502750
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.211028, max=1.982713
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 71.45 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 2.9211295034079844e-05, 'kernel': 'rbf', 'nu': 0.1} with FP=0.000, P95=-6.5206, mean=-10.6638
+[Tucker+OCSVM] FINAL AUC=0.629 | Acc@best=0.618
+Accuracy: 0.6175 AUC 0.6291
+Rank: 64 16 16
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.239054, max=5.502750
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.211028, max=1.982713
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 543.67 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 2.6548672566371683e-05, 'kernel': 'rbf', 'nu': 0.1} with FP=0.000, P95=-6.3501, mean=-10.8419
+[Tucker+OCSVM] FINAL AUC=0.625 | Acc@best=0.608
+Accuracy: 0.6075 AUC 0.62505
+Rank: 64 32 5
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.239054, max=5.502750
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.211028, max=1.982713
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 75.95 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 1.8277080541001583e-05, 'kernel': 'rbf', 'nu': 0.1} with FP=0.000, P95=-6.6981, mean=-13.2738
+[Tucker+OCSVM] FINAL AUC=0.590 | Acc@best=0.583
+Accuracy: 0.5825 AUC 0.5897
+Rank: 64 32 16
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.239054, max=5.502750
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.211028, max=1.982713
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 649.27 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 1.6244314489928523e-05, 'kernel': 'rbf', 'nu': 0.1} with FP=0.000, P95=-6.6600, mean=-13.3720
+[Tucker+OCSVM] FINAL AUC=0.584 | Acc@best=0.585
+Accuracy: 0.585 AUC 0.583875
+Rank: 64 64 5
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.239054, max=5.502750
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.211028, max=1.982713
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 85.57 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 3.484077764615706e-06, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-3.9844, mean=-5.6834
+[Tucker+OCSVM] FINAL AUC=0.588 | Acc@best=0.610
+Accuracy: 0.61 AUC 0.5883
+Rank: 64 64 16
+[sanity] TRAIN: N=1500, NaNs=False, Infs=False
+[sanity] TRAIN: min=-4.239054, max=5.502750
+[sanity] VAL: N=200, NaNs=False, Infs=False
+[sanity] VAL: min=-4.211028, max=1.982713
+[sanity] FINAL: N=400, NaNs=False, Infs=False
+[sanity] FINAL: min=-4.042872, max=8.394652
+Decomposition time: 1032.17 seconds
+[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 3.048408730642605e-06, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-3.8666, mean=-5.6632
+[Tucker+OCSVM] FINAL AUC=0.590 | Acc@best=0.613
+Accuracy: 0.6125 AUC 0.59
+AUC Rank score {(5, 5, 5): 0.636675, (5, 5, 16): 0.6236, (5, 16, 5): 0.588275, (5, 16, 16): 0.5707, (5, 32, 5): 0.424025, (5, 32, 16): 0.53895, (5, 64, 5): 0.39705, (5, 64, 16): 0.582275, (16, 5, 5): 0.613575, (16, 5, 16): 0.585125, (16, 16, 5): 0.645175, (16, 16, 16): 0.616925, (16, 32, 5): 0.594525, (16, 32, 16): 0.576625, (16, 64, 5): 0.6444, (16, 64, 16): 0.64425, (32, 5, 5): 0.4645, (32, 5, 16): 0.539475, (32, 16, 5): 0.6355, (32, 16, 16): 0.612575, (32, 32, 5): 0.5821, (32, 32, 16): 0.5702, (32, 64, 5): 0.58935, (32, 64, 16): 0.586125, (64, 5, 5): 0.385275, (64, 5, 16): 0.56695, (64, 16, 5): 0.6291, (64, 16, 16): 0.62505, (64, 32, 5): 0.5897, (64, 32, 16): 0.583875, (64, 64, 5): 0.5883, (64, 64, 16): 0.59}
+Tucker Best Rank One Class SVM (16, 16, 5) 0.645175
+
+Process finished with exit code 0
