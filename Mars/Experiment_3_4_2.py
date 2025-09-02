@@ -37,8 +37,8 @@ test_anomaly_data = "Data/Reduced/Lean/test_novel"   # novel
 
 use_predefined_rank = False
 enable_tucker_oc_svm = False
-enable_tucker_autoencoder = True
-enable_tucker_isolation_forest = False
+enable_tucker_autoencoder = False
+enable_tucker_isolation_forest = True
 enable_cp_oc_svm = False
 enable_cp_autoencoder = False
 enable_cp_isolation_forest = False
@@ -46,11 +46,11 @@ enable_cp_isolation_forest = False
 no_decomposition = False  # set to False to run CP-based pipeline
 RUN_VISUALIZATION = False
 
-# Optional: standardize bands using TRAIN stats
+# Option+al: standardize bands using TRAIN stats
 USE_BAND_STANDARDIZE = True
 
 # Dataset reduction controls
-REDUCE_DATASETS = True
+REDUCE_DATASETS = False
 REDUCE_TRAIN_N = 1500
 REDUCE_VAL_N = 200
 REDUCE_TEST_TYP_N = 200

@@ -13,3 +13,108 @@ Best by FinalAcc: (Factor=1, Bottleneck=64) (FinalAcc=0.605, AUC=0.623, ValAcc=0
 Best by AUC: (Factor=1, Bottleneck=16) (AUC=0.625, FinalAcc=0.603, ValAcc=0.537)
 
 Process finished with exit code 0
+
+C:\Users\Anthony\anaconda3\envs\isye6740\python.exe C:/OMSA/ISyE6748_practicum_publish/Mars/make_table.py
+rank,factor,bottleneck,accuracy,auc
+5 5 5 Factor 3 Bottleneck: 16,,,0.5825,0.598
+5 5 16 Factor 3 Bottleneck: 16,,,0.575,0.58315
+5 16 5 Factor 3 Bottleneck: 16,,,0.575,0.57215
+5 16 16 Factor 3 Bottleneck: 16,,,0.5575,0.550025
+5 32 5 Factor 3 Bottleneck: 16,,,0.525,0.43295
+5 32 16 Factor 3 Bottleneck: 16,,,0.57,0.53885
+5 64 5 Factor 3 Bottleneck: 16,,,0.555,0.40325
+5 64 16 Factor 3 Bottleneck: 16,,,0.6075,0.58575
+16 5 5 Factor 3 Bottleneck: 16,,,0.5925,0.604425
+16 5 16 Factor 3 Bottleneck: 16,,,0.5675,0.56915
+16 16 5 Factor 3 Bottleneck: 16,,,0.61,0.6443
+16 16 16 Factor 3 Bottleneck: 16,,,0.6,0.617275
+16 32 5 Factor 3 Bottleneck: 16,,,0.5775,0.59255
+16 32 16 Factor 3 Bottleneck: 16,,,0.5775,0.5746
+16 64 5 Factor 3 Bottleneck: 16,,,0.615,0.6438
+16 64 16 Factor 3 Bottleneck: 16,,,0.6125,0.64345
+32 5 5 Factor 3 Bottleneck: 16,,,0.535,0.471875
+32 5 16 Factor 3 Bottleneck: 16,,,0.57,0.544075
+32 16 5 Factor 3 Bottleneck: 16,,,0.63,0.634325
+32 16 16 Factor 3 Bottleneck: 16,,,0.6175,0.61085
+32 32 5 Factor 3 Bottleneck: 16,,,0.5875,0.581375
+32 32 16 Factor 3 Bottleneck: 16,,,0.5775,0.569175
+32 64 5 Factor 3 Bottleneck: 16,,,0.6125,0.5892
+32 64 16 Factor 3 Bottleneck: 16,,,0.6125,0.5866
+64 5 5 Factor 3 Bottleneck: 16,,,0.56,0.3878
+64 5 16 Factor 3 Bottleneck: 16,,,0.5725,0.56855
+64 16 5 Factor 3 Bottleneck: 16,,,0.6175,0.627825
+64 16 16 Factor 3 Bottleneck: 16,,,0.6025,0.622575
+64 32 5 Factor 3 Bottleneck: 16,,,0.5825,0.58895
+64 32 16 Factor 3 Bottleneck: 16,,,0.585,0.583625
+64 64 5 Factor 3 Bottleneck: 16,,,0.61,0.588425
+64 64 16 Factor 3 Bottleneck: 16,,,0.6125,0.589875
+5 5 5 Factor 3 Bottleneck: 32,,,0.5825,0.596225
+5 5 16 Factor 3 Bottleneck: 32,,,0.5675,0.57735
+5 16 5 Factor 3 Bottleneck: 32,,,0.5825,0.57825
+5 16 16 Factor 3 Bottleneck: 32,,,0.575,0.55655
+5 32 5 Factor 3 Bottleneck: 32,,,0.5225,0.4336
+5 32 16 Factor 3 Bottleneck: 32,,,0.5675,0.541025
+5 64 5 Factor 3 Bottleneck: 32,,,0.56,0.4058
+5 64 16 Factor 3 Bottleneck: 32,,,0.6025,0.5874
+16 5 5 Factor 3 Bottleneck: 32,,,0.5825,0.60395
+16 5 16 Factor 3 Bottleneck: 32,,,0.565,0.571875
+16 16 5 Factor 3 Bottleneck: 32,,,0.61,0.644975
+16 16 16 Factor 3 Bottleneck: 32,,,0.6,0.618175
+16 32 5 Factor 3 Bottleneck: 32,,,0.5775,0.593325
+16 32 16 Factor 3 Bottleneck: 32,,,0.575,0.574925
+16 64 5 Factor 3 Bottleneck: 32,,,0.615,0.64395
+16 64 16 Factor 3 Bottleneck: 32,,,0.6125,0.64355
+32 5 5 Factor 3 Bottleneck: 32,,,0.525,0.4688
+32 5 16 Factor 3 Bottleneck: 32,,,0.5675,0.544525
+32 16 5 Factor 3 Bottleneck: 32,,,0.63,0.634275
+32 16 16 Factor 3 Bottleneck: 32,,,0.6175,0.611225
+32 32 5 Factor 3 Bottleneck: 32,,,0.5875,0.5814
+32 32 16 Factor 3 Bottleneck: 32,,,0.5775,0.569025
+32 64 5 Factor 3 Bottleneck: 32,,,0.6125,0.5893
+32 64 16 Factor 3 Bottleneck: 32,,,0.6125,0.58675
+64 5 5 Factor 3 Bottleneck: 32,,,0.56,0.383675
+64 5 16 Factor 3 Bottleneck: 32,,,0.575,0.57
+64 16 5 Factor 3 Bottleneck: 32,,,0.6175,0.62765
+64 16 16 Factor 3 Bottleneck: 32,,,0.6075,0.623425
+64 32 5 Factor 3 Bottleneck: 32,,,0.5825,0.588975
+64 32 16 Factor 3 Bottleneck: 32,,,0.585,0.58355
+64 64 5 Factor 3 Bottleneck: 32,,,0.61,0.588375
+64 64 16 Factor 3 Bottleneck: 32,,,0.6125,0.5899
+5 5 5 Factor 3 Bottleneck: 64,,,0.5875,0.602975
+5 5 16 Factor 3 Bottleneck: 64,,,0.575,0.58305
+5 16 5 Factor 3 Bottleneck: 64,,,0.58,0.57585
+5 16 16 Factor 3 Bottleneck: 64,,,0.575,0.555075
+5 32 5 Factor 3 Bottleneck: 64,,,0.5225,0.4335
+5 32 16 Factor 3 Bottleneck: 64,,,0.5675,0.54095
+5 64 5 Factor 3 Bottleneck: 64,,,0.5575,0.4049
+5 64 16 Factor 3 Bottleneck: 64,,,0.6025,0.5874
+16 5 5 Factor 3 Bottleneck: 64,,,0.5825,0.604725
+16 5 16 Factor 3 Bottleneck: 64,,,0.5625,0.570475
+16 16 5 Factor 3 Bottleneck: 64,,,0.61,0.645025
+16 16 16 Factor 3 Bottleneck: 64,,,0.6,0.618275
+16 32 5 Factor 3 Bottleneck: 64,,,0.5775,0.593325
+16 32 16 Factor 3 Bottleneck: 64,,,0.575,0.574925
+16 64 5 Factor 3 Bottleneck: 64,,,0.615,0.644
+16 64 16 Factor 3 Bottleneck: 64,,,0.6125,0.64355
+32 5 5 Factor 3 Bottleneck: 64,,,0.525,0.4688
+32 5 16 Factor 3 Bottleneck: 64,,,0.5675,0.544525
+32 16 5 Factor 3 Bottleneck: 64,,,0.63,0.634075
+32 16 16 Factor 3 Bottleneck: 64,,,0.6175,0.611225
+32 32 5 Factor 3 Bottleneck: 64,,,0.5875,0.5814
+32 32 16 Factor 3 Bottleneck: 64,,,0.5775,0.569025
+32 64 5 Factor 3 Bottleneck: 64,,,0.6125,0.589275
+32 64 16 Factor 3 Bottleneck: 64,,,0.6125,0.58675
+64 5 5 Factor 3 Bottleneck: 64,,,0.56,0.383675
+64 5 16 Factor 3 Bottleneck: 64,,,0.575,0.57
+64 16 5 Factor 3 Bottleneck: 64,,,0.6175,0.627675
+64 16 16 Factor 3 Bottleneck: 64,,,0.6075,0.623425
+64 32 5 Factor 3 Bottleneck: 64,,,0.5825,0.588975
+64 32 16 Factor 3 Bottleneck: 64,,,0.585,0.58355
+64 64 5 Factor 3 Bottleneck: 64,,,0.61,0.588375
+64 64 16 Factor 3 Bottleneck: 64,,,0.6125,0.5899
+
+Best accuracy -> rank 32 16 5 Factor 3 Bottleneck: 16 (accuracy=0.6300, auc=0.634325)
+Best AUC      -> rank 16 16 5 Factor 3 Bottleneck: 64 (auc=0.645025, accuracy=0.6100)
+
+Process finished with exit code 0
+

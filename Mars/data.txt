@@ -1,360 +1,3597 @@
-C:\Users\Anthony\anaconda3\envs\isye6740\python.exe C:/OMSA/ISyE6748_practicum_publish/Mars/Experiment_3_4_2.py
-[tensorly] Backend: pytorch (CUDA)
-[VAL] Using separate validation dir (typical-only): Data/Reduced/Lean/validation (N=200)
-Tucker rank search One Class SVM
-Rank: 5 5 5
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 113.38 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 0.00012578616352201257, 'kernel': 'rbf', 'nu': 0.01} with FP=0.020, P95=-0.1092, mean=-0.4271
-[Tucker+OCSVM] FINAL AUC=0.637 | Acc@best=0.623
-Accuracy: 0.6225 AUC 0.636675
-Rank: 5 5 16
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 533.26 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 0.00012106537530266345, 'kernel': 'rbf', 'nu': 0.01} with FP=0.030, P95=-0.0958, mean=-0.4379
-[Tucker+OCSVM] FINAL AUC=0.624 | Acc@best=0.605
-Accuracy: 0.605 AUC 0.6236
-Rank: 5 16 5
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 126.56 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 5.636978579481398e-05, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-0.4850, mean=-0.9471
-[Tucker+OCSVM] FINAL AUC=0.588 | Acc@best=0.575
-Accuracy: 0.575 AUC 0.588275
-Rank: 5 16 16
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 535.80 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 5.3763440860215054e-05, 'kernel': 'rbf', 'nu': 0.01} with FP=0.005, P95=-0.2211, mean=-0.4881
-[Tucker+OCSVM] FINAL AUC=0.571 | Acc@best=0.570
-Accuracy: 0.57 AUC 0.5707
-Rank: 5 32 5
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 116.05 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 9.380863039399625e-05, 'kernel': 'rbf', 'nu': 0.02} with FP=0.005, P95=-1.0396, mean=-1.9261
-[Tucker+OCSVM] FINAL AUC=0.424 | Acc@best=0.510
-Accuracy: 0.51 AUC 0.424025
-Rank: 5 32 16
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 530.70 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 8.917954815695599e-05, 'kernel': 'rbf', 'nu': 0.05} with FP=0.000, P95=-2.3450, mean=-4.2266
-[Tucker+OCSVM] FINAL AUC=0.539 | Acc@best=0.565
-Accuracy: 0.565 AUC 0.53895
-Rank: 5 64 5
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 126.20 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 1.6539861065167053e-05, 'kernel': 'rbf', 'nu': 0.02} with FP=0.005, P95=-1.3478, mean=-2.2222
-[Tucker+OCSVM] FINAL AUC=0.397 | Acc@best=0.545
-Accuracy: 0.545 AUC 0.39705
-Rank: 5 64 16
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 539.28 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 4.7080979284369114e-05, 'kernel': 'rbf', 'nu': 0.05} with FP=0.000, P95=-1.6241, mean=-3.8465
-[Tucker+OCSVM] FINAL AUC=0.582 | Acc@best=0.600
-Accuracy: 0.6 AUC 0.582275
-Rank: 16 5 5
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 107.72 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 5.636978579481398e-05, 'kernel': 'rbf', 'nu': 0.02} with FP=0.005, P95=-0.2760, mean=-0.8274
-[Tucker+OCSVM] FINAL AUC=0.614 | Acc@best=0.598
-Accuracy: 0.5975 AUC 0.613575
-Rank: 16 5 16
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 546.40 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 5.3763440860215054e-05, 'kernel': 'rbf', 'nu': 0.01} with FP=0.010, P95=-0.1305, mean=-0.4263
-[Tucker+OCSVM] FINAL AUC=0.585 | Acc@best=0.578
-Accuracy: 0.5775 AUC 0.585125
-Rank: 16 16 5
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 79.80 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 8.933889219773676e-05, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-1.4005, mean=-2.6124
-[Tucker+OCSVM] FINAL AUC=0.645 | Acc@best=0.615
-Accuracy: 0.615 AUC 0.645175
-Rank: 16 16 16
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 553.90 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 8.287292817679558e-05, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-1.3341, mean=-2.5263
-[Tucker+OCSVM] FINAL AUC=0.617 | Acc@best=0.603
-Accuracy: 0.6025 AUC 0.616925
-Rank: 16 32 5
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 221.82 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 5.298481102084069e-05, 'kernel': 'rbf', 'nu': 0.1} with FP=0.000, P95=-6.1342, mean=-10.8370
-[Tucker+OCSVM] FINAL AUC=0.595 | Acc@best=0.578
-Accuracy: 0.5775 AUC 0.594525
-Rank: 16 32 16
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 554.61 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 4.8543689320388346e-05, 'kernel': 'rbf', 'nu': 0.1} with FP=0.000, P95=-6.1358, mean=-11.0012
-[Tucker+OCSVM] FINAL AUC=0.577 | Acc@best=0.578
-Accuracy: 0.5775 AUC 0.576625
-Rank: 16 64 5
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 218.12 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 2.9211295034079844e-05, 'kernel': 'rbf', 'nu': 0.1} with FP=0.000, P95=-7.8512, mean=-14.2136
-[Tucker+OCSVM] FINAL AUC=0.644 | Acc@best=0.613
-Accuracy: 0.6125 AUC 0.6444
-Rank: 16 64 16
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 588.02 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 2.6548672566371683e-05, 'kernel': 'rbf', 'nu': 0.1} with FP=0.000, P95=-8.2488, mean=-14.7920
-[Tucker+OCSVM] FINAL AUC=0.644 | Acc@best=0.615
-Accuracy: 0.615 AUC 0.64425
-Rank: 32 5 5
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 80.86 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 9.380863039399625e-05, 'kernel': 'rbf', 'nu': 0.02} with FP=0.005, P95=-1.1994, mean=-1.8195
-[Tucker+OCSVM] FINAL AUC=0.465 | Acc@best=0.517
-Accuracy: 0.5175 AUC 0.4645
-Rank: 32 5 16
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 533.66 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 8.917954815695599e-05, 'kernel': 'rbf', 'nu': 0.05} with FP=0.000, P95=-2.0007, mean=-3.7326
-[Tucker+OCSVM] FINAL AUC=0.539 | Acc@best=0.565
-Accuracy: 0.565 AUC 0.539475
-Rank: 32 16 5
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 218.27 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 5.298481102084069e-05, 'kernel': 'rbf', 'nu': 0.05} with FP=0.000, P95=-3.6954, mean=-5.8884
-[Tucker+OCSVM] FINAL AUC=0.635 | Acc@best=0.625
-Accuracy: 0.625 AUC 0.6355
-Rank: 32 16 16
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 538.26 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 4.8543689320388346e-05, 'kernel': 'rbf', 'nu': 0.05} with FP=0.000, P95=-3.6455, mean=-5.9358
-[Tucker+OCSVM] FINAL AUC=0.613 | Acc@best=0.615
-Accuracy: 0.615 AUC 0.612575
-Rank: 32 32 5
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 227.71 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 3.244646333549643e-05, 'kernel': 'rbf', 'nu': 0.2} with FP=0.000, P95=-8.6363, mean=-20.2040
-[Tucker+OCSVM] FINAL AUC=0.582 | Acc@best=0.590
-Accuracy: 0.59 AUC 0.5821
-Rank: 32 32 16
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 560.12 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 2.9194239003503307e-05, 'kernel': 'rbf', 'nu': 0.2} with FP=0.000, P95=-8.9540, mean=-20.0179
-[Tucker+OCSVM] FINAL AUC=0.570 | Acc@best=0.583
-Accuracy: 0.5825 AUC 0.5702
-Rank: 32 64 5
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 92.09 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 6.092360180333862e-06, 'kernel': 'rbf', 'nu': 0.05} with FP=0.000, P95=-5.1731, mean=-8.9676
-[Tucker+OCSVM] FINAL AUC=0.589 | Acc@best=0.613
-Accuracy: 0.6125 AUC 0.58935
-Rank: 32 64 16
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 648.93 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 5.414771496642842e-06, 'kernel': 'rbf', 'nu': 0.05} with FP=0.000, P95=-5.4789, mean=-9.1822
-[Tucker+OCSVM] FINAL AUC=0.586 | Acc@best=0.615
-Accuracy: 0.615 AUC 0.586125
-Rank: 64 5 5
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 63.27 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 4.961958319550116e-05, 'kernel': 'rbf', 'nu': 0.02} with FP=0.010, P95=-1.0738, mean=-2.2765
-[Tucker+OCSVM] FINAL AUC=0.385 | Acc@best=0.547
-Accuracy: 0.5475 AUC 0.385275
-Rank: 64 5 16
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 519.51 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 4.7080979284369114e-05, 'kernel': 'rbf', 'nu': 0.05} with FP=0.005, P95=-1.2764, mean=-3.1106
-[Tucker+OCSVM] FINAL AUC=0.567 | Acc@best=0.570
-Accuracy: 0.57 AUC 0.56695
-Rank: 64 16 5
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 71.45 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 2.9211295034079844e-05, 'kernel': 'rbf', 'nu': 0.1} with FP=0.000, P95=-6.5206, mean=-10.6638
-[Tucker+OCSVM] FINAL AUC=0.629 | Acc@best=0.618
-Accuracy: 0.6175 AUC 0.6291
-Rank: 64 16 16
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 543.67 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 2.6548672566371683e-05, 'kernel': 'rbf', 'nu': 0.1} with FP=0.000, P95=-6.3501, mean=-10.8419
-[Tucker+OCSVM] FINAL AUC=0.625 | Acc@best=0.608
-Accuracy: 0.6075 AUC 0.62505
-Rank: 64 32 5
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 75.95 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 1.8277080541001583e-05, 'kernel': 'rbf', 'nu': 0.1} with FP=0.000, P95=-6.6981, mean=-13.2738
-[Tucker+OCSVM] FINAL AUC=0.590 | Acc@best=0.583
-Accuracy: 0.5825 AUC 0.5897
-Rank: 64 32 16
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 649.27 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 1.6244314489928523e-05, 'kernel': 'rbf', 'nu': 0.1} with FP=0.000, P95=-6.6600, mean=-13.3720
-[Tucker+OCSVM] FINAL AUC=0.584 | Acc@best=0.585
-Accuracy: 0.585 AUC 0.583875
-Rank: 64 64 5
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 85.57 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 3.484077764615706e-06, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-3.9844, mean=-5.6834
-[Tucker+OCSVM] FINAL AUC=0.588 | Acc@best=0.610
-Accuracy: 0.61 AUC 0.5883
-Rank: 64 64 16
-[sanity] TRAIN: N=1500, NaNs=False, Infs=False
-[sanity] TRAIN: min=-4.239054, max=5.502750
-[sanity] VAL: N=200, NaNs=False, Infs=False
-[sanity] VAL: min=-4.211028, max=1.982713
-[sanity] FINAL: N=400, NaNs=False, Infs=False
-[sanity] FINAL: min=-4.042872, max=8.394652
-Decomposition time: 1032.17 seconds
-[Tucker+OCSVM] VAL (one-class) picked params={'gamma': 3.048408730642605e-06, 'kernel': 'rbf', 'nu': 0.02} with FP=0.000, P95=-3.8666, mean=-5.6632
-[Tucker+OCSVM] FINAL AUC=0.590 | Acc@best=0.613
-Accuracy: 0.6125 AUC 0.59
-AUC Rank score {(5, 5, 5): 0.636675, (5, 5, 16): 0.6236, (5, 16, 5): 0.588275, (5, 16, 16): 0.5707, (5, 32, 5): 0.424025, (5, 32, 16): 0.53895, (5, 64, 5): 0.39705, (5, 64, 16): 0.582275, (16, 5, 5): 0.613575, (16, 5, 16): 0.585125, (16, 16, 5): 0.645175, (16, 16, 16): 0.616925, (16, 32, 5): 0.594525, (16, 32, 16): 0.576625, (16, 64, 5): 0.6444, (16, 64, 16): 0.64425, (32, 5, 5): 0.4645, (32, 5, 16): 0.539475, (32, 16, 5): 0.6355, (32, 16, 16): 0.612575, (32, 32, 5): 0.5821, (32, 32, 16): 0.5702, (32, 64, 5): 0.58935, (32, 64, 16): 0.586125, (64, 5, 5): 0.385275, (64, 5, 16): 0.56695, (64, 16, 5): 0.6291, (64, 16, 16): 0.62505, (64, 32, 5): 0.5897, (64, 32, 16): 0.583875, (64, 64, 5): 0.5883, (64, 64, 16): 0.59}
-Tucker Best Rank One Class SVM (16, 16, 5) 0.645175
-
-Process finished with exit code 0
+C:\Users\Anthony\anaconda3\envs\isye6740\python.exe C:/OMSA/ISyE6748_practicum_publish/Mars/Experiment_3_4_1.py
+TensorLy backend: PyTorch (CUDA)
+Validation: using separate directory Data/Reduced/Lean/validation (N=200)
+CP rank search (autoencoder)
+Factor: 1 Bottleneck: 16 Rank: 10
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.500
+CP+AE (global) FINAL AUC=0.607
+CP+AE (global) threshold=0.107004 | accuracy=0.625
+Accuracy 0.625 AUC 0.607475
+Factor: 1 Bottleneck: 16 Rank: 15
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.500
+CP+AE (global) FINAL AUC=0.632
+CP+AE (global) threshold=0.175671 | accuracy=0.652
+Accuracy 0.6525 AUC 0.63165
+Factor: 1 Bottleneck: 16 Rank: 20
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.500
+CP+AE (global) FINAL AUC=0.630
+CP+AE (global) threshold=0.202004 | accuracy=0.688
+Accuracy 0.6875 AUC 0.630275
+Factor: 1 Bottleneck: 16 Rank: 25
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.505
+CP+AE (global) FINAL AUC=0.666
+CP+AE (global) threshold=0.256470 | accuracy=0.690
+Accuracy 0.69 AUC 0.66595
+Factor: 1 Bottleneck: 16 Rank: 30
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.502
+CP+AE (global) FINAL AUC=0.663
+CP+AE (global) threshold=0.255981 | accuracy=0.680
+Accuracy 0.68 AUC 0.6634
+Factor: 1 Bottleneck: 16 Rank: 35
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.502
+CP+AE (global) FINAL AUC=0.659
+CP+AE (global) threshold=0.361426 | accuracy=0.662
+Accuracy 0.6625 AUC 0.659275
+Factor: 1 Bottleneck: 16 Rank: 40
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.505
+CP+AE (global) FINAL AUC=0.645
+CP+AE (global) threshold=0.254094 | accuracy=0.677
+Accuracy 0.6775 AUC 0.645
+Factor: 1 Bottleneck: 16 Rank: 45
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.520
+CP+AE (global) FINAL AUC=0.642
+CP+AE (global) threshold=0.275873 | accuracy=0.650
+Accuracy 0.65 AUC 0.6425
+Factor: 1 Bottleneck: 16 Rank: 50
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.500
+CP+AE (global) FINAL AUC=0.660
+CP+AE (global) threshold=0.326059 | accuracy=0.660
+Accuracy 0.66 AUC 0.6599
+Factor: 1 Bottleneck: 16 Rank: 55
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.510
+CP+AE (global) FINAL AUC=0.607
+CP+AE (global) threshold=0.249463 | accuracy=0.588
+Accuracy 0.5875 AUC 0.6069
+Factor: 1 Bottleneck: 16 Rank: 60
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.495
+CP+AE (global) FINAL AUC=0.662
+CP+AE (global) threshold=0.385816 | accuracy=0.672
+Accuracy 0.6725 AUC 0.661825
+Factor: 1 Bottleneck: 16 Rank: 65
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.517
+CP+AE (global) FINAL AUC=0.684
+CP+AE (global) threshold=0.445879 | accuracy=0.670
+Accuracy 0.67 AUC 0.6842
+Factor: 1 Bottleneck: 16 Rank: 70
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.555
+CP+AE (global) FINAL AUC=0.734
+CP+AE (global) threshold=0.502277 | accuracy=0.682
+Accuracy 0.6825 AUC 0.7341
+Factor: 1 Bottleneck: 16 Rank: 75
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.495
+CP+AE (global) FINAL AUC=0.643
+CP+AE (global) threshold=0.478139 | accuracy=0.625
+Accuracy 0.625 AUC 0.642975
+Factor: 1 Bottleneck: 16 Rank: 80
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.497
+CP+AE (global) FINAL AUC=0.684
+CP+AE (global) threshold=0.446728 | accuracy=0.650
+Accuracy 0.65 AUC 0.683825
+Factor: 1 Bottleneck: 16 Rank: 85
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.527
+CP+AE (global) FINAL AUC=0.700
+CP+AE (global) threshold=0.574265 | accuracy=0.665
+Accuracy 0.665 AUC 0.699775
+Factor: 1 Bottleneck: 16 Rank: 90
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.525
+CP+AE (global) FINAL AUC=0.699
+CP+AE (global) threshold=0.511204 | accuracy=0.665
+Accuracy 0.665 AUC 0.698575
+Factor: 1 Bottleneck: 16 Rank: 95
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.515
+CP+AE (global) FINAL AUC=0.647
+CP+AE (global) threshold=0.596030 | accuracy=0.625
+Accuracy 0.625 AUC 0.6469
+Factor: 1 Bottleneck: 16 Rank: 100
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.532
+CP+AE (global) FINAL AUC=0.669
+CP+AE (global) threshold=0.698161 | accuracy=0.632
+Accuracy 0.6325 AUC 0.6688
+Factor: 1 Bottleneck: 16 Rank: 105
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.532
+CP+AE (global) FINAL AUC=0.720
+CP+AE (global) threshold=1.000354 | accuracy=0.677
+Accuracy 0.6775 AUC 0.72
+Factor: 1 Bottleneck: 16 Rank: 110
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.537
+CP+AE (global) FINAL AUC=0.699
+CP+AE (global) threshold=0.957777 | accuracy=0.660
+Accuracy 0.66 AUC 0.699475
+Factor: 1 Bottleneck: 16 Rank: 115
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.530
+CP+AE (global) FINAL AUC=0.654
+CP+AE (global) threshold=0.710664 | accuracy=0.620
+Accuracy 0.62 AUC 0.65435
+Factor: 1 Bottleneck: 16 Rank: 120
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.562
+CP+AE (global) FINAL AUC=0.703
+CP+AE (global) threshold=0.723475 | accuracy=0.665
+Accuracy 0.665 AUC 0.70265
+Factor: 1 Bottleneck: 16 Rank: 125
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.557
+CP+AE (global) FINAL AUC=0.677
+CP+AE (global) threshold=0.713490 | accuracy=0.637
+Accuracy 0.6375 AUC 0.676875
+Factor: 1 Bottleneck: 16 Rank: 130
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.578
+CP+AE (global) FINAL AUC=0.693
+CP+AE (global) threshold=0.716922 | accuracy=0.660
+Accuracy 0.66 AUC 0.692575
+Factor: 1 Bottleneck: 16 Rank: 135
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.568
+CP+AE (global) FINAL AUC=0.706
+CP+AE (global) threshold=0.963910 | accuracy=0.660
+Accuracy 0.66 AUC 0.706475
+Factor: 1 Bottleneck: 16 Rank: 140
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.535
+CP+AE (global) FINAL AUC=0.703
+CP+AE (global) threshold=0.898672 | accuracy=0.662
+Accuracy 0.6625 AUC 0.70335
+Factor: 1 Bottleneck: 16 Rank: 145
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.575
+CP+AE (global) FINAL AUC=0.684
+CP+AE (global) threshold=0.850831 | accuracy=0.647
+Accuracy 0.6475 AUC 0.68355
+Factor: 1 Bottleneck: 16 Rank: 150
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.530
+CP+AE (global) FINAL AUC=0.701
+CP+AE (global) threshold=0.637980 | accuracy=0.667
+Accuracy 0.6675 AUC 0.7013
+Factor: 1 Bottleneck: 16 Rank: 155
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.557
+CP+AE (global) FINAL AUC=0.647
+CP+AE (global) threshold=0.995274 | accuracy=0.625
+Accuracy 0.625 AUC 0.647225
+Factor: 1 Bottleneck: 16 Rank: 160
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.588
+CP+AE (global) FINAL AUC=0.679
+CP+AE (global) threshold=0.823940 | accuracy=0.635
+Accuracy 0.635 AUC 0.678875
+Factor: 1 Bottleneck: 16 Rank: 165
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.568
+CP+AE (global) FINAL AUC=0.684
+CP+AE (global) threshold=0.875123 | accuracy=0.662
+Accuracy 0.6625 AUC 0.68435
+Factor: 1 Bottleneck: 16 Rank: 170
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.575
+CP+AE (global) FINAL AUC=0.673
+CP+AE (global) threshold=0.841419 | accuracy=0.627
+Accuracy 0.6275 AUC 0.673025
+Factor: 1 Bottleneck: 16 Rank: 175
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.608
+CP+AE (global) FINAL AUC=0.704
+CP+AE (global) threshold=0.828140 | accuracy=0.660
+Accuracy 0.66 AUC 0.70375
+Factor: 1 Bottleneck: 16 Rank: 180
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.583
+CP+AE (global) FINAL AUC=0.668
+CP+AE (global) threshold=0.744222 | accuracy=0.632
+Accuracy 0.6325 AUC 0.668025
+Factor: 1 Bottleneck: 16 Rank: 185
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.598
+CP+AE (global) FINAL AUC=0.676
+CP+AE (global) threshold=0.875503 | accuracy=0.657
+Accuracy 0.6575 AUC 0.676
+Factor: 1 Bottleneck: 16 Rank: 190
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.573
+CP+AE (global) FINAL AUC=0.659
+CP+AE (global) threshold=0.992168 | accuracy=0.625
+Accuracy 0.625 AUC 0.659325
+Factor: 1 Bottleneck: 16 Rank: 195
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.588
+CP+AE (global) FINAL AUC=0.667
+CP+AE (global) threshold=1.032028 | accuracy=0.620
+Accuracy 0.62 AUC 0.667
+Factor: 1 Bottleneck: 16 Rank: 200
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.600
+CP+AE (global) FINAL AUC=0.658
+CP+AE (global) threshold=1.139020 | accuracy=0.627
+Accuracy 0.6275 AUC 0.657725
+Factor: 1 Bottleneck: 16 Rank: 205
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.605
+CP+AE (global) FINAL AUC=0.648
+CP+AE (global) threshold=0.910166 | accuracy=0.620
+Accuracy 0.62 AUC 0.647625
+Factor: 1 Bottleneck: 16 Rank: 210
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.593
+CP+AE (global) FINAL AUC=0.665
+CP+AE (global) threshold=1.333250 | accuracy=0.623
+Accuracy 0.6225 AUC 0.665025
+Factor: 1 Bottleneck: 16 Rank: 215
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.608
+CP+AE (global) FINAL AUC=0.666
+CP+AE (global) threshold=0.916220 | accuracy=0.618
+Accuracy 0.6175 AUC 0.6664
+Factor: 1 Bottleneck: 16 Rank: 220
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.603
+CP+AE (global) FINAL AUC=0.653
+CP+AE (global) threshold=0.921282 | accuracy=0.618
+Accuracy 0.6175 AUC 0.653225
+Factor: 1 Bottleneck: 16 Rank: 225
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.632
+CP+AE (global) FINAL AUC=0.660
+CP+AE (global) threshold=1.309425 | accuracy=0.637
+Accuracy 0.6375 AUC 0.660225
+Factor: 1 Bottleneck: 16 Rank: 230
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.620
+CP+AE (global) FINAL AUC=0.658
+CP+AE (global) threshold=1.277007 | accuracy=0.637
+Accuracy 0.6375 AUC 0.657625
+Factor: 1 Bottleneck: 16 Rank: 235
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.625
+CP+AE (global) FINAL AUC=0.677
+CP+AE (global) threshold=1.190288 | accuracy=0.645
+Accuracy 0.645 AUC 0.677425
+Factor: 1 Bottleneck: 16 Rank: 240
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.613
+CP+AE (global) FINAL AUC=0.659
+CP+AE (global) threshold=1.329503 | accuracy=0.637
+Accuracy 0.6375 AUC 0.6587
+Factor: 1 Bottleneck: 16 Rank: 245
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.637
+CP+AE (global) FINAL AUC=0.663
+CP+AE (global) threshold=1.467448 | accuracy=0.640
+Accuracy 0.64 AUC 0.662775
+Factor: 1 Bottleneck: 16 Rank: 250
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.637
+CP+AE (global) FINAL AUC=0.648
+CP+AE (global) threshold=1.272308 | accuracy=0.640
+Accuracy 0.64 AUC 0.648075
+Factor: 1 Bottleneck: 16 Rank: 255
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.618
+CP+AE (global) FINAL AUC=0.640
+CP+AE (global) threshold=1.445279 | accuracy=0.630
+Accuracy 0.63 AUC 0.6402
+Factor: 1 Bottleneck: 16 Rank: 260
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.620
+CP+AE (global) FINAL AUC=0.644
+CP+AE (global) threshold=1.331801 | accuracy=0.630
+Accuracy 0.63 AUC 0.643675
+Factor: 1 Bottleneck: 16 Rank: 265
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.615
+CP+AE (global) FINAL AUC=0.636
+CP+AE (global) threshold=1.309482 | accuracy=0.625
+Accuracy 0.625 AUC 0.636275
+Factor: 1 Bottleneck: 16 Rank: 270
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.615
+CP+AE (global) FINAL AUC=0.626
+CP+AE (global) threshold=1.312159 | accuracy=0.625
+Accuracy 0.625 AUC 0.62625
+Factor: 1 Bottleneck: 16 Rank: 275
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.620
+CP+AE (global) FINAL AUC=0.623
+CP+AE (global) threshold=1.646567 | accuracy=0.623
+Accuracy 0.6225 AUC 0.623075
+Factor: 1 Bottleneck: 16 Rank: 280
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.620
+CP+AE (global) FINAL AUC=0.631
+CP+AE (global) threshold=1.363652 | accuracy=0.625
+Accuracy 0.625 AUC 0.63065
+Factor: 1 Bottleneck: 16 Rank: 285
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.620
+CP+AE (global) FINAL AUC=0.632
+CP+AE (global) threshold=1.248164 | accuracy=0.625
+Accuracy 0.625 AUC 0.632425
+Factor: 1 Bottleneck: 16 Rank: 290
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.620
+CP+AE (global) FINAL AUC=0.621
+CP+AE (global) threshold=1.242465 | accuracy=0.627
+Accuracy 0.6275 AUC 0.6214625
+Factor: 1 Bottleneck: 16 Rank: 295
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.625
+CP+AE (global) FINAL AUC=0.637
+CP+AE (global) threshold=1.175498 | accuracy=0.637
+Accuracy 0.6375 AUC 0.636525
+Factor: 1 Bottleneck: 16 Rank: 300
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.613
+CP+AE (global) FINAL AUC=0.614
+CP+AE (global) threshold=1.423264 | accuracy=0.623
+Accuracy 0.6225 AUC 0.61395
+Factor: 1 Bottleneck: 16 Rank: 305
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.640
+CP+AE (global) FINAL AUC=0.653
+CP+AE (global) threshold=1.124624 | accuracy=0.655
+Accuracy 0.655 AUC 0.652825
+Factor: 1 Bottleneck: 16 Rank: 310
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.627
+CP+AE (global) FINAL AUC=0.616
+CP+AE (global) threshold=1.448610 | accuracy=0.637
+Accuracy 0.6375 AUC 0.6164
+Factor: 1 Bottleneck: 16 Rank: 315
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.610
+CP+AE (global) FINAL AUC=0.593
+CP+AE (global) threshold=1.179296 | accuracy=0.620
+Accuracy 0.62 AUC 0.593475
+Factor: 1 Bottleneck: 16 Rank: 320
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.623
+CP+AE (global) FINAL AUC=0.629
+CP+AE (global) threshold=1.194239 | accuracy=0.635
+Accuracy 0.635 AUC 0.6291
+Factor: 1 Bottleneck: 16 Rank: 325
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.605
+CP+AE (global) FINAL AUC=0.592
+CP+AE (global) threshold=1.637548 | accuracy=0.610
+Accuracy 0.61 AUC 0.592
+Factor: 1 Bottleneck: 16 Rank: 330
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.610
+CP+AE (global) FINAL AUC=0.594
+CP+AE (global) threshold=1.228119 | accuracy=0.620
+Accuracy 0.62 AUC 0.5943
+Factor: 1 Bottleneck: 16 Rank: 335
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.522
+CP+AE (global) FINAL AUC=0.609
+CP+AE (global) threshold=19.485357 | accuracy=0.598
+Accuracy 0.5975 AUC 0.608975
+Factor: 1 Bottleneck: 16 Rank: 340
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.620
+CP+AE (global) FINAL AUC=0.598
+CP+AE (global) threshold=1.128777 | accuracy=0.623
+Accuracy 0.6225 AUC 0.598425
+Factor: 1 Bottleneck: 16 Rank: 345
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.618
+CP+AE (global) FINAL AUC=0.614
+CP+AE (global) threshold=1.313426 | accuracy=0.632
+Accuracy 0.6325 AUC 0.614425
+Factor: 1 Bottleneck: 16 Rank: 350
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.627
+CP+AE (global) FINAL AUC=0.625
+CP+AE (global) threshold=1.326147 | accuracy=0.642
+Accuracy 0.6425 AUC 0.624975
+Factor: 1 Bottleneck: 16 Rank: 355
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.642
+CP+AE (global) FINAL AUC=0.639
+CP+AE (global) threshold=1.385282 | accuracy=0.647
+Accuracy 0.6475 AUC 0.6395
+Factor: 1 Bottleneck: 16 Rank: 360
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.605
+CP+AE (global) FINAL AUC=0.579
+CP+AE (global) threshold=1.290610 | accuracy=0.632
+Accuracy 0.6325 AUC 0.5788
+Factor: 1 Bottleneck: 16 Rank: 365
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.635
+CP+AE (global) FINAL AUC=0.624
+CP+AE (global) threshold=1.105171 | accuracy=0.642
+Accuracy 0.6425 AUC 0.624075
+Factor: 1 Bottleneck: 16 Rank: 370
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.618
+CP+AE (global) FINAL AUC=0.611
+CP+AE (global) threshold=1.324609 | accuracy=0.625
+Accuracy 0.625 AUC 0.610775
+Factor: 1 Bottleneck: 16 Rank: 375
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.595
+CP+AE (global) FINAL AUC=0.561
+CP+AE (global) threshold=1.595154 | accuracy=0.603
+Accuracy 0.6025 AUC 0.5614
+Factor: 1 Bottleneck: 16 Rank: 380
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.625
+CP+AE (global) FINAL AUC=0.610
+CP+AE (global) threshold=1.311021 | accuracy=0.647
+Accuracy 0.6475 AUC 0.6095
+Factor: 1 Bottleneck: 32 Rank: 10
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.500
+CP+AE (global) FINAL AUC=0.608
+CP+AE (global) threshold=0.117827 | accuracy=0.625
+Accuracy 0.625 AUC 0.6082
+Factor: 1 Bottleneck: 32 Rank: 15
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.502
+CP+AE (global) FINAL AUC=0.637
+CP+AE (global) threshold=0.177896 | accuracy=0.657
+Accuracy 0.6575 AUC 0.636875
+Factor: 1 Bottleneck: 32 Rank: 20
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.500
+CP+AE (global) FINAL AUC=0.629
+CP+AE (global) threshold=0.187570 | accuracy=0.665
+Accuracy 0.665 AUC 0.628725
+Factor: 1 Bottleneck: 32 Rank: 25
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.505
+CP+AE (global) FINAL AUC=0.670
+CP+AE (global) threshold=0.258775 | accuracy=0.690
+Accuracy 0.69 AUC 0.669575
+Factor: 1 Bottleneck: 32 Rank: 30
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.502
+CP+AE (global) FINAL AUC=0.657
+CP+AE (global) threshold=0.260486 | accuracy=0.677
+Accuracy 0.6775 AUC 0.6567
+Factor: 1 Bottleneck: 32 Rank: 35
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.500
+CP+AE (global) FINAL AUC=0.659
+CP+AE (global) threshold=0.327477 | accuracy=0.657
+Accuracy 0.6575 AUC 0.658625
+Factor: 1 Bottleneck: 32 Rank: 40
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.505
+CP+AE (global) FINAL AUC=0.643
+CP+AE (global) threshold=0.257188 | accuracy=0.672
+Accuracy 0.6725 AUC 0.643275
+Factor: 1 Bottleneck: 32 Rank: 45
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.520
+CP+AE (global) FINAL AUC=0.646
+CP+AE (global) threshold=0.237439 | accuracy=0.655
+Accuracy 0.655 AUC 0.6459
+Factor: 1 Bottleneck: 32 Rank: 50
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.497
+CP+AE (global) FINAL AUC=0.666
+CP+AE (global) threshold=0.279495 | accuracy=0.667
+Accuracy 0.6675 AUC 0.6659
+Factor: 1 Bottleneck: 32 Rank: 55
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.510
+CP+AE (global) FINAL AUC=0.608
+CP+AE (global) threshold=0.233752 | accuracy=0.593
+Accuracy 0.5925 AUC 0.60785
+Factor: 1 Bottleneck: 32 Rank: 60
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.495
+CP+AE (global) FINAL AUC=0.661
+CP+AE (global) threshold=0.368913 | accuracy=0.670
+Accuracy 0.67 AUC 0.66145
+Factor: 1 Bottleneck: 32 Rank: 65
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.517
+CP+AE (global) FINAL AUC=0.682
+CP+AE (global) threshold=0.380514 | accuracy=0.670
+Accuracy 0.67 AUC 0.682375
+Factor: 1 Bottleneck: 32 Rank: 70
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.557
+CP+AE (global) FINAL AUC=0.733
+CP+AE (global) threshold=0.497859 | accuracy=0.688
+Accuracy 0.6875 AUC 0.733225
+Factor: 1 Bottleneck: 32 Rank: 75
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.497
+CP+AE (global) FINAL AUC=0.639
+CP+AE (global) threshold=0.545151 | accuracy=0.618
+Accuracy 0.6175 AUC 0.639275
+Factor: 1 Bottleneck: 32 Rank: 80
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.502
+CP+AE (global) FINAL AUC=0.685
+CP+AE (global) threshold=0.565548 | accuracy=0.652
+Accuracy 0.6525 AUC 0.68495
+Factor: 1 Bottleneck: 32 Rank: 85
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.527
+CP+AE (global) FINAL AUC=0.702
+CP+AE (global) threshold=0.507489 | accuracy=0.667
+Accuracy 0.6675 AUC 0.70215
+Factor: 1 Bottleneck: 32 Rank: 90
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.532
+CP+AE (global) FINAL AUC=0.694
+CP+AE (global) threshold=0.482127 | accuracy=0.660
+Accuracy 0.66 AUC 0.693975
+Factor: 1 Bottleneck: 32 Rank: 95
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.507
+CP+AE (global) FINAL AUC=0.650
+CP+AE (global) threshold=0.417510 | accuracy=0.630
+Accuracy 0.63 AUC 0.650275
+Factor: 1 Bottleneck: 32 Rank: 100
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.525
+CP+AE (global) FINAL AUC=0.665
+CP+AE (global) threshold=0.544361 | accuracy=0.630
+Accuracy 0.63 AUC 0.6654
+Factor: 1 Bottleneck: 32 Rank: 105
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.540
+CP+AE (global) FINAL AUC=0.717
+CP+AE (global) threshold=0.952451 | accuracy=0.662
+Accuracy 0.6625 AUC 0.717325
+Factor: 1 Bottleneck: 32 Rank: 110
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.542
+CP+AE (global) FINAL AUC=0.700
+CP+AE (global) threshold=0.952471 | accuracy=0.672
+Accuracy 0.6725 AUC 0.700275
+Factor: 1 Bottleneck: 32 Rank: 115
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.535
+CP+AE (global) FINAL AUC=0.663
+CP+AE (global) threshold=0.611947 | accuracy=0.625
+Accuracy 0.625 AUC 0.6629
+Factor: 1 Bottleneck: 32 Rank: 120
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.557
+CP+AE (global) FINAL AUC=0.701
+CP+AE (global) threshold=0.641745 | accuracy=0.667
+Accuracy 0.6675 AUC 0.701075
+Factor: 1 Bottleneck: 32 Rank: 125
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.557
+CP+AE (global) FINAL AUC=0.677
+CP+AE (global) threshold=0.697092 | accuracy=0.637
+Accuracy 0.6375 AUC 0.677175
+Factor: 1 Bottleneck: 32 Rank: 130
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.568
+CP+AE (global) FINAL AUC=0.691
+CP+AE (global) threshold=0.753922 | accuracy=0.655
+Accuracy 0.655 AUC 0.6912
+Factor: 1 Bottleneck: 32 Rank: 135
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.555
+CP+AE (global) FINAL AUC=0.704
+CP+AE (global) threshold=0.746964 | accuracy=0.662
+Accuracy 0.6625 AUC 0.703775
+Factor: 1 Bottleneck: 32 Rank: 140
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.545
+CP+AE (global) FINAL AUC=0.710
+CP+AE (global) threshold=0.717880 | accuracy=0.670
+Accuracy 0.67 AUC 0.710175
+Factor: 1 Bottleneck: 32 Rank: 145
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.568
+CP+AE (global) FINAL AUC=0.682
+CP+AE (global) threshold=0.803586 | accuracy=0.645
+Accuracy 0.645 AUC 0.68175
+Factor: 1 Bottleneck: 32 Rank: 150
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.537
+CP+AE (global) FINAL AUC=0.693
+CP+AE (global) threshold=0.624143 | accuracy=0.660
+Accuracy 0.66 AUC 0.693075
+Factor: 1 Bottleneck: 32 Rank: 155
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.557
+CP+AE (global) FINAL AUC=0.651
+CP+AE (global) threshold=0.959691 | accuracy=0.642
+Accuracy 0.6425 AUC 0.65115
+Factor: 1 Bottleneck: 32 Rank: 160
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.585
+CP+AE (global) FINAL AUC=0.675
+CP+AE (global) threshold=0.834596 | accuracy=0.632
+Accuracy 0.6325 AUC 0.675375
+Factor: 1 Bottleneck: 32 Rank: 165
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.568
+CP+AE (global) FINAL AUC=0.681
+CP+AE (global) threshold=0.864074 | accuracy=0.662
+Accuracy 0.6625 AUC 0.681475
+Factor: 1 Bottleneck: 32 Rank: 170
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.568
+CP+AE (global) FINAL AUC=0.670
+CP+AE (global) threshold=0.814012 | accuracy=0.627
+Accuracy 0.6275 AUC 0.6697
+Factor: 1 Bottleneck: 32 Rank: 175
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.610
+CP+AE (global) FINAL AUC=0.705
+CP+AE (global) threshold=0.814237 | accuracy=0.650
+Accuracy 0.65 AUC 0.7053
+Factor: 1 Bottleneck: 32 Rank: 180
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.580
+CP+AE (global) FINAL AUC=0.667
+CP+AE (global) threshold=0.743395 | accuracy=0.635
+Accuracy 0.635 AUC 0.667
+Factor: 1 Bottleneck: 32 Rank: 185
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.590
+CP+AE (global) FINAL AUC=0.680
+CP+AE (global) threshold=0.861376 | accuracy=0.647
+Accuracy 0.6475 AUC 0.679925
+Factor: 1 Bottleneck: 32 Rank: 190
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.570
+CP+AE (global) FINAL AUC=0.661
+CP+AE (global) threshold=0.757644 | accuracy=0.630
+Accuracy 0.63 AUC 0.660525
+Factor: 1 Bottleneck: 32 Rank: 195
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.588
+CP+AE (global) FINAL AUC=0.668
+CP+AE (global) threshold=0.749226 | accuracy=0.627
+Accuracy 0.6275 AUC 0.66755
+Factor: 1 Bottleneck: 32 Rank: 200
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.593
+CP+AE (global) FINAL AUC=0.654
+CP+AE (global) threshold=1.047929 | accuracy=0.623
+Accuracy 0.6225 AUC 0.653775
+Factor: 1 Bottleneck: 32 Rank: 205
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.603
+CP+AE (global) FINAL AUC=0.651
+CP+AE (global) threshold=1.486405 | accuracy=0.618
+Accuracy 0.6175 AUC 0.6509
+Factor: 1 Bottleneck: 32 Rank: 210
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.590
+CP+AE (global) FINAL AUC=0.666
+CP+AE (global) threshold=1.259336 | accuracy=0.620
+Accuracy 0.62 AUC 0.665875
+Factor: 1 Bottleneck: 32 Rank: 215
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.598
+CP+AE (global) FINAL AUC=0.669
+CP+AE (global) threshold=0.836141 | accuracy=0.625
+Accuracy 0.625 AUC 0.668525
+Factor: 1 Bottleneck: 32 Rank: 220
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.603
+CP+AE (global) FINAL AUC=0.654
+CP+AE (global) threshold=0.961294 | accuracy=0.618
+Accuracy 0.6175 AUC 0.654
+Factor: 1 Bottleneck: 32 Rank: 225
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.632
+CP+AE (global) FINAL AUC=0.667
+CP+AE (global) threshold=1.306110 | accuracy=0.645
+Accuracy 0.645 AUC 0.666875
+Factor: 1 Bottleneck: 32 Rank: 230
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.610
+CP+AE (global) FINAL AUC=0.654
+CP+AE (global) threshold=1.242184 | accuracy=0.632
+Accuracy 0.6325 AUC 0.653875
+Factor: 1 Bottleneck: 32 Rank: 235
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.623
+CP+AE (global) FINAL AUC=0.685
+CP+AE (global) threshold=1.139300 | accuracy=0.642
+Accuracy 0.6425 AUC 0.685225
+Factor: 1 Bottleneck: 32 Rank: 240
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.615
+CP+AE (global) FINAL AUC=0.663
+CP+AE (global) threshold=1.282446 | accuracy=0.640
+Accuracy 0.64 AUC 0.6635
+Factor: 1 Bottleneck: 32 Rank: 245
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.642
+CP+AE (global) FINAL AUC=0.668
+CP+AE (global) threshold=1.349224 | accuracy=0.642
+Accuracy 0.6425 AUC 0.66845
+Factor: 1 Bottleneck: 32 Rank: 250
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.630
+CP+AE (global) FINAL AUC=0.649
+CP+AE (global) threshold=1.247403 | accuracy=0.642
+Accuracy 0.6425 AUC 0.6488
+Factor: 1 Bottleneck: 32 Rank: 255
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.620
+CP+AE (global) FINAL AUC=0.634
+CP+AE (global) threshold=1.408754 | accuracy=0.625
+Accuracy 0.625 AUC 0.634275
+Factor: 1 Bottleneck: 32 Rank: 260
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.627
+CP+AE (global) FINAL AUC=0.639
+CP+AE (global) threshold=1.351835 | accuracy=0.632
+Accuracy 0.6325 AUC 0.638575
+Factor: 1 Bottleneck: 32 Rank: 265
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.610
+CP+AE (global) FINAL AUC=0.636
+CP+AE (global) threshold=1.288332 | accuracy=0.623
+Accuracy 0.6225 AUC 0.635725
+Factor: 1 Bottleneck: 32 Rank: 270
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.615
+CP+AE (global) FINAL AUC=0.633
+CP+AE (global) threshold=1.253183 | accuracy=0.623
+Accuracy 0.6225 AUC 0.6331
+Factor: 1 Bottleneck: 32 Rank: 275
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.620
+CP+AE (global) FINAL AUC=0.624
+CP+AE (global) threshold=1.361342 | accuracy=0.627
+Accuracy 0.6275 AUC 0.6238
+Factor: 1 Bottleneck: 32 Rank: 280
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.618
+CP+AE (global) FINAL AUC=0.626
+CP+AE (global) threshold=1.367784 | accuracy=0.623
+Accuracy 0.6225 AUC 0.62605
+Factor: 1 Bottleneck: 32 Rank: 285
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.625
+CP+AE (global) FINAL AUC=0.627
+CP+AE (global) threshold=1.269162 | accuracy=0.630
+Accuracy 0.63 AUC 0.62745
+Factor: 1 Bottleneck: 32 Rank: 290
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.618
+CP+AE (global) FINAL AUC=0.624
+CP+AE (global) threshold=1.362640 | accuracy=0.625
+Accuracy 0.625 AUC 0.623525
+Factor: 1 Bottleneck: 32 Rank: 295
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.618
+CP+AE (global) FINAL AUC=0.635
+CP+AE (global) threshold=1.175121 | accuracy=0.632
+Accuracy 0.6325 AUC 0.634825
+Factor: 1 Bottleneck: 32 Rank: 300
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.610
+CP+AE (global) FINAL AUC=0.611
+CP+AE (global) threshold=1.385611 | accuracy=0.615
+Accuracy 0.615 AUC 0.610975
+Factor: 1 Bottleneck: 32 Rank: 305
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.640
+CP+AE (global) FINAL AUC=0.659
+CP+AE (global) threshold=0.982140 | accuracy=0.657
+Accuracy 0.6575 AUC 0.659375
+Factor: 1 Bottleneck: 32 Rank: 310
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.623
+CP+AE (global) FINAL AUC=0.616
+CP+AE (global) threshold=1.408275 | accuracy=0.637
+Accuracy 0.6375 AUC 0.6158
+Factor: 1 Bottleneck: 32 Rank: 315
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.608
+CP+AE (global) FINAL AUC=0.597
+CP+AE (global) threshold=0.995365 | accuracy=0.618
+Accuracy 0.6175 AUC 0.597025
+Factor: 1 Bottleneck: 32 Rank: 320
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.620
+CP+AE (global) FINAL AUC=0.626
+CP+AE (global) threshold=1.071738 | accuracy=0.645
+Accuracy 0.645 AUC 0.626325
+Factor: 1 Bottleneck: 32 Rank: 325
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.588
+CP+AE (global) FINAL AUC=0.598
+CP+AE (global) threshold=1.403143 | accuracy=0.613
+Accuracy 0.6125 AUC 0.59795
+Factor: 1 Bottleneck: 32 Rank: 330
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.613
+CP+AE (global) FINAL AUC=0.598
+CP+AE (global) threshold=1.281855 | accuracy=0.625
+Accuracy 0.625 AUC 0.597925
+Factor: 1 Bottleneck: 32 Rank: 335
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.522
+CP+AE (global) FINAL AUC=0.609
+CP+AE (global) threshold=19.765131 | accuracy=0.595
+Accuracy 0.595 AUC 0.60945
+Factor: 1 Bottleneck: 32 Rank: 340
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.613
+CP+AE (global) FINAL AUC=0.597
+CP+AE (global) threshold=1.135200 | accuracy=0.623
+Accuracy 0.6225 AUC 0.597425
+Factor: 1 Bottleneck: 32 Rank: 345
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.620
+CP+AE (global) FINAL AUC=0.618
+CP+AE (global) threshold=1.282087 | accuracy=0.630
+Accuracy 0.63 AUC 0.618
+Factor: 1 Bottleneck: 32 Rank: 350
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.630
+CP+AE (global) FINAL AUC=0.623
+CP+AE (global) threshold=1.238104 | accuracy=0.645
+Accuracy 0.645 AUC 0.622925
+Factor: 1 Bottleneck: 32 Rank: 355
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.645
+CP+AE (global) FINAL AUC=0.646
+CP+AE (global) threshold=1.267736 | accuracy=0.655
+Accuracy 0.655 AUC 0.64555
+Factor: 1 Bottleneck: 32 Rank: 360
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.605
+CP+AE (global) FINAL AUC=0.577
+CP+AE (global) threshold=1.192724 | accuracy=0.637
+Accuracy 0.6375 AUC 0.57695
+Factor: 1 Bottleneck: 32 Rank: 365
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.637
+CP+AE (global) FINAL AUC=0.627
+CP+AE (global) threshold=1.096924 | accuracy=0.647
+Accuracy 0.6475 AUC 0.627475
+Factor: 1 Bottleneck: 32 Rank: 370
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.620
+CP+AE (global) FINAL AUC=0.617
+CP+AE (global) threshold=1.252385 | accuracy=0.630
+Accuracy 0.63 AUC 0.61675
+Factor: 1 Bottleneck: 32 Rank: 375
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.585
+CP+AE (global) FINAL AUC=0.566
+CP+AE (global) threshold=1.421827 | accuracy=0.608
+Accuracy 0.6075 AUC 0.566475
+Factor: 1 Bottleneck: 32 Rank: 380
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.632
+CP+AE (global) FINAL AUC=0.612
+CP+AE (global) threshold=1.270761 | accuracy=0.642
+Accuracy 0.6425 AUC 0.6117
+Factor: 1 Bottleneck: 64 Rank: 10
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.500
+CP+AE (global) FINAL AUC=0.609
+CP+AE (global) threshold=0.116689 | accuracy=0.627
+Accuracy 0.6275 AUC 0.608725
+Factor: 1 Bottleneck: 64 Rank: 15
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.502
+CP+AE (global) FINAL AUC=0.635
+CP+AE (global) threshold=0.154835 | accuracy=0.657
+Accuracy 0.6575 AUC 0.6352
+Factor: 1 Bottleneck: 64 Rank: 20
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.502
+CP+AE (global) FINAL AUC=0.628
+CP+AE (global) threshold=0.202166 | accuracy=0.662
+Accuracy 0.6625 AUC 0.627575
+Factor: 1 Bottleneck: 64 Rank: 25
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.505
+CP+AE (global) FINAL AUC=0.672
+CP+AE (global) threshold=0.280163 | accuracy=0.685
+Accuracy 0.685 AUC 0.671625
+Factor: 1 Bottleneck: 64 Rank: 30
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.502
+CP+AE (global) FINAL AUC=0.660
+CP+AE (global) threshold=0.237884 | accuracy=0.682
+Accuracy 0.6825 AUC 0.65965
+Factor: 1 Bottleneck: 64 Rank: 35
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.505
+CP+AE (global) FINAL AUC=0.660
+CP+AE (global) threshold=0.342407 | accuracy=0.655
+Accuracy 0.655 AUC 0.659575
+Factor: 1 Bottleneck: 64 Rank: 40
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.502
+CP+AE (global) FINAL AUC=0.644
+CP+AE (global) threshold=0.246397 | accuracy=0.680
+Accuracy 0.68 AUC 0.64425
+Factor: 1 Bottleneck: 64 Rank: 45
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.520
+CP+AE (global) FINAL AUC=0.649
+CP+AE (global) threshold=0.224745 | accuracy=0.657
+Accuracy 0.6575 AUC 0.648825
+Factor: 1 Bottleneck: 64 Rank: 50
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.497
+CP+AE (global) FINAL AUC=0.663
+CP+AE (global) threshold=0.300490 | accuracy=0.667
+Accuracy 0.6675 AUC 0.663475
+Factor: 1 Bottleneck: 64 Rank: 55
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.510
+CP+AE (global) FINAL AUC=0.607
+CP+AE (global) threshold=0.230936 | accuracy=0.590
+Accuracy 0.59 AUC 0.60735
+Factor: 1 Bottleneck: 64 Rank: 60
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.492
+CP+AE (global) FINAL AUC=0.660
+CP+AE (global) threshold=0.404225 | accuracy=0.670
+Accuracy 0.67 AUC 0.659775
+Factor: 1 Bottleneck: 64 Rank: 65
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.515
+CP+AE (global) FINAL AUC=0.681
+CP+AE (global) threshold=0.374220 | accuracy=0.667
+Accuracy 0.6675 AUC 0.6809
+Factor: 1 Bottleneck: 64 Rank: 70
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.555
+CP+AE (global) FINAL AUC=0.736
+CP+AE (global) threshold=0.386166 | accuracy=0.688
+Accuracy 0.6875 AUC 0.736475
+Factor: 1 Bottleneck: 64 Rank: 75
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.497
+CP+AE (global) FINAL AUC=0.645
+CP+AE (global) threshold=0.553284 | accuracy=0.625
+Accuracy 0.625 AUC 0.645225
+Factor: 1 Bottleneck: 64 Rank: 80
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.500
+CP+AE (global) FINAL AUC=0.687
+CP+AE (global) threshold=0.594030 | accuracy=0.650
+Accuracy 0.65 AUC 0.68655
+Factor: 1 Bottleneck: 64 Rank: 85
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.525
+CP+AE (global) FINAL AUC=0.699
+CP+AE (global) threshold=0.498979 | accuracy=0.662
+Accuracy 0.6625 AUC 0.699075
+Factor: 1 Bottleneck: 64 Rank: 90
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.530
+CP+AE (global) FINAL AUC=0.700
+CP+AE (global) threshold=0.469306 | accuracy=0.667
+Accuracy 0.6675 AUC 0.700125
+Factor: 1 Bottleneck: 64 Rank: 95
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.520
+CP+AE (global) FINAL AUC=0.651
+CP+AE (global) threshold=0.424836 | accuracy=0.632
+Accuracy 0.6325 AUC 0.65125
+Factor: 1 Bottleneck: 64 Rank: 100
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.530
+CP+AE (global) FINAL AUC=0.672
+CP+AE (global) threshold=0.532933 | accuracy=0.637
+Accuracy 0.6375 AUC 0.6725
+Factor: 1 Bottleneck: 64 Rank: 105
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.527
+CP+AE (global) FINAL AUC=0.720
+CP+AE (global) threshold=0.825612 | accuracy=0.667
+Accuracy 0.6675 AUC 0.720075
+Factor: 1 Bottleneck: 64 Rank: 110
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.537
+CP+AE (global) FINAL AUC=0.701
+CP+AE (global) threshold=0.958450 | accuracy=0.670
+Accuracy 0.67 AUC 0.701025
+Factor: 1 Bottleneck: 64 Rank: 115
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.530
+CP+AE (global) FINAL AUC=0.665
+CP+AE (global) threshold=0.602490 | accuracy=0.632
+Accuracy 0.6325 AUC 0.66505
+Factor: 1 Bottleneck: 64 Rank: 120
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.560
+CP+AE (global) FINAL AUC=0.705
+CP+AE (global) threshold=0.735095 | accuracy=0.665
+Accuracy 0.665 AUC 0.705225
+Factor: 1 Bottleneck: 64 Rank: 125
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.565
+CP+AE (global) FINAL AUC=0.675
+CP+AE (global) threshold=0.505460 | accuracy=0.635
+Accuracy 0.635 AUC 0.674875
+Factor: 1 Bottleneck: 64 Rank: 130
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.565
+CP+AE (global) FINAL AUC=0.687
+CP+AE (global) threshold=0.679801 | accuracy=0.660
+Accuracy 0.66 AUC 0.687275
+Factor: 1 Bottleneck: 64 Rank: 135
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.568
+CP+AE (global) FINAL AUC=0.706
+CP+AE (global) threshold=0.881681 | accuracy=0.660
+Accuracy 0.66 AUC 0.70635
+Factor: 1 Bottleneck: 64 Rank: 140
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.540
+CP+AE (global) FINAL AUC=0.710
+CP+AE (global) threshold=0.753616 | accuracy=0.667
+Accuracy 0.6675 AUC 0.70955
+Factor: 1 Bottleneck: 64 Rank: 145
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.573
+CP+AE (global) FINAL AUC=0.684
+CP+AE (global) threshold=0.891908 | accuracy=0.640
+Accuracy 0.64 AUC 0.683675
+Factor: 1 Bottleneck: 64 Rank: 150
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.537
+CP+AE (global) FINAL AUC=0.696
+CP+AE (global) threshold=0.614545 | accuracy=0.667
+Accuracy 0.6675 AUC 0.6961
+Factor: 1 Bottleneck: 64 Rank: 155
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.562
+CP+AE (global) FINAL AUC=0.648
+CP+AE (global) threshold=0.951969 | accuracy=0.627
+Accuracy 0.6275 AUC 0.648275
+Factor: 1 Bottleneck: 64 Rank: 160
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.595
+CP+AE (global) FINAL AUC=0.680
+CP+AE (global) threshold=0.795441 | accuracy=0.630
+Accuracy 0.63 AUC 0.679725
+Factor: 1 Bottleneck: 64 Rank: 165
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.578
+CP+AE (global) FINAL AUC=0.684
+CP+AE (global) threshold=0.784404 | accuracy=0.660
+Accuracy 0.66 AUC 0.68395
+Factor: 1 Bottleneck: 64 Rank: 170
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.573
+CP+AE (global) FINAL AUC=0.671
+CP+AE (global) threshold=0.775883 | accuracy=0.625
+Accuracy 0.625 AUC 0.67095
+Factor: 1 Bottleneck: 64 Rank: 175
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.613
+CP+AE (global) FINAL AUC=0.705
+CP+AE (global) threshold=0.782163 | accuracy=0.655
+Accuracy 0.655 AUC 0.705325
+Factor: 1 Bottleneck: 64 Rank: 180
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.583
+CP+AE (global) FINAL AUC=0.669
+CP+AE (global) threshold=0.717146 | accuracy=0.635
+Accuracy 0.635 AUC 0.668525
+Factor: 1 Bottleneck: 64 Rank: 185
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.595
+CP+AE (global) FINAL AUC=0.678
+CP+AE (global) threshold=0.854343 | accuracy=0.650
+Accuracy 0.65 AUC 0.678425
+Factor: 1 Bottleneck: 64 Rank: 190
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.575
+CP+AE (global) FINAL AUC=0.657
+CP+AE (global) threshold=0.959095 | accuracy=0.627
+Accuracy 0.6275 AUC 0.6574
+Factor: 1 Bottleneck: 64 Rank: 195
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.585
+CP+AE (global) FINAL AUC=0.673
+CP+AE (global) threshold=0.739837 | accuracy=0.625
+Accuracy 0.625 AUC 0.6734
+Factor: 1 Bottleneck: 64 Rank: 200
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.595
+CP+AE (global) FINAL AUC=0.657
+CP+AE (global) threshold=0.969570 | accuracy=0.630
+Accuracy 0.63 AUC 0.65655
+Factor: 1 Bottleneck: 64 Rank: 205
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.608
+CP+AE (global) FINAL AUC=0.655
+CP+AE (global) threshold=1.446473 | accuracy=0.615
+Accuracy 0.615 AUC 0.65525
+Factor: 1 Bottleneck: 64 Rank: 210
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.595
+CP+AE (global) FINAL AUC=0.670
+CP+AE (global) threshold=1.128581 | accuracy=0.623
+Accuracy 0.6225 AUC 0.669675
+Factor: 1 Bottleneck: 64 Rank: 215
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.613
+CP+AE (global) FINAL AUC=0.669
+CP+AE (global) threshold=0.804181 | accuracy=0.620
+Accuracy 0.62 AUC 0.668725
+Factor: 1 Bottleneck: 64 Rank: 220
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.603
+CP+AE (global) FINAL AUC=0.658
+CP+AE (global) threshold=0.786422 | accuracy=0.620
+Accuracy 0.62 AUC 0.6584
+Factor: 1 Bottleneck: 64 Rank: 225
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.632
+CP+AE (global) FINAL AUC=0.662
+CP+AE (global) threshold=1.298461 | accuracy=0.642
+Accuracy 0.6425 AUC 0.662375
+Factor: 1 Bottleneck: 64 Rank: 230
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.605
+CP+AE (global) FINAL AUC=0.658
+CP+AE (global) threshold=1.222118 | accuracy=0.640
+Accuracy 0.64 AUC 0.65815
+Factor: 1 Bottleneck: 64 Rank: 235
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.627
+CP+AE (global) FINAL AUC=0.678
+CP+AE (global) threshold=1.117769 | accuracy=0.645
+Accuracy 0.645 AUC 0.6779
+Factor: 1 Bottleneck: 64 Rank: 240
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.625
+CP+AE (global) FINAL AUC=0.664
+CP+AE (global) threshold=1.178456 | accuracy=0.640
+Accuracy 0.64 AUC 0.66425
+Factor: 1 Bottleneck: 64 Rank: 245
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.637
+CP+AE (global) FINAL AUC=0.661
+CP+AE (global) threshold=1.191049 | accuracy=0.642
+Accuracy 0.6425 AUC 0.661075
+Factor: 1 Bottleneck: 64 Rank: 250
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.630
+CP+AE (global) FINAL AUC=0.659
+CP+AE (global) threshold=1.154375 | accuracy=0.645
+Accuracy 0.645 AUC 0.659325
+Factor: 1 Bottleneck: 64 Rank: 255
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.620
+CP+AE (global) FINAL AUC=0.637
+CP+AE (global) threshold=1.291413 | accuracy=0.623
+Accuracy 0.6225 AUC 0.6371
+Factor: 1 Bottleneck: 64 Rank: 260
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.632
+CP+AE (global) FINAL AUC=0.640
+CP+AE (global) threshold=1.268790 | accuracy=0.635
+Accuracy 0.635 AUC 0.639525
+Factor: 1 Bottleneck: 64 Rank: 265
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.605
+CP+AE (global) FINAL AUC=0.633
+CP+AE (global) threshold=1.253664 | accuracy=0.623
+Accuracy 0.6225 AUC 0.633375
+Factor: 1 Bottleneck: 64 Rank: 270
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.615
+CP+AE (global) FINAL AUC=0.632
+CP+AE (global) threshold=1.299153 | accuracy=0.623
+Accuracy 0.6225 AUC 0.6318
+Factor: 1 Bottleneck: 64 Rank: 275
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.623
+CP+AE (global) FINAL AUC=0.629
+CP+AE (global) threshold=1.292445 | accuracy=0.632
+Accuracy 0.6325 AUC 0.62905
+Factor: 1 Bottleneck: 64 Rank: 280
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.618
+CP+AE (global) FINAL AUC=0.628
+CP+AE (global) threshold=1.382406 | accuracy=0.625
+Accuracy 0.625 AUC 0.62755
+Factor: 1 Bottleneck: 64 Rank: 285
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.625
+CP+AE (global) FINAL AUC=0.631
+CP+AE (global) threshold=1.224120 | accuracy=0.630
+Accuracy 0.63 AUC 0.630925
+Factor: 1 Bottleneck: 64 Rank: 290
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.623
+CP+AE (global) FINAL AUC=0.623
+CP+AE (global) threshold=1.220299 | accuracy=0.627
+Accuracy 0.6275 AUC 0.62275
+Factor: 1 Bottleneck: 64 Rank: 295
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.620
+CP+AE (global) FINAL AUC=0.637
+CP+AE (global) threshold=1.119799 | accuracy=0.632
+Accuracy 0.6325 AUC 0.636525
+Factor: 1 Bottleneck: 64 Rank: 300
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.620
+CP+AE (global) FINAL AUC=0.618
+CP+AE (global) threshold=1.404552 | accuracy=0.623
+Accuracy 0.6225 AUC 0.61785
+Factor: 1 Bottleneck: 64 Rank: 305
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.647
+CP+AE (global) FINAL AUC=0.656
+CP+AE (global) threshold=0.999241 | accuracy=0.655
+Accuracy 0.655 AUC 0.655975
+Factor: 1 Bottleneck: 64 Rank: 310
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.625
+CP+AE (global) FINAL AUC=0.614
+CP+AE (global) threshold=1.446409 | accuracy=0.635
+Accuracy 0.635 AUC 0.6144
+Factor: 1 Bottleneck: 64 Rank: 315
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.610
+CP+AE (global) FINAL AUC=0.592
+CP+AE (global) threshold=1.320082 | accuracy=0.618
+Accuracy 0.6175 AUC 0.59215
+Factor: 1 Bottleneck: 64 Rank: 320
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.627
+CP+AE (global) FINAL AUC=0.624
+CP+AE (global) threshold=1.068362 | accuracy=0.637
+Accuracy 0.6375 AUC 0.623825
+Factor: 1 Bottleneck: 64 Rank: 325
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.605
+CP+AE (global) FINAL AUC=0.593
+CP+AE (global) threshold=1.521748 | accuracy=0.613
+Accuracy 0.6125 AUC 0.5934
+Factor: 1 Bottleneck: 64 Rank: 330
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.615
+CP+AE (global) FINAL AUC=0.597
+CP+AE (global) threshold=1.284742 | accuracy=0.623
+Accuracy 0.6225 AUC 0.596925
+Factor: 1 Bottleneck: 64 Rank: 335
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.522
+CP+AE (global) FINAL AUC=0.609
+CP+AE (global) threshold=19.380360 | accuracy=0.598
+Accuracy 0.5975 AUC 0.609225
+Factor: 1 Bottleneck: 64 Rank: 340
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.615
+CP+AE (global) FINAL AUC=0.597
+CP+AE (global) threshold=1.135985 | accuracy=0.623
+Accuracy 0.6225 AUC 0.59715
+Factor: 1 Bottleneck: 64 Rank: 345
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.615
+CP+AE (global) FINAL AUC=0.618
+CP+AE (global) threshold=1.284933 | accuracy=0.630
+Accuracy 0.63 AUC 0.617875
+Factor: 1 Bottleneck: 64 Rank: 350
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.632
+CP+AE (global) FINAL AUC=0.630
+CP+AE (global) threshold=1.248386 | accuracy=0.645
+Accuracy 0.645 AUC 0.6299
+Factor: 1 Bottleneck: 64 Rank: 355
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.650
+CP+AE (global) FINAL AUC=0.643
+CP+AE (global) threshold=1.369616 | accuracy=0.650
+Accuracy 0.65 AUC 0.642875
+Factor: 1 Bottleneck: 64 Rank: 360
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.613
+CP+AE (global) FINAL AUC=0.578
+CP+AE (global) threshold=1.200476 | accuracy=0.632
+Accuracy 0.6325 AUC 0.578375
+Factor: 1 Bottleneck: 64 Rank: 365
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.632
+CP+AE (global) FINAL AUC=0.626
+CP+AE (global) threshold=1.026567 | accuracy=0.642
+Accuracy 0.6425 AUC 0.625775
+Factor: 1 Bottleneck: 64 Rank: 370
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.625
+CP+AE (global) FINAL AUC=0.616
+CP+AE (global) threshold=1.194063 | accuracy=0.632
+Accuracy 0.6325 AUC 0.6156
+Factor: 1 Bottleneck: 64 Rank: 375
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.588
+CP+AE (global) FINAL AUC=0.566
+CP+AE (global) threshold=1.427128 | accuracy=0.603
+Accuracy 0.6025 AUC 0.56625
+Factor: 1 Bottleneck: 64 Rank: 380
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.640
+CP+AE (global) FINAL AUC=0.611
+CP+AE (global) threshold=1.282288 | accuracy=0.645
+Accuracy 0.645 AUC 0.61125
+Factor: 2 Bottleneck: 16 Rank: 10
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.500
+CP+AE (global) FINAL AUC=0.607
+CP+AE (global) threshold=0.105715 | accuracy=0.625
+Accuracy 0.625 AUC 0.60685
+Factor: 2 Bottleneck: 16 Rank: 15
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.502
+CP+AE (global) FINAL AUC=0.636
+CP+AE (global) threshold=0.147320 | accuracy=0.665
+Accuracy 0.665 AUC 0.636325
+Factor: 2 Bottleneck: 16 Rank: 20
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.502
+CP+AE (global) FINAL AUC=0.630
+CP+AE (global) threshold=0.194294 | accuracy=0.667
+Accuracy 0.6675 AUC 0.6298
+Factor: 2 Bottleneck: 16 Rank: 25
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.505
+CP+AE (global) FINAL AUC=0.672
+CP+AE (global) threshold=0.195981 | accuracy=0.693
+Accuracy 0.6925 AUC 0.67155
+Factor: 2 Bottleneck: 16 Rank: 30
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.502
+CP+AE (global) FINAL AUC=0.657
+CP+AE (global) threshold=0.254785 | accuracy=0.675
+Accuracy 0.675 AUC 0.656575
+Factor: 2 Bottleneck: 16 Rank: 35
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.500
+CP+AE (global) FINAL AUC=0.657
+CP+AE (global) threshold=0.293995 | accuracy=0.657
+Accuracy 0.6575 AUC 0.65655
+Factor: 2 Bottleneck: 16 Rank: 40
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.505
+CP+AE (global) FINAL AUC=0.642
+CP+AE (global) threshold=0.250033 | accuracy=0.672
+Accuracy 0.6725 AUC 0.64205
+Factor: 2 Bottleneck: 16 Rank: 45
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.520
+CP+AE (global) FINAL AUC=0.647
+CP+AE (global) threshold=0.234638 | accuracy=0.655
+Accuracy 0.655 AUC 0.64665
+Factor: 2 Bottleneck: 16 Rank: 50
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.497
+CP+AE (global) FINAL AUC=0.662
+CP+AE (global) threshold=0.314365 | accuracy=0.665
+Accuracy 0.665 AUC 0.662025
+Factor: 2 Bottleneck: 16 Rank: 55
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.510
+CP+AE (global) FINAL AUC=0.610
+CP+AE (global) threshold=0.238678 | accuracy=0.598
+Accuracy 0.5975 AUC 0.60995
+Factor: 2 Bottleneck: 16 Rank: 60
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.495
+CP+AE (global) FINAL AUC=0.659
+CP+AE (global) threshold=0.428713 | accuracy=0.675
+Accuracy 0.675 AUC 0.6591
+Factor: 2 Bottleneck: 16 Rank: 65
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.520
+CP+AE (global) FINAL AUC=0.689
+CP+AE (global) threshold=0.320275 | accuracy=0.672
+Accuracy 0.6725 AUC 0.6885
+Factor: 2 Bottleneck: 16 Rank: 70
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.550
+CP+AE (global) FINAL AUC=0.735
+CP+AE (global) threshold=0.552112 | accuracy=0.685
+Accuracy 0.685 AUC 0.7345
+Factor: 2 Bottleneck: 16 Rank: 75
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.497
+CP+AE (global) FINAL AUC=0.653
+CP+AE (global) threshold=0.529784 | accuracy=0.632
+Accuracy 0.6325 AUC 0.652525
+Factor: 2 Bottleneck: 16 Rank: 80
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.507
+CP+AE (global) FINAL AUC=0.683
+CP+AE (global) threshold=0.612392 | accuracy=0.650
+Accuracy 0.65 AUC 0.683
+Factor: 2 Bottleneck: 16 Rank: 85
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.527
+CP+AE (global) FINAL AUC=0.706
+CP+AE (global) threshold=0.479448 | accuracy=0.667
+Accuracy 0.6675 AUC 0.705725
+Factor: 2 Bottleneck: 16 Rank: 90
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.532
+CP+AE (global) FINAL AUC=0.698
+CP+AE (global) threshold=0.500021 | accuracy=0.665
+Accuracy 0.665 AUC 0.697725
+Factor: 2 Bottleneck: 16 Rank: 95
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.512
+CP+AE (global) FINAL AUC=0.648
+CP+AE (global) threshold=0.416148 | accuracy=0.625
+Accuracy 0.625 AUC 0.6478
+Factor: 2 Bottleneck: 16 Rank: 100
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.532
+CP+AE (global) FINAL AUC=0.671
+CP+AE (global) threshold=0.501212 | accuracy=0.635
+Accuracy 0.635 AUC 0.671125
+Factor: 2 Bottleneck: 16 Rank: 105
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.542
+CP+AE (global) FINAL AUC=0.719
+CP+AE (global) threshold=0.624318 | accuracy=0.667
+Accuracy 0.6675 AUC 0.7186
+Factor: 2 Bottleneck: 16 Rank: 110
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.545
+CP+AE (global) FINAL AUC=0.704
+CP+AE (global) threshold=0.974764 | accuracy=0.675
+Accuracy 0.675 AUC 0.70435
+Factor: 2 Bottleneck: 16 Rank: 115
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.535
+CP+AE (global) FINAL AUC=0.664
+CP+AE (global) threshold=0.601217 | accuracy=0.625
+Accuracy 0.625 AUC 0.66365
+Factor: 2 Bottleneck: 16 Rank: 120
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.557
+CP+AE (global) FINAL AUC=0.702
+CP+AE (global) threshold=0.777029 | accuracy=0.662
+Accuracy 0.6625 AUC 0.701825
+Factor: 2 Bottleneck: 16 Rank: 125
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.562
+CP+AE (global) FINAL AUC=0.679
+CP+AE (global) threshold=0.694739 | accuracy=0.637
+Accuracy 0.6375 AUC 0.67885
+Factor: 2 Bottleneck: 16 Rank: 130
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.562
+CP+AE (global) FINAL AUC=0.687
+CP+AE (global) threshold=0.750771 | accuracy=0.655
+Accuracy 0.655 AUC 0.686625
+Factor: 2 Bottleneck: 16 Rank: 135
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.573
+CP+AE (global) FINAL AUC=0.708
+CP+AE (global) threshold=0.884238 | accuracy=0.665
+Accuracy 0.665 AUC 0.707775
+Factor: 2 Bottleneck: 16 Rank: 140
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.542
+CP+AE (global) FINAL AUC=0.711
+CP+AE (global) threshold=0.813025 | accuracy=0.675
+Accuracy 0.675 AUC 0.7111
+Factor: 2 Bottleneck: 16 Rank: 145
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.580
+CP+AE (global) FINAL AUC=0.681
+CP+AE (global) threshold=0.832233 | accuracy=0.647
+Accuracy 0.6475 AUC 0.68065
+Factor: 2 Bottleneck: 16 Rank: 150
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.542
+CP+AE (global) FINAL AUC=0.695
+CP+AE (global) threshold=0.603263 | accuracy=0.662
+Accuracy 0.6625 AUC 0.694925
+Factor: 2 Bottleneck: 16 Rank: 155
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.565
+CP+AE (global) FINAL AUC=0.654
+CP+AE (global) threshold=0.962529 | accuracy=0.632
+Accuracy 0.6325 AUC 0.65425
+Factor: 2 Bottleneck: 16 Rank: 160
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.588
+CP+AE (global) FINAL AUC=0.671
+CP+AE (global) threshold=0.842260 | accuracy=0.632
+Accuracy 0.6325 AUC 0.6714
+Factor: 2 Bottleneck: 16 Rank: 165
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.573
+CP+AE (global) FINAL AUC=0.688
+CP+AE (global) threshold=0.861844 | accuracy=0.662
+Accuracy 0.6625 AUC 0.688125
+Factor: 2 Bottleneck: 16 Rank: 170
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.565
+CP+AE (global) FINAL AUC=0.673
+CP+AE (global) threshold=0.839597 | accuracy=0.627
+Accuracy 0.6275 AUC 0.672725
+Factor: 2 Bottleneck: 16 Rank: 175
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.613
+CP+AE (global) FINAL AUC=0.700
+CP+AE (global) threshold=1.132779 | accuracy=0.642
+Accuracy 0.6425 AUC 0.7
+Factor: 2 Bottleneck: 16 Rank: 180
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.585
+CP+AE (global) FINAL AUC=0.669
+CP+AE (global) threshold=0.751391 | accuracy=0.632
+Accuracy 0.6325 AUC 0.668725
+Factor: 2 Bottleneck: 16 Rank: 185
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.600
+CP+AE (global) FINAL AUC=0.681
+CP+AE (global) threshold=0.901666 | accuracy=0.652
+Accuracy 0.6525 AUC 0.680725
+Factor: 2 Bottleneck: 16 Rank: 190
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.568
+CP+AE (global) FINAL AUC=0.661
+CP+AE (global) threshold=0.964852 | accuracy=0.635
+Accuracy 0.635 AUC 0.661075
+Factor: 2 Bottleneck: 16 Rank: 195
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.590
+CP+AE (global) FINAL AUC=0.668
+CP+AE (global) threshold=0.772945 | accuracy=0.625
+Accuracy 0.625 AUC 0.66835
+Factor: 2 Bottleneck: 16 Rank: 200
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.603
+CP+AE (global) FINAL AUC=0.657
+CP+AE (global) threshold=0.977926 | accuracy=0.630
+Accuracy 0.63 AUC 0.657325
+Factor: 2 Bottleneck: 16 Rank: 205
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.610
+CP+AE (global) FINAL AUC=0.648
+CP+AE (global) threshold=1.407278 | accuracy=0.618
+Accuracy 0.6175 AUC 0.64845
+Factor: 2 Bottleneck: 16 Rank: 210
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.598
+CP+AE (global) FINAL AUC=0.670
+CP+AE (global) threshold=1.164873 | accuracy=0.627
+Accuracy 0.6275 AUC 0.66955
+Factor: 2 Bottleneck: 16 Rank: 215
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.608
+CP+AE (global) FINAL AUC=0.667
+CP+AE (global) threshold=0.868633 | accuracy=0.627
+Accuracy 0.6275 AUC 0.666575
+Factor: 2 Bottleneck: 16 Rank: 220
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.603
+CP+AE (global) FINAL AUC=0.659
+CP+AE (global) threshold=0.839927 | accuracy=0.618
+Accuracy 0.6175 AUC 0.659025
+Factor: 2 Bottleneck: 16 Rank: 225
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.630
+CP+AE (global) FINAL AUC=0.664
+CP+AE (global) threshold=1.290461 | accuracy=0.650
+Accuracy 0.65 AUC 0.66425
+Factor: 2 Bottleneck: 16 Rank: 230
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.620
+CP+AE (global) FINAL AUC=0.657
+CP+AE (global) threshold=1.261391 | accuracy=0.635
+Accuracy 0.635 AUC 0.656525
+Factor: 2 Bottleneck: 16 Rank: 235
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.627
+CP+AE (global) FINAL AUC=0.678
+CP+AE (global) threshold=1.196405 | accuracy=0.640
+Accuracy 0.64 AUC 0.6777
+Factor: 2 Bottleneck: 16 Rank: 240
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.615
+CP+AE (global) FINAL AUC=0.660
+CP+AE (global) threshold=1.089555 | accuracy=0.647
+Accuracy 0.6475 AUC 0.65985
+Factor: 2 Bottleneck: 16 Rank: 245
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.637
+CP+AE (global) FINAL AUC=0.665
+CP+AE (global) threshold=1.410955 | accuracy=0.637
+Accuracy 0.6375 AUC 0.664925
+Factor: 2 Bottleneck: 16 Rank: 250
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.632
+CP+AE (global) FINAL AUC=0.653
+CP+AE (global) threshold=1.288206 | accuracy=0.642
+Accuracy 0.6425 AUC 0.6533
+Factor: 2 Bottleneck: 16 Rank: 255
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.620
+CP+AE (global) FINAL AUC=0.636
+CP+AE (global) threshold=1.179583 | accuracy=0.627
+Accuracy 0.6275 AUC 0.6357
+Factor: 2 Bottleneck: 16 Rank: 260
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.627
+CP+AE (global) FINAL AUC=0.643
+CP+AE (global) threshold=1.312444 | accuracy=0.630
+Accuracy 0.63 AUC 0.643075
+Factor: 2 Bottleneck: 16 Rank: 265
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.605
+CP+AE (global) FINAL AUC=0.637
+CP+AE (global) threshold=1.307037 | accuracy=0.627
+Accuracy 0.6275 AUC 0.63685
+Factor: 2 Bottleneck: 16 Rank: 270
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.623
+CP+AE (global) FINAL AUC=0.631
+CP+AE (global) threshold=1.327134 | accuracy=0.625
+Accuracy 0.625 AUC 0.631475
+Factor: 2 Bottleneck: 16 Rank: 275
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.625
+CP+AE (global) FINAL AUC=0.627
+CP+AE (global) threshold=1.502362 | accuracy=0.627
+Accuracy 0.6275 AUC 0.626975
+Factor: 2 Bottleneck: 16 Rank: 280
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.625
+CP+AE (global) FINAL AUC=0.630
+CP+AE (global) threshold=1.340219 | accuracy=0.625
+Accuracy 0.625 AUC 0.629525
+Factor: 2 Bottleneck: 16 Rank: 285
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.627
+CP+AE (global) FINAL AUC=0.627
+CP+AE (global) threshold=1.271883 | accuracy=0.627
+Accuracy 0.6275 AUC 0.62675
+Factor: 2 Bottleneck: 16 Rank: 290
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.618
+CP+AE (global) FINAL AUC=0.623
+CP+AE (global) threshold=1.161726 | accuracy=0.632
+Accuracy 0.6325 AUC 0.6228
+Factor: 2 Bottleneck: 16 Rank: 295
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.613
+CP+AE (global) FINAL AUC=0.633
+CP+AE (global) threshold=1.093750 | accuracy=0.625
+Accuracy 0.625 AUC 0.632825
+Factor: 2 Bottleneck: 16 Rank: 300
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.613
+CP+AE (global) FINAL AUC=0.612
+CP+AE (global) threshold=1.371516 | accuracy=0.623
+Accuracy 0.6225 AUC 0.611925
+Factor: 2 Bottleneck: 16 Rank: 305
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.645
+CP+AE (global) FINAL AUC=0.653
+CP+AE (global) threshold=1.031592 | accuracy=0.655
+Accuracy 0.655 AUC 0.65285
+Factor: 2 Bottleneck: 16 Rank: 310
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.625
+CP+AE (global) FINAL AUC=0.615
+CP+AE (global) threshold=1.273574 | accuracy=0.635
+Accuracy 0.635 AUC 0.615
+Factor: 2 Bottleneck: 16 Rank: 315
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.608
+CP+AE (global) FINAL AUC=0.596
+CP+AE (global) threshold=1.106694 | accuracy=0.620
+Accuracy 0.62 AUC 0.595975
+Factor: 2 Bottleneck: 16 Rank: 320
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.615
+CP+AE (global) FINAL AUC=0.623
+CP+AE (global) threshold=1.130640 | accuracy=0.637
+Accuracy 0.6375 AUC 0.62265
+Factor: 2 Bottleneck: 16 Rank: 325
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.600
+CP+AE (global) FINAL AUC=0.596
+CP+AE (global) threshold=1.371915 | accuracy=0.613
+Accuracy 0.6125 AUC 0.596175
+Factor: 2 Bottleneck: 16 Rank: 330
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.610
+CP+AE (global) FINAL AUC=0.598
+CP+AE (global) threshold=1.339878 | accuracy=0.625
+Accuracy 0.625 AUC 0.59805
+Factor: 2 Bottleneck: 16 Rank: 335
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.522
+CP+AE (global) FINAL AUC=0.609
+CP+AE (global) threshold=19.502043 | accuracy=0.598
+Accuracy 0.5975 AUC 0.609425
+Factor: 2 Bottleneck: 16 Rank: 340
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.608
+CP+AE (global) FINAL AUC=0.598
+CP+AE (global) threshold=1.109021 | accuracy=0.620
+Accuracy 0.62 AUC 0.5984
+Factor: 2 Bottleneck: 16 Rank: 345
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.618
+CP+AE (global) FINAL AUC=0.617
+CP+AE (global) threshold=1.296238 | accuracy=0.630
+Accuracy 0.63 AUC 0.617425
+Factor: 2 Bottleneck: 16 Rank: 350
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.630
+CP+AE (global) FINAL AUC=0.623
+CP+AE (global) threshold=1.234484 | accuracy=0.642
+Accuracy 0.6425 AUC 0.622575
+Factor: 2 Bottleneck: 16 Rank: 355
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.637
+CP+AE (global) FINAL AUC=0.644
+CP+AE (global) threshold=1.372057 | accuracy=0.652
+Accuracy 0.6525 AUC 0.643675
+Factor: 2 Bottleneck: 16 Rank: 360
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.613
+CP+AE (global) FINAL AUC=0.580
+CP+AE (global) threshold=1.207902 | accuracy=0.630
+Accuracy 0.63 AUC 0.579775
+Factor: 2 Bottleneck: 16 Rank: 365
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.632
+CP+AE (global) FINAL AUC=0.622
+CP+AE (global) threshold=1.095157 | accuracy=0.637
+Accuracy 0.6375 AUC 0.621825
+Factor: 2 Bottleneck: 16 Rank: 370
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.623
+CP+AE (global) FINAL AUC=0.614
+CP+AE (global) threshold=1.190504 | accuracy=0.632
+Accuracy 0.6325 AUC 0.6137
+Factor: 2 Bottleneck: 16 Rank: 375
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.595
+CP+AE (global) FINAL AUC=0.567
+CP+AE (global) threshold=1.437092 | accuracy=0.605
+Accuracy 0.605 AUC 0.56745
+Factor: 2 Bottleneck: 16 Rank: 380
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.625
+CP+AE (global) FINAL AUC=0.613
+CP+AE (global) threshold=1.303821 | accuracy=0.642
+Accuracy 0.6425 AUC 0.612575
+Factor: 2 Bottleneck: 32 Rank: 10
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.500
+CP+AE (global) FINAL AUC=0.607
+CP+AE (global) threshold=0.106453 | accuracy=0.623
+Accuracy 0.6225 AUC 0.6066
+Factor: 2 Bottleneck: 32 Rank: 15
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.502
+CP+AE (global) FINAL AUC=0.637
+CP+AE (global) threshold=0.172223 | accuracy=0.660
+Accuracy 0.66 AUC 0.637175
+Factor: 2 Bottleneck: 32 Rank: 20
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.502
+CP+AE (global) FINAL AUC=0.628
+CP+AE (global) threshold=0.177901 | accuracy=0.662
+Accuracy 0.6625 AUC 0.627625
+Factor: 2 Bottleneck: 32 Rank: 25
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.505
+CP+AE (global) FINAL AUC=0.674
+CP+AE (global) threshold=0.286045 | accuracy=0.690
+Accuracy 0.69 AUC 0.6741
+Factor: 2 Bottleneck: 32 Rank: 30
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.502
+CP+AE (global) FINAL AUC=0.656
+CP+AE (global) threshold=0.244990 | accuracy=0.677
+Accuracy 0.6775 AUC 0.65605
+Factor: 2 Bottleneck: 32 Rank: 35
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.500
+CP+AE (global) FINAL AUC=0.659
+CP+AE (global) threshold=0.313329 | accuracy=0.652
+Accuracy 0.6525 AUC 0.6594
+Factor: 2 Bottleneck: 32 Rank: 40
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.505
+CP+AE (global) FINAL AUC=0.643
+CP+AE (global) threshold=0.245628 | accuracy=0.680
+Accuracy 0.68 AUC 0.64335
+Factor: 2 Bottleneck: 32 Rank: 45
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.520
+CP+AE (global) FINAL AUC=0.646
+CP+AE (global) threshold=0.226822 | accuracy=0.655
+Accuracy 0.655 AUC 0.645525
+Factor: 2 Bottleneck: 32 Rank: 50
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.497
+CP+AE (global) FINAL AUC=0.659
+CP+AE (global) threshold=0.245604 | accuracy=0.670
+Accuracy 0.67 AUC 0.659375
+Factor: 2 Bottleneck: 32 Rank: 55
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.510
+CP+AE (global) FINAL AUC=0.604
+CP+AE (global) threshold=0.223263 | accuracy=0.585
+Accuracy 0.585 AUC 0.6042
+Factor: 2 Bottleneck: 32 Rank: 60
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.492
+CP+AE (global) FINAL AUC=0.660
+CP+AE (global) threshold=0.362480 | accuracy=0.670
+Accuracy 0.67 AUC 0.66005
+Factor: 2 Bottleneck: 32 Rank: 65
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.517
+CP+AE (global) FINAL AUC=0.679
+CP+AE (global) threshold=0.349504 | accuracy=0.667
+Accuracy 0.6675 AUC 0.679275
+Factor: 2 Bottleneck: 32 Rank: 70
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.552
+CP+AE (global) FINAL AUC=0.736
+CP+AE (global) threshold=0.511900 | accuracy=0.685
+Accuracy 0.685 AUC 0.7363
+Factor: 2 Bottleneck: 32 Rank: 75
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.500
+CP+AE (global) FINAL AUC=0.640
+CP+AE (global) threshold=0.534433 | accuracy=0.620
+Accuracy 0.62 AUC 0.6405
+Factor: 2 Bottleneck: 32 Rank: 80
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.502
+CP+AE (global) FINAL AUC=0.685
+CP+AE (global) threshold=0.563886 | accuracy=0.647
+Accuracy 0.6475 AUC 0.68455
+Factor: 2 Bottleneck: 32 Rank: 85
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.522
+CP+AE (global) FINAL AUC=0.699
+CP+AE (global) threshold=0.513170 | accuracy=0.665
+Accuracy 0.665 AUC 0.69915
+Factor: 2 Bottleneck: 32 Rank: 90
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.530
+CP+AE (global) FINAL AUC=0.696
+CP+AE (global) threshold=0.437836 | accuracy=0.662
+Accuracy 0.6625 AUC 0.6961
+Factor: 2 Bottleneck: 32 Rank: 95
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.517
+CP+AE (global) FINAL AUC=0.647
+CP+AE (global) threshold=0.403488 | accuracy=0.630
+Accuracy 0.63 AUC 0.647375
+Factor: 2 Bottleneck: 32 Rank: 100
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.530
+CP+AE (global) FINAL AUC=0.669
+CP+AE (global) threshold=0.535121 | accuracy=0.632
+Accuracy 0.6325 AUC 0.66865
+Factor: 2 Bottleneck: 32 Rank: 105
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.545
+CP+AE (global) FINAL AUC=0.720
+CP+AE (global) threshold=0.582210 | accuracy=0.665
+Accuracy 0.665 AUC 0.719775
+Factor: 2 Bottleneck: 32 Rank: 110
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.540
+CP+AE (global) FINAL AUC=0.702
+CP+AE (global) threshold=0.926927 | accuracy=0.672
+Accuracy 0.6725 AUC 0.701525
+Factor: 2 Bottleneck: 32 Rank: 115
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.530
+CP+AE (global) FINAL AUC=0.660
+CP+AE (global) threshold=0.575750 | accuracy=0.625
+Accuracy 0.625 AUC 0.6603
+Factor: 2 Bottleneck: 32 Rank: 120
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.555
+CP+AE (global) FINAL AUC=0.706
+CP+AE (global) threshold=0.616637 | accuracy=0.680
+Accuracy 0.68 AUC 0.706
+Factor: 2 Bottleneck: 32 Rank: 125
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.562
+CP+AE (global) FINAL AUC=0.679
+CP+AE (global) threshold=0.781954 | accuracy=0.630
+Accuracy 0.63 AUC 0.6789
+Factor: 2 Bottleneck: 32 Rank: 130
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.560
+CP+AE (global) FINAL AUC=0.689
+CP+AE (global) threshold=0.672965 | accuracy=0.660
+Accuracy 0.66 AUC 0.68865
+Factor: 2 Bottleneck: 32 Rank: 135
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
+CP+AE (global) accuracy @ VAL threshold: 0.560
+CP+AE (global) FINAL AUC=0.702
+CP+AE (global) threshold=0.843964 | accuracy=0.657
+Accuracy 0.6575 AUC 0.701525
+Factor: 2 Bottleneck: 32 Rank: 140
+[TRAIN] N=1500, NaNs=False, Infs=False
+[TRAIN] min=-4.239054, max=5.502750
+[VAL] N=200, NaNs=False, Infs=False
+[VAL] min=-4.211028, max=1.982713
+[FINAL] N=400, NaNs=False, Infs=False
+[FINAL] min=-4.042872, max=8.394652
