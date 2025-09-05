@@ -27,6 +27,7 @@ from tensorflow.keras.callbacks import EarlyStopping
 
 from sklearn.ensemble import IsolationForest
 
+
 random.seed(1)
 
 # Paths & toggles
@@ -36,10 +37,10 @@ test_typical_data = "Data/Reduced/Lean/test_typical" # typical
 test_anomaly_data = "Data/Reduced/Lean/test_novel"   # novel
 
 use_predefined_rank = False
-enable_tucker_oc_svm = True
+enable_tucker_oc_svm = False
 enable_tucker_autoencoder = False
 enable_tucker_isolation_forest = False
-enable_cp_oc_svm = False
+enable_cp_oc_svm = True
 enable_cp_autoencoder = False
 enable_cp_isolation_forest = False
 
@@ -262,7 +263,7 @@ def decompose_tensor_tucker(tensor, rank, *, mode="hosvd_fast"):
         if mode == "hosvd_fast":
             core, factors = _tl_tucker(Xb, ranks, init="svd", n_iter_max=1, tol=0)
         else:
-            core, factors = _tl_tucker(Xb, ranks, init="svd", n_iter_max=100, tol=1e-5)
+            core, factors = _tl_tucker(Xb, ranks, init="svd", n_iter_max=100, tol=1e-4)
         core_np = _to_numpy(core)
         facs_np = [_to_numpy(Fm) for Fm in factors]
         return core_np.astype(np.float32), [Fm.astype(np.float32) for Fm in facs_np]
@@ -274,35 +275,63 @@ def decompose_tensor_tucker(tensor, rank, *, mode="hosvd_fast"):
             if mode == "hosvd_fast":
                 core, factors = _tl_tucker(tensor.astype(np.float32), ranks, init="svd", n_iter_max=1, tol=0)
             else:
-                core, factors = _tl_tucker(tensor.astype(np.float32), ranks, init="svd", n_iter_max=100, tol=1e-5)
+                core, factors = _tl_tucker(tensor.astype(np.float32), ranks, init="svd", n_iter_max=100, tol=1e-4)
             return core.astype(np.float32), [Fm.astype(np.float32) for Fm in factors]
         finally:
             tl.set_backend(old)
 
 
-def decompose_tensor_parafac(tensor, rank):
+def decompose_tensor_parafac(tensor, rank, debug=False):
     try:
-        Xb = _to_backend(tensor, use_float64=True)
+        # Make sure we're in the PyTorch backend for GPU work
+        if tl.get_backend() != "pytorch":
+            tl.set_backend("pytorch")
+
+        Xb = _to_backend(tensor, use_float64=False)
+        dev = getattr(Xb, "device", None)
+        if not (dev and getattr(dev, "type", "") == "cuda"):
+            raise RuntimeError("not-cuda-device")
+
+        shape = Xb.shape
+
+        # ---- Tucker-free, device-safe init ----
+        # If rank exceeds any mode, avoid SVD (it pads and can create CPU tensors).
+        if any(d < rank for d in shape):
+            import torch
+            factors0 = [torch.randn(d, rank, device=dev, dtype=Xb.dtype)
+                        for d in shape]
+            weights0 = torch.ones(rank, device=dev, dtype=Xb.dtype)
+            init = (weights0, factors0)  # <-- proper CP init tuple
+        else:
+            init = "svd"  # safe when no padding needed
+        # ---------------------------------------
+
         weights, factors = _tl_parafac(
-            Xb, rank=rank, init="svd", n_iter_max=500, tol=1e-6,
+            Xb, rank=rank, init=init,
+            n_iter_max=100, tol=1e-4,
             normalize_factors=True, random_state=42
         )
-        facs_np = [ _to_numpy(Fm) for Fm in factors ]
+        facs_np = [_to_numpy(Fm) for Fm in factors]
         if all(np.all(np.isfinite(Fm)) for Fm in facs_np):
             return facs_np
-    except Exception:
-        pass
+
+    except Exception as e:
+        if debug:
+            print(f"[CP][GPU] exception: {type(e).__name__}: {e} → fallback")
+
+    # CPU fallback unchanged
     try:
         old = tl.get_backend()
         tl.set_backend("numpy")
         weights, factors = _tl_parafac(
             tensor.astype(np.float32), rank=rank, init="svd",
-            n_iter_max=500, tol=1e-6, normalize_factors=True, random_state=42
+            n_iter_max=100, tol=1e-4, normalize_factors=True, random_state=42
         )
         tl.set_backend(old)
         return [Fm.astype(np.float32) for Fm in factors]
     except Exception:
         raise RuntimeError("CP failed on all backends for this tile.")
+
 
 # Feature extractors
 def extract_features_tucker(core, factors):
@@ -328,13 +357,6 @@ def buildTensor(X, rank, num_sets, isTuckerDecomposition=True, ordered=False):
     - With a CUDA backend, stick to a single worker to avoid context chatter.
     - On CPU, threads are fine (BLAS threads ideally set to 1 via env).
     """
-    use_cuda = (tl.get_backend() == "pytorch")
-    try:
-        import torch
-        use_cuda = use_cuda and torch.cuda.is_available()
-    except Exception:
-        use_cuda = False
-
     # Pick worker count (let ThreadPool decide)
     max_workers = None
 
@@ -342,7 +364,9 @@ def buildTensor(X, rank, num_sets, isTuckerDecomposition=True, ordered=False):
         if isTuckerDecomposition:
             return decompose_tensor_tucker(X[i], rank, mode="hosvd_fast")
         else:
-            return decompose_tensor_parafac(X[i], rank)
+            factors = decompose_tensor_parafac(X[i], rank)
+            #print('X tile ',i, ' done')
+            return factors
 
     if ordered:
         decomposed_data = [None] * num_sets
@@ -390,6 +414,47 @@ def extractFeatures(decomposed_data, num_sets, isTuckerDecomposition=True, featu
                 range(num_sets)
             ))
         return np.array(features)
+
+
+def _cp_features_energy_sorted_spectral(decomp_list, rank):
+    """
+    Turn a list of per-tile CP decompositions into comparable features by:
+      - sorting components by spectral energy (||C[:,r]||^2),
+      - flipping sign so max(C[:,r]) >= 0,
+      - concatenating the ordered spectral columns (and energies).
+    Returns: np.ndarray shape (N, 6*rank + rank)  # spectral columns + energies
+    """
+    import numpy as np
+    feats = []
+    for dec in decomp_list:
+        # Accept either (A,B,C) or (weights, [A,B,C]); handle both
+        if isinstance(dec, (list, tuple)) and len(dec) == 2:
+            factors = dec[1]         # (A,B,C)
+        else:
+            # assume (A,B,C) directly
+            factors = dec
+        A, B, C = factors  # C: (6, R)
+        R = C.shape[1]
+
+        # energy & order
+        e = np.sum(C * C, axis=0)       # (R,)
+        order = np.argsort(-e)[:rank]   # top-R by energy
+        C_ord = C[:, order]             # (6, r')
+
+        # sign flip: make max entry in each column positive
+        signs = np.sign(np.max(np.abs(C_ord), axis=0))  # note: use peak magnitude
+        # choose sign so the *actual* max entry (not just magnitude) is positive
+        for j in range(C_ord.shape[1]):
+            col = C_ord[:, j]
+            if col[np.argmax(np.abs(col))] < 0:
+                C_ord[:, j] = -col
+
+        e_ord = e[order]
+        feat = np.concatenate([C_ord.T.reshape(-1), e_ord], axis=0)
+        feats.append(feat)
+
+    return np.asarray(feats, dtype=np.float32)
+
 
 # Evaluation helpers
 def manual_auc(y_true, scores, positive_label=-1):
@@ -914,6 +979,157 @@ def parafac_OC_SVM(rank, data_bundle,
     print("Elapsed:", round(time.time() - start_time, 2), "s")
     return acc_opt, auc_fin
 
+def parafac_OC_SVM_per_tile(
+        rank,
+        data_bundle,
+        displayConfusionMatrix=False,
+        use_pca_whiten=True,
+        random_state=42):
+    """
+    CP (per-tile) + OC-SVM with VAL-driven hyperparameter search.
+
+    Flow:
+      1) Decompose each TRAIN/VAL/FINAL tile independently with CP(rank)
+         via buildTensor(..., isTuckerDecomposition=False).
+      2) extractFeatures(..., isTuckerDecomposition=False) to build feature vectors.
+      3) Standardize on TRAIN only; optional PCA(whiten=True) (house style).
+      4) ParameterGrid over {'kernel':'rbf', 'gamma': scaled grid for dim d, 'nu': list}
+         - If VAL has both classes -> maximize AUC on VAL.
+         - Else (typical-only VAL) -> minimize FP@0, tie-break with P95 and mean.
+      5) Evaluate on FINAL: print FINAL AUC and max-accuracy threshold/accuracy.
+
+    Returns:
+      float: FINAL-set accuracy at the chosen (max-accuracy) threshold.
+    """
+    import numpy as np
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.decomposition import PCA
+    from sklearn.svm import OneClassSVM
+    from sklearn.model_selection import ParameterGrid
+    from sklearn import metrics
+
+    # ---- Load splits (and optional band standardization) ----
+    # Expects: get_splits(...) -> (X_train, X_val, X_fin, y_val, y_fin, _, _)
+    X_train, X_val, X_fin, y_val, y_fin, _, _ = get_splits(
+        data_bundle, standardize=USE_BAND_STANDARDIZE
+    )
+
+    n_tr, n_va, n_fi = X_train.shape[0], X_val.shape[0], X_fin.shape[0]
+
+    # ---- Per-tile CP decompositions ----
+    start_time = time.time()
+    decomp_tr = buildTensor(X_train, rank, n_tr, isTuckerDecomposition=False)
+    print('Train done ', time.time()-start_time)
+    decomp_va = buildTensor(X_val,   rank, n_va, isTuckerDecomposition=False)
+    decomp_fi = buildTensor(X_fin,   rank, n_fi, isTuckerDecomposition=False)
+
+    # ---- Feature extraction ----
+    #Feat_tr = extractFeatures(decomp_tr, n_tr, isTuckerDecomposition=False)
+    #Feat_va = extractFeatures(decomp_va, n_va, isTuckerDecomposition=False)
+    #Feat_fi = extractFeatures(decomp_fi, n_fi, isTuckerDecomposition=False)
+    Feat_tr = _cp_features_energy_sorted_spectral(decomp_tr, rank)
+    Feat_va = _cp_features_energy_sorted_spectral(decomp_va, rank)
+    Feat_fi = _cp_features_energy_sorted_spectral(decomp_fi, rank)
+
+    # ---- Scale on TRAIN only ----
+    scaler = StandardScaler()
+    Xtr = scaler.fit_transform(Feat_tr)
+    Xv  = scaler.transform(Feat_va)
+    Xte = scaler.transform(Feat_fi)
+
+    # ---- Optional PCA whitening (house style: after scaling) ----
+    if use_pca_whiten:
+        pca = PCA(whiten=True, svd_solver='auto', random_state=random_state)
+        Z_tr = pca.fit_transform(Xtr)
+        Z_va = pca.transform(Xv)
+        Z_te = pca.transform(Xte)
+    else:
+        Z_tr, Z_va, Z_te = Xtr, Xv, Xte
+
+    # ---- Hyperparameter search on VAL ----
+    d = Z_tr.shape[1]
+    gamma_grid = ocsvm_gamma_grid_for_dim(d)   # e.g., (1/d)*{0.1,0.3,1,3,10}
+    param_grid = {
+        "kernel": ["rbf"],
+        "gamma":  gamma_grid,
+        "nu":     [0.01, 0.02, 0.05, 0.10, 0.20],
+    }
+
+    # Decide selection mode based on VAL labels
+    use_auc_on_val = (
+        y_val is not None and
+        np.isin(-1, y_val).any() and
+        np.isin(1, y_val).any()
+    )
+
+    best_obj = None
+    best_model = None
+    best_params = None
+    best_aux = ""
+
+    for p in ParameterGrid(param_grid):
+        try:
+            model = OneClassSVM(**p).fit(Z_tr)
+            s_val = -model.decision_function(Z_va).ravel()  # larger => more anomalous
+
+            if not np.all(np.isfinite(s_val)):
+                continue
+
+            if use_auc_on_val:
+                auc = manual_auc(y_val, s_val, positive_label=-1)
+                if not np.isfinite(auc):
+                    continue
+                obj = (-auc,)                       # minimize negative AUC == maximize AUC
+                aux = f"AUC={auc:.3f}"
+            else:
+                # Typical-only VAL: minimize FP at default cutoff 0,
+                # then tie-break using P95 and mean (lower is better).
+                fp_rate = float((s_val >= 0.0).mean())
+                p95     = float(np.percentile(s_val, 95))
+                mean_s  = float(np.mean(s_val))
+                obj = (fp_rate, p95, mean_s)
+                aux = f"FP={fp_rate:.3f}, P95={p95:.4f}, mean={mean_s:.4f}"
+
+            if best_obj is None or obj < best_obj:
+                best_obj = obj
+                best_model = model
+                best_params = dict(p)
+                best_aux = aux
+
+        except Exception:
+            # Skip bad param combos rather than failing the run
+            continue
+
+    # Fallback if nothing selected
+    if best_model is None:
+        best_params = {"kernel": "rbf", "gamma": 1.0 / max(d, 1), "nu": 0.10}
+        best_model = OneClassSVM(**best_params).fit(Z_tr)
+        best_aux = "(fallback)"
+
+    sel_mode = "AUC" if use_auc_on_val else "one-class"
+    print(f"[CP+OCSVM (per-tile, VAL {sel_mode})] chose {best_params} ({best_aux})")
+
+    # ---- FINAL evaluation ----
+    s_fin = -best_model.decision_function(Z_te).ravel()
+
+    # AUC with anomaly-positive convention (-1 treated as positive)
+    auc_fin = manual_auc(y_fin, s_fin, positive_label=-1)
+    print(f"[CP+OCSVM (per-tile)] FINAL AUC={auc_fin:.3f}")
+
+    # Threshold chosen by max accuracy on FINAL (to match house prints)
+    th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, s_fin, positive_label=-1)
+    print(f"[CP+OCSVM (per-tile)] threshold={th_opt:.6f} | accuracy={acc_opt:.3f}")
+    print(f"Rank: {rank} Accuracy {acc_opt:.4f} AUC {auc_fin:.6f}")
+
+    if displayConfusionMatrix:
+        y_pred = np.where(s_fin >= th_opt, -1, 1)
+        cm = metrics.confusion_matrix(y_fin, y_pred, labels=[1, -1])
+        print("[CP+OCSVM (per-tile)] Confusion matrix (rows=true [typical, anomaly], cols=pred):")
+        print(cm)
+
+    return float(acc_opt), auc_fin
+
+
 # Optional raw-pixel OC-SVM
 def ocsvm_raw_geography(displayConfusionMatrix=False):
     # Speed toggles
@@ -1061,7 +1277,8 @@ def cp_rank_search_one_class_svm(data_bundle):
     rank_score = {}
     for rank in range(startRank, endRank, step):
         print("Rank:", rank)
-        acc, auc = parafac_OC_SVM(rank, data_bundle, use_pca_whiten=True)
+        #acc, auc = parafac_OC_SVM(rank, data_bundle, use_pca_whiten=True)
+        acc, auc = parafac_OC_SVM_per_tile(rank, data_bundle, displayConfusionMatrix=False, use_pca_whiten=True, random_state=42)
         rank_score[rank] = auc
         print("Accuracy:", acc, "AUC", auc)
     print("AUC by rank:", rank_score)

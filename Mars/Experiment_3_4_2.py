@@ -30,14 +30,14 @@ from sklearn.ensemble import IsolationForest
 random.seed(1)
 
 # Paths & toggles
-train_data        = "Data/Reduced/Lean/train"        # typical only
-validation_data   = "Data/Reduced/Lean/validation"   # typical only
-test_typical_data = "Data/Reduced/Lean/test_typical" # typical
-test_anomaly_data = "Data/Reduced/Lean/test_novel"   # novel
+train_data        = "Data/Reduced/set_2/train"        # typical only
+validation_data   = "Data/Reduced/set_2/validation"   # typical only
+test_typical_data = "Data/Reduced/set_2/test_typical" # typical
+test_anomaly_data = "Data/Reduced/set_2/test_novel"   # novel
 
-use_predefined_rank = False
-enable_tucker_oc_svm = True
-enable_tucker_autoencoder = False
+use_predefined_rank = True
+enable_tucker_oc_svm = False
+enable_tucker_autoencoder = True
 enable_tucker_isolation_forest = False
 enable_cp_oc_svm = False
 enable_cp_autoencoder = False
@@ -65,7 +65,7 @@ USE_GPU_CP = True
 
 
 # Options: "both" (core + factors), "core" (core only), "factors" (factors only)
-TUCKER_FEATURE_MODE = "both"
+TUCKER_FEATURE_MODE = "core"
 
 # --- IF + typical-only VAL controls ---
 USE_VAL_FOR_IF = True       # use VAL (typical-only) for model selection + threshold
@@ -1859,8 +1859,8 @@ if enable_tucker_autoencoder:
         print("Best Tucker rank (autoencoder):", bestRank, bestAUC)
     else:
         print("Running Tucker+autoencoder at a fixed rank")
-        rank = (5, 5, 35)
-        factor = 1
+        rank = (64, 64, 16)
+        factor = 3
         accuracy = tucker_neural_network_autoencoder(rank, factor, 16, data_bundle, True, feature_mode=TUCKER_FEATURE_MODE)
 
 if enable_cp_isolation_forest:
