@@ -31,18 +31,18 @@ from sklearn.ensemble import IsolationForest
 random.seed(1)
 
 # Paths & toggles
-train_data        = "Data/Reduced/Lean/train"        # typical only
-validation_data   = "Data/Reduced/Lean/validation"   # typical only
-test_typical_data = "Data/Reduced/Lean/test_typical" # typical
-test_anomaly_data = "Data/Reduced/Lean/test_novel"   # novel
+train_data        = "Data/Reduced/set_2/train"        # typical only
+validation_data   = "Data/Reduced/set_2/validation"   # typical only
+test_typical_data = "Data/Reduced/set_2/test_typical" # typical
+test_anomaly_data = "Data/Reduced/set_2/test_novel"   # novel
 
 use_predefined_rank = False
 enable_tucker_oc_svm = False
 enable_tucker_autoencoder = False
 enable_tucker_isolation_forest = False
-enable_cp_oc_svm = True
+enable_cp_oc_svm = False
 enable_cp_autoencoder = False
-enable_cp_isolation_forest = False
+enable_cp_isolation_forest = True
 
 no_decomposition = False  # set to False to run CP-based pipeline
 RUN_VISUALIZATION = False
@@ -61,16 +61,18 @@ VAL_FRACTION = 0.5  # only used if no separate validation dir
 
 # TensorLy backend + device toggles
 TL_BACKEND = "pytorch"   # change to "numpy" to force CPU
-DEVICE = "cpu"
+DEVICE = "cuda"
 USE_GPU_CP = True
 
 
 # Options: "both" (core + factors), "core" (core only), "factors" (factors only)
-TUCKER_FEATURE_MODE = "both"
+TUCKER_FEATURE_MODE = "core"
 
 # --- IF + typical-only VAL controls ---
 USE_VAL_FOR_IF = True       # use VAL (typical-only) for model selection + threshold
 VAL_FP_TARGET  = 0.05       # desired false-positive rate on typical VAL (e.g., 0.05 -> 95th percentile)
+
+USE_GLOBAL_CP = False
 
 def _set_tl_backend():
     """Choose TensorLy backend. If PyTorch is selected, prefer CUDA when available."""
@@ -308,7 +310,7 @@ def decompose_tensor_parafac(tensor, rank, debug=False):
 
         weights, factors = _tl_parafac(
             Xb, rank=rank, init=init,
-            n_iter_max=100, tol=1e-4,
+            n_iter_max=50, tol=1e-3,
             normalize_factors=True, random_state=42
         )
         facs_np = [_to_numpy(Fm) for Fm in factors]
@@ -325,7 +327,7 @@ def decompose_tensor_parafac(tensor, rank, debug=False):
         tl.set_backend("numpy")
         weights, factors = _tl_parafac(
             tensor.astype(np.float32), rank=rank, init="svd",
-            n_iter_max=100, tol=1e-4, normalize_factors=True, random_state=42
+            n_iter_max=50, tol=1e-3, normalize_factors=True, random_state=42
         )
         tl.set_backend(old)
         return [Fm.astype(np.float32) for Fm in factors]
@@ -1277,8 +1279,10 @@ def cp_rank_search_one_class_svm(data_bundle):
     rank_score = {}
     for rank in range(startRank, endRank, step):
         print("Rank:", rank)
-        #acc, auc = parafac_OC_SVM(rank, data_bundle, use_pca_whiten=True)
-        acc, auc = parafac_OC_SVM_per_tile(rank, data_bundle, displayConfusionMatrix=False, use_pca_whiten=True, random_state=42)
+        if USE_GLOBAL_CP:
+            acc, auc = parafac_OC_SVM(rank, data_bundle, use_pca_whiten=True)
+        else:
+            acc, auc = parafac_OC_SVM_per_tile(rank, data_bundle, displayConfusionMatrix=False, use_pca_whiten=True, random_state=42)
         rank_score[rank] = auc
         print("Accuracy:", acc, "AUC", auc)
     print("AUC by rank:", rank_score)
@@ -1505,6 +1509,121 @@ def parafac_autoencoder(rank, factor, bottleneck, data_bundle,
 
     return acc_opt, auc_fin
 
+def parafac_autoencoder_per_tile(
+        rank,
+        factor,
+        bottleneck,
+        data_bundle,
+        displayConfusionMatrix=False,
+        random_state=42,
+        use_pca_whiten=False):
+    """
+    CP (per-tile) + Autoencoder using the same params as `parafac_autoencoder`
+    and the same high-level pipeline/printing style as CP OC-SVM.
+
+    Returns
+    -------
+    (acc_opt, auc_fin)
+    """
+    import numpy as np
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.decomposition import PCA
+    from sklearn import metrics
+
+    # Keras
+    from tensorflow.keras.models import Model
+    from tensorflow.keras.layers import Input, Dense, Dropout
+    from tensorflow.keras.callbacks import EarlyStopping
+
+    # ---- Common split & (optional) band standardization ----
+    X_tr, X_va, X_te, y_va, y_te, _, _ = get_splits(
+        data_bundle, standardize=USE_BAND_STANDARDIZE
+    )
+
+    n_tr, n_va, n_te = X_tr.shape[0], X_va.shape[0], X_te.shape[0]
+
+    # ---- Per-tile CP decompositions (TRAIN/VAL/FINAL) ----
+    #    keep the per-tile path but align the downstream pipeline with CP OC-SVM
+    start_time = time.time()
+    D_tr = buildTensor(X_tr, rank, n_tr, isTuckerDecomposition=False)
+    print('Train done ', time.time()-start_time)
+    D_va = buildTensor(X_va, rank, n_va, isTuckerDecomposition=False)
+    D_te = buildTensor(X_te, rank, n_te, isTuckerDecomposition=False)
+
+    # ---- Feature extraction (CP factors → energy-sorted spectral features) ----
+    F_tr = _cp_features_energy_sorted_spectral(D_tr, rank)
+    F_va = _cp_features_energy_sorted_spectral(D_va, rank)
+    F_te = _cp_features_energy_sorted_spectral(D_te, rank)
+
+    # ---- Scale on TRAIN only (match CP OC-SVM style) ----
+    scaler = StandardScaler()
+    Z_tr = scaler.fit_transform(F_tr)
+    Z_va = scaler.transform(F_va)
+    Z_te = scaler.transform(F_te)
+
+    # ---- Optional PCA whitening (same flag/placement as in parafac_autoencoder) ----
+    if use_pca_whiten:
+        pca = PCA(whiten=True, svd_solver="auto", random_state=random_state)
+        Z_tr = pca.fit_transform(Z_tr)
+        Z_va = pca.transform(Z_va)
+        Z_te = pca.transform(Z_te)
+
+    # ---- Autoencoder (same architecture/params as parafac_autoencoder) ----
+    input_dim = Z_tr.shape[1]
+    inp = Input(shape=(input_dim,))
+    enc = Dense(128 * factor, activation="relu")(inp)
+    enc = Dropout(0.1)(enc)
+    bott = Dense(bottleneck, activation="relu")(enc)
+    dec = Dense(128 * factor, activation="relu")(bott)
+    dec = Dropout(0.1)(dec)
+    out = Dense(input_dim, activation="sigmoid")(dec)
+    autoencoder = Model(inputs=inp, outputs=out)
+    autoencoder.compile(optimizer="adam", loss="mse")
+
+    es = EarlyStopping(monitor="val_loss", patience=10, restore_best_weights=True)
+
+    # Train on TRAIN, validate on VAL (typical-only or labeled)
+    autoencoder.fit(
+        Z_tr, Z_tr,
+        epochs=10, batch_size=32,  # match AE defaults
+        validation_data=(Z_va, Z_va),
+        callbacks=[es], verbose=0
+    )
+
+    # ---- VAL threshold (95th percentile of recon err), same print as CP+AE global ----
+    recon_va = autoencoder.predict(Z_va, verbose=0)
+    err_va = np.mean(np.square(Z_va - recon_va), axis=1)
+    thr_val = float(np.percentile(err_va, 95))
+
+    # If VAL is labeled, also compute and print VAL AUC (strategy parity with OC-SVM)
+    if y_va is not None and np.isin([-1, 1], y_va).all():
+        auc_val = manual_auc(y_va, err_va, positive_label=-1)
+        print(f"[CP+AE (per-tile)] VAL AUC={auc_val:.3f}")
+
+    # ---- FINAL scoring ----
+    recon_te = autoencoder.predict(Z_te, verbose=0)
+    s_fin = np.mean(np.square(Z_te - recon_te), axis=1)  # anomaly-positive
+
+    # Accuracy using VAL threshold (informational, like CP+AE global)
+    preds_at_val_thr = np.where(s_fin > thr_val, -1, 1)
+    acc_at_val_thr = float(np.mean(preds_at_val_thr == y_te))
+    print(f"[CP+AE (per-tile)] accuracy @ VAL threshold: {acc_at_val_thr:.3f}")
+
+    # FINAL AUC + best accuracy via max-accuracy threshold on FINAL
+    auc_fin = manual_auc(y_te, s_fin, positive_label=-1)
+    print(f"[CP+AE (per-tile)] FINAL AUC={auc_fin:.3f}")
+
+    th_opt, acc_opt = _pick_threshold_max_accuracy(y_te, s_fin, positive_label=-1)
+    print(f"[CP+AE (per-tile)] threshold={th_opt:.6f} | accuracy={acc_opt:.3f}")
+
+    if displayConfusionMatrix:
+        y_pred = np.where(s_fin >= th_opt, -1, 1)
+        cm = metrics.confusion_matrix(y_te, y_pred, labels=[-1, 1])
+        metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["Anomaly", "Normal"]).plot()
+        plt.show()
+
+    return float(acc_opt), float(auc_fin)
+
 
 def autoencoder_anomaly(data_bundle, factor, bottleneck, displayConfusionMatrix=False):
     """
@@ -1613,7 +1732,10 @@ def cp_rank_search_autoencoder(data_bundle):
             for i in range(startRank, endRank, step):
                 rank = i
                 print("Factor:", factor, "Bottleneck:", bottleneck, "Rank:", i)
-                accuracy, auc = parafac_autoencoder(rank, factor, bottleneck, data_bundle)
+                if USE_GLOBAL_CP:
+                    accuracy, auc = parafac_autoencoder(rank, factor, bottleneck, data_bundle)
+                else:
+                    accuracy, auc = parafac_autoencoder_per_tile(rank, factor, bottleneck, data_bundle)
                 rank_score[(rank, factor, bottleneck)] = auc
                 print("Accuracy", accuracy, "AUC", auc)
     print("AUC by (rank, factor, bottleneck):", rank_score)
@@ -1854,6 +1976,182 @@ def parafac_isolation_forest(rank, data_bundle,
 
     return acc, auc_fin
 
+def parafac_isolation_forest_per_tile(
+        rank,
+        data_bundle,
+        displayConfusionMatrix=False,
+        use_pca_whiten=True,
+        random_state=42):
+    """
+    Pipeline:
+      - get_splits(...) [+ optional band standardization]
+      - Per-tile CP(rank) via buildTensor(..., isTuckerDecomposition=False)
+      - Features = invariant CP spectral features (energy-sorted + sign-fixed)
+      - Scale on TRAIN only, optional PCA(whiten=True)
+      - VAL-driven model selection:
+          * If VAL has labels: maximize AUC(y_val, s_val)
+          * Else (typical-only VAL): minimize P95(s_val) with mean tie-break; set VAL-quantile threshold
+          * Else: TRAIN-only GridSearchCV with _if_mean_score_scorer
+      - Report FINAL AUC; print accuracy @ VAL threshold and max-accuracy threshold on FINAL.
+
+    Returns
+    -------
+    (acc_opt, auc_fin)
+    """
+    import numpy as np
+    import warnings
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.decomposition import PCA
+    from sklearn.ensemble import IsolationForest
+    from sklearn.model_selection import ParameterGrid, GridSearchCV
+    from sklearn import metrics
+    import matplotlib.pyplot as plt
+
+    # ---- Load splits (and optional band standardization) ----
+    # Expects: get_splits(...) -> (X_train, X_val, X_fin, y_val, y_fin, _, _)
+    X_tr, X_va, X_te, y_va, y_te, _, _ = get_splits(
+        data_bundle, standardize=USE_BAND_STANDARDIZE
+    )
+    n_tr, n_va, n_te = X_tr.shape[0], X_va.shape[0], X_te.shape[0]
+
+    # ---- Per-tile CP decompositions ----
+    start_time = time.time()
+    D_tr = buildTensor(X_tr, rank, n_tr, isTuckerDecomposition=False)
+    print('Train done ', time.time() - start_time)
+    D_va = buildTensor(X_va, rank, n_va, isTuckerDecomposition=False)
+    D_te = buildTensor(X_te, rank, n_te, isTuckerDecomposition=False)
+
+    # ---- Feature extraction (use invariant CP spectral features) ----
+    # Uses helper that sorts components by spectral energy and fixes sign.
+    F_tr = _cp_features_energy_sorted_spectral(D_tr, rank)
+    F_va = _cp_features_energy_sorted_spectral(D_va, rank)
+    F_te = _cp_features_energy_sorted_spectral(D_te, rank)
+
+    # ---- Scale on TRAIN only ----
+    scaler = StandardScaler()
+    Z_tr = scaler.fit_transform(F_tr)
+    Z_va = scaler.transform(F_va)
+    Z_te = scaler.transform(F_te)
+
+    # ---- Optional PCA whitening (same placement as AE / OC-SVM) ----
+    if use_pca_whiten:
+        pca = PCA(whiten=True, svd_solver="auto", random_state=random_state)
+        Z_tr = pca.fit_transform(Z_tr)
+        Z_va = pca.transform(Z_va)
+        Z_te = pca.transform(Z_te)
+
+    # ---- IsolationForest hyperparameter grid (same as parafac_isolation_forest) ----
+    warnings.filterwarnings('ignore', category=UserWarning)
+    param_grid = {
+        'n_estimators':  [50, 100, 200],
+        'max_samples':   [0.5, 0.75, 1.0],
+        'contamination': [0.05, 0.10, 0.20],  # only affects default predict cutoff
+        'max_features':  [0.5, 0.75, 1.0],
+        'bootstrap':     [False, True],
+        'random_state':  [random_state],
+        'n_jobs':        [-1],
+    }
+
+    # ---- VAL-driven selection (mirror OC-SVM / AE strategy) ----
+    has_labeled_val = (y_va is not None) and np.isin(-1, y_va).any() and np.isin(1, y_va).any()
+    best_obj = None
+    best_if = None
+    best_params = None
+    best_aux = ""
+    thr_val = None
+
+    if has_labeled_val:
+        # Case A: Labeled VAL → maximize AUC on VAL
+        for p in ParameterGrid(param_grid):
+            try:
+                clf = IsolationForest(**p).fit(Z_tr)
+                s_val = -clf.score_samples(Z_va)    # anomaly-positive
+                if not np.all(np.isfinite(s_val)):
+                    continue
+                auc = manual_auc(y_va, s_val, positive_label=-1)
+                obj = (-float(auc),)                # minimize negative AUC
+                aux = f"AUC={auc:.3f}"
+                if (best_obj is None) or (obj < best_obj):
+                    best_obj, best_if, best_params, best_aux = obj, clf, dict(p), aux
+            except Exception:
+                continue
+    else:
+        # Case B: Typical-only VAL → minimize P95 (tie-break on mean), set VAL threshold at (1-FP_TARGET) quantile
+        if Z_va is not None and Z_va.shape[0] > 0:
+            for p in ParameterGrid(param_grid):
+                try:
+                    clf = IsolationForest(**p).fit(Z_tr)
+                    s_val = -clf.score_samples(Z_va)
+                    if not np.all(np.isfinite(s_val)):
+                        continue
+                    p95 = float(np.percentile(s_val, 95))
+                    mean = float(np.mean(s_val))
+                    obj = (p95, mean)               # lower is better
+                    aux = f"P95={p95:.4f}, mean={mean:.4f}"
+                    if (best_obj is None) or (obj < best_obj):
+                        best_obj, best_if, best_params, best_aux = obj, clf, dict(p), aux
+                        q = 100.0 * (1.0 - float(VAL_FP_TARGET))
+                        thr_val = float(np.percentile(s_val, q))
+                except Exception:
+                    continue
+
+    # Case C: TRAIN-only fallback via GridSearchCV (if no VAL-driven model was found)
+    if best_if is None:
+        grid = GridSearchCV(
+            IsolationForest(),
+            param_grid=param_grid,
+            cv=3,
+            scoring=_if_mean_score_scorer,   # helper: higher mean score_samples is better
+            verbose=0,
+            n_jobs=-1
+        )
+        grid.fit(Z_tr)
+        best_if = grid.best_estimator_
+        best_params = grid.best_params_
+        best_aux = "TRAIN-only GridSearchCV"
+        thr_val = None
+
+    sel_mode = ("VAL AUC" if has_labeled_val else
+                "VAL typical-only" if thr_val is not None else
+                "TRAIN-only")
+    print(f"[CP+IF (per-tile, {sel_mode})] chose {best_params} ({best_aux})")
+
+    # ---- Accuracy @ VAL threshold (informational, like AE/OC-SVM prints) ----
+    if thr_val is None:
+        # If we don't have a VAL threshold, estimate one for the print:
+        #   labeled VAL → max-accuracy on VAL; TRAIN-only → 95th percentile on VAL scores if available
+        try:
+            s_val_best = -best_if.score_samples(Z_va)
+            if has_labeled_val and (y_va is not None):
+                thr_val, _ = _pick_threshold_max_accuracy(y_va, s_val_best, positive_label=-1)
+            else:
+                thr_val = float(np.percentile(s_val_best, 95))
+        except Exception:
+            thr_val = None
+
+    if thr_val is not None:
+        s_te_tmp = -best_if.score_samples(Z_te)
+        preds_at_val_thr = np.where(s_te_tmp > thr_val, -1, 1)
+        acc_at_val_thr = float(np.mean(preds_at_val_thr == y_te))
+        print(f"[CP+IF (per-tile)] accuracy @ VAL threshold: {acc_at_val_thr:.3f}")
+
+    # ---- FINAL evaluation ----
+    s_fin = -best_if.score_samples(Z_te)  # anomaly-positive scores
+    auc_fin = manual_auc(y_te, s_fin, positive_label=-1)
+    print(f"[CP+IF (per-tile)] FINAL AUC={auc_fin:.3f}")
+
+    th_opt, acc_opt = _pick_threshold_max_accuracy(y_te, s_fin, positive_label=-1)
+    print(f"[CP+IF (per-tile)] threshold={th_opt:.6f} | accuracy={acc_opt:.3f}")
+    print(f"Rank: {rank} Accuracy {acc_opt:.4f} AUC {auc_fin:.6f}")
+
+    if displayConfusionMatrix:
+        y_pred = np.where(s_fin >= th_opt, -1, 1)
+        cm = metrics.confusion_matrix(y_te, y_pred, labels=[1, -1])
+        print("[CP+IF (per-tile)] Confusion matrix (rows=true [typical, anomaly], cols=pred):")
+        print(cm)
+
+    return float(acc_opt), float(auc_fin)
+
 
 def cp_rank_search_isolation_forest(data_bundle):
     print("CP rank search (Isolation Forest)")
@@ -1861,7 +2159,10 @@ def cp_rank_search_isolation_forest(data_bundle):
     rank_score = {}
     for rank in range(startRank, endRank, step):
         print("Rank:", rank)
-        acc, auc = parafac_isolation_forest(rank, data_bundle, displayConfusionMatrix=False)
+        if USE_GLOBAL_CP:
+            acc, auc = parafac_isolation_forest(rank, data_bundle, displayConfusionMatrix=False)
+        else:
+            acc, auc = parafac_isolation_forest_per_tile(rank, data_bundle, displayConfusionMatrix=False)
         rank_score[rank] = auc
         print("Accuracy", acc, "AUC", auc)
     print("AUC by rank:", rank_score)
