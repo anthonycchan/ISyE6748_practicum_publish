@@ -310,7 +310,7 @@ def decompose_tensor_parafac(tensor, rank, debug=False):
 
         weights, factors = _tl_parafac(
             Xb, rank=rank, init=init,
-            n_iter_max=50, tol=1e-3,
+            n_iter_max=150, tol=1e-6,
             normalize_factors=True, random_state=42
         )
         facs_np = [_to_numpy(Fm) for Fm in factors]
@@ -327,7 +327,7 @@ def decompose_tensor_parafac(tensor, rank, debug=False):
         tl.set_backend("numpy")
         weights, factors = _tl_parafac(
             tensor.astype(np.float32), rank=rank, init="svd",
-            n_iter_max=50, tol=1e-3, normalize_factors=True, random_state=42
+            n_iter_max=150, tol=1e-6, normalize_factors=True, random_state=42
         )
         tl.set_backend(old)
         return [Fm.astype(np.float32) for Fm in factors]
