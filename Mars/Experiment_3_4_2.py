@@ -2,30 +2,30 @@
 import os
 import time
 import random
-from sklearn.metrics import roc_curve, accuracy_score
-from concurrent.futures import ThreadPoolExecutor, as_completed
-
-# (for the Tucker OC-SVM snippet you provided)
+import torch
 import warnings
-from sklearn.model_selection import GridSearchCV
+import numpy as np
+import matplotlib.pyplot as plt
+
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # TensorLy
 import tensorly as tl
 from tensorly.decomposition import parafac as _tl_parafac, tucker as _tl_tucker
 
 # ML utils
+from sklearn import metrics
+from sklearn.metrics import roc_curve, accuracy_score
 from sklearn.svm import OneClassSVM
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
-from sklearn import metrics
-from sklearn.model_selection import ParameterGrid, StratifiedShuffleSplit
+from sklearn.model_selection import ParameterGrid, GridSearchCV, StratifiedShuffleSplit
+from sklearn.ensemble import IsolationForest
 
 # Keras (for autoencoder)
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input, Dense, Dropout
 from tensorflow.keras.callbacks import EarlyStopping
-
-from sklearn.ensemble import IsolationForest
 
 
 random.seed(1)
@@ -44,7 +44,7 @@ enable_cp_oc_svm = False
 enable_cp_autoencoder = False
 enable_cp_isolation_forest = True
 
-no_decomposition = False  # set to False to run CP-based pipeline
+no_decomposition = False  # set to False to run raw pixel models
 RUN_VISUALIZATION = False
 
 # Optional: standardize bands using TRAIN stats
@@ -64,6 +64,8 @@ TL_BACKEND = "pytorch"   # change to "numpy" to force CPU
 DEVICE = "cuda"
 USE_GPU_CP = True
 
+# Use global vs per-tile CP decomposition. True for global, False for per tile
+USE_GLOBAL_CP = False
 
 # Options: "both" (core + factors), "core" (core only), "factors" (factors only)
 TUCKER_FEATURE_MODE = "core"
@@ -72,14 +74,12 @@ TUCKER_FEATURE_MODE = "core"
 USE_VAL_FOR_IF = True       # use VAL (typical-only) for model selection + threshold
 VAL_FP_TARGET  = 0.05       # desired false-positive rate on typical VAL (e.g., 0.05 -> 95th percentile)
 
-USE_GLOBAL_CP = False
 
 def _set_tl_backend():
     """Choose TensorLy backend. If PyTorch is selected, prefer CUDA when available."""
     global DEVICE
     if TL_BACKEND.lower() == "pytorch":
         try:
-            import torch
             tl.set_backend("pytorch")
             DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
             if DEVICE == "cuda":
@@ -107,7 +107,6 @@ def _to_backend(x, use_float64=False):
         order="C",
     )
     if tl.get_backend() == "pytorch":
-        import torch
         return torch.from_numpy(arr).to(DEVICE, non_blocking=True).contiguous()
     else:
         return tl.tensor(arr)
@@ -115,7 +114,6 @@ def _to_backend(x, use_float64=False):
 def _to_numpy(x):
     """Convert backend tensor to numpy."""
     if tl.get_backend() == "pytorch":
-        import torch
         if isinstance(x, torch.Tensor):
             return x.detach().cpu().numpy()
     return tl.to_numpy(x)
@@ -299,7 +297,6 @@ def decompose_tensor_parafac(tensor, rank, debug=False):
         # ---- Tucker-free, device-safe init ----
         # If rank exceeds any mode, avoid SVD (it pads and can create CPU tensors).
         if any(d < rank for d in shape):
-            import torch
             factors0 = [torch.randn(d, rank, device=dev, dtype=Xb.dtype)
                         for d in shape]
             weights0 = torch.ones(rank, device=dev, dtype=Xb.dtype)
@@ -426,7 +423,6 @@ def _cp_features_energy_sorted_spectral(decomp_list, rank):
       - concatenating the ordered spectral columns (and energies).
     Returns: np.ndarray shape (N, 6*rank + rank)  # spectral columns + energies
     """
-    import numpy as np
     feats = []
     for dec in decomp_list:
         # Accept either (A,B,C) or (weights, [A,B,C]); handle both
@@ -501,10 +497,6 @@ def visualize_cp_scores(H, labels=None, title="CP sample coefficients (H)", use_
       - heatmap (z-scored)
       - 2D scatter using first two components or PCA(2)
     """
-    import numpy as np
-    import matplotlib.pyplot as plt
-    from sklearn.preprocessing import StandardScaler
-
     H = np.asarray(H)
     n, r = H.shape
 
@@ -521,7 +513,6 @@ def visualize_cp_scores(H, labels=None, title="CP sample coefficients (H)", use_
     # 2D view
     if r >= 2:
         if use_pca and r > 2:
-            from sklearn.decomposition import PCA
             XY = PCA(n_components=2, random_state=0).fit_transform(H_std)
             subtitle = "PCA(2) of H"
         else:
@@ -556,9 +547,6 @@ def visualize_cp_scores(H, labels=None, title="CP sample coefficients (H)", use_
         plt.ylabel("count")
         plt.tight_layout()
     plt.show()
-
-import numpy as np
-import matplotlib.pyplot as plt
 
 def cp_reconstruct_tile(A, B, C, h):
     """
@@ -611,7 +599,6 @@ def fit_global_cp_basis(X_train, rank, random_state=42, max_train_samples=None, 
       (A,B,C) as np.float32 and H_train as np.float32 (N,R).
     If subsampling is used, H_train is recomputed for the full TRAIN via projection.
     """
-    import numpy as _np
     N = X_train.shape[0]
     X_in = X_train
     if max_train_samples is not None and N > max_train_samples:
@@ -620,7 +607,6 @@ def fit_global_cp_basis(X_train, rank, random_state=42, max_train_samples=None, 
 
     # GPU branch (TensorLy+PyTorch)
     if use_gpu and tl.get_backend() == "pytorch":
-        import torch
         device = "cuda" if torch.cuda.is_available() else "cpu"
         if device == "cuda":
             torch.manual_seed(random_state)
@@ -634,17 +620,17 @@ def fit_global_cp_basis(X_train, rank, random_state=42, max_train_samples=None, 
                 H_t = H_t * weights[None, :]
 
                 # Convert basis to NumPy
-                A = A_t.detach().cpu().numpy().astype(_np.float32)
-                B = B_t.detach().cpu().numpy().astype(_np.float32)
-                C = C_t.detach().cpu().numpy().astype(_np.float32)
+                A = A_t.detach().cpu().numpy().astype(np.float32)
+                B = B_t.detach().cpu().numpy().astype(np.float32)
+                C = C_t.detach().cpu().numpy().astype(np.float32)
 
                 if X_in.shape[0] != X_train.shape[0]:
                     # Recompute H for the full training set via projection
                     H_full = project_cp_coeffs_torch(X_train, A, B, C, device="cuda")
-                    return (A, B, C), H_full.astype(_np.float32)
+                    return (A, B, C), H_full.astype(np.float32)
                 else:
-                    H_np = H_t.detach().cpu().numpy().astype(_np.float32)
-                    return (A.astype(_np.float32), B.astype(_np.float32), C.astype(_np.float32)), H_np
+                    H_np = H_t.detach().cpu().numpy().astype(np.float32)
+                    return (A.astype(np.float32), B.astype(np.float32), C.astype(np.float32)), H_np
         # fall through to CPU if no CUDA
 
     # CPU fallback (NumPy)
@@ -652,19 +638,19 @@ def fit_global_cp_basis(X_train, rank, random_state=42, max_train_samples=None, 
     try:
         tl.set_backend("numpy")
         weights, factors = _tl_parafac(
-            X_in.astype(_np.float32), rank=rank, init="random",
+            X_in.astype(np.float32), rank=rank, init="random",
             n_iter_max=500, tol=1e-6, normalize_factors=True, random_state=random_state
         )
-        H, A, B, C = [ _np.asarray(F) for F in factors ]
-        lam = _np.asarray(weights)
+        H, A, B, C = [ np.asarray(F) for F in factors ]
+        lam = np.asarray(weights)
         H = H * lam[None, :]
         if X_in.shape[0] != X_train.shape[0]:
-            A = A.astype(_np.float32); B = B.astype(_np.float32); C = C.astype(_np.float32)
+            A = A.astype(np.float32); B = B.astype(np.float32); C = C.astype(_np.float32)
             Ginv = precompute_cp_projection(A, B, C)
             H_full = project_cp_coeffs(X_train, A, B, C, Ginv=Ginv)
-            return (A, B, C), H_full.astype(_np.float32)
+            return (A, B, C), H_full.astype(np.float32)
         else:
-            return (A.astype(_np.float32), B.astype(_np.float32), C.astype(_np.float32)), H.astype(_np.float32)
+            return (A.astype(np.float32), B.astype(np.float32), C.astype(np.float32)), H.astype(np.float32)
     finally:
         tl.set_backend(old_backend)
 
@@ -709,7 +695,6 @@ def project_cp_coeffs_torch(X, A, B, C, device="cuda", batch=256, eps=1e-8):
     Torch projection of X: (N,64,64,6) onto CP basis (A,B,C).
     Returns H: (N,R) as np.float32.
     """
-    import torch
     assert X.ndim == 4 and X.shape[1:] == (64, 64, 6), "X must be (N,64,64,6)"
     A_t = torch.as_tensor(A, dtype=torch.float32, device=device)
     B_t = torch.as_tensor(B, dtype=torch.float32, device=device)
@@ -1003,13 +988,6 @@ def parafac_OC_SVM_per_tile(
     Returns:
       float: FINAL-set accuracy at the chosen (max-accuracy) threshold.
     """
-    import numpy as np
-    from sklearn.preprocessing import StandardScaler
-    from sklearn.decomposition import PCA
-    from sklearn.svm import OneClassSVM
-    from sklearn.model_selection import ParameterGrid
-    from sklearn import metrics
-
     # ---- Load splits (and optional band standardization) ----
     # Expects: get_splits(...) -> (X_train, X_val, X_fin, y_val, y_fin, _, _)
     X_train, X_val, X_fin, y_val, y_fin, _, _ = get_splits(
@@ -1143,13 +1121,6 @@ def ocsvm_raw_geography(displayConfusionMatrix=False):
     _SVM_MAX_ITER = -1
     _USE_NYSTROEM = False
     _NY_COMPONENTS = 512
-
-    import numpy as np
-    from sklearn.preprocessing import StandardScaler
-    from sklearn.svm import OneClassSVM
-    from sklearn.model_selection import ParameterGrid
-    from sklearn import metrics
-    import matplotlib.pyplot as plt
 
     if _USE_PCA:
         from sklearn.decomposition import PCA
@@ -1525,16 +1496,6 @@ def parafac_autoencoder_per_tile(
     -------
     (acc_opt, auc_fin)
     """
-    import numpy as np
-    from sklearn.preprocessing import StandardScaler
-    from sklearn.decomposition import PCA
-    from sklearn import metrics
-
-    # Keras
-    from tensorflow.keras.models import Model
-    from tensorflow.keras.layers import Input, Dense, Dropout
-    from tensorflow.keras.callbacks import EarlyStopping
-
     # ---- Common split & (optional) band standardization ----
     X_tr, X_va, X_te, y_va, y_te, _, _ = get_splits(
         data_bundle, standardize=USE_BAND_STANDARDIZE
@@ -1998,15 +1959,6 @@ def parafac_isolation_forest_per_tile(
     -------
     (acc_opt, auc_fin)
     """
-    import numpy as np
-    import warnings
-    from sklearn.preprocessing import StandardScaler
-    from sklearn.decomposition import PCA
-    from sklearn.ensemble import IsolationForest
-    from sklearn.model_selection import ParameterGrid, GridSearchCV
-    from sklearn import metrics
-    import matplotlib.pyplot as plt
-
     # ---- Load splits (and optional band standardization) ----
     # Expects: get_splits(...) -> (X_train, X_val, X_fin, y_val, y_fin, _, _)
     X_tr, X_va, X_te, y_va, y_te, _, _ = get_splits(
