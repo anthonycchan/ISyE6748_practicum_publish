@@ -37,15 +37,15 @@ test_typical_data = "Data/Reduced/set_1/test_typical" # typical
 test_anomaly_data = "Data/Reduced/set_1/test_novel"   # novel
 
 use_predefined_rank = False
-enable_tucker_oc_svm = True
+enable_tucker_oc_svm = False
 enable_tucker_autoencoder = False
 enable_tucker_isolation_forest = False
-enable_cp_oc_svm = False
+enable_cp_oc_svm = True
 enable_cp_autoencoder = False
 enable_cp_isolation_forest = False
 
 no_decomposition = False  # set to False to run raw pixel models
-RUN_VISUALIZATION = True
+RUN_VISUALIZATION = False
 
 # Optional: standardize bands using TRAIN stats
 USE_BAND_STANDARDIZE = True
@@ -65,7 +65,7 @@ DEVICE = "cuda"
 USE_GPU_CP = True
 
 # Use global vs per-tile CP decomposition. True for global, False for per tile
-USE_GLOBAL_CP = True
+USE_GLOBAL_CP = False
 
 # Options: "both" (core + factors), "core" (core only), "factors" (factors only)
 TUCKER_FEATURE_MODE = "core"
@@ -449,6 +449,170 @@ def _cp_features_energy_sorted_spectral(decomp_list, rank):
 
         e_ord = e[order]
         feat = np.concatenate([C_ord.T.reshape(-1), e_ord], axis=0)
+        feats.append(feat)
+
+    return np.asarray(feats, dtype=np.float32)
+
+def _cp_features_energy_sorted_full_simple(decomp_list, rank):
+    """
+    Like _cp_features_energy_sorted_spectral but also appends simple spatial stats
+    from A and B (per selected component): L2 norms and variances.
+    Returns: (N, 6*rank + rank + 2*rank + 2*rank) = (N, 11*rank)
+    """
+    import numpy as np
+    feats = []
+    for dec in decomp_list:
+        # Accept (weights,[A,B,C]) or (A,B,C)
+        factors = dec[1] if (isinstance(dec, (list, tuple)) and len(dec) == 2) else dec
+        A, B, C = factors  # A:(64,R) B:(64,R) C:(6,R)
+        R = C.shape[1]
+
+        # spectral energy + order (same as original)
+        e = np.sum(C * C, axis=0)          # (R,)
+        order = np.argsort(-e)[:rank]
+        C_ord = C[:, order]                # (6,rank)
+        e_ord = e[order]                   # (rank,)
+
+        # sign-align spectral columns only (spatial stats are sign-invariant)
+        for j in range(C_ord.shape[1]):
+            col = C_ord[:, j]
+            if col[np.argmax(np.abs(col))] < 0:
+                C_ord[:, j] = -col
+
+        A_ord = A[:, order]
+        B_ord = B[:, order]
+
+        # simple spatial summaries per component (sign-invariant)
+        A_l2 = np.linalg.norm(A_ord, axis=0)          # (rank,)
+        B_l2 = np.linalg.norm(B_ord, axis=0)          # (rank,)
+        A_var = np.var(A_ord, axis=0)                 # (rank,)
+        B_var = np.var(B_ord, axis=0)                 # (rank,)
+
+        # features: [C columns] + [C energy] + [A_l2, B_l2, A_var, B_var]
+        feat = np.concatenate([C_ord.T.reshape(-1), e_ord, A_l2, B_l2, A_var, B_var], axis=0)
+        feats.append(feat)
+
+    return np.asarray(feats, dtype=np.float32)
+
+def _cp_features_energy_sorted_full(decomp_list, rank):
+    """
+    Energy-sorted CP features with richer spectral + spatial stats.
+    Per component (after energy sort & sign-fix on C), we append:
+      - Spectral shape (6): L2-normalized C column
+      - log-energy (1)
+      - peak index in [0,1] (1)
+      - contrast = max-min (1)
+      - roughness: ||ΔC||_2 and ||Δ²C||_2 (2)
+      - Spatial COM & spread from A,B (mu_x, mu_y, var_x, var_y) (4)
+      - Spatial entropy (Hx, Hy), anisotropy (var_x/var_y) (3)
+      - L2 norms of A and B (2)
+    => 6 + 1 + 1 + 1 + 2 + 4 + 3 + 2 = 20 dims per component
+    Returns array of shape (N, 20*rank) as float32. If R < rank, pads zeros.
+    Accepts dec as (weights,[A,B,C]) or (A,B,C).
+    """
+    import numpy as np
+
+    def _unpack_cp(dec):
+        if isinstance(dec, (list, tuple)):
+            if len(dec) == 2 and isinstance(dec[1], (list, tuple)) and len(dec[1]) == 3:
+                A, B, C = dec[1]
+            elif len(dec) == 3:
+                A, B, C = dec
+            else:
+                raise ValueError("Unexpected CP decomposition format.")
+        else:
+            raise ValueError("Unexpected CP decomposition type.")
+        return (np.asarray(A, dtype=np.float32),
+                np.asarray(B, dtype=np.float32),
+                np.asarray(C, dtype=np.float32))
+
+    eps = 1e-12
+    feats = []
+
+    for dec in decomp_list:
+        A, B, C = _unpack_cp(dec)         # A:(I,R) B:(J,R) C:(6,R)
+        R = int(C.shape[1])
+        use = int(min(rank, R))
+
+        # ---- Energy sort on spectral factor C
+        e = np.sum(C * C, axis=0) + eps   # (R,)
+        order = np.argsort(-e)[:use]
+        A_ord = A[:, order]
+        B_ord = B[:, order]
+        C_ord = C[:, order]
+        e_ord = e[order]
+
+        # ---- Sign align C columns (stable orientation)
+        for j in range(C_ord.shape[1]):
+            col = C_ord[:, j]
+            if col[np.argmax(np.abs(col))] < 0:
+                C_ord[:, j] = -col
+
+        # ---- Spectral shape & descriptors
+        C_l2 = np.linalg.norm(C_ord, axis=0) + eps
+        C_shape = C_ord / C_l2                # (6, use), scale-free
+        d1 = np.diff(C_shape, axis=0)         # (5, use)
+        d2 = np.diff(C_shape, n=2, axis=0)    # (4, use)
+
+        peak_idx = np.argmax(C_shape, axis=0).astype(np.float32)
+        if C_shape.shape[0] > 1:
+            peak_idx = peak_idx / (C_shape.shape[0] - 1.0)  # normalize to [0,1]
+        contrast = (np.max(C_shape, axis=0) - np.min(C_shape, axis=0))
+        d1_l2 = np.sqrt(np.sum(d1 * d1, axis=0))
+        d2_l2 = np.sqrt(np.sum(d2 * d2, axis=0))
+        loge = np.log(e_ord).astype(np.float32)
+
+        # ---- Spatial morphology from A,B (sign-invariant via squares)
+        a2 = A_ord * A_ord
+        b2 = B_ord * B_ord
+        pa = a2 / (np.sum(a2, axis=0, keepdims=True) + eps)   # (I,use)
+        pb = b2 / (np.sum(b2, axis=0, keepdims=True) + eps)   # (J,use)
+
+        # coordinates in [0,1] to make moments comparable across sizes
+        Ix = np.linspace(0.0, 1.0, A_ord.shape[0], dtype=np.float32)[:, None]
+        Iy = np.linspace(0.0, 1.0, B_ord.shape[0], dtype=np.float32)[:, None]
+
+        mu_x = np.sum(Ix * pa, axis=0)                       # (use,)
+        mu_y = np.sum(Iy * pb, axis=0)
+        var_x = np.sum(((Ix - mu_x) ** 2) * pa, axis=0)
+        var_y = np.sum(((Iy - mu_y) ** 2) * pb, axis=0)
+
+        def _entropy(p):
+            return -np.sum(p * np.log(p + eps), axis=0)
+
+        Hx = _entropy(pa) / np.log(pa.shape[0] + eps)        # normalized to [0,1]
+        Hy = _entropy(pb) / np.log(pb.shape[0] + eps)
+        anis = var_x / (var_y + eps)
+
+        A_l2 = np.linalg.norm(A_ord, axis=0)
+        B_l2 = np.linalg.norm(B_ord, axis=0)
+
+        # ---- Stack per-component features in a fixed order
+        # [C_shape(6), loge, peak_idx, contrast, d1_l2, d2_l2,
+        #  mu_x, mu_y, var_x, var_y, Hx, Hy, anis, A_l2, B_l2]  => 20 per comp
+        comp = np.concatenate([
+            C_shape.T,                       # (use, 6)
+            loge[:, None],                   # (use, 1)
+            peak_idx[:, None],               # (use, 1)
+            contrast[:, None],               # (use, 1)
+            d1_l2[:, None],                  # (use, 1)
+            d2_l2[:, None],                  # (use, 1)
+            mu_x[:, None], mu_y[:, None],    # (use, 1), (use, 1)
+            var_x[:, None], var_y[:, None],  # (use, 1), (use, 1)
+            Hx[:, None], Hy[:, None],        # (use, 1), (use, 1)
+            anis[:, None],                   # (use, 1)
+            A_l2[:, None], B_l2[:, None],    # (use, 1), (use, 1)
+        ], axis=1)                           # (use, 20)
+
+        feat = comp.reshape(-1).astype(np.float32)
+
+        # Pad to keep output length = 20 * rank (helps downstream shapes)
+        if use < rank:
+            feat = np.concatenate(
+                [feat, np.zeros((20 * (rank - use),), dtype=np.float32)],
+                axis=0
+            )
+
         feats.append(feat)
 
     return np.asarray(feats, dtype=np.float32)
@@ -1348,9 +1512,9 @@ def parafac_OC_SVM_per_tile(
     #Feat_tr = extractFeatures(decomp_tr, n_tr, isTuckerDecomposition=False)
     #Feat_va = extractFeatures(decomp_va, n_va, isTuckerDecomposition=False)
     #Feat_fi = extractFeatures(decomp_fi, n_fi, isTuckerDecomposition=False)
-    Feat_tr = _cp_features_energy_sorted_spectral(decomp_tr, rank)
-    Feat_va = _cp_features_energy_sorted_spectral(decomp_va, rank)
-    Feat_fi = _cp_features_energy_sorted_spectral(decomp_fi, rank)
+    Feat_tr = _cp_features_energy_sorted_full(decomp_tr, rank)
+    Feat_va = _cp_features_energy_sorted_full(decomp_va, rank)
+    Feat_fi = _cp_features_energy_sorted_full(decomp_fi, rank)
 
     # ---- Scale on TRAIN only ----
     scaler = StandardScaler()
