@@ -31,21 +31,21 @@ from tensorflow.keras.callbacks import EarlyStopping
 random.seed(1)
 
 # Paths & toggles
-train_data        = "Data/Reduced/set_2/train"        # typical only
-validation_data   = "Data/Reduced/set_2/validation"   # typical only
-test_typical_data = "Data/Reduced/set_2/test_typical" # typical
-test_anomaly_data = "Data/Reduced/set_2/test_novel"   # novel
+train_data        = "Data/Reduced/set_1/train"        # typical only
+validation_data   = "Data/Reduced/set_1/validation"   # typical only
+test_typical_data = "Data/Reduced/set_1/test_typical" # typical
+test_anomaly_data = "Data/Reduced/set_1/test_novel"   # novel
 
 use_predefined_rank = False
-enable_tucker_oc_svm = False
+enable_tucker_oc_svm = True
 enable_tucker_autoencoder = False
 enable_tucker_isolation_forest = False
 enable_cp_oc_svm = False
 enable_cp_autoencoder = False
-enable_cp_isolation_forest = True
+enable_cp_isolation_forest = False
 
 no_decomposition = False  # set to False to run raw pixel models
-RUN_VISUALIZATION = False
+RUN_VISUALIZATION = True
 
 # Optional: standardize bands using TRAIN stats
 USE_BAND_STANDARDIZE = True
@@ -65,7 +65,7 @@ DEVICE = "cuda"
 USE_GPU_CP = True
 
 # Use global vs per-tile CP decomposition. True for global, False for per tile
-USE_GLOBAL_CP = False
+USE_GLOBAL_CP = True
 
 # Options: "both" (core + factors), "core" (core only), "factors" (factors only)
 TUCKER_FEATURE_MODE = "core"
@@ -590,6 +590,333 @@ def visualize_cp_reconstruction(A, B, C, H, X_ref=None, idx=0, bands=(0,1,2,3,4,
     plt.tight_layout()
     plt.show()
 
+def visualize_cp_row_global(
+    A, B, C, H, X_ref=None, tile_idx=0, row=32, bands=(0, 1, 2), title_prefix=""
+):
+    """
+    Line-plot a single row (y = `row`) across columns for selected bands,
+    comparing the original vs reconstruction under the global CP model.
+
+    Parameters
+    ----------
+    A,B,C : np.ndarray
+        Global CP factors with shapes A:(64,R), B:(64,R), C:(6,R).
+    H : np.ndarray
+        Per-tile coefficients, shape (N,R).
+    X_ref : np.ndarray or None
+        Reference image stack (N,64,64,6). If None, only reconstruction is shown.
+    tile_idx : int
+        Which tile to visualize.
+    row : int
+        Row index [0..63] to plot.
+    bands : tuple[int]
+        Spectral bands to show.
+    title_prefix : str
+        Adds context to the title (e.g., rank info).
+    """
+    import numpy as np
+    import matplotlib.pyplot as plt
+
+    # Guard and clamp
+    row = int(max(0, min(row, A.shape[0] - 1)))
+
+    # Reconstruct the chosen tile
+    h = np.asarray(H)[tile_idx]
+    Xhat = cp_reconstruct_tile(A, B, C, h)  # (64,64,6)
+
+    n_b = len(bands)
+    cols = Xhat.shape[1]
+    xs = np.arange(cols)
+
+    plt.figure(figsize=(4 * n_b, 3.6))
+    for i, b in enumerate(bands):
+        ax = plt.subplot(1, n_b, i + 1)
+
+        y_recon = Xhat[row, :, b]
+        if X_ref is not None:
+            y_orig = np.asarray(X_ref)[tile_idx, row, :, b]
+            ax.plot(xs, y_orig, label="orig")
+        ax.plot(xs, y_recon, linestyle="--", label="recon")
+
+        if X_ref is not None:
+            err = y_recon - y_orig
+            ax.plot(xs, err, alpha=0.5, label="residual")
+
+        ax.set_title(f"row {row}, band {b}")
+        ax.set_xlabel("column (x)")
+        ax.set_ylabel("intensity")
+        ax.grid(True, alpha=0.3)
+        ax.legend(fontsize=8)
+
+    plt.suptitle(f"{title_prefix} CP row view (tile={tile_idx})")
+    plt.tight_layout()
+    plt.show()
+
+def visualize_cp_row_image_global(
+    A, B, C, H, X_ref=None, tile_idx=0, row=32, bands=(0, 1, 2),
+    thickness=2, show_errors=True, title_prefix="", save_path=None
+):
+    """
+    Show image panels (per band) with the selected ROW highlighted:
+      - Original tile band (if X_ref provided)
+      - Reconstruction from global CP (A,B,C) and H[tile_idx]
+      - |Original - Reconstruction| heatmap (optional)
+
+    Parameters
+    ----------
+    A,B,C : np.ndarray
+        Global CP factors, shapes A:(64,R), B:(64,R), C:(6,R).
+    H : np.ndarray
+        Per-tile coefficients, shape (N,R).
+    X_ref : np.ndarray or None
+        Reference stack (N,64,64,6). If None, only reconstruction & error off.
+    tile_idx : int
+        Which tile to visualize.
+    row : int
+        Row index [0..63] to highlight.
+    bands : tuple[int]
+        Bands to display (default: (0,1,2)).
+    thickness : int
+        How many pixels thick to highlight around `row`.
+    show_errors : bool
+        If True and X_ref is provided, show absolute error panel.
+    title_prefix : str
+        Extra text for the suptitle (e.g., 'rank=20').
+    save_path : str or None
+        If provided, save the figure to this path.
+    """
+    import numpy as np
+    import matplotlib.pyplot as plt
+    import os
+
+    H = np.asarray(H)
+    row = int(np.clip(row, 0, A.shape[0]-1))
+    thickness = max(1, int(thickness))
+
+    # Reconstruct chosen tile using global CP
+    h = H[tile_idx]
+    Xhat = cp_reconstruct_tile(A, B, C, h)  # (64,64,6)
+
+    # Figure layout: per band we show 2 or 3 panels
+    n_b = len(bands)
+    n_cols = 3 if (show_errors and X_ref is not None) else 2
+    fig, axes = plt.subplots(
+        nrows=n_b, ncols=n_cols, figsize=(4.2 * n_cols, 3.8 * n_b),
+        squeeze=False
+    )
+
+    def _draw_row(ax, r, t, color="yellow", alpha=0.35):
+        # Highlight a horizontal stripe centered at row r
+        y0 = r - (t - 1) / 2.0 - 0.5
+        y1 = r + (t - 1) / 2.0 + 0.5
+        ax.axhspan(y0, y1, color=color, alpha=alpha, lw=0)
+
+    for i, b in enumerate(bands):
+        # Establish common intensity scale per band for fair comparison
+        if X_ref is not None:
+            Xo = np.asarray(X_ref)[tile_idx, :, :, b]
+            Xr = Xhat[:, :, b]
+            lo = np.percentile([Xo.min(), Xr.min()], 1)
+            hi = np.percentile([Xo.max(), Xr.max()], 99)
+        else:
+            Xo = None
+            Xr = Xhat[:, :, b]
+            lo = np.percentile(Xr, 1)
+            hi = np.percentile(Xr, 99)
+
+        col = 0
+
+        if Xo is not None:
+            ax = axes[i, col]; col += 1
+            im = ax.imshow(Xo, vmin=lo, vmax=hi, interpolation="nearest")
+            ax.set_title(f"orig (band {b})")
+            ax.axis("off")
+            _draw_row(ax, row, thickness)
+        else:
+            # If no original is available, fill the first cell with recon
+            pass
+
+        ax = axes[i, col]; col += 1
+        im = ax.imshow(Xr, vmin=lo, vmax=hi, interpolation="nearest")
+        ax.set_title(f"recon (band {b})")
+        ax.axis("off")
+        _draw_row(ax, row, thickness, color="lime")
+
+        if (show_errors and Xo is not None):
+            ax = axes[i, col]
+            err = np.abs(Xr - Xo)
+            # scale error to its own robust range for visibility
+            elo, ehi = np.percentile(err, [1, 99])
+            im = ax.imshow(err, vmin=elo, vmax=ehi, interpolation="nearest")
+            ax.set_title(f"|orig - recon| (band {b})")
+            ax.axis("off")
+            _draw_row(ax, row, thickness, color="red", alpha=0.25)
+
+    supt = f"{title_prefix} CP row highlight (tile={tile_idx}, row={row})"
+    fig.suptitle(supt)
+    fig.tight_layout(rect=[0, 0, 1, 0.98])
+
+    if save_path:
+        os.makedirs(os.path.dirname(save_path), exist_ok=True)
+        fig.savefig(save_path, dpi=160)
+    plt.show()
+
+
+def _unpack_cp_factors_from_decomp(dec):
+    """
+    Accept either (A,B,C) or (weights, [A,B,C]) and return A,B,C as np.float32.
+    """
+    if isinstance(dec, (list, tuple)):
+        if len(dec) == 2 and isinstance(dec[1], (list, tuple)) and len(dec[1]) == 3:
+            A, B, C = dec[1]
+        elif len(dec) == 3:
+            A, B, C = dec
+        else:
+            raise ValueError("Unexpected CP decomposition format.")
+    else:
+        raise ValueError("Unexpected CP decomposition type.")
+    return np.asarray(A, dtype=np.float32), np.asarray(B, dtype=np.float32), np.asarray(C, dtype=np.float32)
+
+
+def visualize_cp_reconstruction_per_tile(decomp_list, X_ref, idx=0,
+                                         bands=(0,1,2,3,4,5),
+                                         title_prefix="CP (per-tile)"):
+    """
+    Show original vs reconstruction for a single tile decomposed with *per-tile* CP.
+
+    Parameters
+    ----------
+    decomp_list : list
+        Output of buildTensor(..., isTuckerDecomposition=False) for a split.
+        Each element is either (A,B,C) or (weights,[A,B,C]).
+    X_ref : np.ndarray
+        The corresponding image stack for that split, shape (N,64,64,6).
+    idx : int
+        Tile index to visualize.
+    bands : tuple[int]
+        Bands to display (default: all 6).
+    title_prefix : str
+        Suptitle prefix.
+    """
+    import numpy as np
+    import matplotlib.pyplot as plt
+
+    # 1) Pull factors for tile idx (robust to different return formats)
+    A, B, C = _unpack_cp_factors_from_decomp(decomp_list[idx])
+
+    # 2) Compute per-tile coefficients h by LS projection onto its *own* basis
+    #    (reuse your existing Gram/projection helpers)
+    Ginv = precompute_cp_projection(A, B, C)          # (R×R)
+    g    = _g_vector_for_tile(X_ref[idx], A, B, C)    # (R,)
+    h    = (Ginv @ g).astype(np.float32)              # (R,)
+
+    # 3) Reconstruct from (A,B,C,h) and display next to original
+    Xhat = cp_reconstruct_tile(A, B, C, h)
+
+    n = len(bands)
+    plt.figure(figsize=(3*n, 6))
+    for i, b in enumerate(bands):
+        # Top row: original
+        ax = plt.subplot(2, n, i+1)
+        ax.imshow(np.asarray(X_ref)[idx, :, :, b], interpolation="nearest")
+        ax.set_title(f"orig band {b}")
+        ax.axis("off")
+
+        # Bottom row: reconstruction
+        ax = plt.subplot(2, n, n+i+1)
+        ax.imshow(Xhat[:, :, b], interpolation="nearest")
+        ax.set_title(f"recon band {b}")
+        ax.axis("off")
+
+    plt.suptitle(f"{title_prefix} reconstruction (tile idx={idx})")
+    plt.tight_layout()
+    plt.show()
+
+
+def _unpack_tucker_from_decomp(dec):
+    """
+    Accept (core, [U1,U2,U3]) or (core, (U1,U2,U3)) and return (core, U1, U2, U3) as np.float32.
+    U1:(I,r1), U2:(J,r2), U3:(K,r3)
+    """
+    if not (isinstance(dec, (list, tuple)) and len(dec) == 2):
+        raise ValueError("Unexpected Tucker decomposition format; expected (core, factors).")
+    core, factors = dec
+    if not (isinstance(factors, (list, tuple)) and len(factors) == 3):
+        raise ValueError("Unexpected Tucker factors; expected [U1, U2, U3].")
+    U1, U2, U3 = factors
+    import numpy as np
+    return (np.asarray(core, dtype=np.float32),
+            np.asarray(U1,   dtype=np.float32),
+            np.asarray(U2,   dtype=np.float32),
+            np.asarray(U3,   dtype=np.float32))
+
+
+def tucker_reconstruct_tile(core, U1, U2, U3):
+    """
+    Reconstruct a single tile from Tucker (core, U1, U2, U3).
+    Shapes: core:(r1,r2,r3), U1:(I,r1), U2:(J,r2), U3:(K,r3) -> Xhat:(I,J,K)
+    """
+    import numpy as np
+    # Xhat = core ×1 U1 ×2 U2 ×3 U3
+    return np.einsum('abc,ia,jb,kc->ijk', core, U1, U2, U3, optimize=True)
+
+
+def visualize_tucker_reconstruction_per_tile(
+    decomp_list, X_ref, idx=0, bands=(0, 1, 2),
+    title_prefix="Tucker (per-tile)", save_path=None
+):
+    """
+    Show ORIGINAL vs RECONSTRUCTION side-by-side per selected band
+    for a *per-tile* Tucker decomposition result.
+
+    Parameters
+    ----------
+    decomp_list : list[(core,[U1,U2,U3])]
+        Output of buildTensor(..., isTuckerDecomposition=True).
+    X_ref : np.ndarray
+        Stack for that split, shape (N,64,64,6).
+    idx : int
+        Tile index to visualize.
+    bands : tuple[int]
+        Bands to display.
+    title_prefix : str
+        Title prefix (e.g., 'Tucker rank=(5,5,3)').
+    save_path : str or None
+        If provided, save the figure to this path.
+    """
+    import numpy as np, matplotlib.pyplot as plt, os
+
+    core, U1, U2, U3 = _unpack_tucker_from_decomp(decomp_list[idx])
+    Xhat = tucker_reconstruct_tile(core, U1, U2, U3)
+
+    n_b = len(bands)
+    n_cols = 2  # orig | recon
+    fig, axes = plt.subplots(nrows=n_b, ncols=n_cols,
+                             figsize=(4.2 * n_cols, 3.8 * n_b), squeeze=False)
+
+    for i, b in enumerate(bands):
+        Xo = np.asarray(X_ref)[idx, :, :, b]
+        Xr = Xhat[:, :, b]
+        # robust shared scaling per band
+        lo = np.percentile([Xo.min(), Xr.min()], 1)
+        hi = np.percentile([Xo.max(), Xr.max()], 99)
+
+        ax = axes[i, 0]
+        ax.imshow(Xo, vmin=lo, vmax=hi, interpolation="nearest")
+        ax.set_title(f"orig (band {b})"); ax.axis("off")
+
+        ax = axes[i, 1]
+        ax.imshow(Xr, vmin=lo, vmax=hi, interpolation="nearest")
+        ax.set_title(f"recon (band {b})"); ax.axis("off")
+
+    fig.suptitle(f"{title_prefix} reconstruction (tile idx={idx})")
+    fig.tight_layout(rect=[0, 0, 1, 0.97])
+
+    if save_path:
+        os.makedirs(os.path.dirname(save_path), exist_ok=True)
+        fig.savefig(save_path, dpi=160)
+    plt.show()
+
 
 # Global CP basis + projection for OC-SVM
 def fit_global_cp_basis(X_train, rank, random_state=42, max_train_samples=None, use_gpu=USE_GPU_CP):
@@ -861,8 +1188,19 @@ def parafac_OC_SVM(rank, data_bundle,
     )
 
     if RUN_VISUALIZATION:
-        visualize_cp_scores(H_train, labels=None, title=f"H_train (rank={rank})")
+        #visualize_cp_scores(H_train, labels=None, title=f"H_train (rank={rank})")
         visualize_cp_reconstruction(A, B, C, H_train, X_ref=X_train, idx=0, bands=(0, 1, 2))
+        #visualize_cp_row_global(A, B, C, H_train, X_ref=X_train,
+        #                        tile_idx=0, row=32, bands=(0, 1, 2),
+        #                        title_prefix=f"rank={rank}")
+
+        #visualize_cp_row_image_global(
+        #    A, B, C, H_train,
+        #    X_ref=X_train, tile_idx=0, row=32, bands=(0, 1, 2),
+        #    thickness=3, show_errors=True,
+        #    title_prefix=f"rank={rank}",
+        #    save_path=f"viz/cp_row_rank{rank}_tile0_row32.png"
+        #)
 
     # Scale
     scaler = StandardScaler()
@@ -1003,6 +1341,9 @@ def parafac_OC_SVM_per_tile(
     decomp_va = buildTensor(X_val,   rank, n_va, isTuckerDecomposition=False)
     decomp_fi = buildTensor(X_fin,   rank, n_fi, isTuckerDecomposition=False)
 
+    if RUN_VISUALIZATION:
+        visualize_cp_reconstruction_per_tile(decomp_tr, X_train, idx=0, bands=(0,1,2),
+                                             title_prefix=f"rank={rank}")
     # ---- Feature extraction ----
     #Feat_tr = extractFeatures(decomp_tr, n_tr, isTuckerDecomposition=False)
     #Feat_va = extractFeatures(decomp_va, n_va, isTuckerDecomposition=False)
@@ -1280,6 +1621,13 @@ def tucker_one_class_svm(rank, data_bundle, displayConfusionMatrix=False,
     decomp_va = buildTensor(X_val,   rank, n_va, isTuckerDecomposition=True)
     decomp_fi = buildTensor(X_fin,   rank, n_fi, isTuckerDecomposition=True)
     print(f"Decomposition time: {time.time() - start_time:.2f} seconds | features={feature_mode}")
+
+    if RUN_VISUALIZATION:
+        visualize_tucker_reconstruction_per_tile(
+            decomp_tr, X_train, idx=750, bands=(0, 1, 2),
+            title_prefix=f"Tucker rank={tuple(rank)}",
+            save_path=f"viz/tucker_recon_rank{tuple(rank)}_tile0.png"
+        )
 
     # Feature extraction + scaling (fit on TRAIN only)
     Feat_tr = extractFeatures(decomp_tr, n_tr, isTuckerDecomposition=True, feature_mode=feature_mode)

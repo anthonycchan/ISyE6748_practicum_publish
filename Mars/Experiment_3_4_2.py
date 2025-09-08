@@ -31,10 +31,10 @@ from tensorflow.keras.callbacks import EarlyStopping
 random.seed(1)
 
 # Paths & toggles
-train_data        = "Data/Reduced/set_2/train"        # typical only
-validation_data   = "Data/Reduced/set_2/validation"   # typical only
-test_typical_data = "Data/Reduced/set_2/test_typical" # typical
-test_anomaly_data = "Data/Reduced/set_2/test_novel"   # novel
+train_data        = "Data/Reduced/set_1/train"        # typical only
+validation_data   = "Data/Reduced/set_1/validation"   # typical only
+test_typical_data = "Data/Reduced/set_1/test_typical" # typical
+test_anomaly_data = "Data/Reduced/set_1/test_novel"   # novel
 
 use_predefined_rank = False
 enable_tucker_oc_svm = False
@@ -590,6 +590,76 @@ def visualize_cp_reconstruction(A, B, C, H, X_ref=None, idx=0, bands=(0,1,2,3,4,
     plt.tight_layout()
     plt.show()
 
+def _unpack_cp_factors_from_decomp(dec):
+    """
+    Accept either (A,B,C) or (weights, [A,B,C]) and return A,B,C as np.float32.
+    """
+    if isinstance(dec, (list, tuple)):
+        if len(dec) == 2 and isinstance(dec[1], (list, tuple)) and len(dec[1]) == 3:
+            A, B, C = dec[1]
+        elif len(dec) == 3:
+            A, B, C = dec
+        else:
+            raise ValueError("Unexpected CP decomposition format.")
+    else:
+        raise ValueError("Unexpected CP decomposition type.")
+    return np.asarray(A, dtype=np.float32), np.asarray(B, dtype=np.float32), np.asarray(C, dtype=np.float32)
+
+
+def visualize_cp_reconstruction_per_tile(decomp_list, X_ref, idx=0,
+                                         bands=(0,1,2,3,4,5),
+                                         title_prefix="CP (per-tile)"):
+    """
+    Show original vs reconstruction for a single tile decomposed with *per-tile* CP.
+
+    Parameters
+    ----------
+    decomp_list : list
+        Output of buildTensor(..., isTuckerDecomposition=False) for a split.
+        Each element is either (A,B,C) or (weights,[A,B,C]).
+    X_ref : np.ndarray
+        The corresponding image stack for that split, shape (N,64,64,6).
+    idx : int
+        Tile index to visualize.
+    bands : tuple[int]
+        Bands to display (default: all 6).
+    title_prefix : str
+        Suptitle prefix.
+    """
+    import numpy as np
+    import matplotlib.pyplot as plt
+
+    # 1) Pull factors for tile idx (robust to different return formats)
+    A, B, C = _unpack_cp_factors_from_decomp(decomp_list[idx])
+
+    # 2) Compute per-tile coefficients h by LS projection onto its *own* basis
+    #    (reuse your existing Gram/projection helpers)
+    Ginv = precompute_cp_projection(A, B, C)          # (R×R)
+    g    = _g_vector_for_tile(X_ref[idx], A, B, C)    # (R,)
+    h    = (Ginv @ g).astype(np.float32)              # (R,)
+
+    # 3) Reconstruct from (A,B,C,h) and display next to original
+    Xhat = cp_reconstruct_tile(A, B, C, h)
+
+    n = len(bands)
+    plt.figure(figsize=(3*n, 6))
+    for i, b in enumerate(bands):
+        # Top row: original
+        ax = plt.subplot(2, n, i+1)
+        ax.imshow(np.asarray(X_ref)[idx, :, :, b], interpolation="nearest")
+        ax.set_title(f"orig band {b}")
+        ax.axis("off")
+
+        # Bottom row: reconstruction
+        ax = plt.subplot(2, n, n+i+1)
+        ax.imshow(Xhat[:, :, b], interpolation="nearest")
+        ax.set_title(f"recon band {b}")
+        ax.axis("off")
+
+    plt.suptitle(f"{title_prefix} reconstruction (tile idx={idx})")
+    plt.tight_layout()
+    plt.show()
+
 
 # Global CP basis + projection for OC-SVM
 def fit_global_cp_basis(X_train, rank, random_state=42, max_train_samples=None, use_gpu=USE_GPU_CP):
@@ -1003,6 +1073,9 @@ def parafac_OC_SVM_per_tile(
     decomp_va = buildTensor(X_val,   rank, n_va, isTuckerDecomposition=False)
     decomp_fi = buildTensor(X_fin,   rank, n_fi, isTuckerDecomposition=False)
 
+    if RUN_VISUALIZATION:
+        visualize_cp_reconstruction_per_tile(decomp_tr, X_train, idx=0, bands=(0,1,2),
+                                             title_prefix=f"rank={rank}")
     # ---- Feature extraction ----
     #Feat_tr = extractFeatures(decomp_tr, n_tr, isTuckerDecomposition=False)
     #Feat_va = extractFeatures(decomp_va, n_va, isTuckerDecomposition=False)
