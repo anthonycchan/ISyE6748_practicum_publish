@@ -1386,7 +1386,7 @@ def parafac_OC_SVM(rank, data_bundle,
     # OC-SVM search (gamma scaled by 1/d)
     param_grid = {
         "kernel": ["rbf"],
-        "gamma":  ocsvm_gamma_grid_for_dim(feat_dim),
+        "gamma":  ocsvm_gamma_grid_for_dim(feat_dim) + ["scale", "auto"],
         "nu":     [0.01, 0.02, 0.05, 0.1, 0.2]
     }
 
@@ -1530,10 +1530,9 @@ def parafac_OC_SVM_per_tile(
 
     # ---- Hyperparameter search on VAL ----
     d = Z_tr.shape[1]
-    gamma_grid = ocsvm_gamma_grid_for_dim(d)   # e.g., (1/d)*{0.1,0.3,1,3,10}
     param_grid = {
         "kernel": ["rbf"],
-        "gamma":  gamma_grid,
+        "gamma":  ocsvm_gamma_grid_for_dim(d) + ["scale", "auto"],
         "nu":     [0.01, 0.02, 0.05, 0.10, 0.20],
     }
 
@@ -1742,8 +1741,9 @@ def ocsvm_raw_geography(displayConfusionMatrix=False):
 
 def ocsvm_only(
     data_bundle,
-    displayConfusionMatrix=False
-):
+    displayConfusionMatrix=False,
+    use_pca_whiten=True,
+    random_state=42 ):
     """
     OC-SVM on raw (flattened) tiles, no CP.
     - Expects `data_bundle` from your prepare_data_once(...) path.
@@ -1770,12 +1770,20 @@ def ocsvm_only(
     Xv  = scaler.transform(Feat_va)
     Xte = scaler.transform(Feat_fi)
 
+    if use_pca_whiten:
+        pca = PCA(whiten=True, svd_solver='auto', random_state=random_state)
+        Ztr = pca.fit_transform(Xtr)
+        Zv = pca.transform(Xv)
+        Zte = pca.transform(Xte)
+    else:
+        Ztr, Zv, Zte = Xtr, Xv, Xte
+
+
     # --- Hyperparameter grid (VAL is typical-only) ---
-    d = Xtr.shape[1]
-    gamma_grid = ocsvm_gamma_grid_for_dim(d) + ["scale", "auto"]
+    d = Ztr.shape[1]
     param_grid = {
         "kernel": ["rbf"],
-        "gamma": gamma_grid,
+        "gamma": ocsvm_gamma_grid_for_dim(d) + ["scale", "auto"],
         "nu": [0.01, 0.02, 0.05, 0.10, 0.20],
     }
 
@@ -1785,12 +1793,12 @@ def ocsvm_only(
     best_aux = ""
 
     for p in ParameterGrid(param_grid):
-        model = OneClassSVM(**p).fit(Xtr)
-        s_val = -model.decision_function(Xv).ravel()  # larger => more anomalous
+        model = OneClassSVM(**p).fit(Ztr)
+        s_val = -model.decision_function(Zv).ravel()  # larger => more anomalous
 
         # Typical-only VAL: minimize FP@0, tie-break with P95 and mean (lexicographic)
         fp_rate = float((s_val >= 0.0).mean())
-        obj = (fp_rate)
+        obj = fp_rate
         aux = f"FP={fp_rate:.3f}"
 
         if (best_obj is None) or (obj < best_obj):
@@ -1802,14 +1810,11 @@ def ocsvm_only(
     print(f"OCSVM (VAL one-class) chose {best_params} ({best_aux})")
 
     # --- FINAL evaluation ---
-    s_fin  = -best_model.decision_function(Xte).ravel()
+    s_fin  = -best_model.decision_function(Zte).ravel()
     auc_fin = manual_auc(y_fin, s_fin, positive_label=-1)
     th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, s_fin, positive_label=-1)
     print(f"OCSVM FINAL AUC={auc_fin:.3f}")
     print(f"OCSVM threshold={th_opt:.6f} | accuracy={acc_opt:.3f}")
-
-    y_pred_thresh = np.where(s_fin >= th_opt, -1, 1)
-    print('y_pred_thresh', y_pred_thresh)
 
     if displayConfusionMatrix:
         y_pred_thresh = np.where(s_fin >= th_opt, -1, 1)
@@ -1823,8 +1828,7 @@ def ocsvm_only(
 
 def one_class_svm():
     print("One-class SVM (raw pixels)")
-    #acc, auc = ocsvm_raw_geography(False)
-    acc, auc = ocsvm_only(data_bundle, displayConfusionMatrix=False)
+    acc, auc = ocsvm_only(data_bundle, displayConfusionMatrix=False, use_pca_whiten=False)
     print("One-class SVM best accuracy:", acc, "auc:", auc)
 
 # Rank search now reuses the preloaded bundle
