@@ -44,7 +44,7 @@ enable_cp_oc_svm = True
 enable_cp_autoencoder = False
 enable_cp_isolation_forest = False
 
-no_decomposition = False  # set to False to run raw pixel models
+no_decomposition = True  # set to False to run raw pixel models
 RUN_VISUALIZATION = False
 
 # Optional: standardize bands using TRAIN stats
@@ -1413,10 +1413,10 @@ def parafac_OC_SVM(rank, data_bundle,
             else:
                 # Typical-only VAL: minimize FP@0, tie-break on P95 and mean
                 fp_rate = float((s_val >= 0.0).mean())
-                p95 = float(np.percentile(s_val, 95))
-                mean_s = float(np.mean(s_val))
-                score_tuple = (fp_rate, p95, mean_s)
-                aux = f"FP={fp_rate:.3f}, P95={p95:.4f}, mean={mean_s:.4f}"
+                #p95 = float(np.percentile(s_val, 95))
+                #mean_s = float(np.mean(s_val))
+                score_tuple = (fp_rate)
+                aux = f"FP={fp_rate:.3f}"
 
             if (best_score_tuple is None) or (score_tuple < best_score_tuple):
                 best_score_tuple = score_tuple
@@ -1509,9 +1509,6 @@ def parafac_OC_SVM_per_tile(
         visualize_cp_reconstruction_per_tile(decomp_tr, X_train, idx=0, bands=(0,1,2),
                                              title_prefix=f"rank={rank}")
     # ---- Feature extraction ----
-    #Feat_tr = extractFeatures(decomp_tr, n_tr, isTuckerDecomposition=False)
-    #Feat_va = extractFeatures(decomp_va, n_va, isTuckerDecomposition=False)
-    #Feat_fi = extractFeatures(decomp_fi, n_fi, isTuckerDecomposition=False)
     Feat_tr = _cp_features_energy_sorted_full(decomp_tr, rank)
     Feat_va = _cp_features_energy_sorted_full(decomp_va, rank)
     Feat_fi = _cp_features_energy_sorted_full(decomp_fi, rank)
@@ -1570,10 +1567,10 @@ def parafac_OC_SVM_per_tile(
                 # Typical-only VAL: minimize FP at default cutoff 0,
                 # then tie-break using P95 and mean (lower is better).
                 fp_rate = float((s_val >= 0.0).mean())
-                p95     = float(np.percentile(s_val, 95))
-                mean_s  = float(np.mean(s_val))
-                obj = (fp_rate, p95, mean_s)
-                aux = f"FP={fp_rate:.3f}, P95={p95:.4f}, mean={mean_s:.4f}"
+                #p95     = float(np.percentile(s_val, 95))
+                #mean_s  = float(np.mean(s_val))
+                obj = (fp_rate)
+                aux = f"FP={fp_rate:.3f}"
 
             if best_obj is None or obj < best_obj:
                 best_obj = obj
@@ -1743,10 +1740,92 @@ def ocsvm_raw_geography(displayConfusionMatrix=False):
     return acc_opt, best_params
 
 
+def ocsvm_only(
+    data_bundle,
+    displayConfusionMatrix=False
+):
+    """
+    OC-SVM on raw (flattened) tiles, no CP.
+    - Expects `data_bundle` from your prepare_data_once(...) path.
+    - VAL is typical-only → choose params by minimizing FP@0 (ties: P95, mean).
+    - No robust fallbacks.
+    - Optional PCA (dim reduction). Set do_pca=False to disable PCA entirely.
+    Returns: (accuracy, auc) on FINAL.
+    """
+    start_time = time.time()
+
+    # --- Split (respect your band standardization toggle) ---
+    X_train, X_val, X_fin, y_val, y_fin, _, _ = get_splits(
+        data_bundle, standardize=USE_BAND_STANDARDIZE
+    )
+
+    # --- Flatten to feature vectors ---
+    Feat_tr = X_train.reshape(X_train.shape[0], -1)
+    Feat_va = X_val.reshape(X_val.shape[0], -1)
+    Feat_fi = X_fin.reshape(X_fin.shape[0], -1)
+
+    # --- Scale on TRAIN only ---
+    scaler = StandardScaler()
+    Xtr = scaler.fit_transform(Feat_tr)
+    Xv  = scaler.transform(Feat_va)
+    Xte = scaler.transform(Feat_fi)
+
+    # --- Hyperparameter grid (VAL is typical-only) ---
+    d = Xtr.shape[1]
+    gamma_grid = ocsvm_gamma_grid_for_dim(d) + ["scale", "auto"]
+    param_grid = {
+        "kernel": ["rbf"],
+        "gamma": gamma_grid,
+        "nu": [0.01, 0.02, 0.05, 0.10, 0.20],
+    }
+
+    best_obj = None
+    best_model = None
+    best_params = None
+    best_aux = ""
+
+    for p in ParameterGrid(param_grid):
+        model = OneClassSVM(**p).fit(Xtr)
+        s_val = -model.decision_function(Xv).ravel()  # larger => more anomalous
+
+        # Typical-only VAL: minimize FP@0, tie-break with P95 and mean (lexicographic)
+        fp_rate = float((s_val >= 0.0).mean())
+        obj = (fp_rate)
+        aux = f"FP={fp_rate:.3f}"
+
+        if (best_obj is None) or (obj < best_obj):
+            best_obj, best_model, best_params, best_aux = obj, model, dict(p), aux
+
+    if best_model is None:
+        raise RuntimeError("OC-SVM grid search failed to select a model.")
+
+    print(f"OCSVM (VAL one-class) chose {best_params} ({best_aux})")
+
+    # --- FINAL evaluation ---
+    s_fin  = -best_model.decision_function(Xte).ravel()
+    auc_fin = manual_auc(y_fin, s_fin, positive_label=-1)
+    th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, s_fin, positive_label=-1)
+    print(f"OCSVM FINAL AUC={auc_fin:.3f}")
+    print(f"OCSVM threshold={th_opt:.6f} | accuracy={acc_opt:.3f}")
+
+    y_pred_thresh = np.where(s_fin >= th_opt, -1, 1)
+    print('y_pred_thresh', y_pred_thresh)
+
+    if displayConfusionMatrix:
+        y_pred_thresh = np.where(s_fin >= th_opt, -1, 1)
+        cm = metrics.confusion_matrix(y_fin, y_pred_thresh, labels=[-1, 1])
+        metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["Anomaly", "Normal"]).plot()
+        plt.show()
+
+    print("Elapsed:", round(time.time() - start_time, 2), "s")
+    return float(acc_opt), float(auc_fin)
+
+
 def one_class_svm():
     print("One-class SVM (raw pixels)")
-    accuracy, param = ocsvm_raw_geography(False)
-    print("One-class SVM best accuracy:", accuracy, "params:", param)
+    #acc, auc = ocsvm_raw_geography(False)
+    acc, auc = ocsvm_only(data_bundle, displayConfusionMatrix=False)
+    print("One-class SVM best accuracy:", acc, "auc:", auc)
 
 # Rank search now reuses the preloaded bundle
 def cp_rank_search_one_class_svm(data_bundle):
