@@ -44,7 +44,7 @@ enable_cp_oc_svm = True
 enable_cp_autoencoder = False
 enable_cp_isolation_forest = False
 
-no_decomposition = True  # set to False to run raw pixel models
+no_decomposition = False  # set to False to run raw pixel models
 RUN_VISUALIZATION = False
 
 # Optional: standardize bands using TRAIN stats
@@ -65,7 +65,7 @@ DEVICE = "cuda"
 USE_GPU_CP = True
 
 # Use global vs per-tile CP decomposition. True for global, False for per tile
-USE_GLOBAL_CP = False
+USE_GLOBAL_CP = True
 
 # Options: "both" (core + factors), "core" (core only), "factors" (factors only)
 TUCKER_FEATURE_MODE = "core"
@@ -1083,18 +1083,14 @@ def visualize_tucker_reconstruction_per_tile(
 
 
 # Global CP basis + projection for OC-SVM
-def fit_global_cp_basis(X_train, rank, random_state=42, max_train_samples=None, use_gpu=USE_GPU_CP):
+def fit_global_cp_basis(X_train, rank, random_state=42, use_gpu=USE_GPU_CP):
     """
     Fit one global CP model to TRAIN tensor (N,64,64,6).
     Returns:
       (A,B,C) as np.float32 and H_train as np.float32 (N,R).
     If subsampling is used, H_train is recomputed for the full TRAIN via projection.
     """
-    N = X_train.shape[0]
     X_in = X_train
-    if max_train_samples is not None and N > max_train_samples:
-        idx = np.random.RandomState(123).choice(N, size=max_train_samples, replace=False)
-        X_in = X_in[idx]
 
     # GPU branch (TensorLy+PyTorch)
     if use_gpu and tl.get_backend() == "pytorch":
@@ -1115,14 +1111,8 @@ def fit_global_cp_basis(X_train, rank, random_state=42, max_train_samples=None, 
                 B = B_t.detach().cpu().numpy().astype(np.float32)
                 C = C_t.detach().cpu().numpy().astype(np.float32)
 
-                if X_in.shape[0] != X_train.shape[0]:
-                    # Recompute H for the full training set via projection
-                    H_full = project_cp_coeffs_torch(X_train, A, B, C, device="cuda")
-                    return (A, B, C), H_full.astype(np.float32)
-                else:
-                    H_np = H_t.detach().cpu().numpy().astype(np.float32)
-                    return (A.astype(np.float32), B.astype(np.float32), C.astype(np.float32)), H_np
-        # fall through to CPU if no CUDA
+                H_np = H_t.detach().cpu().numpy().astype(np.float32)
+                return (A.astype(np.float32), B.astype(np.float32), C.astype(np.float32)), H_np
 
     # CPU fallback (NumPy)
     old_backend = tl.get_backend()
@@ -1313,14 +1303,13 @@ def get_splits(data_bundle, standardize=USE_BAND_STANDARDIZE):
     return X_train, X_val, X_fin, y_val, y_fin, mu_b, sig_b
 
 # Single place for CP fit + project to H
-def cp_fit_and_project(X_train, X_val, X_fin, rank, random_state=42, cp_basis_max_train_samples=None):
+def cp_fit_and_project(X_train, X_val, X_fin, rank, random_state=42):
     """
     Fit a global CP model on TRAIN, then project VAL/FINAL into H.
     Returns: (A,B,C), H_train, H_val, H_fin
     """
     (A, B, C), H_train = fit_global_cp_basis(
-        X_train, rank, random_state=random_state,
-        max_train_samples=cp_basis_max_train_samples
+        X_train, rank, random_state=random_state
     )
     Ginv = precompute_cp_projection(A, B, C)
     H_val = project_cp_coeffs(X_val, A, B, C, Ginv=Ginv)
@@ -1330,7 +1319,7 @@ def cp_fit_and_project(X_train, X_val, X_fin, rank, random_state=42, cp_basis_ma
 # CP + OC-SVM using preloaded data
 def parafac_OC_SVM(rank, data_bundle,
                    displayConfusionMatrix=False, use_pca_whiten=True,
-                   random_state=42, cp_basis_max_train_samples=None):
+                   random_state=42):
     """
     Pipeline:
       1) Standardize using TRAIN stats (optional).
@@ -1347,8 +1336,7 @@ def parafac_OC_SVM(rank, data_bundle,
     # Global CP fit + project
     (A, B, C), H_train, H_val, H_fin = cp_fit_and_project(
         X_train, X_val, X_fin, rank,
-        random_state=random_state,
-        cp_basis_max_train_samples=cp_basis_max_train_samples
+        random_state=random_state
     )
 
     if RUN_VISUALIZATION:
@@ -1390,66 +1378,31 @@ def parafac_OC_SVM(rank, data_bundle,
         "nu":     [0.01, 0.02, 0.05, 0.1, 0.2]
     }
 
-    use_auc_on_val = (y_val is not None) and (np.isin(-1, y_val).any() and np.isin(1, y_val).any())
-
     best_score_tuple = None
     best_model = None
     best_params = None
     best_aux_print = ""
 
     for params in ParameterGrid(param_grid):
-        try:
-            model = OneClassSVM(**params).fit(Htr_w)
-            s_val = -model.decision_function(Hval_w).ravel()  # larger => more anomalous
-            if not np.all(np.isfinite(s_val)):
-                continue
-
-            if use_auc_on_val:
-                auc = manual_auc(y_val, s_val, positive_label=-1)
-                if not np.isfinite(auc):
-                    continue
-                score_tuple = (-auc,)  # minimize negative AUC == maximize AUC
-                aux = f"AUC={auc:.3f}"
-            else:
-                # Typical-only VAL: minimize FP@0, tie-break on P95 and mean
-                fp_rate = float((s_val >= 0.0).mean())
-                #p95 = float(np.percentile(s_val, 95))
-                #mean_s = float(np.mean(s_val))
-                score_tuple = (fp_rate)
-                aux = f"FP={fp_rate:.3f}"
-
-            if (best_score_tuple is None) or (score_tuple < best_score_tuple):
-                best_score_tuple = score_tuple
-                best_model = model
-                best_params = params
-                best_aux_print = aux
-
-        except Exception:
+        model = OneClassSVM(**params).fit(Htr_w)
+        s_val = -model.decision_function(Hval_w).ravel()  # larger => more anomalous
+        if not np.all(np.isfinite(s_val)):
             continue
 
-    if best_model is None:
-        print("CP+OCSVM: validation selection failed; trying a simple RBF default.")
-        for params in [{"kernel": "rbf", "gamma": 1.0 / max(Htr_w.shape[1], 1), "nu": 0.1},
-                       {"kernel": "rbf", "gamma": "scale", "nu": 0.1}]:
-            try:
-                model = OneClassSVM(**params).fit(Htr_w)
-                best_model = model; best_params = params
-                best_aux_print = "(fallback)"
-                break
-            except Exception:
-                continue
-        if best_model is None:
-            # Last resort: distance-to-mean scorer
-            print("CP+OCSVM: fallback failed; using a simple distance-to-mean score.")
-            mu = Htr_w.mean(axis=0, keepdims=True)
-            s_fin = np.linalg.norm(Hfin_w - mu, axis=1)
-            auc_fin = manual_auc(y_fin, s_fin, positive_label=-1)
-            th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, s_fin, positive_label=-1)
-            print(f"FINAL AUC={auc_fin:.3f} | Acc={acc_opt:.3f}")
-            print("Elapsed:", round(time.time() - start_time, 2), "s")
-            return acc_opt
+        # Typical-only VAL: minimize FP@0, tie-break on P95 and mean
+        fp_rate = float((s_val >= 0.0).mean())
+        #p95 = float(np.percentile(s_val, 95))
+        #mean_s = float(np.mean(s_val))
+        score_tuple = (fp_rate)
+        aux = f"FP={fp_rate:.3f}"
 
-    sel_mode = "AUC" if use_auc_on_val else "one-class"
+        if (best_score_tuple is None) or (score_tuple < best_score_tuple):
+            best_score_tuple = score_tuple
+            best_model = model
+            best_params = params
+            best_aux_print = aux
+
+    sel_mode = "one-class"
     print(f"CP+OCSVM (VAL {sel_mode}) chose {best_params} ({best_aux_print})")
 
     # FINAL evaluation
@@ -1491,7 +1444,6 @@ def parafac_OC_SVM_per_tile(
       float: FINAL-set accuracy at the chosen (max-accuracy) threshold.
     """
     # ---- Load splits (and optional band standardization) ----
-    # Expects: get_splits(...) -> (X_train, X_val, X_fin, y_val, y_fin, _, _)
     X_train, X_val, X_fin, y_val, y_fin, _, _ = get_splits(
         data_bundle, standardize=USE_BAND_STANDARDIZE
     )
@@ -1499,9 +1451,7 @@ def parafac_OC_SVM_per_tile(
     n_tr, n_va, n_fi = X_train.shape[0], X_val.shape[0], X_fin.shape[0]
 
     # ---- Per-tile CP decompositions ----
-    start_time = time.time()
     decomp_tr = buildTensor(X_train, rank, n_tr, isTuckerDecomposition=False)
-    print('Train done ', time.time()-start_time)
     decomp_va = buildTensor(X_val,   rank, n_va, isTuckerDecomposition=False)
     decomp_fi = buildTensor(X_fin,   rank, n_fi, isTuckerDecomposition=False)
 
@@ -1536,13 +1486,6 @@ def parafac_OC_SVM_per_tile(
         "nu":     [0.01, 0.02, 0.05, 0.10, 0.20],
     }
 
-    # Decide selection mode based on VAL labels
-    use_auc_on_val = (
-        y_val is not None and
-        np.isin(-1, y_val).any() and
-        np.isin(1, y_val).any()
-    )
-
     best_obj = None
     best_model = None
     best_params = None
@@ -1556,20 +1499,13 @@ def parafac_OC_SVM_per_tile(
             if not np.all(np.isfinite(s_val)):
                 continue
 
-            if use_auc_on_val:
-                auc = manual_auc(y_val, s_val, positive_label=-1)
-                if not np.isfinite(auc):
-                    continue
-                obj = (-auc,)                       # minimize negative AUC == maximize AUC
-                aux = f"AUC={auc:.3f}"
-            else:
-                # Typical-only VAL: minimize FP at default cutoff 0,
-                # then tie-break using P95 and mean (lower is better).
-                fp_rate = float((s_val >= 0.0).mean())
-                #p95     = float(np.percentile(s_val, 95))
-                #mean_s  = float(np.mean(s_val))
-                obj = (fp_rate)
-                aux = f"FP={fp_rate:.3f}"
+            # Typical-only VAL: minimize FP at default cutoff 0,
+            # then tie-break using P95 and mean (lower is better).
+            fp_rate = float((s_val >= 0.0).mean())
+            #p95     = float(np.percentile(s_val, 95))
+            #mean_s  = float(np.mean(s_val))
+            obj = (fp_rate)
+            aux = f"FP={fp_rate:.3f}"
 
             if best_obj is None or obj < best_obj:
                 best_obj = obj
@@ -1587,8 +1523,7 @@ def parafac_OC_SVM_per_tile(
         best_model = OneClassSVM(**best_params).fit(Z_tr)
         best_aux = "(fallback)"
 
-    sel_mode = "AUC" if use_auc_on_val else "one-class"
-    print(f"[CP+OCSVM (per-tile, VAL {sel_mode})] chose {best_params} ({best_aux})")
+    print(f"[CP+OCSVM (per-tile)] chose {best_params} ({best_aux})")
 
     # ---- FINAL evaluation ----
     s_fin = -best_model.decision_function(Z_te).ravel()
@@ -1742,7 +1677,7 @@ def ocsvm_raw_geography(displayConfusionMatrix=False):
 def ocsvm_only(
     data_bundle,
     displayConfusionMatrix=False,
-    use_pca_whiten=True,
+    use_pca_whiten=False,
     random_state=42 ):
     """
     OC-SVM on raw (flattened) tiles, no CP.
@@ -1796,7 +1731,7 @@ def ocsvm_only(
         model = OneClassSVM(**p).fit(Ztr)
         s_val = -model.decision_function(Zv).ravel()  # larger => more anomalous
 
-        # Typical-only VAL: minimize FP@0, tie-break with P95 and mean (lexicographic)
+        # Typical-only VAL: minimize FP@0
         fp_rate = float((s_val >= 0.0).mean())
         obj = fp_rate
         aux = f"FP={fp_rate:.3f}"
