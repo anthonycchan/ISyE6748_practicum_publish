@@ -40,12 +40,12 @@ use_predefined_rank = False
 enable_tucker_oc_svm = False
 enable_tucker_autoencoder = False
 enable_tucker_isolation_forest = False
-enable_cp_oc_svm = True
+enable_cp_oc_svm = False
 enable_cp_autoencoder = False
-enable_cp_isolation_forest = False
+enable_cp_isolation_forest = True
 
 no_decomposition = False  # set to False to run raw pixel models
-RUN_VISUALIZATION = True
+RUN_VISUALIZATION = False
 
 # Optional: standardize bands using TRAIN stats
 USE_BAND_STANDARDIZE = True
@@ -814,8 +814,6 @@ def parafac_OC_SVM(rank, data_bundle,
 
         # Typical-only VAL: minimize FP@0, tie-break on P95 and mean
         fp_rate = float((s_val >= 0.0).mean())
-        #p95 = float(np.percentile(s_val, 95))
-        #mean_s = float(np.mean(s_val))
         score_tuple = (fp_rate)
         aux = f"FP={fp_rate:.3f}"
 
@@ -1007,54 +1005,31 @@ def tucker_one_class_svm(rank, data_bundle, displayConfusionMatrix=False,
     best_val_auc = None
 
     for p in ParameterGrid(param_grid):
-        try:
-            m = OneClassSVM(**p).fit(Z_tr)
-            s_val = -m.decision_function(Z_va).ravel()  # anomaly-positive scores
-            if not np.all(np.isfinite(s_val)):
-                continue
-
-            if use_auc_on_val:
-                auc = manual_auc(y_val, s_val, positive_label=-1)
-                if not np.isfinite(auc):
-                    continue
-                obj = (-auc,)  # maximize AUC
-                aux = f"AUC={auc:.3f}"
-            else:
-                fp  = float((s_val >= 0.0).mean())
-                p95 = float(np.percentile(s_val, 95))
-                mean_s = float(np.mean(s_val))
-                obj = (fp, p95, mean_s)
-                aux = f"FP={fp:.3f}, P95={p95:.4f}, mean={mean_s:.4f}"
-                auc = None
-
-            if (best_tuple is None) or (obj < best_tuple):
-                best_tuple = obj
-                best_model = m
-                best_params = dict(p)
-                best_aux = aux
-                best_val_auc = auc
-        except Exception:
+        m = OneClassSVM(**p).fit(Z_tr)
+        s_val = -m.decision_function(Z_va).ravel()  # anomaly-positive scores
+        if not np.all(np.isfinite(s_val)):
             continue
 
-    if best_model is None:
-        # Reasonable defaults if VAL selection fails
-        for p in [{"kernel": "rbf", "gamma": 1.0 / max(d, 1), "nu": 0.1},
-                  {"kernel": "rbf", "gamma": "scale",           "nu": 0.1}]:
-            try:
-                best_model = OneClassSVM(**p).fit(Z_tr)
-                best_params = p
-                best_aux = "(fallback)"
-                break
-            except Exception:
-                pass
-        if best_model is None:
-            # Last resort: distance-to-mean scorer on FINAL
-            mu = Z_tr.mean(axis=0, keepdims=True)
-            s_fin = np.linalg.norm(Z_fi - mu, axis=1)
-            auc_fin = manual_auc(y_fin, s_fin, positive_label=-1)
-            th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, s_fin, positive_label=-1)
-            print(f"FINAL AUC={auc_fin:.3f} | Acc={acc_opt:.3f}")
-            return acc_opt
+        if use_auc_on_val:
+            auc = manual_auc(y_val, s_val, positive_label=-1)
+            if not np.isfinite(auc):
+                continue
+            obj = (-auc,)  # maximize AUC
+            aux = f"AUC={auc:.3f}"
+        else:
+            fp  = float((s_val >= 0.0).mean())
+            p95 = float(np.percentile(s_val, 95))
+            mean_s = float(np.mean(s_val))
+            obj = (fp, p95, mean_s)
+            aux = f"FP={fp:.3f}, P95={p95:.4f}, mean={mean_s:.4f}"
+            auc = None
+
+        if (best_tuple is None) or (obj < best_tuple):
+            best_tuple = obj
+            best_model = m
+            best_params = dict(p)
+            best_aux = aux
+            best_val_auc = auc
 
     sel_mode = "AUC" if use_auc_on_val else "one-class"
     extra = f" | VAL AUC={best_val_auc:.3f}" if (use_auc_on_val and best_val_auc is not None) else ""
@@ -1080,13 +1055,11 @@ def tucker_rank_search_one_class_svm(data_bundle):
     Grid over Tucker rank triples; choose the rank with highest FINAL accuracy.
     """
     print("Tucker rank search (One-class SVM)")
-    #rankSet = sorted({5, 16, 32, 64})
-    rankSet = sorted({64})
+    rankSet = sorted({5, 16, 32, 64})
     rank_score = {}
     for i in rankSet:
         for j in rankSet:
-            #for k in sorted({5, 16}):
-            for k in sorted({16}):
+            for k in sorted({5, 16}):
                 r = (i, j, k)
                 print("Rank:", i, j, k)
                 acc, auc = tucker_one_class_svm(r, data_bundle, feature_mode=TUCKER_FEATURE_MODE)
@@ -1434,9 +1407,7 @@ def parafac_isolation_forest(rank, data_bundle,
     # --- CP basis + projection ---
     (A, B, C), H_train, H_val, H_fin = cp_fit_and_project(
         X_train, X_val, X_fin, rank,
-        random_state=random_state,
-        cp_basis_max_train_samples=cp_basis_max_train_samples
-    )
+        random_state=random_state )
 
     # --- scale (fit on TRAIN only) ---
     scaler = StandardScaler()
@@ -1485,24 +1456,6 @@ def parafac_isolation_forest(rank, data_bundle,
                 # set threshold to achieve target FP on VAL
                 q = 100.0 * (1.0 - float(VAL_FP_TARGET))
                 thr = float(np.percentile(s_va, q))
-
-        if best_if is None:
-            # fallback to TRAIN-only unsupervised selection
-            print("CP+IF: VAL-based selection failed; falling back to TRAIN-only.")
-    if best_if is None:
-        # ------- TRAIN-only unsupervised selection (no VAL used) -------
-        grid = GridSearchCV(
-            IsolationForest(),
-            param_grid=param_grid,
-            cv=3,
-            scoring=_if_mean_score_scorer,
-            verbose=0,
-            n_jobs=-1
-        )
-        grid.fit(Z_tr)
-        best_if = grid.best_estimator_
-        best_params = grid.best_params_
-        thr = None  # we'll derive threshold from model default if VAL wasn’t used
 
     # --- FINAL scoring ---
     s_fi = -best_if.score_samples(Z_fi)  # anomaly-positive
@@ -1649,23 +1602,6 @@ def tucker_isolation_forests(rank, data_bundle, displayConfusionMatrix=False, ra
                 best_params = dict(p)
                 q = 100.0 * (1.0 - float(VAL_FP_TARGET))
                 thr = float(np.percentile(s_va, q))
-
-        if best_if is None:
-            print("Tucker+IF: VAL-based selection failed; falling back to TRAIN-only.")
-
-    if best_if is None:
-        grid = GridSearchCV(
-            IsolationForest(),
-            param_grid=param_grid,
-            cv=3,
-            scoring=_if_mean_score_scorer,
-            verbose=0,
-            n_jobs=-1
-        )
-        grid.fit(Z_tr)
-        best_if = grid.best_estimator_
-        best_params = grid.best_params_
-        thr = None
 
     # --- FINAL scoring ---
     s_fi = -best_if.score_samples(Z_fi)
