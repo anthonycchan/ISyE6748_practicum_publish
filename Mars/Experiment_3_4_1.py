@@ -27,7 +27,6 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input, Dense, Dropout
 from tensorflow.keras.callbacks import EarlyStopping
 
-
 random.seed(1)
 
 # Paths & toggles
@@ -413,7 +412,6 @@ def _pick_threshold_max_accuracy(y_true, scores, positive_label=-1):
     return float(best_th), float(best_acc)
 
 def show_raw_tile(X, idx=0, bands=(0,1,2,3,4,5), title="Raw tile"):
-    import numpy as np, matplotlib.pyplot as plt
     Xo = np.asarray(X)[idx]  # (64,64,6)
     n = len(bands)
     fig, axes = plt.subplots(1, n, figsize=(3.5*n, 3.5))
@@ -479,7 +477,6 @@ def _unpack_tucker_from_decomp(dec):
     if not (isinstance(factors, (list, tuple)) and len(factors) == 3):
         raise ValueError("Unexpected Tucker factors; expected [U1, U2, U3].")
     U1, U2, U3 = factors
-    import numpy as np
     return (np.asarray(core, dtype=np.float32),
             np.asarray(U1,   dtype=np.float32),
             np.asarray(U2,   dtype=np.float32),
@@ -491,7 +488,6 @@ def tucker_reconstruct_tile(core, U1, U2, U3):
     Reconstruct a single tile from Tucker (core, U1, U2, U3).
     Shapes: core:(r1,r2,r3), U1:(I,r1), U2:(J,r2), U3:(K,r3) -> Xhat:(I,J,K)
     """
-    import numpy as np
     # Xhat = core ×1 U1 ×2 U2 ×3 U3
     return np.einsum('abc,ia,jb,kc->ijk', core, U1, U2, U3, optimize=True)
 
@@ -519,8 +515,6 @@ def visualize_tucker_reconstruction_per_tile(
     save_path : str or None
         If provided, save the figure to this path.
     """
-    import numpy as np, matplotlib.pyplot as plt, os
-
     core, U1, U2, U3 = _unpack_tucker_from_decomp(decomp_list[idx])
     Xhat = tucker_reconstruct_tile(core, U1, U2, U3)
 
