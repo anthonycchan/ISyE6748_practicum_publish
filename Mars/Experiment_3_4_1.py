@@ -38,9 +38,9 @@ test_anomaly_data = "Data/Reduced/set_1/test_novel"   # novel
 use_predefined_rank = False
 enable_tucker_oc_svm = False
 enable_tucker_autoencoder = False
-enable_tucker_isolation_forest = False
-enable_cp_oc_svm = True
-enable_cp_autoencoder = True
+enable_tucker_isolation_forest = True
+enable_cp_oc_svm = False
+enable_cp_autoencoder = False
 enable_cp_isolation_forest = False
 
 no_decomposition = False  # set to False to run raw pixel models
@@ -822,7 +822,7 @@ def parafac_OC_SVM(rank, data_bundle,
     print(f"CP+OCSVM (VAL one-class) rank {rank} chose {best_params} ({best_aux_print})")
 
     print("Elapsed:", round(time.time() - start_time, 2), "s")
-    return best_score_tuple, best_model, Hfin_w, y_fin
+    return best_score_tuple, best_model, Hfin_w, y_fin, best_params, best_aux_print
 
 
 def ocsvm_only(
@@ -925,27 +925,33 @@ def cp_rank_search_one_class_svm(data_bundle):
     rank_best_model = None
     rank_best_rank = None
     rank_H_fin = None
+    rank_best_params = None
+    rank_best_aux_print = None
 
     startRank = 10; endRank = 385; step = 5  # tighter range for speed
     for rank in range(startRank, endRank, step):
         print("Rank:", rank)
-        best_score_tuple, best_model, Hfin_w, y_fin = parafac_OC_SVM(rank, data_bundle, use_pca_whiten=True)
+        best_score_tuple, best_model, Hfin_w, y_fin, best_params, best_aux_print = parafac_OC_SVM(rank, data_bundle, use_pca_whiten=True)
         if (rank_best_score_tuple is None or best_score_tuple < rank_best_score_tuple):
             rank_best_score_tuple = best_score_tuple
             rank_best_model = best_model
             rank_best_rank = rank
             rank_H_fin = Hfin_w
+            rank_best_params = best_params
+            rank_best_aux_print = best_aux_print
 
             s_fin = -rank_best_model.decision_function(rank_H_fin).ravel()
             auc_fin = manual_auc(y_fin, s_fin, positive_label=-1)
             th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, s_fin, positive_label=-1)
-            print(f"CP+OCSVM Intermediate result RANK={rank_best_rank} AUC={auc_fin:.4f} | accuracy={acc_opt:.3f}" )
+            print(f"CP+OCSVM Intermediate result RANK={rank_best_rank} AUC={auc_fin} | ACC={acc_opt} "
+                  f"| param=({rank_best_params}) | aux={rank_best_aux_print}" )
 
     # FINAL evaluation
     s_fin = -rank_best_model.decision_function(rank_H_fin).ravel()
     auc_fin = manual_auc(y_fin, s_fin, positive_label=-1)
     th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, s_fin, positive_label=-1)
-    print(f"CP+OCSVM Final result RANK={rank_best_rank} AUC={auc_fin:.4f} | accuracy={acc_opt:.3f}")
+    print(f"CP+OCSVM Final result RANK={rank_best_rank} AUC={auc_fin} | ACC={acc_opt} "
+          f"| param=({rank_best_params}) | aux={rank_best_aux_print}" )
 
 
 #
@@ -1020,7 +1026,7 @@ def tucker_one_class_svm(rank, data_bundle, displayConfusionMatrix=False,
     sel_mode = "one-class"
     print(f"Tucker+OCSVM ({feature_mode}, VAL {sel_mode}) chose {best_params} ({best_aux})")
 
-    return best_model, best_tuple, Z_fi, y_fin
+    return best_model, best_tuple, Z_fi, y_fin, best_params, best_aux
 
 
 def tucker_rank_search_one_class_svm(data_bundle):
@@ -1034,30 +1040,36 @@ def tucker_rank_search_one_class_svm(data_bundle):
     rank_Z_fi = None
     rank_y_fin = None
     rank_best_rank = None
+    rank_best_params= None
+    rank_best_aux= None
     for i in rankSet:
         for j in rankSet:
             for k in sorted({5, 16}):
                 r = (i, j, k)
                 print("Rank:", i, j, k)
-                best_model, best_tuple, Z_fi, y_fin = tucker_one_class_svm(r, data_bundle, feature_mode=TUCKER_FEATURE_MODE)
+                best_model, best_tuple, Z_fi, y_fin, best_params, best_aux = tucker_one_class_svm(r, data_bundle, feature_mode=TUCKER_FEATURE_MODE)
                 if (rank_best_tuple is None) or (best_tuple < rank_best_tuple):
                     rank_best_tuple = best_tuple
                     rank_best_model = best_model
                     rank_Z_fi = Z_fi
                     rank_y_fin = y_fin
                     rank_best_rank = r
+                    rank_best_params = best_params
+                    rank_best_aux = best_aux
 
                     # Intermediate evaluation
                     s_fin = -rank_best_model.decision_function(rank_Z_fi).ravel()
                     auc_fin = manual_auc(rank_y_fin, s_fin, positive_label=-1)
                     th_opt, acc_opt = _pick_threshold_max_accuracy(rank_y_fin, s_fin, positive_label=-1)
-                    print(f"Tucker+OCSVM Intermediate result RANK={rank_best_rank} FINAL AUC={auc_fin} | Acc@best={acc_opt}")
+                    print(f"Tucker+OCSVM Intermediate result RANK={rank_best_rank} AUC={auc_fin} | ACC={acc_opt} "
+                          f"| param={rank_best_params} | aux={rank_best_aux}")
 
     # FINAL evaluation
     s_fin = -rank_best_model.decision_function(rank_Z_fi).ravel()
     auc_fin = manual_auc(rank_y_fin, s_fin, positive_label=-1)
     th_opt, acc_opt = _pick_threshold_max_accuracy(rank_y_fin, s_fin, positive_label=-1)
-    print(f"Tucker+OCSVM Final result RANK={rank_best_rank} FINAL AUC={auc_fin} | Acc@best={acc_opt}")
+    print(f"Tucker+OCSVM Final result RANK={rank_best_rank} AUC={auc_fin} | ACC={acc_opt} "
+          f"| param={rank_best_params} | aux={rank_best_aux}")
 
 
 #
@@ -1120,31 +1132,7 @@ def parafac_autoencoder(rank, factor, bottleneck, data_bundle,
     threshold = np.percentile(err_va, 95)
 
     print(f'Train/Val err rank={rank} sum={np.sum(err_va)} err mean={np.mean(err_va)} threshold={threshold}')
-    return Z_fi, threshold, y_fin
-
-    # Score FINAL
-    recon_fi = autoencoder.predict(Z_fi, verbose=0)
-    err_fi = np.mean(np.square(Z_fi - recon_fi), axis=1)  # anomaly-positive scores
-
-    preds_default = (err_fi > threshold).astype(int)
-    preds_default[preds_default == 1] = -1
-    preds_default[preds_default == 0] = 1
-    accuracy_default = float(np.mean(preds_default == y_fin))
-    print(f"CP+AE (global) accuracy @ VAL threshold: {accuracy_default:.3f}")
-
-    auc_fin = manual_auc(y_fin, err_fi, positive_label=-1)
-    print(f"CP+AE (global) FINAL AUC={auc_fin:.3f}")
-
-    th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, err_fi, positive_label=-1)
-    print(f"CP+AE (global) threshold={th_opt:.6f} | accuracy={acc_opt:.3f}")
-
-    if displayConfusionMatrix:
-        y_pred_thresh = np.where(err_fi >= th_opt, -1, 1)
-        cm = metrics.confusion_matrix(y_fin, y_pred_thresh, labels=[-1, 1])
-        metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Anomaly', 'Normal']).plot()
-        plt.show()
-
-    return acc_opt, auc_fin
+    return np.sum(err_va), autoencoder, Z_fi, y_fin
 
 
 def autoencoder_anomaly(data_bundle, factor, bottleneck, displayConfusionMatrix=False):
@@ -1245,21 +1233,43 @@ def autoencoder(data_bundle, displayConfusionMatrix=False, sweep_factors=(1, 2, 
 
 def cp_rank_search_autoencoder(data_bundle):
     print("CP rank search (autoencoder)")
+    rank_autoencoder = None
+    rank_Z_fi = None
+    rank_y_fin = None
+    rank_err_va = None
+    best_rank = None
+
     startRank = 10
     endRank = 385
     step = 5
-    rank_score = {}
-    for factor in range(1, 4):
-        for bottleneck in {16, 32, 64}:
+    for factor in range(1, 2):
+        for bottleneck in {16}:
             for i in range(startRank, endRank, step):
                 rank = i
                 print("Factor:", factor, "Bottleneck:", bottleneck, "Rank:", i)
-                accuracy, auc = parafac_autoencoder(rank, factor, bottleneck, data_bundle)
-                rank_score[(rank, factor, bottleneck)] = auc
-                print("Accuracy", accuracy, "AUC", auc)
-    print("AUC by (rank, factor, bottleneck):", rank_score)
-    bestRank = max(rank_score, key=rank_score.get)
-    return bestRank, rank_score[bestRank]
+                err_va, autoencoder, Z_fi, y_fin = parafac_autoencoder(rank, factor, bottleneck, data_bundle)
+                if (rank_err_va is None or err_va < rank_err_va):
+                    rank_err_va = err_va
+                    rank_autoencoder = autoencoder
+                    rank_y_fin = y_fin
+                    rank_Z_fi = Z_fi
+                    best_rank= (rank, factor, bottleneck)
+
+                    # Intermediate results
+                    recon_fi = rank_autoencoder.predict(rank_Z_fi, verbose=0)
+                    err_fi = np.mean(np.square(rank_Z_fi - recon_fi), axis=1)  # anomaly-positive scores
+                    auc_fin = manual_auc(rank_y_fin, err_fi, positive_label=-1)
+                    th_opt, acc_opt = _pick_threshold_max_accuracy(rank_y_fin, err_fi, positive_label=-1)
+                    print(f"CP+AE (global) Intermediate result Rank={best_rank} AUC={auc_fin} ACC={acc_opt}")
+
+    # Score FINAL
+    recon_fi = rank_autoencoder.predict(rank_Z_fi, verbose=0)
+    err_fi = np.mean(np.square(rank_Z_fi - recon_fi), axis=1)  # anomaly-positive scores
+
+    auc_fin = manual_auc(rank_y_fin, err_fi, positive_label=-1)
+    th_opt, acc_opt = _pick_threshold_max_accuracy(rank_y_fin, err_fi, positive_label=-1)
+    print(f"CP+AE (global) Final result Rank={best_rank} AUC={auc_fin} ACC={acc_opt}")
+
 
 #
 # Tucker with Autoencoder (shared path)
@@ -1319,31 +1329,8 @@ def tucker_neural_network_autoencoder(rank, factor, bottleneck, data_bundle,
     err_va = np.mean(np.square(Z_va - recon_va), axis=1)
     threshold = np.percentile(err_va, 95)
 
-    # Predict on FINAL
-    recon_fi = autoencoder.predict(Z_fi, verbose=0)
-    err_fi = np.mean(np.square(Z_fi - recon_fi), axis=1)  # anomaly-positive scores
-
-    # Default threshold accuracy
-    predictions = (err_fi > threshold).astype(int)
-    predictions[predictions == 1] = -1
-    predictions[predictions == 0] = 1
-    accuracy_default = float(np.mean(predictions == y_fin))
-    print(f"Tucker+AE ({feature_mode}) accuracy @ VAL threshold: {accuracy_default:.3f}")
-
-    # AUC + max-accuracy threshold (for parity with other strategies)
-    auc_fin = manual_auc(y_fin, err_fi, positive_label=-1)
-    print(f"Tucker+AE ({feature_mode}) FINAL AUC={auc_fin:.3f}")
-
-    th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, err_fi, positive_label=-1)
-    print(f"Tucker+AE ({feature_mode}) threshold={th_opt:.6f} | accuracy={acc_opt:.3f}")
-
-    if displayConfusionMatrix:
-        y_pred_thresh = np.where(err_fi >= th_opt, -1, 1)
-        cm = metrics.confusion_matrix(y_fin, y_pred_thresh, labels=[-1, 1])
-        metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Anomaly', 'Normal']).plot()
-        plt.show()
-
-    return acc_opt, auc_fin
+    print(f'Train/Val err rank={rank} sum={np.sum(err_va)} err mean={np.mean(err_va)} threshold={threshold}')
+    return np.sum(err_va), autoencoder, Z_fi, y_fin
 
 
 def tucker_rank_search_autoencoder(data_bundle):
@@ -1351,8 +1338,14 @@ def tucker_rank_search_autoencoder(data_bundle):
     Sweep ranks; report AUC by (rank, factor, bottleneck).
     """
     print("Tucker rank search (autoencoder)")
+
+    rank_autoencoder = None
+    rank_Z_fi = None
+    rank_y_fin = None
+    rank_err_va = None
+    best_rank = None
+
     rankSet = sorted({5, 16, 32, 64})
-    rank_score = {}
     # for factor in range(1, 4):
     for factor in range(3, 4):
         for bottleneck in {16, 32, 64}:
@@ -1361,13 +1354,34 @@ def tucker_rank_search_autoencoder(data_bundle):
                     for k in sorted({5, 16}):
                         rank = (i, j, k)
                         print("Rank:", i, j, k, "Factor", factor, "Bottleneck:", bottleneck)
-                        accuracy, auc = tucker_neural_network_autoencoder(rank, factor, bottleneck, data_bundle,
+                        err_va, autoencoder, Z_fi, y_fin = tucker_neural_network_autoencoder(rank, factor, bottleneck, data_bundle,
                                                                           feature_mode=TUCKER_FEATURE_MODE)
-                        rank_score[(rank, factor, bottleneck)] = auc
-                        print("Accuracy:", accuracy, "AUC", auc)
-    print("AUC by (rank, factor, bottleneck):", rank_score)
-    bestRank = max(rank_score, key=rank_score.get)
-    return bestRank, rank_score[bestRank]
+
+                        if (rank_err_va is None or err_va < rank_err_va):
+                            rank_err_va = err_va
+                            rank_autoencoder = autoencoder
+                            rank_y_fin = y_fin
+                            rank_Z_fi = Z_fi
+                            best_rank = (rank, factor, bottleneck)
+
+                            # Intermediate prediction
+                            recon_fi = rank_autoencoder.predict(rank_Z_fi, verbose=0)
+                            err_fi = np.mean(np.square(rank_Z_fi - recon_fi), axis=1)  # anomaly-positive scores
+                            # AUC + max-accuracy threshold (for parity with other strategies)
+                            auc_fin = manual_auc(rank_y_fin, err_fi, positive_label=-1)
+                            th_opt, acc_opt = _pick_threshold_max_accuracy(rank_y_fin, err_fi, positive_label=-1)
+                            print(f"Tucker+AE Intermediate result Rank={best_rank} AUC={auc_fin} ACC={acc_opt}")
+
+
+    # Predict on FINAL
+    recon_fi = rank_autoencoder.predict(rank_Z_fi, verbose=0)
+    err_fi = np.mean(np.square(rank_Z_fi - recon_fi), axis=1)  # anomaly-positive scores
+    # AUC + max-accuracy threshold (for parity with other strategies)
+    auc_fin = manual_auc(rank_y_fin, err_fi, positive_label=-1)
+    th_opt, acc_opt = _pick_threshold_max_accuracy(rank_y_fin, err_fi, positive_label=-1)
+    print(f"Tucker+AE Final result Rank={best_rank} AUC={auc_fin} ACC={acc_opt}")
+
+    return acc_opt, auc_fin
 
 def _if_mean_score_scorer(estimator, X, y=None):
     # Higher is better (less "anomalous" on average)
@@ -1450,44 +1464,52 @@ def parafac_isolation_forest(rank, data_bundle,
                 q = 100.0 * (1.0 - float(VAL_FP_TARGET))
                 thr = float(np.percentile(s_va, q))
 
-    # --- FINAL scoring ---
-    s_fi = -best_if.score_samples(Z_fi)  # anomaly-positive
-
-    if thr is None:
-        # No VAL threshold: fall back to model's default cutoff (offset). Use predict().
-        preds = best_if.predict(Z_fi)  # {-1, +1}
-    else:
-        preds = np.where(s_fi >= thr, -1, 1)
-
-    acc = float(np.mean(preds == y_fin))
-    auc_fin = manual_auc(y_fin, s_fi, positive_label=-1)
-
-    if thr is not None:
-        print(f"CP+IF (VAL typical-only) params={best_params} | thr={thr:.6f} "
-              f"| target_FP={VAL_FP_TARGET:.3f} | FINAL AUC={auc_fin:.3f} | Acc={acc:.3f}")
-    else:
-        print(f"CP+IF (TRAIN-only) params={best_params} | FINAL AUC={auc_fin:.3f} | Acc={acc:.3f}")
-
-    if displayConfusionMatrix:
-        cm = metrics.confusion_matrix(y_fin, preds, labels=[-1, 1])
-        metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["Anomaly", "Normal"]).plot()
-        plt.show()
-
-    return acc, auc_fin
+    return best_if, best_obj, thr, Z_fi, y_fin, best_params
 
 
 def cp_rank_search_isolation_forest(data_bundle):
     print("CP rank search (Isolation Forest)")
+    rank_best_if = None
+    rank_best_obj = None
+    rank_best_thr = None
+    rank_Z_fi = None
+    rank_y_fin = None
+    rank_best_param = None
+    rank_best_rank = None
+
     startRank = 10; endRank = 385; step = 5
-    rank_score = {}
     for rank in range(startRank, endRank, step):
         print("Rank:", rank)
-        acc, auc = parafac_isolation_forest(rank, data_bundle, displayConfusionMatrix=False)
-        rank_score[rank] = auc
-        print("Accuracy", acc, "AUC", auc)
-    print("AUC by rank:", rank_score)
-    bestRank = max(rank_score, key=rank_score.get)
-    return bestRank, rank_score[bestRank]
+        best_if, best_obj, thr, Z_fi, y_fin, best_params = parafac_isolation_forest(rank, data_bundle, displayConfusionMatrix=False)
+        if rank_best_obj is None or best_obj < rank_best_obj:
+            rank_best_obj = best_obj
+            rank_best_if = best_if
+            rank_best_thr = thr
+            rank_Z_fi = Z_fi
+            rank_y_fin = y_fin
+            rank_best_param = best_params
+            rank_best_rank = rank
+
+            # --- Intermediate scoring ---
+            s_fi = -rank_best_if.score_samples(rank_Z_fi)  # anomaly-positive
+            preds = np.where(s_fi >= rank_best_thr, -1, 1)
+            acc = float(np.mean(preds == rank_y_fin))
+            auc_fin = manual_auc(rank_y_fin, s_fi, positive_label=-1)
+            print(f"CP+IF Intermediate result rank={rank_best_rank} AUC={auc_fin} ACC={acc} obj={rank_best_obj}"
+                  f"| params={rank_best_param} "
+                  f"| thr={rank_best_thr:.6f} "
+                  f"| target_FP={VAL_FP_TARGET:.3f}")
+
+    # --- FINAL scoring ---
+    s_fi = -rank_best_if.score_samples(rank_Z_fi)  # anomaly-positive
+    preds = np.where(s_fi >= rank_best_thr, -1, 1)
+    acc = float(np.mean(preds == rank_y_fin))
+    auc_fin = manual_auc(rank_y_fin, s_fi, positive_label=-1)
+    print(f"CP+IF Final result rank={rank_best_rank} AUC={auc_fin} ACC={acc} obj={rank_best_obj}"
+          f"| params={rank_best_param} "
+          f"| thr={rank_best_thr:.6f} "
+          f"| target_FP={VAL_FP_TARGET:.3f}")
+
 
 # Raw-pixel IsolationForest (no decomposition), using shared data path
 def isolation_forest_anomaly(data_bundle, displayConfusionMatrix=False, random_state=42):
@@ -1596,45 +1618,55 @@ def tucker_isolation_forests(rank, data_bundle, displayConfusionMatrix=False, ra
                 q = 100.0 * (1.0 - float(VAL_FP_TARGET))
                 thr = float(np.percentile(s_va, q))
 
-    # --- FINAL scoring ---
-    s_fi = -best_if.score_samples(Z_fi)
-    if thr is None:
-        preds = best_if.predict(Z_fi)
-    else:
-        preds = np.where(s_fi >= thr, -1, 1)
-
-    acc = float(np.mean(preds == y_fin))
-    auc_fin = manual_auc(y_fin, s_fi, positive_label=-1)
-
-    if thr is not None:
-        print(f"Tucker+IF ({feature_mode}, VAL typical-only) params={best_params} | thr={thr:.6f} "
-              f"| target_FP={VAL_FP_TARGET:.3f} | FINAL AUC={auc_fin:.3f} | Acc={acc:.3f}")
-    else:
-        print(f"Tucker+IF ({feature_mode}, TRAIN-only) params={best_params} | FINAL AUC={auc_fin:.3f} | Acc={acc:.3f}")
-
-    if displayConfusionMatrix:
-        cm = metrics.confusion_matrix(y_fin, preds, labels=[-1, 1])
-        metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["Anomaly", "Normal"]).plot()
-        plt.show()
-
-    return acc, auc_fin
+    return best_if, best_obj, thr, Z_fi, y_fin, best_params
 
 
 def tucker_rank_search_isolation_forest(data_bundle):
     print("Tucker rank search (Isolation Forest)")
+
+    rank_best_if = None
+    rank_best_obj = None
+    rank_best_thr = None
+    rank_Z_fi = None
+    rank_y_fin = None
+    rank_best_param = None
+    rank_best_rank = None
+
     rankSet = sorted({5, 16, 32, 64})
-    rank_score = {}
     for i in rankSet:
         for j in rankSet:
             for k in sorted({5, 16}):  # keep k modest (band mode)
                 r = (i, j, k)
                 print("Rank:", r)
-                acc, auc = tucker_isolation_forests(r, data_bundle, feature_mode=TUCKER_FEATURE_MODE)
-                rank_score[r] = auc
-                print("Accuracy:", acc, "AUC", auc)
-    print("AUC by rank:", rank_score)
-    bestRank = max(rank_score, key=rank_score.get)
-    return bestRank, rank_score[bestRank]
+                best_if, best_obj, thr, Z_fi, y_fin, best_params = tucker_isolation_forests(r, data_bundle, feature_mode=TUCKER_FEATURE_MODE)
+                if rank_best_obj is None or best_obj < rank_best_obj:
+                    rank_best_obj = best_obj
+                    rank_best_if = best_if
+                    rank_best_thr = thr
+                    rank_Z_fi = Z_fi
+                    rank_y_fin = y_fin
+                    rank_best_param = best_params
+                    rank_best_rank = r
+
+                    # --- Intermediate scoring ---
+                    s_fi = -rank_best_if.score_samples(rank_Z_fi)
+                    preds = np.where(s_fi >= rank_best_thr, -1, 1)
+                    acc = float(np.mean(preds == rank_y_fin))
+                    auc_fin = manual_auc(rank_y_fin, s_fi, positive_label=-1)
+                    print(f"Tucker+IF Intermediate result rank={rank_best_rank} AUC={auc_fin} ACC={acc} obj={rank_best_obj}"
+                          f"| params={rank_best_param} "
+                          f"| thr={rank_best_thr:.6f} "
+                          f"| target_FP={VAL_FP_TARGET:.3f}")
+
+    # --- FINAL scoring ---
+    s_fi = -rank_best_if.score_samples(rank_Z_fi)
+    preds = np.where(s_fi >= rank_best_thr, -1, 1)
+    acc = float(np.mean(preds == rank_y_fin))
+    auc_fin = manual_auc(rank_y_fin, s_fi, positive_label=-1)
+    print(f"Tucker+IF Final result rank={rank_best_rank} AUC={auc_fin} ACC={acc} obj={rank_best_obj}"
+          f"| params={rank_best_param} "
+          f"| thr={rank_best_thr:.6f} "
+          f"| target_FP={VAL_FP_TARGET:.3f}")
 
 
 # Entry (reads once, then passes data to pipelines)
@@ -1664,8 +1696,7 @@ if enable_cp_autoencoder:
         autoencoder(data_bundle)
     else:
         if use_predefined_rank == False:
-            bestRank, bestAUC = cp_rank_search_autoencoder(data_bundle)
-            print("Best CP rank (autoencoder):", bestRank, bestAUC)
+            cp_rank_search_autoencoder(data_bundle)
         else:
             print("Running CP+autoencoder at a fixed rank")
             bestRank = 85
@@ -1673,8 +1704,7 @@ if enable_cp_autoencoder:
 
 if enable_tucker_autoencoder:
     if use_predefined_rank == False:
-        bestRank, bestAUC = tucker_rank_search_autoencoder(data_bundle)
-        print("Best Tucker rank (autoencoder):", bestRank, bestAUC)
+        tucker_rank_search_autoencoder(data_bundle)
     else:
         print("Running Tucker+autoencoder at a fixed rank")
         rank = (5, 5, 35)
@@ -1688,8 +1718,7 @@ if enable_cp_isolation_forest:
         print("IsolationForest (raw) accuracy:", accuracy)
     else:
         if use_predefined_rank == False:
-            bestRank, bestAUC = cp_rank_search_isolation_forest(data_bundle)
-            print("Best CP rank (Isolation Forest):", bestRank, bestAUC)
+            cp_rank_search_isolation_forest(data_bundle)
         else:
             print("Running CP+Isolation Forest at a fixed rank")
             bestRank = 24
@@ -1697,8 +1726,7 @@ if enable_cp_isolation_forest:
 
 if enable_tucker_isolation_forest:
     if use_predefined_rank == False:
-        bestRank, bestAUC = tucker_rank_search_isolation_forest(data_bundle)
-        print("Best Tucker rank (Isolation Forest):", bestRank, bestAUC)
+        tucker_rank_search_isolation_forest(data_bundle)
     else:
         print("Running Tucker+Isolation Forest at a fixed rank")
         rank = (5, 65, 5)
