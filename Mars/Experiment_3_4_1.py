@@ -40,8 +40,8 @@ enable_tucker_oc_svm = False
 enable_tucker_autoencoder = False
 enable_tucker_isolation_forest = False
 enable_cp_oc_svm = False
-enable_cp_autoencoder = False
-enable_cp_isolation_forest = True
+enable_cp_autoencoder = True
+enable_cp_isolation_forest = False
 
 no_decomposition = False  # set to False to run raw pixel models
 RUN_VISUALIZATION = False
@@ -808,8 +808,10 @@ def parafac_OC_SVM(rank, data_bundle,
 
         # Typical-only VAL: minimize FP@0, tie-break on P95 and mean
         fp_rate = float((s_val >= 0.0).mean())
-        score_tuple = (fp_rate)
-        aux = f"FP={fp_rate:.3f}"
+        p95 = float(np.percentile(s_val, 95))
+        mean_s = float(np.mean(s_val))
+        score_tuple = (fp_rate, p95, mean_s)
+        aux = f"FP={fp_rate:.3f}, P95={p95:.4f}, mean={mean_s:.4f}"
 
         if (best_score_tuple is None) or (score_tuple < best_score_tuple):
             best_score_tuple = score_tuple
@@ -817,24 +819,10 @@ def parafac_OC_SVM(rank, data_bundle,
             best_params = params
             best_aux_print = aux
 
-    sel_mode = "one-class"
-    print(f"CP+OCSVM (VAL {sel_mode}) chose {best_params} ({best_aux_print})")
-
-    # FINAL evaluation
-    s_fin = -best_model.decision_function(Hfin_w).ravel()
-    auc_fin = manual_auc(y_fin, s_fin, positive_label=-1)
-    print(f"CP+OCSVM FINAL AUC={auc_fin:.3f}")
-
-    th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, s_fin, positive_label=-1)
-    print(f"CP+OCSVM threshold={th_opt:.6f} | accuracy={acc_opt:.3f}")
-    if displayConfusionMatrix:
-        y_pred_thresh = np.where(s_fin >= th_opt, -1, 1)
-        cm = metrics.confusion_matrix(y_fin, y_pred_thresh, labels=[-1, 1])
-        disp = metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["Anomaly", "Normal"])
-        disp.plot(); plt.show()
+    print(f"CP+OCSVM (VAL one-class) rank {rank} chose {best_params} ({best_aux_print})")
 
     print("Elapsed:", round(time.time() - start_time, 2), "s")
-    return acc_opt, auc_fin
+    return best_score_tuple, best_model, Hfin_w, y_fin
 
 
 def ocsvm_only(
@@ -932,16 +920,27 @@ def one_class_svm():
 # Rank search now reuses the preloaded bundle
 def cp_rank_search_one_class_svm(data_bundle):
     print("CP rank search (One-class SVM)")
+
+    rank_best_score_tuple = None
+    rank_best_model = None
+    rank_best_rank = None
+    rank_H_fin = None
+
     startRank = 10; endRank = 385; step = 5  # tighter range for speed
-    rank_score = {}
     for rank in range(startRank, endRank, step):
         print("Rank:", rank)
-        acc, auc = parafac_OC_SVM(rank, data_bundle, use_pca_whiten=True)
-        rank_score[rank] = auc
-        print("Accuracy:", acc, "AUC", auc)
-    print("AUC by rank:", rank_score)
-    bestRank = max(rank_score, key=rank_score.get)
-    return bestRank, rank_score[bestRank]
+        best_score_tuple, best_model, Hfin_w, y_fin = parafac_OC_SVM(rank, data_bundle, use_pca_whiten=True)
+        if (rank_best_score_tuple is None or best_score_tuple < rank_best_score_tuple):
+            rank_best_score_tuple = best_score_tuple
+            rank_best_model = best_model
+            rank_best_rank = rank
+            rank_H_fin = Hfin_w
+
+    # FINAL evaluation
+    s_fin = -rank_best_model.decision_function(rank_H_fin).ravel()
+    auc_fin = manual_auc(y_fin, s_fin, positive_label=-1)
+    th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, s_fin, positive_label=-1)
+    print(f"CP+OCSVM RANK={rank_best_rank} AUC={auc_fin:.4f} | accuracy={acc_opt:.3f}")
 
 
 #
@@ -990,13 +989,10 @@ def tucker_one_class_svm(rank, data_bundle, displayConfusionMatrix=False,
         "nu":     [0.01, 0.02, 0.05, 0.1, 0.2],
     }
 
-    use_auc_on_val = (y_val is not None) and (np.isin(-1, y_val).any() and np.isin(1, y_val).any())
-
     best_tuple = None
     best_model = None
     best_params = None
     best_aux = ""
-    best_val_auc = None
 
     for p in ParameterGrid(param_grid):
         m = OneClassSVM(**p).fit(Z_tr)
@@ -1004,44 +1000,22 @@ def tucker_one_class_svm(rank, data_bundle, displayConfusionMatrix=False,
         if not np.all(np.isfinite(s_val)):
             continue
 
-        if use_auc_on_val:
-            auc = manual_auc(y_val, s_val, positive_label=-1)
-            if not np.isfinite(auc):
-                continue
-            obj = (-auc,)  # maximize AUC
-            aux = f"AUC={auc:.3f}"
-        else:
-            fp  = float((s_val >= 0.0).mean())
-            p95 = float(np.percentile(s_val, 95))
-            mean_s = float(np.mean(s_val))
-            obj = (fp, p95, mean_s)
-            aux = f"FP={fp:.3f}, P95={p95:.4f}, mean={mean_s:.4f}"
-            auc = None
+        fp  = float((s_val >= 0.0).mean())
+        p95 = float(np.percentile(s_val, 95))
+        mean_s = float(np.mean(s_val))
+        obj = (fp, p95, mean_s)
+        aux = f"FP={fp:.3f}, P95={p95:.4f}, mean={mean_s:.4f}"
 
         if (best_tuple is None) or (obj < best_tuple):
             best_tuple = obj
             best_model = m
             best_params = dict(p)
             best_aux = aux
-            best_val_auc = auc
 
-    sel_mode = "AUC" if use_auc_on_val else "one-class"
-    extra = f" | VAL AUC={best_val_auc:.3f}" if (use_auc_on_val and best_val_auc is not None) else ""
-    print(f"Tucker+OCSVM ({feature_mode}, VAL {sel_mode}) chose {best_params} ({best_aux}){extra}")
+    sel_mode = "one-class"
+    print(f"Tucker+OCSVM ({feature_mode}, VAL {sel_mode}) chose {best_params} ({best_aux})")
 
-    # FINAL evaluation
-    s_fin = -best_model.decision_function(Z_fi).ravel()
-    auc_fin = manual_auc(y_fin, s_fin, positive_label=-1)
-    th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, s_fin, positive_label=-1)
-    print(f"Tucker+OCSVM FINAL AUC={auc_fin:.3f} | Acc@best={acc_opt:.3f}")
-
-    if displayConfusionMatrix:
-        y_pred = np.where(s_fin >= th_opt, -1, 1)
-        cm = metrics.confusion_matrix(y_fin, y_pred, labels=[-1, 1])
-        metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["Anomaly", "Normal"]).plot()
-        plt.show()
-
-    return acc_opt, auc_fin
+    return best_model, best_tuple, Z_fi, y_fin
 
 
 def tucker_rank_search_one_class_svm(data_bundle):
@@ -1050,18 +1024,28 @@ def tucker_rank_search_one_class_svm(data_bundle):
     """
     print("Tucker rank search (One-class SVM)")
     rankSet = sorted({5, 16, 32, 64})
-    rank_score = {}
+    rank_best_model = None
+    rank_best_tuple = None
+    rank_Z_fi = None
+    rank_y_fin = None
     for i in rankSet:
         for j in rankSet:
             for k in sorted({5, 16}):
                 r = (i, j, k)
                 print("Rank:", i, j, k)
-                acc, auc = tucker_one_class_svm(r, data_bundle, feature_mode=TUCKER_FEATURE_MODE)
-                rank_score[r] = auc
-                print("Accuracy:", acc, "AUC", auc)
-    print("AUC by rank:", rank_score)
-    bestRank = max(rank_score, key=rank_score.get)
-    return bestRank, rank_score[bestRank]
+                best_model, best_tuple, Z_fi, y_fin = tucker_one_class_svm(r, data_bundle, feature_mode=TUCKER_FEATURE_MODE)
+                if (rank_best_tuple is None) or (best_tuple < rank_best_tuple):
+                    rank_best_tuple = best_tuple
+                    rank_best_model = best_model
+                    rank_Z_fi = Z_fi
+                    rank_y_fin = y_fin
+
+    # FINAL evaluation
+    s_fin = -rank_best_model.decision_function(rank_Z_fi).ravel()
+    auc_fin = manual_auc(rank_y_fin, s_fin, positive_label=-1)
+    th_opt, acc_opt = _pick_threshold_max_accuracy(rank_y_fin, s_fin, positive_label=-1)
+    print(f"Tucker+OCSVM FINAL AUC={auc_fin:.3f} | Acc@best={acc_opt:.3f}")
+
 
 #
 # CP with Autoencoder (uses common CP fit/proj + common data)
@@ -1081,8 +1065,7 @@ def parafac_autoencoder(rank, factor, bottleneck, data_bundle,
     # Global CP -> H matrices
     (A, B, C), H_train, H_val, H_fin = cp_fit_and_project(
         X_train, X_val, X_fin, rank,
-        random_state=random_state,
-        cp_basis_max_train_samples=cp_basis_max_train_samples
+        random_state=random_state
     )
 
     # Scale features (and optional PCA whitening) fit on TRAIN only
@@ -1122,6 +1105,8 @@ def parafac_autoencoder(rank, factor, bottleneck, data_bundle,
     recon_va = autoencoder.predict(Z_va, verbose=0)
     err_va = np.mean(np.square(Z_va - recon_va), axis=1)
     threshold = np.percentile(err_va, 95)
+
+    print(f'Train/Val err sum={np.sum(err_va)} err mean={np.mean(err_va)} threshold={threshold}')
 
     # Score FINAL
     recon_fi = autoencoder.predict(Z_fi, verbose=0)
@@ -1646,17 +1631,14 @@ if enable_cp_oc_svm:
         one_class_svm()
     else:
         if use_predefined_rank == False:
-            bestRank, bestAUC = cp_rank_search_one_class_svm(data_bundle)
-            print("Best CP rank (OC-SVM):", bestRank, bestAUC)
+            cp_rank_search_one_class_svm(data_bundle)
         else:
-            print("Running CP OC-SVM at a fixed rank")
-            bestRank = 24
-            parafac_OC_SVM(bestRank, data_bundle, True)
+            rank = 70
+            parafac_OC_SVM(rank, data_bundle, use_pca_whiten=True)
 
 if enable_tucker_oc_svm:
     if use_predefined_rank == False:
-        bestRank, bestAUC = tucker_rank_search_one_class_svm(data_bundle)
-        print("Best Tucker rank (OC-SVM):", bestRank, bestAUC)
+        tucker_rank_search_one_class_svm(data_bundle)
     else:
         print("Running Tucker OC-SVM at a fixed rank")
         rank = (5, 5, 35)
