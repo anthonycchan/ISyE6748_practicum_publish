@@ -1242,8 +1242,8 @@ def cp_rank_search_autoencoder(data_bundle):
     startRank = 10
     endRank = 385
     step = 5
-    for factor in range(1, 2):
-        for bottleneck in {16}:
+    for factor in range(1, 4):
+        for bottleneck in {16, 32, 64}:
             for i in range(startRank, endRank, step):
                 rank = i
                 print("Factor:", factor, "Bottleneck:", bottleneck, "Rank:", i)
@@ -1346,8 +1346,7 @@ def tucker_rank_search_autoencoder(data_bundle):
     best_rank = None
 
     rankSet = sorted({5, 16, 32, 64})
-    # for factor in range(1, 4):
-    for factor in range(3, 4):
+    for factor in range(1, 4):
         for bottleneck in {16, 32, 64}:
             for i in rankSet:
                 for j in rankSet:
