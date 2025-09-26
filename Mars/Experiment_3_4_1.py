@@ -39,7 +39,7 @@ use_predefined_rank = False
 enable_tucker_oc_svm = False
 enable_tucker_autoencoder = False
 enable_tucker_isolation_forest = False
-enable_cp_oc_svm = False
+enable_cp_oc_svm = True
 enable_cp_autoencoder = True
 enable_cp_isolation_forest = False
 
@@ -936,11 +936,16 @@ def cp_rank_search_one_class_svm(data_bundle):
             rank_best_rank = rank
             rank_H_fin = Hfin_w
 
+            s_fin = -rank_best_model.decision_function(rank_H_fin).ravel()
+            auc_fin = manual_auc(y_fin, s_fin, positive_label=-1)
+            th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, s_fin, positive_label=-1)
+            print(f"CP+OCSVM Intermediate result RANK={rank_best_rank} AUC={auc_fin:.4f} | accuracy={acc_opt:.3f}" )
+
     # FINAL evaluation
     s_fin = -rank_best_model.decision_function(rank_H_fin).ravel()
     auc_fin = manual_auc(y_fin, s_fin, positive_label=-1)
     th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, s_fin, positive_label=-1)
-    print(f"CP+OCSVM RANK={rank_best_rank} AUC={auc_fin:.4f} | accuracy={acc_opt:.3f}")
+    print(f"CP+OCSVM Final result RANK={rank_best_rank} AUC={auc_fin:.4f} | accuracy={acc_opt:.3f}")
 
 
 #
@@ -1028,6 +1033,7 @@ def tucker_rank_search_one_class_svm(data_bundle):
     rank_best_tuple = None
     rank_Z_fi = None
     rank_y_fin = None
+    rank_best_rank = None
     for i in rankSet:
         for j in rankSet:
             for k in sorted({5, 16}):
@@ -1039,12 +1045,19 @@ def tucker_rank_search_one_class_svm(data_bundle):
                     rank_best_model = best_model
                     rank_Z_fi = Z_fi
                     rank_y_fin = y_fin
+                    rank_best_rank = r
+
+                    # Intermediate evaluation
+                    s_fin = -rank_best_model.decision_function(rank_Z_fi).ravel()
+                    auc_fin = manual_auc(rank_y_fin, s_fin, positive_label=-1)
+                    th_opt, acc_opt = _pick_threshold_max_accuracy(rank_y_fin, s_fin, positive_label=-1)
+                    print(f"Tucker+OCSVM Intermediate result RANK={rank_best_rank} FINAL AUC={auc_fin} | Acc@best={acc_opt}")
 
     # FINAL evaluation
     s_fin = -rank_best_model.decision_function(rank_Z_fi).ravel()
     auc_fin = manual_auc(rank_y_fin, s_fin, positive_label=-1)
     th_opt, acc_opt = _pick_threshold_max_accuracy(rank_y_fin, s_fin, positive_label=-1)
-    print(f"Tucker+OCSVM FINAL AUC={auc_fin:.3f} | Acc@best={acc_opt:.3f}")
+    print(f"Tucker+OCSVM Final result RANK={rank_best_rank} FINAL AUC={auc_fin} | Acc@best={acc_opt}")
 
 
 #
@@ -1106,7 +1119,8 @@ def parafac_autoencoder(rank, factor, bottleneck, data_bundle,
     err_va = np.mean(np.square(Z_va - recon_va), axis=1)
     threshold = np.percentile(err_va, 95)
 
-    print(f'Train/Val err sum={np.sum(err_va)} err mean={np.mean(err_va)} threshold={threshold}')
+    print(f'Train/Val err rank={rank} sum={np.sum(err_va)} err mean={np.mean(err_va)} threshold={threshold}')
+    return Z_fi, threshold, y_fin
 
     # Score FINAL
     recon_fi = autoencoder.predict(Z_fi, verbose=0)
