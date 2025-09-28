@@ -27,7 +27,6 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input, Dense, Dropout
 from tensorflow.keras.callbacks import EarlyStopping
 
-
 random.seed(1)
 
 # Paths & toggles
@@ -35,16 +34,28 @@ train_data        = "Data/Reduced/set_1/train"        # typical only
 validation_data   = "Data/Reduced/set_1/validation"   # typical only
 test_typical_data = "Data/Reduced/set_1/test_typical" # typical
 test_anomaly_data = "Data/Reduced/set_1/test_novel"   # novel
+#test_anomaly_data = "Data/Reduced/set_2/test_novel"   # novel
+#test_anomaly_data = "Data/Full/test_novel/bedrock"   # novel
+#test_anomaly_data = "Data/Full/test_novel/broken-rock"   # novel
+#test_anomaly_data = "Data/Full/test_novel/drill-hole"   # novel
+#test_anomaly_data = "Data/Full/test_novel/drt"   # novel
+#test_anomaly_data = "Data/Full/test_novel/dump-pile"   # novel
+#test_anomaly_data = "Data/Full/test_novel/edge_cases"   # novel
+#test_anomaly_data = "Data/Full/test_novel/float"   # novel
+#test_anomaly_data = "Data/Full/test_novel/meteorite"   # novel
+#test_anomaly_data = "Data/Full/test_novel/other"   # novel
+#test_anomaly_data = "Data/Full/test_novel/scuff"   # novel
+#test_anomaly_data = "Data/Full/test_novel/veins"   # novel
 
 use_predefined_rank = False
 enable_tucker_oc_svm = False
 enable_tucker_autoencoder = False
 enable_tucker_isolation_forest = False
-enable_cp_oc_svm = True
-enable_cp_autoencoder = False
+enable_cp_oc_svm = False
+enable_cp_autoencoder = True
 enable_cp_isolation_forest = False
 
-no_decomposition = False  # set to False to run raw pixel models
+no_decomposition = True  # set to False to run raw pixel models
 RUN_VISUALIZATION = False
 
 # Optional: standardize bands using TRAIN stats
@@ -63,9 +74,6 @@ VAL_FRACTION = 0.5  # only used if no separate validation dir
 TL_BACKEND = "pytorch"   # change to "numpy" to force CPU
 DEVICE = "cuda"
 USE_GPU_CP = True
-
-# Use global vs per-tile CP decomposition. True for global, False for per tile
-USE_GLOBAL_CP = True
 
 # Options: "both" (core + factors), "core" (core only), "factors" (factors only)
 TUCKER_FEATURE_MODE = "core"
@@ -212,41 +220,6 @@ def _dir_has_npy(d):
     except Exception:
         return False
 
-def displayImages(X, imageSetIndx):
-    numSets = 3
-    grid_size = (numSets, 6)
-    fig, axs = plt.subplots(grid_size[0], grid_size[1], figsize=(8, 3))
-    fig.subplots_adjust(hspace=0.2, wspace=0.2)
-    i = 0
-    for set_indx in imageSetIndx:
-        img_array = X[set_indx, :, :, :]
-        for j in range(grid_size[1]):
-            axs[i, j].imshow(img_array[:, :, j])
-            axs[i, j].set_xticks([]); axs[i, j].set_yticks([])
-        i = i + 1
-
-# Plot signals
-def plot_signals(X, num_sets):
-    avgSignalsInSets = []
-    for curSet in range(num_sets):
-        image_set = X[curSet, :, :, :]
-        n_images_in_set = image_set.shape[2]
-        signal = np.zeros(image_set.shape[0] * image_set.shape[1])
-        for i in range(n_images_in_set):
-            signal = signal + image_set[:, :, i].ravel(order='F')
-        signal = signal / n_images_in_set
-        avgSignalsInSets.append(signal)
-    grid_size = (5, 2)
-    fig, axs = plt.subplots(grid_size[0], grid_size[1], figsize=(10, 5))
-    fig.subplots_adjust(hspace=0.5, wspace=0.5)
-    index = 0
-    for i in range(grid_size[0]):
-        for j in range(grid_size[1]):
-            axs[i, j].plot(avgSignalsInSets[index])
-            axs[i, j].set_xticks([]); axs[i, j].set_yticks([])
-            index = index + 1
-            axs[i, j].set_title(f'Image set ({index})')
-
 # CP/Tucker decompose (robust)
 def decompose_tensor_tucker(tensor, rank, *, mode="hosvd_fast"):
     """
@@ -364,7 +337,6 @@ def buildTensor(X, rank, num_sets, isTuckerDecomposition=True, ordered=False):
             return decompose_tensor_tucker(X[i], rank, mode="hosvd_fast")
         else:
             factors = decompose_tensor_parafac(X[i], rank)
-            #print('X tile ',i, ' done')
             return factors
 
     if ordered:
@@ -415,209 +387,6 @@ def extractFeatures(decomposed_data, num_sets, isTuckerDecomposition=True, featu
         return np.array(features)
 
 
-def _cp_features_energy_sorted_spectral(decomp_list, rank):
-    """
-    Turn a list of per-tile CP decompositions into comparable features by:
-      - sorting components by spectral energy (||C[:,r]||^2),
-      - flipping sign so max(C[:,r]) >= 0,
-      - concatenating the ordered spectral columns (and energies).
-    Returns: np.ndarray shape (N, 6*rank + rank)  # spectral columns + energies
-    """
-    feats = []
-    for dec in decomp_list:
-        # Accept either (A,B,C) or (weights, [A,B,C]); handle both
-        if isinstance(dec, (list, tuple)) and len(dec) == 2:
-            factors = dec[1]         # (A,B,C)
-        else:
-            # assume (A,B,C) directly
-            factors = dec
-        A, B, C = factors  # C: (6, R)
-        R = C.shape[1]
-
-        # energy & order
-        e = np.sum(C * C, axis=0)       # (R,)
-        order = np.argsort(-e)[:rank]   # top-R by energy
-        C_ord = C[:, order]             # (6, r')
-
-        # sign flip: make max entry in each column positive
-        signs = np.sign(np.max(np.abs(C_ord), axis=0))  # note: use peak magnitude
-        # choose sign so the *actual* max entry (not just magnitude) is positive
-        for j in range(C_ord.shape[1]):
-            col = C_ord[:, j]
-            if col[np.argmax(np.abs(col))] < 0:
-                C_ord[:, j] = -col
-
-        e_ord = e[order]
-        feat = np.concatenate([C_ord.T.reshape(-1), e_ord], axis=0)
-        feats.append(feat)
-
-    return np.asarray(feats, dtype=np.float32)
-
-def _cp_features_energy_sorted_full_simple(decomp_list, rank):
-    """
-    Like _cp_features_energy_sorted_spectral but also appends simple spatial stats
-    from A and B (per selected component): L2 norms and variances.
-    Returns: (N, 6*rank + rank + 2*rank + 2*rank) = (N, 11*rank)
-    """
-    import numpy as np
-    feats = []
-    for dec in decomp_list:
-        # Accept (weights,[A,B,C]) or (A,B,C)
-        factors = dec[1] if (isinstance(dec, (list, tuple)) and len(dec) == 2) else dec
-        A, B, C = factors  # A:(64,R) B:(64,R) C:(6,R)
-        R = C.shape[1]
-
-        # spectral energy + order (same as original)
-        e = np.sum(C * C, axis=0)          # (R,)
-        order = np.argsort(-e)[:rank]
-        C_ord = C[:, order]                # (6,rank)
-        e_ord = e[order]                   # (rank,)
-
-        # sign-align spectral columns only (spatial stats are sign-invariant)
-        for j in range(C_ord.shape[1]):
-            col = C_ord[:, j]
-            if col[np.argmax(np.abs(col))] < 0:
-                C_ord[:, j] = -col
-
-        A_ord = A[:, order]
-        B_ord = B[:, order]
-
-        # simple spatial summaries per component (sign-invariant)
-        A_l2 = np.linalg.norm(A_ord, axis=0)          # (rank,)
-        B_l2 = np.linalg.norm(B_ord, axis=0)          # (rank,)
-        A_var = np.var(A_ord, axis=0)                 # (rank,)
-        B_var = np.var(B_ord, axis=0)                 # (rank,)
-
-        # features: [C columns] + [C energy] + [A_l2, B_l2, A_var, B_var]
-        feat = np.concatenate([C_ord.T.reshape(-1), e_ord, A_l2, B_l2, A_var, B_var], axis=0)
-        feats.append(feat)
-
-    return np.asarray(feats, dtype=np.float32)
-
-def _cp_features_energy_sorted_full(decomp_list, rank):
-    """
-    Energy-sorted CP features with richer spectral + spatial stats.
-    Per component (after energy sort & sign-fix on C), we append:
-      - Spectral shape (6): L2-normalized C column
-      - log-energy (1)
-      - peak index in [0,1] (1)
-      - contrast = max-min (1)
-      - roughness: ||ΔC||_2 and ||Δ²C||_2 (2)
-      - Spatial COM & spread from A,B (mu_x, mu_y, var_x, var_y) (4)
-      - Spatial entropy (Hx, Hy), anisotropy (var_x/var_y) (3)
-      - L2 norms of A and B (2)
-    => 6 + 1 + 1 + 1 + 2 + 4 + 3 + 2 = 20 dims per component
-    Returns array of shape (N, 20*rank) as float32. If R < rank, pads zeros.
-    Accepts dec as (weights,[A,B,C]) or (A,B,C).
-    """
-    import numpy as np
-
-    def _unpack_cp(dec):
-        if isinstance(dec, (list, tuple)):
-            if len(dec) == 2 and isinstance(dec[1], (list, tuple)) and len(dec[1]) == 3:
-                A, B, C = dec[1]
-            elif len(dec) == 3:
-                A, B, C = dec
-            else:
-                raise ValueError("Unexpected CP decomposition format.")
-        else:
-            raise ValueError("Unexpected CP decomposition type.")
-        return (np.asarray(A, dtype=np.float32),
-                np.asarray(B, dtype=np.float32),
-                np.asarray(C, dtype=np.float32))
-
-    eps = 1e-12
-    feats = []
-
-    for dec in decomp_list:
-        A, B, C = _unpack_cp(dec)         # A:(I,R) B:(J,R) C:(6,R)
-        R = int(C.shape[1])
-        use = int(min(rank, R))
-
-        # ---- Energy sort on spectral factor C
-        e = np.sum(C * C, axis=0) + eps   # (R,)
-        order = np.argsort(-e)[:use]
-        A_ord = A[:, order]
-        B_ord = B[:, order]
-        C_ord = C[:, order]
-        e_ord = e[order]
-
-        # ---- Sign align C columns (stable orientation)
-        for j in range(C_ord.shape[1]):
-            col = C_ord[:, j]
-            if col[np.argmax(np.abs(col))] < 0:
-                C_ord[:, j] = -col
-
-        # ---- Spectral shape & descriptors
-        C_l2 = np.linalg.norm(C_ord, axis=0) + eps
-        C_shape = C_ord / C_l2                # (6, use), scale-free
-        d1 = np.diff(C_shape, axis=0)         # (5, use)
-        d2 = np.diff(C_shape, n=2, axis=0)    # (4, use)
-
-        peak_idx = np.argmax(C_shape, axis=0).astype(np.float32)
-        if C_shape.shape[0] > 1:
-            peak_idx = peak_idx / (C_shape.shape[0] - 1.0)  # normalize to [0,1]
-        contrast = (np.max(C_shape, axis=0) - np.min(C_shape, axis=0))
-        d1_l2 = np.sqrt(np.sum(d1 * d1, axis=0))
-        d2_l2 = np.sqrt(np.sum(d2 * d2, axis=0))
-        loge = np.log(e_ord).astype(np.float32)
-
-        # ---- Spatial morphology from A,B (sign-invariant via squares)
-        a2 = A_ord * A_ord
-        b2 = B_ord * B_ord
-        pa = a2 / (np.sum(a2, axis=0, keepdims=True) + eps)   # (I,use)
-        pb = b2 / (np.sum(b2, axis=0, keepdims=True) + eps)   # (J,use)
-
-        # coordinates in [0,1] to make moments comparable across sizes
-        Ix = np.linspace(0.0, 1.0, A_ord.shape[0], dtype=np.float32)[:, None]
-        Iy = np.linspace(0.0, 1.0, B_ord.shape[0], dtype=np.float32)[:, None]
-
-        mu_x = np.sum(Ix * pa, axis=0)                       # (use,)
-        mu_y = np.sum(Iy * pb, axis=0)
-        var_x = np.sum(((Ix - mu_x) ** 2) * pa, axis=0)
-        var_y = np.sum(((Iy - mu_y) ** 2) * pb, axis=0)
-
-        def _entropy(p):
-            return -np.sum(p * np.log(p + eps), axis=0)
-
-        Hx = _entropy(pa) / np.log(pa.shape[0] + eps)        # normalized to [0,1]
-        Hy = _entropy(pb) / np.log(pb.shape[0] + eps)
-        anis = var_x / (var_y + eps)
-
-        A_l2 = np.linalg.norm(A_ord, axis=0)
-        B_l2 = np.linalg.norm(B_ord, axis=0)
-
-        # ---- Stack per-component features in a fixed order
-        # [C_shape(6), loge, peak_idx, contrast, d1_l2, d2_l2,
-        #  mu_x, mu_y, var_x, var_y, Hx, Hy, anis, A_l2, B_l2]  => 20 per comp
-        comp = np.concatenate([
-            C_shape.T,                       # (use, 6)
-            loge[:, None],                   # (use, 1)
-            peak_idx[:, None],               # (use, 1)
-            contrast[:, None],               # (use, 1)
-            d1_l2[:, None],                  # (use, 1)
-            d2_l2[:, None],                  # (use, 1)
-            mu_x[:, None], mu_y[:, None],    # (use, 1), (use, 1)
-            var_x[:, None], var_y[:, None],  # (use, 1), (use, 1)
-            Hx[:, None], Hy[:, None],        # (use, 1), (use, 1)
-            anis[:, None],                   # (use, 1)
-            A_l2[:, None], B_l2[:, None],    # (use, 1), (use, 1)
-        ], axis=1)                           # (use, 20)
-
-        feat = comp.reshape(-1).astype(np.float32)
-
-        # Pad to keep output length = 20 * rank (helps downstream shapes)
-        if use < rank:
-            feat = np.concatenate(
-                [feat, np.zeros((20 * (rank - use),), dtype=np.float32)],
-                axis=0
-            )
-
-        feats.append(feat)
-
-    return np.asarray(feats, dtype=np.float32)
-
-
 # Evaluation helpers
 def manual_auc(y_true, scores, positive_label=-1):
     """
@@ -654,63 +423,17 @@ def _pick_threshold_max_accuracy(y_true, scores, positive_label=-1):
             best_acc = acc; best_th = th
     return float(best_th), float(best_acc)
 
-# (Optional) CP/Tucker viz helper
-def visualize_cp_scores(H, labels=None, title="CP sample coefficients (H)", use_pca=True):
-    """
-    Quick views for H (samples x components):
-      - heatmap (z-scored)
-      - 2D scatter using first two components or PCA(2)
-    """
-    H = np.asarray(H)
-    n, r = H.shape
-
-    # Heatmap
-    H_std = StandardScaler(with_mean=True, with_std=True).fit_transform(H)
-    plt.figure()
-    plt.imshow(H_std, aspect='auto', interpolation='nearest')
-    plt.xlabel("Component")
-    plt.ylabel("Sample")
-    plt.title(f"{title} — heatmap (z-scored)")
-    plt.colorbar()
-    plt.tight_layout()
-
-    # 2D view
-    if r >= 2:
-        if use_pca and r > 2:
-            XY = PCA(n_components=2, random_state=0).fit_transform(H_std)
-            subtitle = "PCA(2) of H"
-        else:
-            XY = H_std[:, :2]
-            subtitle = "Components [0,1] of H"
-
-        plt.figure()
-        if labels is None:
-            plt.scatter(XY[:, 0], XY[:, 1], s=12, alpha=0.8)
-        else:
-            labels = np.asarray(labels)
-            for val in np.unique(labels):
-                m = labels == val
-                plt.scatter(XY[m, 0], XY[m, 1], s=14, alpha=0.85, label=str(val))
-            plt.legend(title="label")
-        plt.title(f"{title} — {subtitle}")
-        plt.xlabel("X")
-        plt.ylabel("Y")
-        plt.tight_layout()
-    else:
-        # rank == 1: show histogram of the lone coefficient
-        plt.figure()
-        if labels is None:
-            plt.hist(H_std[:, 0], bins=30)
-        else:
-            for val in np.unique(labels):
-                m = labels == val
-                plt.hist(H_std[m, 0], bins=30, alpha=0.6, label=str(val))
-            plt.legend(title="label")
-        plt.title(f"{title} — component 0 distribution")
-        plt.xlabel("z-scored coefficient")
-        plt.ylabel("count")
-        plt.tight_layout()
-    plt.show()
+def show_raw_tile(X, idx=0, bands=(0,1,2,3,4,5), title="Raw tile"):
+    Xo = np.asarray(X)[idx]  # (64,64,6)
+    n = len(bands)
+    fig, axes = plt.subplots(1, n, figsize=(3.5*n, 3.5))
+    for i, b in enumerate(bands):
+        ax = axes[i]
+        ax.imshow(Xo[:, :, b], interpolation="nearest")
+        ax.set_title(f"raw band {b}")
+        ax.axis("off")
+    fig.suptitle(f"{title} (idx={idx})")
+    plt.tight_layout(); plt.show()
 
 def cp_reconstruct_tile(A, B, C, h):
     """
@@ -754,248 +477,6 @@ def visualize_cp_reconstruction(A, B, C, H, X_ref=None, idx=0, bands=(0,1,2,3,4,
     plt.tight_layout()
     plt.show()
 
-def visualize_cp_row_global(
-    A, B, C, H, X_ref=None, tile_idx=0, row=32, bands=(0, 1, 2), title_prefix=""
-):
-    """
-    Line-plot a single row (y = `row`) across columns for selected bands,
-    comparing the original vs reconstruction under the global CP model.
-
-    Parameters
-    ----------
-    A,B,C : np.ndarray
-        Global CP factors with shapes A:(64,R), B:(64,R), C:(6,R).
-    H : np.ndarray
-        Per-tile coefficients, shape (N,R).
-    X_ref : np.ndarray or None
-        Reference image stack (N,64,64,6). If None, only reconstruction is shown.
-    tile_idx : int
-        Which tile to visualize.
-    row : int
-        Row index [0..63] to plot.
-    bands : tuple[int]
-        Spectral bands to show.
-    title_prefix : str
-        Adds context to the title (e.g., rank info).
-    """
-    import numpy as np
-    import matplotlib.pyplot as plt
-
-    # Guard and clamp
-    row = int(max(0, min(row, A.shape[0] - 1)))
-
-    # Reconstruct the chosen tile
-    h = np.asarray(H)[tile_idx]
-    Xhat = cp_reconstruct_tile(A, B, C, h)  # (64,64,6)
-
-    n_b = len(bands)
-    cols = Xhat.shape[1]
-    xs = np.arange(cols)
-
-    plt.figure(figsize=(4 * n_b, 3.6))
-    for i, b in enumerate(bands):
-        ax = plt.subplot(1, n_b, i + 1)
-
-        y_recon = Xhat[row, :, b]
-        if X_ref is not None:
-            y_orig = np.asarray(X_ref)[tile_idx, row, :, b]
-            ax.plot(xs, y_orig, label="orig")
-        ax.plot(xs, y_recon, linestyle="--", label="recon")
-
-        if X_ref is not None:
-            err = y_recon - y_orig
-            ax.plot(xs, err, alpha=0.5, label="residual")
-
-        ax.set_title(f"row {row}, band {b}")
-        ax.set_xlabel("column (x)")
-        ax.set_ylabel("intensity")
-        ax.grid(True, alpha=0.3)
-        ax.legend(fontsize=8)
-
-    plt.suptitle(f"{title_prefix} CP row view (tile={tile_idx})")
-    plt.tight_layout()
-    plt.show()
-
-def visualize_cp_row_image_global(
-    A, B, C, H, X_ref=None, tile_idx=0, row=32, bands=(0, 1, 2),
-    thickness=2, show_errors=True, title_prefix="", save_path=None
-):
-    """
-    Show image panels (per band) with the selected ROW highlighted:
-      - Original tile band (if X_ref provided)
-      - Reconstruction from global CP (A,B,C) and H[tile_idx]
-      - |Original - Reconstruction| heatmap (optional)
-
-    Parameters
-    ----------
-    A,B,C : np.ndarray
-        Global CP factors, shapes A:(64,R), B:(64,R), C:(6,R).
-    H : np.ndarray
-        Per-tile coefficients, shape (N,R).
-    X_ref : np.ndarray or None
-        Reference stack (N,64,64,6). If None, only reconstruction & error off.
-    tile_idx : int
-        Which tile to visualize.
-    row : int
-        Row index [0..63] to highlight.
-    bands : tuple[int]
-        Bands to display (default: (0,1,2)).
-    thickness : int
-        How many pixels thick to highlight around `row`.
-    show_errors : bool
-        If True and X_ref is provided, show absolute error panel.
-    title_prefix : str
-        Extra text for the suptitle (e.g., 'rank=20').
-    save_path : str or None
-        If provided, save the figure to this path.
-    """
-    import numpy as np
-    import matplotlib.pyplot as plt
-    import os
-
-    H = np.asarray(H)
-    row = int(np.clip(row, 0, A.shape[0]-1))
-    thickness = max(1, int(thickness))
-
-    # Reconstruct chosen tile using global CP
-    h = H[tile_idx]
-    Xhat = cp_reconstruct_tile(A, B, C, h)  # (64,64,6)
-
-    # Figure layout: per band we show 2 or 3 panels
-    n_b = len(bands)
-    n_cols = 3 if (show_errors and X_ref is not None) else 2
-    fig, axes = plt.subplots(
-        nrows=n_b, ncols=n_cols, figsize=(4.2 * n_cols, 3.8 * n_b),
-        squeeze=False
-    )
-
-    def _draw_row(ax, r, t, color="yellow", alpha=0.35):
-        # Highlight a horizontal stripe centered at row r
-        y0 = r - (t - 1) / 2.0 - 0.5
-        y1 = r + (t - 1) / 2.0 + 0.5
-        ax.axhspan(y0, y1, color=color, alpha=alpha, lw=0)
-
-    for i, b in enumerate(bands):
-        # Establish common intensity scale per band for fair comparison
-        if X_ref is not None:
-            Xo = np.asarray(X_ref)[tile_idx, :, :, b]
-            Xr = Xhat[:, :, b]
-            lo = np.percentile([Xo.min(), Xr.min()], 1)
-            hi = np.percentile([Xo.max(), Xr.max()], 99)
-        else:
-            Xo = None
-            Xr = Xhat[:, :, b]
-            lo = np.percentile(Xr, 1)
-            hi = np.percentile(Xr, 99)
-
-        col = 0
-
-        if Xo is not None:
-            ax = axes[i, col]; col += 1
-            im = ax.imshow(Xo, vmin=lo, vmax=hi, interpolation="nearest")
-            ax.set_title(f"orig (band {b})")
-            ax.axis("off")
-            _draw_row(ax, row, thickness)
-        else:
-            # If no original is available, fill the first cell with recon
-            pass
-
-        ax = axes[i, col]; col += 1
-        im = ax.imshow(Xr, vmin=lo, vmax=hi, interpolation="nearest")
-        ax.set_title(f"recon (band {b})")
-        ax.axis("off")
-        _draw_row(ax, row, thickness, color="lime")
-
-        if (show_errors and Xo is not None):
-            ax = axes[i, col]
-            err = np.abs(Xr - Xo)
-            # scale error to its own robust range for visibility
-            elo, ehi = np.percentile(err, [1, 99])
-            im = ax.imshow(err, vmin=elo, vmax=ehi, interpolation="nearest")
-            ax.set_title(f"|orig - recon| (band {b})")
-            ax.axis("off")
-            _draw_row(ax, row, thickness, color="red", alpha=0.25)
-
-    supt = f"{title_prefix} CP row highlight (tile={tile_idx}, row={row})"
-    fig.suptitle(supt)
-    fig.tight_layout(rect=[0, 0, 1, 0.98])
-
-    if save_path:
-        os.makedirs(os.path.dirname(save_path), exist_ok=True)
-        fig.savefig(save_path, dpi=160)
-    plt.show()
-
-
-def _unpack_cp_factors_from_decomp(dec):
-    """
-    Accept either (A,B,C) or (weights, [A,B,C]) and return A,B,C as np.float32.
-    """
-    if isinstance(dec, (list, tuple)):
-        if len(dec) == 2 and isinstance(dec[1], (list, tuple)) and len(dec[1]) == 3:
-            A, B, C = dec[1]
-        elif len(dec) == 3:
-            A, B, C = dec
-        else:
-            raise ValueError("Unexpected CP decomposition format.")
-    else:
-        raise ValueError("Unexpected CP decomposition type.")
-    return np.asarray(A, dtype=np.float32), np.asarray(B, dtype=np.float32), np.asarray(C, dtype=np.float32)
-
-
-def visualize_cp_reconstruction_per_tile(decomp_list, X_ref, idx=0,
-                                         bands=(0,1,2,3,4,5),
-                                         title_prefix="CP (per-tile)"):
-    """
-    Show original vs reconstruction for a single tile decomposed with *per-tile* CP.
-
-    Parameters
-    ----------
-    decomp_list : list
-        Output of buildTensor(..., isTuckerDecomposition=False) for a split.
-        Each element is either (A,B,C) or (weights,[A,B,C]).
-    X_ref : np.ndarray
-        The corresponding image stack for that split, shape (N,64,64,6).
-    idx : int
-        Tile index to visualize.
-    bands : tuple[int]
-        Bands to display (default: all 6).
-    title_prefix : str
-        Suptitle prefix.
-    """
-    import numpy as np
-    import matplotlib.pyplot as plt
-
-    # 1) Pull factors for tile idx (robust to different return formats)
-    A, B, C = _unpack_cp_factors_from_decomp(decomp_list[idx])
-
-    # 2) Compute per-tile coefficients h by LS projection onto its *own* basis
-    #    (reuse your existing Gram/projection helpers)
-    Ginv = precompute_cp_projection(A, B, C)          # (R×R)
-    g    = _g_vector_for_tile(X_ref[idx], A, B, C)    # (R,)
-    h    = (Ginv @ g).astype(np.float32)              # (R,)
-
-    # 3) Reconstruct from (A,B,C,h) and display next to original
-    Xhat = cp_reconstruct_tile(A, B, C, h)
-
-    n = len(bands)
-    plt.figure(figsize=(3*n, 6))
-    for i, b in enumerate(bands):
-        # Top row: original
-        ax = plt.subplot(2, n, i+1)
-        ax.imshow(np.asarray(X_ref)[idx, :, :, b], interpolation="nearest")
-        ax.set_title(f"orig band {b}")
-        ax.axis("off")
-
-        # Bottom row: reconstruction
-        ax = plt.subplot(2, n, n+i+1)
-        ax.imshow(Xhat[:, :, b], interpolation="nearest")
-        ax.set_title(f"recon band {b}")
-        ax.axis("off")
-
-    plt.suptitle(f"{title_prefix} reconstruction (tile idx={idx})")
-    plt.tight_layout()
-    plt.show()
-
 
 def _unpack_tucker_from_decomp(dec):
     """
@@ -1008,7 +489,6 @@ def _unpack_tucker_from_decomp(dec):
     if not (isinstance(factors, (list, tuple)) and len(factors) == 3):
         raise ValueError("Unexpected Tucker factors; expected [U1, U2, U3].")
     U1, U2, U3 = factors
-    import numpy as np
     return (np.asarray(core, dtype=np.float32),
             np.asarray(U1,   dtype=np.float32),
             np.asarray(U2,   dtype=np.float32),
@@ -1020,7 +500,6 @@ def tucker_reconstruct_tile(core, U1, U2, U3):
     Reconstruct a single tile from Tucker (core, U1, U2, U3).
     Shapes: core:(r1,r2,r3), U1:(I,r1), U2:(J,r2), U3:(K,r3) -> Xhat:(I,J,K)
     """
-    import numpy as np
     # Xhat = core ×1 U1 ×2 U2 ×3 U3
     return np.einsum('abc,ia,jb,kc->ijk', core, U1, U2, U3, optimize=True)
 
@@ -1048,8 +527,6 @@ def visualize_tucker_reconstruction_per_tile(
     save_path : str or None
         If provided, save the figure to this path.
     """
-    import numpy as np, matplotlib.pyplot as plt, os
-
     core, U1, U2, U3 = _unpack_tucker_from_decomp(decomp_list[idx])
     Xhat = tucker_reconstruct_tile(core, U1, U2, U3)
 
@@ -1170,45 +647,6 @@ def project_cp_coeffs(X, A, B, C, Ginv=None):
         H[n] = Ginv @ g
     return H.astype(np.float32)
 
-# Torch-based projection (used in GPU path)
-def project_cp_coeffs_torch(X, A, B, C, device="cuda", batch=256, eps=1e-8):
-    """
-    Torch projection of X: (N,64,64,6) onto CP basis (A,B,C).
-    Returns H: (N,R) as np.float32.
-    """
-    assert X.ndim == 4 and X.shape[1:] == (64, 64, 6), "X must be (N,64,64,6)"
-    A_t = torch.as_tensor(A, dtype=torch.float32, device=device)
-    B_t = torch.as_tensor(B, dtype=torch.float32, device=device)
-    C_t = torch.as_tensor(C, dtype=torch.float32, device=device)
-
-    # Ginv = ((A^T A) * (B^T B) * (C^T C))^{-1}
-    AtA = A_t.T @ A_t
-    BtB = B_t.T @ B_t
-    CtC = C_t.T @ C_t
-    G = AtA * BtB * CtC
-    R = G.shape[0]
-    G = G + eps * torch.eye(R, device=device, dtype=G.dtype)
-    Ginv = torch.linalg.inv(G)
-
-    N = X.shape[0]
-    H_out = torch.empty((N, R), dtype=torch.float32, device=device)
-
-    for s in range(0, N, batch):
-        e = min(s + batch, N)
-        Xb = torch.as_tensor(X[s:e], dtype=torch.float32, device=device)  # (B,64,64,6)
-
-        # g[n,r] = <X_n, a[:,r] ∘ b[:,r] ∘ c[:,r]>
-        t1 = torch.einsum('nijk,ir->nrjk', Xb, A_t)   # (B,R,64,6)
-        t2 = torch.einsum('nrjk,jr->nrk', t1, B_t)    # (B,R,6)
-        g  = torch.einsum('nrk,kr->nr', t2, C_t)      # (B,R)
-
-        H_out[s:e] = (g @ Ginv).to(torch.float32)
-
-        del Xb, t1, t2, g
-        if isinstance(device, str) and device.startswith('cuda'):
-            torch.cuda.empty_cache()
-
-    return H_out.detach().cpu().numpy().astype(np.float32)
 
 def ocsvm_gamma_grid_for_dim(d):
     base = 1.0 / max(d, 1)
@@ -1340,19 +778,10 @@ def parafac_OC_SVM(rank, data_bundle,
     )
 
     if RUN_VISUALIZATION:
-        #visualize_cp_scores(H_train, labels=None, title=f"H_train (rank={rank})")
-        visualize_cp_reconstruction(A, B, C, H_train, X_ref=X_train, idx=0, bands=(0, 1, 2))
-        #visualize_cp_row_global(A, B, C, H_train, X_ref=X_train,
-        #                        tile_idx=0, row=32, bands=(0, 1, 2),
-        #                        title_prefix=f"rank={rank}")
-
-        #visualize_cp_row_image_global(
-        #    A, B, C, H_train,
-        #    X_ref=X_train, tile_idx=0, row=32, bands=(0, 1, 2),
-        #    thickness=3, show_errors=True,
-        #    title_prefix=f"rank={rank}",
-        #    save_path=f"viz/cp_row_rank{rank}_tile0_row32.png"
-        #)
+        print('raw tiles')
+        show_raw_tile(X_train, idx=0)
+        print('visualize_cp_reconstruction')
+        visualize_cp_reconstruction(A, B, C, H_train, X_ref=X_train, idx=0)
 
     # Scale
     scaler = StandardScaler()
@@ -1366,10 +795,10 @@ def parafac_OC_SVM(rank, data_bundle,
         Htr_w  = pca.fit_transform(Htr_s)
         Hval_w = pca.transform(Hval_s)
         Hfin_w = pca.transform(Hfin_s)
-        feat_dim = Htr_w.shape[1]
     else:
         Htr_w, Hval_w, Hfin_w = Htr_s, Hval_s, Hfin_s
-        feat_dim = Htr_w.shape[1]
+
+    feat_dim = Htr_w.shape[1]
 
     # OC-SVM search (gamma scaled by 1/d)
     param_grid = {
@@ -1391,10 +820,10 @@ def parafac_OC_SVM(rank, data_bundle,
 
         # Typical-only VAL: minimize FP@0, tie-break on P95 and mean
         fp_rate = float((s_val >= 0.0).mean())
-        #p95 = float(np.percentile(s_val, 95))
-        #mean_s = float(np.mean(s_val))
-        score_tuple = (fp_rate)
-        aux = f"FP={fp_rate:.3f}"
+        p95 = float(np.percentile(s_val, 95))
+        mean_s = float(np.mean(s_val))
+        score_tuple = (fp_rate, p95, mean_s)
+        aux = f"FP={fp_rate:.3f}, P95={p95:.4f}, mean={mean_s:.4f}"
 
         if (best_score_tuple is None) or (score_tuple < best_score_tuple):
             best_score_tuple = score_tuple
@@ -1402,276 +831,10 @@ def parafac_OC_SVM(rank, data_bundle,
             best_params = params
             best_aux_print = aux
 
-    sel_mode = "one-class"
-    print(f"CP+OCSVM (VAL {sel_mode}) chose {best_params} ({best_aux_print})")
-
-    # FINAL evaluation
-    s_fin = -best_model.decision_function(Hfin_w).ravel()
-    auc_fin = manual_auc(y_fin, s_fin, positive_label=-1)
-    print(f"CP+OCSVM FINAL AUC={auc_fin:.3f}")
-
-    th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, s_fin, positive_label=-1)
-    print(f"CP+OCSVM threshold={th_opt:.6f} | accuracy={acc_opt:.3f}")
-    if displayConfusionMatrix:
-        y_pred_thresh = np.where(s_fin >= th_opt, -1, 1)
-        cm = metrics.confusion_matrix(y_fin, y_pred_thresh, labels=[-1, 1])
-        disp = metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["Anomaly", "Normal"])
-        disp.plot(); plt.show()
+    print(f"CP+OCSVM (VAL one-class) rank {rank} chose {best_params} ({best_aux_print})")
 
     print("Elapsed:", round(time.time() - start_time, 2), "s")
-    return acc_opt, auc_fin
-
-def parafac_OC_SVM_per_tile(
-        rank,
-        data_bundle,
-        displayConfusionMatrix=False,
-        use_pca_whiten=True,
-        random_state=42):
-    """
-    CP (per-tile) + OC-SVM with VAL-driven hyperparameter search.
-
-    Flow:
-      1) Decompose each TRAIN/VAL/FINAL tile independently with CP(rank)
-         via buildTensor(..., isTuckerDecomposition=False).
-      2) extractFeatures(..., isTuckerDecomposition=False) to build feature vectors.
-      3) Standardize on TRAIN only; optional PCA(whiten=True) (house style).
-      4) ParameterGrid over {'kernel':'rbf', 'gamma': scaled grid for dim d, 'nu': list}
-         - If VAL has both classes -> maximize AUC on VAL.
-         - Else (typical-only VAL) -> minimize FP@0, tie-break with P95 and mean.
-      5) Evaluate on FINAL: print FINAL AUC and max-accuracy threshold/accuracy.
-
-    Returns:
-      float: FINAL-set accuracy at the chosen (max-accuracy) threshold.
-    """
-    # ---- Load splits (and optional band standardization) ----
-    X_train, X_val, X_fin, y_val, y_fin, _, _ = get_splits(
-        data_bundle, standardize=USE_BAND_STANDARDIZE
-    )
-
-    n_tr, n_va, n_fi = X_train.shape[0], X_val.shape[0], X_fin.shape[0]
-
-    # ---- Per-tile CP decompositions ----
-    decomp_tr = buildTensor(X_train, rank, n_tr, isTuckerDecomposition=False)
-    decomp_va = buildTensor(X_val,   rank, n_va, isTuckerDecomposition=False)
-    decomp_fi = buildTensor(X_fin,   rank, n_fi, isTuckerDecomposition=False)
-
-    if RUN_VISUALIZATION:
-        visualize_cp_reconstruction_per_tile(decomp_tr, X_train, idx=0, bands=(0,1,2),
-                                             title_prefix=f"rank={rank}")
-    # ---- Feature extraction ----
-    Feat_tr = _cp_features_energy_sorted_full(decomp_tr, rank)
-    Feat_va = _cp_features_energy_sorted_full(decomp_va, rank)
-    Feat_fi = _cp_features_energy_sorted_full(decomp_fi, rank)
-
-    # ---- Scale on TRAIN only ----
-    scaler = StandardScaler()
-    Xtr = scaler.fit_transform(Feat_tr)
-    Xv  = scaler.transform(Feat_va)
-    Xte = scaler.transform(Feat_fi)
-
-    # ---- Optional PCA whitening (house style: after scaling) ----
-    if use_pca_whiten:
-        pca = PCA(whiten=True, svd_solver='auto', random_state=random_state)
-        Z_tr = pca.fit_transform(Xtr)
-        Z_va = pca.transform(Xv)
-        Z_te = pca.transform(Xte)
-    else:
-        Z_tr, Z_va, Z_te = Xtr, Xv, Xte
-
-    # ---- Hyperparameter search on VAL ----
-    d = Z_tr.shape[1]
-    param_grid = {
-        "kernel": ["rbf"],
-        "gamma":  ocsvm_gamma_grid_for_dim(d) + ["scale", "auto"],
-        "nu":     [0.01, 0.02, 0.05, 0.10, 0.20],
-    }
-
-    best_obj = None
-    best_model = None
-    best_params = None
-    best_aux = ""
-
-    for p in ParameterGrid(param_grid):
-        try:
-            model = OneClassSVM(**p).fit(Z_tr)
-            s_val = -model.decision_function(Z_va).ravel()  # larger => more anomalous
-
-            if not np.all(np.isfinite(s_val)):
-                continue
-
-            # Typical-only VAL: minimize FP at default cutoff 0,
-            # then tie-break using P95 and mean (lower is better).
-            fp_rate = float((s_val >= 0.0).mean())
-            #p95     = float(np.percentile(s_val, 95))
-            #mean_s  = float(np.mean(s_val))
-            obj = (fp_rate)
-            aux = f"FP={fp_rate:.3f}"
-
-            if best_obj is None or obj < best_obj:
-                best_obj = obj
-                best_model = model
-                best_params = dict(p)
-                best_aux = aux
-
-        except Exception:
-            # Skip bad param combos rather than failing the run
-            continue
-
-    # Fallback if nothing selected
-    if best_model is None:
-        best_params = {"kernel": "rbf", "gamma": 1.0 / max(d, 1), "nu": 0.10}
-        best_model = OneClassSVM(**best_params).fit(Z_tr)
-        best_aux = "(fallback)"
-
-    print(f"[CP+OCSVM (per-tile)] chose {best_params} ({best_aux})")
-
-    # ---- FINAL evaluation ----
-    s_fin = -best_model.decision_function(Z_te).ravel()
-
-    # AUC with anomaly-positive convention (-1 treated as positive)
-    auc_fin = manual_auc(y_fin, s_fin, positive_label=-1)
-    print(f"[CP+OCSVM (per-tile)] FINAL AUC={auc_fin:.3f}")
-
-    # Threshold chosen by max accuracy on FINAL (to match house prints)
-    th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, s_fin, positive_label=-1)
-    print(f"[CP+OCSVM (per-tile)] threshold={th_opt:.6f} | accuracy={acc_opt:.3f}")
-    print(f"Rank: {rank} Accuracy {acc_opt:.4f} AUC {auc_fin:.6f}")
-
-    if displayConfusionMatrix:
-        y_pred = np.where(s_fin >= th_opt, -1, 1)
-        cm = metrics.confusion_matrix(y_fin, y_pred, labels=[1, -1])
-        print("[CP+OCSVM (per-tile)] Confusion matrix (rows=true [typical, anomaly], cols=pred):")
-        print(cm)
-
-    return float(acc_opt), auc_fin
-
-
-# Optional raw-pixel OC-SVM
-def ocsvm_raw_geography(displayConfusionMatrix=False):
-    # Speed toggles
-    _USE_PCA = False
-    _PCA_COMPONENTS = 256
-    _PARALLEL_GRID = True
-    _SVM_CACHE_MB = 1024
-    _SVM_TOL = 1e-2
-    _SVM_MAX_ITER = -1
-    _USE_NYSTROEM = False
-    _NY_COMPONENTS = 512
-
-    if _USE_PCA:
-        from sklearn.decomposition import PCA
-    if _USE_NYSTROEM:
-        from sklearn.kernel_approximation import Nystroem
-    if _PARALLEL_GRID:
-        from joblib import Parallel, delayed
-
-    # Load data
-    X_train, _ = readData(
-        train_data,
-        max_files=(REDUCE_TRAIN_N if REDUCE_DATASETS else None),
-        random_state=REDUCE_SEED
-    )
-    X_test, true_labels = readData_test(
-        test_typical_data, test_anomaly_data,
-        max_typical=(REDUCE_TEST_TYP_N if REDUCE_DATASETS else None),
-        max_anomaly=(REDUCE_TEST_ANO_N if REDUCE_DATASETS else None),
-        random_state=REDUCE_SEED
-    )
-
-    # Per-band standardization (if enabled)
-    if USE_BAND_STANDARDIZE:
-        mu, sig = fit_band_standardizer(X_train)
-        X_train = apply_band_standardizer(X_train, mu, sig)
-        X_test  = apply_band_standardizer(X_test,  mu, sig)
-
-    # Flatten + scale
-    n_train = X_train.shape[0]; n_test = X_test.shape[0]
-    X_train_flat = X_train.reshape(n_train, -1)
-    X_test_flat  = X_test.reshape(n_test,  -1)
-
-    scaler = StandardScaler(copy=False)
-    X_train_scaled = scaler.fit_transform(X_train_flat)
-    X_test_scaled  = scaler.transform(X_test_flat)
-
-    if _USE_PCA:
-        pca = PCA(n_components=_PCA_COMPONENTS, svd_solver='randomized', random_state=REDUCE_SEED)
-        X_train_scaled = pca.fit_transform(X_train_scaled)
-        X_test_scaled  = pca.transform(X_test_scaled)
-
-    def fit_eval_linear_on_map(gamma):
-        mapper = Nystroem(gamma=gamma, n_components=_NY_COMPONENTS, random_state=REDUCE_SEED)
-        Z_train = mapper.fit_transform(X_train_scaled)
-        Z_test  = mapper.transform(X_test_scaled)
-        return Z_train, Z_test
-
-    param_grid = {
-        'nu': [0.05, 0.1, 0.2],
-        'gamma': ['scale', 'auto', 0.001, 0.01, 0.1],
-        'kernel': ['rbf', 'poly', 'sigmoid']
-    }
-
-    best_acc = -1; best_model = None; best_params = None
-    y_true = np.asarray(true_labels)
-
-    def _train_eval(params):
-        p = dict(params)
-        p.setdefault('cache_size', _SVM_CACHE_MB)
-        p.setdefault('tol', _SVM_TOL)
-        p.setdefault('max_iter', _SVM_MAX_ITER)
-
-        if _USE_NYSTROEM and p.get('kernel', 'rbf') == 'rbf' and p['gamma'] not in ('scale', 'auto'):
-            Z_train, Z_test = fit_eval_linear_on_map(p['gamma'])
-            p_lin = dict(nu=p['nu'], kernel='linear', cache_size=_SVM_CACHE_MB, tol=_SVM_TOL, max_iter=_SVM_MAX_ITER)
-            model = OneClassSVM(**p_lin).fit(Z_train)
-            preds = model.predict(Z_test)
-        else:
-            model = OneClassSVM(**p).fit(X_train_scaled)
-            preds = model.predict(X_test_scaled)
-
-        acc = float(np.mean(preds == y_true))
-        return acc, params, model
-
-    grid_list = list(ParameterGrid(param_grid))
-    if _USE_NYSTROEM:
-        grid_list = [g for g in grid_list if (g['kernel'] == 'rbf' or not _USE_NYSTROEM)]
-
-    if _PARALLEL_GRID:
-        from joblib import Parallel, delayed
-        results = Parallel(n_jobs=-1, prefer="threads", verbose=0)(
-            delayed(_train_eval)(p) for p in grid_list
-        )
-    else:
-        results = [_train_eval(p) for p in grid_list]
-
-    for acc, params, model in results:
-        if acc > best_acc:
-            best_acc, best_params, best_model = acc, params, model
-
-    print(f"Best accuracy at default cutoff (0): {best_acc:.3f} with params: {best_params}")
-
-    if _USE_NYSTROEM and best_params.get('kernel', 'rbf') == 'rbf' and best_params['gamma'] not in ('scale', 'auto'):
-        Z_train, Z_test = fit_eval_linear_on_map(best_params['gamma'])
-        predictions_default = best_model.predict(Z_test)
-        scores_normal = best_model.decision_function(Z_test).ravel()
-    else:
-        predictions_default = best_model.predict(X_test_scaled)
-        scores_normal = best_model.decision_function(X_test_scaled).ravel()
-
-    scores_anom = -scores_normal  # anomaly-positive
-    accuracy_default = float(np.mean(predictions_default == y_true))
-    print("Accuracy @ default cutoff (0):", accuracy_default)
-    auc_manual = manual_auc(y_true, scores_anom, positive_label=-1)
-    print("ROC AUC (anomaly-positive):", auc_manual)
-
-    th_opt, acc_opt = _pick_threshold_max_accuracy(y_true, scores_anom, positive_label=-1)
-    print(f"Chosen threshold (max-accuracy on ROC scores): {th_opt:.6f} | accuracy={acc_opt:.3f}")
-
-    if displayConfusionMatrix:
-        cm = metrics.confusion_matrix(y_true, np.where(scores_anom >= th_opt, -1, 1), labels=[-1, 1])
-        disp = metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["Anomaly", "Normal"])
-        disp.plot(); plt.show()
-
-    return acc_opt, best_params
+    return best_score_tuple, best_model, Hfin_w, y_fin, best_params, best_aux_print
 
 
 def ocsvm_only(
@@ -1722,27 +885,32 @@ def ocsvm_only(
         "nu": [0.01, 0.02, 0.05, 0.10, 0.20],
     }
 
-    best_obj = None
     best_model = None
     best_params = None
-    best_aux = ""
+    best_aux_print = None
+    best_score_tuple = None
 
-    for p in ParameterGrid(param_grid):
-        model = OneClassSVM(**p).fit(Ztr)
+    for params in ParameterGrid(param_grid):
+        model = OneClassSVM(**params).fit(Ztr)
         s_val = -model.decision_function(Zv).ravel()  # larger => more anomalous
 
         # Typical-only VAL: minimize FP@0
         fp_rate = float((s_val >= 0.0).mean())
-        obj = fp_rate
-        aux = f"FP={fp_rate:.3f}"
+        p95 = float(np.percentile(s_val, 95))
+        mean_s = float(np.mean(s_val))
+        score_tuple = (fp_rate, p95, mean_s)
+        aux = f"FP={fp_rate:.3f}, P95={p95:.4f}, mean={mean_s:.4f}"
 
-        if (best_obj is None) or (obj < best_obj):
-            best_obj, best_model, best_params, best_aux = obj, model, dict(p), aux
+        if (best_score_tuple is None) or (score_tuple < best_score_tuple):
+            best_score_tuple = score_tuple
+            best_model = model
+            best_params = params
+            best_aux_print = aux
 
     if best_model is None:
         raise RuntimeError("OC-SVM grid search failed to select a model.")
 
-    print(f"OCSVM (VAL one-class) chose {best_params} ({best_aux})")
+    print(f"OCSVM (VAL one-class) chose {best_params} ({best_aux_print})")
 
     # --- FINAL evaluation ---
     s_fin  = -best_model.decision_function(Zte).ravel()
@@ -1769,19 +937,38 @@ def one_class_svm():
 # Rank search now reuses the preloaded bundle
 def cp_rank_search_one_class_svm(data_bundle):
     print("CP rank search (One-class SVM)")
+
+    rank_best_score_tuple = None
+    rank_best_model = None
+    rank_best_rank = None
+    rank_H_fin = None
+    rank_best_params = None
+    rank_best_aux_print = None
+
     startRank = 10; endRank = 385; step = 5  # tighter range for speed
-    rank_score = {}
     for rank in range(startRank, endRank, step):
         print("Rank:", rank)
-        if USE_GLOBAL_CP:
-            acc, auc = parafac_OC_SVM(rank, data_bundle, use_pca_whiten=True)
-        else:
-            acc, auc = parafac_OC_SVM_per_tile(rank, data_bundle, displayConfusionMatrix=False, use_pca_whiten=True, random_state=42)
-        rank_score[rank] = auc
-        print("Accuracy:", acc, "AUC", auc)
-    print("AUC by rank:", rank_score)
-    bestRank = max(rank_score, key=rank_score.get)
-    return bestRank, rank_score[bestRank]
+        best_score_tuple, best_model, Hfin_w, y_fin, best_params, best_aux_print = parafac_OC_SVM(rank, data_bundle, use_pca_whiten=True)
+        if (rank_best_score_tuple is None or best_score_tuple < rank_best_score_tuple):
+            rank_best_score_tuple = best_score_tuple
+            rank_best_model = best_model
+            rank_best_rank = rank
+            rank_H_fin = Hfin_w
+            rank_best_params = best_params
+            rank_best_aux_print = best_aux_print
+
+            s_fin = -rank_best_model.decision_function(rank_H_fin).ravel()
+            auc_fin = manual_auc(y_fin, s_fin, positive_label=-1)
+            th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, s_fin, positive_label=-1)
+            print(f"CP+OCSVM Intermediate result RANK={rank_best_rank} AUC={auc_fin} | ACC={acc_opt} "
+                  f"| param=({rank_best_params}) | aux={rank_best_aux_print}" )
+
+    # FINAL evaluation
+    s_fin = -rank_best_model.decision_function(rank_H_fin).ravel()
+    auc_fin = manual_auc(y_fin, s_fin, positive_label=-1)
+    th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, s_fin, positive_label=-1)
+    print(f"CP+OCSVM Final result RANK={rank_best_rank} AUC={auc_fin} | ACC={acc_opt} "
+          f"| param=({rank_best_params}) | aux={rank_best_aux_print}" )
 
 
 #
@@ -1806,7 +993,7 @@ def tucker_one_class_svm(rank, data_bundle, displayConfusionMatrix=False,
 
     if RUN_VISUALIZATION:
         visualize_tucker_reconstruction_per_tile(
-            decomp_tr, X_train, idx=750, bands=(0, 1, 2),
+            decomp_tr, X_train, idx=0, bands=(0, 1, 2, 3, 4, 5),
             title_prefix=f"Tucker rank={tuple(rank)}",
             save_path=f"viz/tucker_recon_rank{tuple(rank)}_tile0.png"
         )
@@ -1823,88 +1010,39 @@ def tucker_one_class_svm(rank, data_bundle, displayConfusionMatrix=False,
 
     # Hyperparameter search on VAL
     d = Z_tr.shape[1]
-    gamma_grid = [1.0 / max(d, 1) * t for t in (0.1, 0.3, 1.0, 3.0, 10.0)] + ["scale"]
     param_grid = {
         "kernel": ["rbf"],
-        "gamma":  gamma_grid,
-        "nu":     [0.01, 0.02, 0.05, 0.1, 0.2],
+        "gamma":  ocsvm_gamma_grid_for_dim(d) + ["scale", "auto"],
+        "nu":     [0.01, 0.02, 0.05, 0.1, 0.2]
     }
-
-    use_auc_on_val = (y_val is not None) and (np.isin(-1, y_val).any() and np.isin(1, y_val).any())
 
     best_tuple = None
     best_model = None
     best_params = None
     best_aux = ""
-    best_val_auc = None
 
     for p in ParameterGrid(param_grid):
-        try:
-            m = OneClassSVM(**p).fit(Z_tr)
-            s_val = -m.decision_function(Z_va).ravel()  # anomaly-positive scores
-            if not np.all(np.isfinite(s_val)):
-                continue
-
-            if use_auc_on_val:
-                auc = manual_auc(y_val, s_val, positive_label=-1)
-                if not np.isfinite(auc):
-                    continue
-                obj = (-auc,)  # maximize AUC
-                aux = f"AUC={auc:.3f}"
-            else:
-                fp  = float((s_val >= 0.0).mean())
-                p95 = float(np.percentile(s_val, 95))
-                mean_s = float(np.mean(s_val))
-                obj = (fp, p95, mean_s)
-                aux = f"FP={fp:.3f}, P95={p95:.4f}, mean={mean_s:.4f}"
-                auc = None
-
-            if (best_tuple is None) or (obj < best_tuple):
-                best_tuple = obj
-                best_model = m
-                best_params = dict(p)
-                best_aux = aux
-                best_val_auc = auc
-        except Exception:
+        m = OneClassSVM(**p).fit(Z_tr)
+        s_val = -m.decision_function(Z_va).ravel()  # anomaly-positive scores
+        if not np.all(np.isfinite(s_val)):
             continue
 
-    if best_model is None:
-        # Reasonable defaults if VAL selection fails
-        for p in [{"kernel": "rbf", "gamma": 1.0 / max(d, 1), "nu": 0.1},
-                  {"kernel": "rbf", "gamma": "scale",           "nu": 0.1}]:
-            try:
-                best_model = OneClassSVM(**p).fit(Z_tr)
-                best_params = p
-                best_aux = "(fallback)"
-                break
-            except Exception:
-                pass
-        if best_model is None:
-            # Last resort: distance-to-mean scorer on FINAL
-            mu = Z_tr.mean(axis=0, keepdims=True)
-            s_fin = np.linalg.norm(Z_fi - mu, axis=1)
-            auc_fin = manual_auc(y_fin, s_fin, positive_label=-1)
-            th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, s_fin, positive_label=-1)
-            print(f"FINAL AUC={auc_fin:.3f} | Acc={acc_opt:.3f}")
-            return acc_opt
+        fp  = float((s_val >= 0.0).mean())
+        p95 = float(np.percentile(s_val, 95))
+        mean_s = float(np.mean(s_val))
+        obj = (fp, p95, mean_s)
+        aux = f"FP={fp:.3f}, P95={p95:.4f}, mean={mean_s:.4f}"
 
-    sel_mode = "AUC" if use_auc_on_val else "one-class"
-    extra = f" | VAL AUC={best_val_auc:.3f}" if (use_auc_on_val and best_val_auc is not None) else ""
-    print(f"Tucker+OCSVM ({feature_mode}, VAL {sel_mode}) chose {best_params} ({best_aux}){extra}")
+        if (best_tuple is None) or (obj < best_tuple):
+            best_tuple = obj
+            best_model = m
+            best_params = dict(p)
+            best_aux = aux
 
-    # FINAL evaluation
-    s_fin = -best_model.decision_function(Z_fi).ravel()
-    auc_fin = manual_auc(y_fin, s_fin, positive_label=-1)
-    th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, s_fin, positive_label=-1)
-    print(f"Tucker+OCSVM FINAL AUC={auc_fin:.3f} | Acc@best={acc_opt:.3f}")
+    sel_mode = "one-class"
+    print(f"Tucker+OCSVM ({feature_mode}, VAL {sel_mode}) chose {best_params} ({best_aux})")
 
-    if displayConfusionMatrix:
-        y_pred = np.where(s_fin >= th_opt, -1, 1)
-        cm = metrics.confusion_matrix(y_fin, y_pred, labels=[-1, 1])
-        metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["Anomaly", "Normal"]).plot()
-        plt.show()
-
-    return acc_opt, auc_fin
+    return best_model, best_tuple, Z_fi, y_fin, best_params, best_aux
 
 
 def tucker_rank_search_one_class_svm(data_bundle):
@@ -1913,18 +1051,42 @@ def tucker_rank_search_one_class_svm(data_bundle):
     """
     print("Tucker rank search (One-class SVM)")
     rankSet = sorted({5, 16, 32, 64})
-    rank_score = {}
+    rank_best_model = None
+    rank_best_tuple = None
+    rank_Z_fi = None
+    rank_y_fin = None
+    rank_best_rank = None
+    rank_best_params= None
+    rank_best_aux= None
     for i in rankSet:
         for j in rankSet:
             for k in sorted({5, 16}):
                 r = (i, j, k)
                 print("Rank:", i, j, k)
-                acc, auc = tucker_one_class_svm(r, data_bundle, feature_mode=TUCKER_FEATURE_MODE)
-                rank_score[r] = auc
-                print("Accuracy:", acc, "AUC", auc)
-    print("AUC by rank:", rank_score)
-    bestRank = max(rank_score, key=rank_score.get)
-    return bestRank, rank_score[bestRank]
+                best_model, best_tuple, Z_fi, y_fin, best_params, best_aux = tucker_one_class_svm(r, data_bundle, feature_mode=TUCKER_FEATURE_MODE)
+                if (rank_best_tuple is None) or (best_tuple < rank_best_tuple):
+                    rank_best_tuple = best_tuple
+                    rank_best_model = best_model
+                    rank_Z_fi = Z_fi
+                    rank_y_fin = y_fin
+                    rank_best_rank = r
+                    rank_best_params = best_params
+                    rank_best_aux = best_aux
+
+                    # Intermediate evaluation
+                    s_fin = -rank_best_model.decision_function(rank_Z_fi).ravel()
+                    auc_fin = manual_auc(rank_y_fin, s_fin, positive_label=-1)
+                    th_opt, acc_opt = _pick_threshold_max_accuracy(rank_y_fin, s_fin, positive_label=-1)
+                    print(f"Tucker+OCSVM Intermediate result RANK={rank_best_rank} AUC={auc_fin} | ACC={acc_opt} "
+                          f"| param={rank_best_params} | aux={rank_best_aux}")
+
+    # FINAL evaluation
+    s_fin = -rank_best_model.decision_function(rank_Z_fi).ravel()
+    auc_fin = manual_auc(rank_y_fin, s_fin, positive_label=-1)
+    th_opt, acc_opt = _pick_threshold_max_accuracy(rank_y_fin, s_fin, positive_label=-1)
+    print(f"Tucker+OCSVM Final result RANK={rank_best_rank} AUC={auc_fin} | ACC={acc_opt} "
+          f"| param={rank_best_params} | aux={rank_best_aux}")
+
 
 #
 # CP with Autoencoder (uses common CP fit/proj + common data)
@@ -1944,8 +1106,7 @@ def parafac_autoencoder(rank, factor, bottleneck, data_bundle,
     # Global CP -> H matrices
     (A, B, C), H_train, H_val, H_fin = cp_fit_and_project(
         X_train, X_val, X_fin, rank,
-        random_state=random_state,
-        cp_basis_max_train_samples=cp_basis_max_train_samples
+        random_state=random_state
     )
 
     # Scale features (and optional PCA whitening) fit on TRAIN only
@@ -1986,137 +1147,11 @@ def parafac_autoencoder(rank, factor, bottleneck, data_bundle,
     err_va = np.mean(np.square(Z_va - recon_va), axis=1)
     threshold = np.percentile(err_va, 95)
 
-    # Score FINAL
-    recon_fi = autoencoder.predict(Z_fi, verbose=0)
-    err_fi = np.mean(np.square(Z_fi - recon_fi), axis=1)  # anomaly-positive scores
-
-    preds_default = (err_fi > threshold).astype(int)
-    preds_default[preds_default == 1] = -1
-    preds_default[preds_default == 0] = 1
-    accuracy_default = float(np.mean(preds_default == y_fin))
-    print(f"CP+AE (global) accuracy @ VAL threshold: {accuracy_default:.3f}")
-
-    auc_fin = manual_auc(y_fin, err_fi, positive_label=-1)
-    print(f"CP+AE (global) FINAL AUC={auc_fin:.3f}")
-
-    th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, err_fi, positive_label=-1)
-    print(f"CP+AE (global) threshold={th_opt:.6f} | accuracy={acc_opt:.3f}")
-
-    if displayConfusionMatrix:
-        y_pred_thresh = np.where(err_fi >= th_opt, -1, 1)
-        cm = metrics.confusion_matrix(y_fin, y_pred_thresh, labels=[-1, 1])
-        metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Anomaly', 'Normal']).plot()
-        plt.show()
-
-    return acc_opt, auc_fin
-
-def parafac_autoencoder_per_tile(
-        rank,
-        factor,
-        bottleneck,
-        data_bundle,
-        displayConfusionMatrix=False,
-        random_state=42,
-        use_pca_whiten=False):
-    """
-    CP (per-tile) + Autoencoder using the same params as `parafac_autoencoder`
-    and the same high-level pipeline/printing style as CP OC-SVM.
-
-    Returns
-    -------
-    (acc_opt, auc_fin)
-    """
-    # ---- Common split & (optional) band standardization ----
-    X_tr, X_va, X_te, y_va, y_te, _, _ = get_splits(
-        data_bundle, standardize=USE_BAND_STANDARDIZE
-    )
-
-    n_tr, n_va, n_te = X_tr.shape[0], X_va.shape[0], X_te.shape[0]
-
-    # ---- Per-tile CP decompositions (TRAIN/VAL/FINAL) ----
-    #    keep the per-tile path but align the downstream pipeline with CP OC-SVM
-    start_time = time.time()
-    D_tr = buildTensor(X_tr, rank, n_tr, isTuckerDecomposition=False)
-    print('Train done ', time.time()-start_time)
-    D_va = buildTensor(X_va, rank, n_va, isTuckerDecomposition=False)
-    D_te = buildTensor(X_te, rank, n_te, isTuckerDecomposition=False)
-
-    # ---- Feature extraction (CP factors → energy-sorted spectral features) ----
-    F_tr = _cp_features_energy_sorted_spectral(D_tr, rank)
-    F_va = _cp_features_energy_sorted_spectral(D_va, rank)
-    F_te = _cp_features_energy_sorted_spectral(D_te, rank)
-
-    # ---- Scale on TRAIN only (match CP OC-SVM style) ----
-    scaler = StandardScaler()
-    Z_tr = scaler.fit_transform(F_tr)
-    Z_va = scaler.transform(F_va)
-    Z_te = scaler.transform(F_te)
-
-    # ---- Optional PCA whitening (same flag/placement as in parafac_autoencoder) ----
-    if use_pca_whiten:
-        pca = PCA(whiten=True, svd_solver="auto", random_state=random_state)
-        Z_tr = pca.fit_transform(Z_tr)
-        Z_va = pca.transform(Z_va)
-        Z_te = pca.transform(Z_te)
-
-    # ---- Autoencoder (same architecture/params as parafac_autoencoder) ----
-    input_dim = Z_tr.shape[1]
-    inp = Input(shape=(input_dim,))
-    enc = Dense(128 * factor, activation="relu")(inp)
-    enc = Dropout(0.1)(enc)
-    bott = Dense(bottleneck, activation="relu")(enc)
-    dec = Dense(128 * factor, activation="relu")(bott)
-    dec = Dropout(0.1)(dec)
-    out = Dense(input_dim, activation="sigmoid")(dec)
-    autoencoder = Model(inputs=inp, outputs=out)
-    autoencoder.compile(optimizer="adam", loss="mse")
-
-    es = EarlyStopping(monitor="val_loss", patience=10, restore_best_weights=True)
-
-    # Train on TRAIN, validate on VAL (typical-only or labeled)
-    autoencoder.fit(
-        Z_tr, Z_tr,
-        epochs=10, batch_size=32,  # match AE defaults
-        validation_data=(Z_va, Z_va),
-        callbacks=[es], verbose=0
-    )
-
-    # ---- VAL threshold (95th percentile of recon err), same print as CP+AE global ----
-    recon_va = autoencoder.predict(Z_va, verbose=0)
-    err_va = np.mean(np.square(Z_va - recon_va), axis=1)
-    thr_val = float(np.percentile(err_va, 95))
-
-    # If VAL is labeled, also compute and print VAL AUC (strategy parity with OC-SVM)
-    if y_va is not None and np.isin([-1, 1], y_va).all():
-        auc_val = manual_auc(y_va, err_va, positive_label=-1)
-        print(f"[CP+AE (per-tile)] VAL AUC={auc_val:.3f}")
-
-    # ---- FINAL scoring ----
-    recon_te = autoencoder.predict(Z_te, verbose=0)
-    s_fin = np.mean(np.square(Z_te - recon_te), axis=1)  # anomaly-positive
-
-    # Accuracy using VAL threshold (informational, like CP+AE global)
-    preds_at_val_thr = np.where(s_fin > thr_val, -1, 1)
-    acc_at_val_thr = float(np.mean(preds_at_val_thr == y_te))
-    print(f"[CP+AE (per-tile)] accuracy @ VAL threshold: {acc_at_val_thr:.3f}")
-
-    # FINAL AUC + best accuracy via max-accuracy threshold on FINAL
-    auc_fin = manual_auc(y_te, s_fin, positive_label=-1)
-    print(f"[CP+AE (per-tile)] FINAL AUC={auc_fin:.3f}")
-
-    th_opt, acc_opt = _pick_threshold_max_accuracy(y_te, s_fin, positive_label=-1)
-    print(f"[CP+AE (per-tile)] threshold={th_opt:.6f} | accuracy={acc_opt:.3f}")
-
-    if displayConfusionMatrix:
-        y_pred = np.where(s_fin >= th_opt, -1, 1)
-        cm = metrics.confusion_matrix(y_te, y_pred, labels=[-1, 1])
-        metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["Anomaly", "Normal"]).plot()
-        plt.show()
-
-    return float(acc_opt), float(auc_fin)
+    print(f'Train/Val err rank={rank} sum={np.sum(err_va)} err mean={np.mean(err_va)} threshold={threshold}')
+    return np.sum(err_va), autoencoder, Z_fi, y_fin
 
 
-def autoencoder_anomaly(data_bundle, factor, bottleneck, displayConfusionMatrix=False):
+def autoencoder_anomaly(data_bundle, factor, bottleneck, use_pca_whiten=True, random_state=42):
     """
     Raw-pixel autoencoder using the shared data path and validation split.
     """
@@ -2127,10 +1162,22 @@ def autoencoder_anomaly(data_bundle, factor, bottleneck, displayConfusionMatrix=
     # Flatten + scale (fit on TRAIN)
     n_tr = X_train.shape[0]
     scaler = StandardScaler()
-    Z_tr = scaler.fit_transform(X_train.reshape(n_tr, -1))
-
+    Htr_s = scaler.fit_transform(X_train.reshape(n_tr, -1))
+    # Validation
     n_va = X_val.shape[0]
-    Z_va = scaler.transform(X_val.reshape(n_va, -1))
+    Hva_s = scaler.transform(X_val.reshape(n_va, -1))
+    # TEST/FINAL
+    n_te = X_fin.shape[0]
+    Hfi_s = scaler.transform(X_fin.reshape(n_te, -1))
+
+    # --- optional PCA whitening on H ---
+    if use_pca_whiten:
+        pca = PCA(whiten=True, svd_solver='auto', random_state=random_state)
+        Z_tr = pca.fit_transform(Htr_s)
+        Z_va = pca.transform(Hva_s)
+        Z_fi = pca.transform(Hfi_s)
+    else:
+        Z_tr, Z_va, Z_fi = Htr_s, Hva_s, Hfi_s
 
     # AE definition
     input_dim = Z_tr.shape[1]
@@ -2150,37 +1197,12 @@ def autoencoder_anomaly(data_bundle, factor, bottleneck, displayConfusionMatrix=
                     validation_data=(Z_va, Z_va),
                     callbacks=[es], verbose=0)
 
-    # TEST/FINAL
-    n_te = X_fin.shape[0]
-    Z_te = scaler.transform(X_fin.reshape(n_te, -1))
 
     # Threshold from VAL (typical-only)
     recon_va = autoencoder.predict(Z_va, verbose=0)
-    thr = np.percentile(np.mean(np.square(Z_va - recon_va), axis=1), 95)
+    err_va = np.mean(np.square(Z_va - recon_va), axis=1)
 
-    # Final scoring
-    recon_te = autoencoder.predict(Z_te, verbose=0)
-    err_te = np.mean(np.square(Z_te - recon_te), axis=1)  # anomaly-positive scores
-
-    preds_default = (err_te > thr).astype(int)
-    preds_default[preds_default == 1] = -1
-    preds_default[preds_default == 0] = 1
-    accuracy_default = float(np.mean(preds_default == y_fin))
-    print(f"AE (raw) accuracy @ VAL threshold: {accuracy_default:.3f}")
-
-    auc_fin = manual_auc(y_fin, err_te, positive_label=-1)
-    print(f"AE (raw) FINAL AUC={auc_fin:.3f}")
-
-    th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, err_te, positive_label=-1)
-    print(f"AE (raw) threshold={th_opt:.6f} | accuracy={acc_opt:.3f}")
-
-    if displayConfusionMatrix:
-        y_pred_thresh = np.where(err_te >= th_opt, -1, 1)
-        cm = metrics.confusion_matrix(y_fin, y_pred_thresh, labels=[-1, 1])
-        metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Anomaly', 'Normal']).plot()
-        plt.show()
-
-    return acc_opt, auc_fin
+    return np.sum(err_va), autoencoder, Z_fi, y_fin
 
 
 def autoencoder(data_bundle, displayConfusionMatrix=False, sweep_factors=(1, 2, 3), sweep_bottlenecks=(16, 32, 64)):
@@ -2188,50 +1210,77 @@ def autoencoder(data_bundle, displayConfusionMatrix=False, sweep_factors=(1, 2, 
     Hyperparam sweep for the raw-pixel autoencoder (no CP/Tucker).
     """
     print("Autoencoder (raw-pixel) — sweeping factors and bottlenecks")
-    param_accuracy = {}
-    param_auc = {}
-    best_acc = -1.0
-    best_params = None
+    rank_autoencoder = None
+    rank_Z_fi = None
+    rank_y_fin = None
+    rank_err_va = None
+    best_rank = None
 
     for factor in sweep_factors:
         for bottleneck in sweep_bottlenecks:
             print("Factor:", factor, "Bottleneck:", bottleneck)
-            acc, auc = autoencoder_anomaly(data_bundle, factor, bottleneck, displayConfusionMatrix=False)
-            param_accuracy[(factor, bottleneck)] = acc
-            param_auc[(factor, bottleneck)] = auc
-            print("Accuracy", acc)
-            if acc > best_acc:
-                best_acc = acc
-                best_params = (factor, bottleneck)
+            err_va, autoencoder, Z_fi, y_fin = autoencoder_anomaly(data_bundle, factor, bottleneck)
 
-    print("Accuracy by (factor, bottleneck):", param_accuracy)
-    print("Best setting for AE:", best_params, best_acc)
+            if (rank_err_va is None or err_va < rank_err_va):
+                rank_err_va = err_va
+                rank_autoencoder = autoencoder
+                rank_y_fin = y_fin
+                rank_Z_fi = Z_fi
+                best_rank = (factor, bottleneck)
 
-    if displayConfusionMatrix and best_params is not None:
-        autoencoder_anomaly(data_bundle, best_params[0], best_params[1], displayConfusionMatrix=True)
+                # Intermediate result
+                recon_te = rank_autoencoder.predict(rank_Z_fi, verbose=0)
+                err_te = np.mean(np.square(rank_Z_fi - recon_te), axis=1)  # anomaly-positive scores
+                auc_fin = manual_auc(rank_y_fin, err_te, positive_label=-1)
+                th_opt, acc_opt = _pick_threshold_max_accuracy(rank_y_fin, err_te, positive_label=-1)
+                print(f"AE Intermediate result Rank={best_rank} AUC={auc_fin} ACC={acc_opt}")
 
-    return best_params, best_acc
+    # Intermediate result
+    recon_te = rank_autoencoder.predict(rank_Z_fi, verbose=0)
+    err_te = np.mean(np.square(rank_Z_fi - recon_te), axis=1)  # anomaly-positive scores
+    auc_fin = manual_auc(rank_y_fin, err_te, positive_label=-1)
+    th_opt, acc_opt = _pick_threshold_max_accuracy(rank_y_fin, err_te, positive_label=-1)
+    print(f"AE Final result Rank={best_rank} AUC={auc_fin} ACC={acc_opt}")
+
 
 def cp_rank_search_autoencoder(data_bundle):
     print("CP rank search (autoencoder)")
+    rank_autoencoder = None
+    rank_Z_fi = None
+    rank_y_fin = None
+    rank_err_va = None
+    best_rank = None
+
     startRank = 10
     endRank = 385
     step = 5
-    rank_score = {}
     for factor in range(1, 4):
         for bottleneck in {16, 32, 64}:
             for i in range(startRank, endRank, step):
                 rank = i
                 print("Factor:", factor, "Bottleneck:", bottleneck, "Rank:", i)
-                if USE_GLOBAL_CP:
-                    accuracy, auc = parafac_autoencoder(rank, factor, bottleneck, data_bundle)
-                else:
-                    accuracy, auc = parafac_autoencoder_per_tile(rank, factor, bottleneck, data_bundle)
-                rank_score[(rank, factor, bottleneck)] = auc
-                print("Accuracy", accuracy, "AUC", auc)
-    print("AUC by (rank, factor, bottleneck):", rank_score)
-    bestRank = max(rank_score, key=rank_score.get)
-    return bestRank, rank_score[bestRank]
+                err_va, autoencoder, Z_fi, y_fin = parafac_autoencoder(rank, factor, bottleneck, data_bundle)
+                if (rank_err_va is None or err_va < rank_err_va):
+                    rank_err_va = err_va
+                    rank_autoencoder = autoencoder
+                    rank_y_fin = y_fin
+                    rank_Z_fi = Z_fi
+                    best_rank= (rank, factor, bottleneck)
+
+                    # Intermediate results
+                    recon_fi = rank_autoencoder.predict(rank_Z_fi, verbose=0)
+                    err_fi = np.mean(np.square(rank_Z_fi - recon_fi), axis=1)  # anomaly-positive scores
+                    auc_fin = manual_auc(rank_y_fin, err_fi, positive_label=-1)
+                    th_opt, acc_opt = _pick_threshold_max_accuracy(rank_y_fin, err_fi, positive_label=-1)
+                    print(f"CP+AE (global) Intermediate result Rank={best_rank} AUC={auc_fin} ACC={acc_opt}")
+
+    # Score FINAL
+    recon_fi = rank_autoencoder.predict(rank_Z_fi, verbose=0)
+    err_fi = np.mean(np.square(rank_Z_fi - recon_fi), axis=1)  # anomaly-positive scores
+    auc_fin = manual_auc(rank_y_fin, err_fi, positive_label=-1)
+    th_opt, acc_opt = _pick_threshold_max_accuracy(rank_y_fin, err_fi, positive_label=-1)
+    print(f"CP+AE (global) Final result Rank={best_rank} AUC={auc_fin} ACC={acc_opt}")
+
 
 #
 # Tucker with Autoencoder (shared path)
@@ -2261,7 +1310,7 @@ def tucker_neural_network_autoencoder(rank, factor, bottleneck, data_bundle,
     Z_va = scaler.transform(Feat_va)
     Z_fi = scaler.transform(Feat_fi)
 
-    # Define the autoencoder model
+    1# Define the autoencoder model
     input_dim = Z_tr.shape[1]
     input_layer = Input(shape=(input_dim,))
 
@@ -2291,31 +1340,8 @@ def tucker_neural_network_autoencoder(rank, factor, bottleneck, data_bundle,
     err_va = np.mean(np.square(Z_va - recon_va), axis=1)
     threshold = np.percentile(err_va, 95)
 
-    # Predict on FINAL
-    recon_fi = autoencoder.predict(Z_fi, verbose=0)
-    err_fi = np.mean(np.square(Z_fi - recon_fi), axis=1)  # anomaly-positive scores
-
-    # Default threshold accuracy
-    predictions = (err_fi > threshold).astype(int)
-    predictions[predictions == 1] = -1
-    predictions[predictions == 0] = 1
-    accuracy_default = float(np.mean(predictions == y_fin))
-    print(f"Tucker+AE ({feature_mode}) accuracy @ VAL threshold: {accuracy_default:.3f}")
-
-    # AUC + max-accuracy threshold (for parity with other strategies)
-    auc_fin = manual_auc(y_fin, err_fi, positive_label=-1)
-    print(f"Tucker+AE ({feature_mode}) FINAL AUC={auc_fin:.3f}")
-
-    th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, err_fi, positive_label=-1)
-    print(f"Tucker+AE ({feature_mode}) threshold={th_opt:.6f} | accuracy={acc_opt:.3f}")
-
-    if displayConfusionMatrix:
-        y_pred_thresh = np.where(err_fi >= th_opt, -1, 1)
-        cm = metrics.confusion_matrix(y_fin, y_pred_thresh, labels=[-1, 1])
-        metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Anomaly', 'Normal']).plot()
-        plt.show()
-
-    return acc_opt, auc_fin
+    print(f'Train/Val err rank={rank} sum={np.sum(err_va)} err mean={np.mean(err_va)} threshold={threshold}')
+    return np.sum(err_va), autoencoder, Z_fi, y_fin
 
 
 def tucker_rank_search_autoencoder(data_bundle):
@@ -2323,23 +1349,49 @@ def tucker_rank_search_autoencoder(data_bundle):
     Sweep ranks; report AUC by (rank, factor, bottleneck).
     """
     print("Tucker rank search (autoencoder)")
+
+    rank_autoencoder = None
+    rank_Z_fi = None
+    rank_y_fin = None
+    rank_err_va = None
+    best_rank = None
+
     rankSet = sorted({5, 16, 32, 64})
-    rank_score = {}
-    # for factor in range(1, 4):
-    for factor in range(3, 4):
+    for factor in range(1, 4):
         for bottleneck in {16, 32, 64}:
             for i in rankSet:
                 for j in rankSet:
                     for k in sorted({5, 16}):
                         rank = (i, j, k)
                         print("Rank:", i, j, k, "Factor", factor, "Bottleneck:", bottleneck)
-                        accuracy, auc = tucker_neural_network_autoencoder(rank, factor, bottleneck, data_bundle,
+                        err_va, autoencoder, Z_fi, y_fin = tucker_neural_network_autoencoder(rank, factor, bottleneck, data_bundle,
                                                                           feature_mode=TUCKER_FEATURE_MODE)
-                        rank_score[(rank, factor, bottleneck)] = auc
-                        print("Accuracy:", accuracy, "AUC", auc)
-    print("AUC by (rank, factor, bottleneck):", rank_score)
-    bestRank = max(rank_score, key=rank_score.get)
-    return bestRank, rank_score[bestRank]
+
+                        if (rank_err_va is None or err_va < rank_err_va):
+                            rank_err_va = err_va
+                            rank_autoencoder = autoencoder
+                            rank_y_fin = y_fin
+                            rank_Z_fi = Z_fi
+                            best_rank = (rank, factor, bottleneck)
+
+                            # Intermediate prediction
+                            recon_fi = rank_autoencoder.predict(rank_Z_fi, verbose=0)
+                            err_fi = np.mean(np.square(rank_Z_fi - recon_fi), axis=1)  # anomaly-positive scores
+                            # AUC + max-accuracy threshold (for parity with other strategies)
+                            auc_fin = manual_auc(rank_y_fin, err_fi, positive_label=-1)
+                            th_opt, acc_opt = _pick_threshold_max_accuracy(rank_y_fin, err_fi, positive_label=-1)
+                            print(f"Tucker+AE Intermediate result Rank={best_rank} AUC={auc_fin} ACC={acc_opt}")
+
+
+    # Predict on FINAL
+    recon_fi = rank_autoencoder.predict(rank_Z_fi, verbose=0)
+    err_fi = np.mean(np.square(rank_Z_fi - recon_fi), axis=1)  # anomaly-positive scores
+    # AUC + max-accuracy threshold (for parity with other strategies)
+    auc_fin = manual_auc(rank_y_fin, err_fi, positive_label=-1)
+    th_opt, acc_opt = _pick_threshold_max_accuracy(rank_y_fin, err_fi, positive_label=-1)
+    print(f"Tucker+AE Final result Rank={best_rank} AUC={auc_fin} ACC={acc_opt}")
+
+    return acc_opt, auc_fin
 
 def _if_mean_score_scorer(estimator, X, y=None):
     # Higher is better (less "anomalous" on average)
@@ -2372,9 +1424,7 @@ def parafac_isolation_forest(rank, data_bundle,
     # --- CP basis + projection ---
     (A, B, C), H_train, H_val, H_fin = cp_fit_and_project(
         X_train, X_val, X_fin, rank,
-        random_state=random_state,
-        cp_basis_max_train_samples=cp_basis_max_train_samples
-    )
+        random_state=random_state )
 
     # --- scale (fit on TRAIN only) ---
     scaler = StandardScaler()
@@ -2424,245 +1474,77 @@ def parafac_isolation_forest(rank, data_bundle,
                 q = 100.0 * (1.0 - float(VAL_FP_TARGET))
                 thr = float(np.percentile(s_va, q))
 
-        if best_if is None:
-            # fallback to TRAIN-only unsupervised selection
-            print("CP+IF: VAL-based selection failed; falling back to TRAIN-only.")
-    if best_if is None:
-        # ------- TRAIN-only unsupervised selection (no VAL used) -------
-        grid = GridSearchCV(
-            IsolationForest(),
-            param_grid=param_grid,
-            cv=3,
-            scoring=_if_mean_score_scorer,
-            verbose=0,
-            n_jobs=-1
-        )
-        grid.fit(Z_tr)
-        best_if = grid.best_estimator_
-        best_params = grid.best_params_
-        thr = None  # we'll derive threshold from model default if VAL wasn’t used
-
-    # --- FINAL scoring ---
-    s_fi = -best_if.score_samples(Z_fi)  # anomaly-positive
-
-    if thr is None:
-        # No VAL threshold: fall back to model's default cutoff (offset). Use predict().
-        preds = best_if.predict(Z_fi)  # {-1, +1}
-    else:
-        preds = np.where(s_fi >= thr, -1, 1)
-
-    acc = float(np.mean(preds == y_fin))
-    auc_fin = manual_auc(y_fin, s_fi, positive_label=-1)
-
-    if thr is not None:
-        print(f"CP+IF (VAL typical-only) params={best_params} | thr={thr:.6f} "
-              f"| target_FP={VAL_FP_TARGET:.3f} | FINAL AUC={auc_fin:.3f} | Acc={acc:.3f}")
-    else:
-        print(f"CP+IF (TRAIN-only) params={best_params} | FINAL AUC={auc_fin:.3f} | Acc={acc:.3f}")
-
-    if displayConfusionMatrix:
-        cm = metrics.confusion_matrix(y_fin, preds, labels=[-1, 1])
-        metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["Anomaly", "Normal"]).plot()
-        plt.show()
-
-    return acc, auc_fin
-
-def parafac_isolation_forest_per_tile(
-        rank,
-        data_bundle,
-        displayConfusionMatrix=False,
-        use_pca_whiten=True,
-        random_state=42):
-    """
-    Pipeline:
-      - get_splits(...) [+ optional band standardization]
-      - Per-tile CP(rank) via buildTensor(..., isTuckerDecomposition=False)
-      - Features = invariant CP spectral features (energy-sorted + sign-fixed)
-      - Scale on TRAIN only, optional PCA(whiten=True)
-      - VAL-driven model selection:
-          * If VAL has labels: maximize AUC(y_val, s_val)
-          * Else (typical-only VAL): minimize P95(s_val) with mean tie-break; set VAL-quantile threshold
-          * Else: TRAIN-only GridSearchCV with _if_mean_score_scorer
-      - Report FINAL AUC; print accuracy @ VAL threshold and max-accuracy threshold on FINAL.
-
-    Returns
-    -------
-    (acc_opt, auc_fin)
-    """
-    # ---- Load splits (and optional band standardization) ----
-    # Expects: get_splits(...) -> (X_train, X_val, X_fin, y_val, y_fin, _, _)
-    X_tr, X_va, X_te, y_va, y_te, _, _ = get_splits(
-        data_bundle, standardize=USE_BAND_STANDARDIZE
-    )
-    n_tr, n_va, n_te = X_tr.shape[0], X_va.shape[0], X_te.shape[0]
-
-    # ---- Per-tile CP decompositions ----
-    start_time = time.time()
-    D_tr = buildTensor(X_tr, rank, n_tr, isTuckerDecomposition=False)
-    print('Train done ', time.time() - start_time)
-    D_va = buildTensor(X_va, rank, n_va, isTuckerDecomposition=False)
-    D_te = buildTensor(X_te, rank, n_te, isTuckerDecomposition=False)
-
-    # ---- Feature extraction (use invariant CP spectral features) ----
-    # Uses helper that sorts components by spectral energy and fixes sign.
-    F_tr = _cp_features_energy_sorted_spectral(D_tr, rank)
-    F_va = _cp_features_energy_sorted_spectral(D_va, rank)
-    F_te = _cp_features_energy_sorted_spectral(D_te, rank)
-
-    # ---- Scale on TRAIN only ----
-    scaler = StandardScaler()
-    Z_tr = scaler.fit_transform(F_tr)
-    Z_va = scaler.transform(F_va)
-    Z_te = scaler.transform(F_te)
-
-    # ---- Optional PCA whitening (same placement as AE / OC-SVM) ----
-    if use_pca_whiten:
-        pca = PCA(whiten=True, svd_solver="auto", random_state=random_state)
-        Z_tr = pca.fit_transform(Z_tr)
-        Z_va = pca.transform(Z_va)
-        Z_te = pca.transform(Z_te)
-
-    # ---- IsolationForest hyperparameter grid (same as parafac_isolation_forest) ----
-    warnings.filterwarnings('ignore', category=UserWarning)
-    param_grid = {
-        'n_estimators':  [50, 100, 200],
-        'max_samples':   [0.5, 0.75, 1.0],
-        'contamination': [0.05, 0.10, 0.20],  # only affects default predict cutoff
-        'max_features':  [0.5, 0.75, 1.0],
-        'bootstrap':     [False, True],
-        'random_state':  [random_state],
-        'n_jobs':        [-1],
-    }
-
-    # ---- VAL-driven selection (mirror OC-SVM / AE strategy) ----
-    has_labeled_val = (y_va is not None) and np.isin(-1, y_va).any() and np.isin(1, y_va).any()
-    best_obj = None
-    best_if = None
-    best_params = None
-    best_aux = ""
-    thr_val = None
-
-    if has_labeled_val:
-        # Case A: Labeled VAL → maximize AUC on VAL
-        for p in ParameterGrid(param_grid):
-            try:
-                clf = IsolationForest(**p).fit(Z_tr)
-                s_val = -clf.score_samples(Z_va)    # anomaly-positive
-                if not np.all(np.isfinite(s_val)):
-                    continue
-                auc = manual_auc(y_va, s_val, positive_label=-1)
-                obj = (-float(auc),)                # minimize negative AUC
-                aux = f"AUC={auc:.3f}"
-                if (best_obj is None) or (obj < best_obj):
-                    best_obj, best_if, best_params, best_aux = obj, clf, dict(p), aux
-            except Exception:
-                continue
-    else:
-        # Case B: Typical-only VAL → minimize P95 (tie-break on mean), set VAL threshold at (1-FP_TARGET) quantile
-        if Z_va is not None and Z_va.shape[0] > 0:
-            for p in ParameterGrid(param_grid):
-                try:
-                    clf = IsolationForest(**p).fit(Z_tr)
-                    s_val = -clf.score_samples(Z_va)
-                    if not np.all(np.isfinite(s_val)):
-                        continue
-                    p95 = float(np.percentile(s_val, 95))
-                    mean = float(np.mean(s_val))
-                    obj = (p95, mean)               # lower is better
-                    aux = f"P95={p95:.4f}, mean={mean:.4f}"
-                    if (best_obj is None) or (obj < best_obj):
-                        best_obj, best_if, best_params, best_aux = obj, clf, dict(p), aux
-                        q = 100.0 * (1.0 - float(VAL_FP_TARGET))
-                        thr_val = float(np.percentile(s_val, q))
-                except Exception:
-                    continue
-
-    # Case C: TRAIN-only fallback via GridSearchCV (if no VAL-driven model was found)
-    if best_if is None:
-        grid = GridSearchCV(
-            IsolationForest(),
-            param_grid=param_grid,
-            cv=3,
-            scoring=_if_mean_score_scorer,   # helper: higher mean score_samples is better
-            verbose=0,
-            n_jobs=-1
-        )
-        grid.fit(Z_tr)
-        best_if = grid.best_estimator_
-        best_params = grid.best_params_
-        best_aux = "TRAIN-only GridSearchCV"
-        thr_val = None
-
-    sel_mode = ("VAL AUC" if has_labeled_val else
-                "VAL typical-only" if thr_val is not None else
-                "TRAIN-only")
-    print(f"[CP+IF (per-tile, {sel_mode})] chose {best_params} ({best_aux})")
-
-    # ---- Accuracy @ VAL threshold (informational, like AE/OC-SVM prints) ----
-    if thr_val is None:
-        # If we don't have a VAL threshold, estimate one for the print:
-        #   labeled VAL → max-accuracy on VAL; TRAIN-only → 95th percentile on VAL scores if available
-        try:
-            s_val_best = -best_if.score_samples(Z_va)
-            if has_labeled_val and (y_va is not None):
-                thr_val, _ = _pick_threshold_max_accuracy(y_va, s_val_best, positive_label=-1)
-            else:
-                thr_val = float(np.percentile(s_val_best, 95))
-        except Exception:
-            thr_val = None
-
-    if thr_val is not None:
-        s_te_tmp = -best_if.score_samples(Z_te)
-        preds_at_val_thr = np.where(s_te_tmp > thr_val, -1, 1)
-        acc_at_val_thr = float(np.mean(preds_at_val_thr == y_te))
-        print(f"[CP+IF (per-tile)] accuracy @ VAL threshold: {acc_at_val_thr:.3f}")
-
-    # ---- FINAL evaluation ----
-    s_fin = -best_if.score_samples(Z_te)  # anomaly-positive scores
-    auc_fin = manual_auc(y_te, s_fin, positive_label=-1)
-    print(f"[CP+IF (per-tile)] FINAL AUC={auc_fin:.3f}")
-
-    th_opt, acc_opt = _pick_threshold_max_accuracy(y_te, s_fin, positive_label=-1)
-    print(f"[CP+IF (per-tile)] threshold={th_opt:.6f} | accuracy={acc_opt:.3f}")
-    print(f"Rank: {rank} Accuracy {acc_opt:.4f} AUC {auc_fin:.6f}")
-
-    if displayConfusionMatrix:
-        y_pred = np.where(s_fin >= th_opt, -1, 1)
-        cm = metrics.confusion_matrix(y_te, y_pred, labels=[1, -1])
-        print("[CP+IF (per-tile)] Confusion matrix (rows=true [typical, anomaly], cols=pred):")
-        print(cm)
-
-    return float(acc_opt), float(auc_fin)
+    return best_if, best_obj, thr, Z_fi, y_fin, best_params
 
 
 def cp_rank_search_isolation_forest(data_bundle):
     print("CP rank search (Isolation Forest)")
+    rank_best_if = None
+    rank_best_obj = None
+    rank_best_thr = None
+    rank_Z_fi = None
+    rank_y_fin = None
+    rank_best_param = None
+    rank_best_rank = None
+
     startRank = 10; endRank = 385; step = 5
-    rank_score = {}
     for rank in range(startRank, endRank, step):
         print("Rank:", rank)
-        if USE_GLOBAL_CP:
-            acc, auc = parafac_isolation_forest(rank, data_bundle, displayConfusionMatrix=False)
-        else:
-            acc, auc = parafac_isolation_forest_per_tile(rank, data_bundle, displayConfusionMatrix=False)
-        rank_score[rank] = auc
-        print("Accuracy", acc, "AUC", auc)
-    print("AUC by rank:", rank_score)
-    bestRank = max(rank_score, key=rank_score.get)
-    return bestRank, rank_score[bestRank]
+        best_if, best_obj, thr, Z_fi, y_fin, best_params = parafac_isolation_forest(rank, data_bundle, displayConfusionMatrix=False)
+        if rank_best_obj is None or best_obj < rank_best_obj:
+            rank_best_obj = best_obj
+            rank_best_if = best_if
+            rank_best_thr = thr
+            rank_Z_fi = Z_fi
+            rank_y_fin = y_fin
+            rank_best_param = best_params
+            rank_best_rank = rank
+
+            # --- Intermediate scoring ---
+            s_fi = -rank_best_if.score_samples(rank_Z_fi)  # anomaly-positive
+            preds = np.where(s_fi >= rank_best_thr, -1, 1)
+            acc = float(np.mean(preds == rank_y_fin))
+            auc_fin = manual_auc(rank_y_fin, s_fi, positive_label=-1)
+            print(f"CP+IF Intermediate result rank={rank_best_rank} AUC={auc_fin} ACC={acc} obj={rank_best_obj}"
+                  f"| params={rank_best_param} "
+                  f"| thr={rank_best_thr:.6f} "
+                  f"| target_FP={VAL_FP_TARGET:.3f}")
+
+    # --- FINAL scoring ---
+    s_fi = -rank_best_if.score_samples(rank_Z_fi)  # anomaly-positive
+    preds = np.where(s_fi >= rank_best_thr, -1, 1)
+    acc = float(np.mean(preds == rank_y_fin))
+    auc_fin = manual_auc(rank_y_fin, s_fi, positive_label=-1)
+    print(f"CP+IF Final result rank={rank_best_rank} AUC={auc_fin} ACC={acc} obj={rank_best_obj}"
+          f"| params={rank_best_param} "
+          f"| thr={rank_best_thr:.6f} "
+          f"| target_FP={VAL_FP_TARGET:.3f}")
+
 
 # Raw-pixel IsolationForest (no decomposition), using shared data path
-def isolation_forest_anomaly(data_bundle, displayConfusionMatrix=False, random_state=42):
-    X_train, X_val, X_fin, _, y_fin, _, _ = get_splits(data_bundle, standardize=USE_BAND_STANDARDIZE)
+def isolation_forest_anomaly(data_bundle, use_pca_whiten=True, random_state=42):
+    X_train, X_val, X_fin, y_val, y_fin, _, _ = get_splits(data_bundle, standardize=USE_BAND_STANDARDIZE)
     y_fin = np.asarray(y_fin, dtype=int)
 
-    # Flatten + scale (fit on TRAIN)
-    n_tr = X_train.shape[0]
-    scaler = StandardScaler()
-    Z_tr = scaler.fit_transform(X_train.reshape(n_tr, -1))
+    # --- Flatten to feature vectors ---
+    Feat_tr = X_train.reshape(X_train.shape[0], -1)
+    Feat_va = X_val.reshape(X_val.shape[0], -1)
+    Feat_fi = X_fin.reshape(X_fin.shape[0], -1)
 
-    n_fi = X_fin.shape[0]
-    Z_fi = scaler.transform(X_fin.reshape(n_fi, -1))
+    # --- scale (fit on TRAIN only) ---
+    scaler = StandardScaler()
+    Htr_s = scaler.fit_transform(Feat_tr)
+    Hva_s = scaler.transform(Feat_va)
+    Hfi_s = scaler.transform(Feat_fi)
+
+    # --- optional PCA whitening on H ---
+    if use_pca_whiten:
+        pca = PCA(whiten=True, svd_solver='auto', random_state=random_state)
+        Z_tr = pca.fit_transform(Htr_s)
+        Z_va = pca.transform(Hva_s)
+        Z_fi = pca.transform(Hfi_s)
+    else:
+        Z_tr, Z_va, Z_fi = Htr_s, Hva_s, Hfi_s
 
     warnings.filterwarnings('ignore', category=UserWarning)
     param_grid = {
@@ -2674,24 +1556,38 @@ def isolation_forest_anomaly(data_bundle, displayConfusionMatrix=False, random_s
         'random_state': [random_state],
         'n_jobs':       [-1],
     }
-    iso = IsolationForest()
-    grid = GridSearchCV(iso, param_grid=param_grid, cv=3, scoring=_if_mean_score_scorer, n_jobs=-1, verbose=0)
-    grid.fit(Z_tr)
 
-    best_if = grid.best_estimator_
-    preds = best_if.predict(Z_fi)
+    best_if = None
+    best_params = None
+    thr = None
+
+    if USE_VAL_FOR_IF and (y_val is None) and (Z_va is not None) and (Z_va.shape[0] > 0):
+        # ------- Typical-only VAL: choose hyperparams by minimizing P95 on VAL; calibrate threshold from VAL -------
+        best_obj = np.inf
+        for p in ParameterGrid(param_grid):
+            clf = IsolationForest(**p).fit(Z_tr)
+            s_va = -clf.score_samples(Z_va)  # anomaly-positive
+            if not np.all(np.isfinite(s_va)):
+                continue
+            p95 = float(np.percentile(s_va, 95))
+            if p95 < best_obj:
+                best_obj = p95
+                best_if = clf
+                best_params = dict(p)
+                # set threshold to achieve target FP on VAL
+                q = 100.0 * (1.0 - float(VAL_FP_TARGET))
+                thr = float(np.percentile(s_va, q))
+
+    # --- FINAL scoring ---
+    s_fi = -best_if.score_samples(Z_fi)  # anomaly-positive
+    preds = np.where(s_fi >= thr, -1, 1)
     acc = float(np.mean(preds == y_fin))
-    scores = -best_if.score_samples(Z_fi)
-    auc_fin = manual_auc(y_fin, scores, positive_label=-1)
+    auc_fin = manual_auc(y_fin, s_fi, positive_label=-1)
+    print(f"IF Final result AUC={auc_fin} ACC={acc} obj={best_obj}"
+          f"| params={best_params} "
+          f"| thr={thr:.6f} "
+          f"| target_FP={VAL_FP_TARGET:.3f}")
 
-    print(f"IF (raw) FINAL AUC={auc_fin:.3f} | Acc={acc:.3f} | params={grid.best_params_}")
-
-    if displayConfusionMatrix:
-        cm = metrics.confusion_matrix(y_fin, preds, labels=[-1, 1])
-        metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Anomaly', 'Normal']).plot()
-        plt.show()
-
-    return acc
 
 #
 # Tucker + Isolation Forest
@@ -2758,62 +1654,55 @@ def tucker_isolation_forests(rank, data_bundle, displayConfusionMatrix=False, ra
                 q = 100.0 * (1.0 - float(VAL_FP_TARGET))
                 thr = float(np.percentile(s_va, q))
 
-        if best_if is None:
-            print("Tucker+IF: VAL-based selection failed; falling back to TRAIN-only.")
-
-    if best_if is None:
-        grid = GridSearchCV(
-            IsolationForest(),
-            param_grid=param_grid,
-            cv=3,
-            scoring=_if_mean_score_scorer,
-            verbose=0,
-            n_jobs=-1
-        )
-        grid.fit(Z_tr)
-        best_if = grid.best_estimator_
-        best_params = grid.best_params_
-        thr = None
-
-    # --- FINAL scoring ---
-    s_fi = -best_if.score_samples(Z_fi)
-    if thr is None:
-        preds = best_if.predict(Z_fi)
-    else:
-        preds = np.where(s_fi >= thr, -1, 1)
-
-    acc = float(np.mean(preds == y_fin))
-    auc_fin = manual_auc(y_fin, s_fi, positive_label=-1)
-
-    if thr is not None:
-        print(f"Tucker+IF ({feature_mode}, VAL typical-only) params={best_params} | thr={thr:.6f} "
-              f"| target_FP={VAL_FP_TARGET:.3f} | FINAL AUC={auc_fin:.3f} | Acc={acc:.3f}")
-    else:
-        print(f"Tucker+IF ({feature_mode}, TRAIN-only) params={best_params} | FINAL AUC={auc_fin:.3f} | Acc={acc:.3f}")
-
-    if displayConfusionMatrix:
-        cm = metrics.confusion_matrix(y_fin, preds, labels=[-1, 1])
-        metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["Anomaly", "Normal"]).plot()
-        plt.show()
-
-    return acc, auc_fin
+    return best_if, best_obj, thr, Z_fi, y_fin, best_params
 
 
 def tucker_rank_search_isolation_forest(data_bundle):
     print("Tucker rank search (Isolation Forest)")
+
+    rank_best_if = None
+    rank_best_obj = None
+    rank_best_thr = None
+    rank_Z_fi = None
+    rank_y_fin = None
+    rank_best_param = None
+    rank_best_rank = None
+
     rankSet = sorted({5, 16, 32, 64})
-    rank_score = {}
     for i in rankSet:
         for j in rankSet:
             for k in sorted({5, 16}):  # keep k modest (band mode)
                 r = (i, j, k)
                 print("Rank:", r)
-                acc, auc = tucker_isolation_forests(r, data_bundle, feature_mode=TUCKER_FEATURE_MODE)
-                rank_score[r] = auc
-                print("Accuracy:", acc, "AUC", auc)
-    print("AUC by rank:", rank_score)
-    bestRank = max(rank_score, key=rank_score.get)
-    return bestRank, rank_score[bestRank]
+                best_if, best_obj, thr, Z_fi, y_fin, best_params = tucker_isolation_forests(r, data_bundle, feature_mode=TUCKER_FEATURE_MODE)
+                if rank_best_obj is None or best_obj < rank_best_obj:
+                    rank_best_obj = best_obj
+                    rank_best_if = best_if
+                    rank_best_thr = thr
+                    rank_Z_fi = Z_fi
+                    rank_y_fin = y_fin
+                    rank_best_param = best_params
+                    rank_best_rank = r
+
+                    # --- Intermediate scoring ---
+                    s_fi = -rank_best_if.score_samples(rank_Z_fi)
+                    preds = np.where(s_fi >= rank_best_thr, -1, 1)
+                    acc = float(np.mean(preds == rank_y_fin))
+                    auc_fin = manual_auc(rank_y_fin, s_fi, positive_label=-1)
+                    print(f"Tucker+IF Intermediate result rank={rank_best_rank} AUC={auc_fin} ACC={acc} obj={rank_best_obj}"
+                          f"| params={rank_best_param} "
+                          f"| thr={rank_best_thr:.6f} "
+                          f"| target_FP={VAL_FP_TARGET:.3f}")
+
+    # --- FINAL scoring ---
+    s_fi = -rank_best_if.score_samples(rank_Z_fi)
+    preds = np.where(s_fi >= rank_best_thr, -1, 1)
+    acc = float(np.mean(preds == rank_y_fin))
+    auc_fin = manual_auc(rank_y_fin, s_fi, positive_label=-1)
+    print(f"Tucker+IF Final result rank={rank_best_rank} AUC={auc_fin} ACC={acc} obj={rank_best_obj}"
+          f"| params={rank_best_param} "
+          f"| thr={rank_best_thr:.6f} "
+          f"| target_FP={VAL_FP_TARGET:.3f}")
 
 
 # Entry (reads once, then passes data to pipelines)
@@ -2824,64 +1713,105 @@ if enable_cp_oc_svm:
         one_class_svm()
     else:
         if use_predefined_rank == False:
-            bestRank, bestAUC = cp_rank_search_one_class_svm(data_bundle)
-            print("Best CP rank (OC-SVM):", bestRank, bestAUC)
+            cp_rank_search_one_class_svm(data_bundle)
         else:
-            print("Running CP OC-SVM at a fixed rank")
-            bestRank = 24
-            parafac_OC_SVM(bestRank, data_bundle, True)
+            rank = 120
+            best_score_tuple, best_model, Hfin_w, y_fin, best_params, best_aux_print = parafac_OC_SVM(rank, data_bundle, use_pca_whiten=True)
+
+            # FINAL evaluation
+            s_fin = -best_model.decision_function(Hfin_w).ravel()
+            auc_fin = manual_auc(y_fin, s_fin, positive_label=-1)
+            th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, s_fin, positive_label=-1)
+            print(f"CP+OCSVM Final result RANK={rank} AUC={auc_fin} | ACC={acc_opt} "
+                  f"| param=({best_params}) | aux={best_aux_print}")
 
 if enable_tucker_oc_svm:
     if use_predefined_rank == False:
-        bestRank, bestAUC = tucker_rank_search_one_class_svm(data_bundle)
-        print("Best Tucker rank (OC-SVM):", bestRank, bestAUC)
+        tucker_rank_search_one_class_svm(data_bundle)
     else:
         print("Running Tucker OC-SVM at a fixed rank")
         rank = (5, 5, 35)
-        accuracy = tucker_one_class_svm(rank, data_bundle, True, feature_mode=TUCKER_FEATURE_MODE)
-        print("Tucker OC-SVM accuracy @ fixed rank:", accuracy)
+        best_model, best_tuple, Z_fi, y_fin, best_params, best_aux = tucker_one_class_svm(rank, data_bundle, True, feature_mode=TUCKER_FEATURE_MODE)
+
+        # FINAL evaluation
+        s_fin = -best_model.decision_function(Z_fi).ravel()
+        auc_fin = manual_auc(y_fin, s_fin, positive_label=-1)
+        th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, s_fin, positive_label=-1)
+        print(f"Tucker+OCSVM Final result RANK={rank} AUC={auc_fin} | ACC={acc_opt} "
+              f"| param={best_params} | aux={best_aux}")
 
 if enable_cp_autoencoder:
     if no_decomposition:
         autoencoder(data_bundle)
     else:
         if use_predefined_rank == False:
-            bestRank, bestAUC = cp_rank_search_autoencoder(data_bundle)
-            print("Best CP rank (autoencoder):", bestRank, bestAUC)
+            cp_rank_search_autoencoder(data_bundle)
         else:
             print("Running CP+autoencoder at a fixed rank")
             bestRank = 85
-            parafac_autoencoder(bestRank, factor=2, bottleneck=32, data_bundle=data_bundle)
+            err_va, autoencoder, Z_fi, y_fin = parafac_autoencoder(bestRank, factor=2, bottleneck=32, data_bundle=data_bundle)
+
+            # Score FINAL
+            recon_fi = autoencoder.predict(Z_fi, verbose=0)
+            err_fi = np.mean(np.square(Z_fi - recon_fi), axis=1)  # anomaly-positive scores
+            auc_fin = manual_auc(y_fin, err_fi, positive_label=-1)
+            th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, err_fi, positive_label=-1)
+            print(f"CP+AE (global) Final result Rank={bestRank} AUC={auc_fin} ACC={acc_opt}")
 
 if enable_tucker_autoencoder:
     if use_predefined_rank == False:
-        bestRank, bestAUC = tucker_rank_search_autoencoder(data_bundle)
-        print("Best Tucker rank (autoencoder):", bestRank, bestAUC)
+        tucker_rank_search_autoencoder(data_bundle)
     else:
         print("Running Tucker+autoencoder at a fixed rank")
         rank = (5, 5, 35)
         factor = 1
-        accuracy = tucker_neural_network_autoencoder(rank, factor, 16, data_bundle, True, feature_mode=TUCKER_FEATURE_MODE)
+        err_va, autoencoder, Z_fi, y_fin = tucker_neural_network_autoencoder(rank, factor, 16, data_bundle, True, feature_mode=TUCKER_FEATURE_MODE)
+
+        # Predict on FINAL
+        recon_fi = autoencoder.predict(Z_fi, verbose=0)
+        err_fi = np.mean(np.square(Z_fi - recon_fi), axis=1)  # anomaly-positive scores
+        # AUC + max-accuracy threshold (for parity with other strategies)
+        auc_fin = manual_auc(y_fin, err_fi, positive_label=-1)
+        th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, err_fi, positive_label=-1)
+        print(f"Tucker+AE Final result Rank={rank} AUC={auc_fin} ACC={acc_opt}")
 
 if enable_cp_isolation_forest:
     if no_decomposition:
         print("Isolation Forest (raw pixels)")
         accuracy = isolation_forest_anomaly(data_bundle)
-        print("IsolationForest (raw) accuracy:", accuracy)
     else:
         if use_predefined_rank == False:
-            bestRank, bestAUC = cp_rank_search_isolation_forest(data_bundle)
-            print("Best CP rank (Isolation Forest):", bestRank, bestAUC)
+            cp_rank_search_isolation_forest(data_bundle)
         else:
             print("Running CP+Isolation Forest at a fixed rank")
             bestRank = 24
-            parafac_isolation_forest(bestRank, data_bundle, True)
+            best_if, best_obj, thr, Z_fi, y_fin, best_params = parafac_isolation_forest(bestRank, data_bundle, True)
+
+            # --- FINAL scoring ---
+            s_fi = -best_if.score_samples(Z_fi)  # anomaly-positive
+            preds = np.where(s_fi >= thr, -1, 1)
+            acc = float(np.mean(preds == y_fin))
+            auc_fin = manual_auc(y_fin, s_fi, positive_label=-1)
+            print(f"CP+IF Final result rank={bestRank} AUC={auc_fin} ACC={acc} obj={best_obj}"
+                  f"| params={best_params} "
+                  f"| thr={thr:.6f} "
+                  f"| target_FP={VAL_FP_TARGET:.3f}")
+
 
 if enable_tucker_isolation_forest:
     if use_predefined_rank == False:
-        bestRank, bestAUC = tucker_rank_search_isolation_forest(data_bundle)
-        print("Best Tucker rank (Isolation Forest):", bestRank, bestAUC)
+        tucker_rank_search_isolation_forest(data_bundle)
     else:
         print("Running Tucker+Isolation Forest at a fixed rank")
         rank = (5, 65, 5)
-        accuracy = tucker_isolation_forests(rank, data_bundle, True, feature_mode=TUCKER_FEATURE_MODE)
+        best_if, best_obj, thr, Z_fi, y_fin, best_params = tucker_isolation_forests(rank, data_bundle, True, feature_mode=TUCKER_FEATURE_MODE)
+
+        # --- FINAL scoring ---
+        s_fi = -best_if.score_samples(Z_fi)
+        preds = np.where(s_fi >= thr, -1, 1)
+        acc = float(np.mean(preds == y_fin))
+        auc_fin = manual_auc(y_fin, s_fi, positive_label=-1)
+        print(f"Tucker+IF Final result rank={rank} AUC={auc_fin} ACC={acc} obj={best_obj}"
+              f"| params={best_params} "
+              f"| thr={thr:.6f} "
+              f"| target_FP={VAL_FP_TARGET:.3f}")
