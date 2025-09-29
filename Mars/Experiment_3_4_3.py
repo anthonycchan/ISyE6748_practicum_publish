@@ -30,32 +30,34 @@ from tensorflow.keras.callbacks import EarlyStopping
 random.seed(1)
 
 # Paths & toggles
+#train_data        = "Data/Full/train_typical"        # typical only
+#validation_data   = "Data/Full/validation_typical"   # typical only
+#test_typical_data = "Data/Full/test_typical" # typical
+#test_anomaly_data = "Data/Full/test_novel/all"   # novel
+
 train_data        = "Data/Reduced/set_1/train"        # typical only
 validation_data   = "Data/Reduced/set_1/validation"   # typical only
 test_typical_data = "Data/Reduced/set_1/test_typical" # typical
-test_anomaly_data = "Data/Reduced/set_1/test_novel"   # novel
 #test_anomaly_data = "Data/Reduced/set_2/test_novel"   # novel
 #test_anomaly_data = "Data/Full/test_novel/bedrock"   # novel
-#test_anomaly_data = "Data/Full/test_novel/broken-rock"   # novel
+test_anomaly_data = "Data/Full/test_novel/broken-rock"   # novel
 #test_anomaly_data = "Data/Full/test_novel/drill-hole"   # novel
 #test_anomaly_data = "Data/Full/test_novel/drt"   # novel
 #test_anomaly_data = "Data/Full/test_novel/dump-pile"   # novel
-#test_anomaly_data = "Data/Full/test_novel/edge_cases"   # novel
 #test_anomaly_data = "Data/Full/test_novel/float"   # novel
 #test_anomaly_data = "Data/Full/test_novel/meteorite"   # novel
-#test_anomaly_data = "Data/Full/test_novel/other"   # novel
 #test_anomaly_data = "Data/Full/test_novel/scuff"   # novel
 #test_anomaly_data = "Data/Full/test_novel/veins"   # novel
 
-use_predefined_rank = False
-enable_tucker_oc_svm = False
-enable_tucker_autoencoder = False
-enable_tucker_isolation_forest = False
-enable_cp_oc_svm = False
+use_predefined_rank = True
+enable_tucker_oc_svm = True
+enable_tucker_autoencoder = True
+enable_tucker_isolation_forest = True
+enable_cp_oc_svm = True
 enable_cp_autoencoder = True
-enable_cp_isolation_forest = False
+enable_cp_isolation_forest = True
 
-no_decomposition = True  # set to False to run raw pixel models
+no_decomposition = False  # set to False to run raw pixel models
 RUN_VISUALIZATION = False
 
 # Optional: standardize bands using TRAIN stats
@@ -65,8 +67,8 @@ USE_BAND_STANDARDIZE = True
 REDUCE_DATASETS = True
 REDUCE_TRAIN_N = 1500
 REDUCE_VAL_N = 200
-REDUCE_TEST_TYP_N = 200
-REDUCE_TEST_ANO_N = 200
+REDUCE_TEST_TYP_N = 34
+REDUCE_TEST_ANO_N = 34
 REDUCE_SEED = 1
 VAL_FRACTION = 0.5  # only used if no separate validation dir
 
@@ -1730,7 +1732,7 @@ if enable_tucker_oc_svm:
         tucker_rank_search_one_class_svm(data_bundle)
     else:
         print("Running Tucker OC-SVM at a fixed rank")
-        rank = (5, 5, 35)
+        rank = (32, 32, 16)
         best_model, best_tuple, Z_fi, y_fin, best_params, best_aux = tucker_one_class_svm(rank, data_bundle, True, feature_mode=TUCKER_FEATURE_MODE)
 
         # FINAL evaluation
@@ -1748,8 +1750,8 @@ if enable_cp_autoencoder:
             cp_rank_search_autoencoder(data_bundle)
         else:
             print("Running CP+autoencoder at a fixed rank")
-            bestRank = 85
-            err_va, autoencoder, Z_fi, y_fin = parafac_autoencoder(bestRank, factor=2, bottleneck=32, data_bundle=data_bundle)
+            bestRank = 35
+            err_va, autoencoder, Z_fi, y_fin = parafac_autoencoder(bestRank, factor=3, bottleneck=64, data_bundle=data_bundle)
 
             # Score FINAL
             recon_fi = autoencoder.predict(Z_fi, verbose=0)
@@ -1763,9 +1765,10 @@ if enable_tucker_autoencoder:
         tucker_rank_search_autoencoder(data_bundle)
     else:
         print("Running Tucker+autoencoder at a fixed rank")
-        rank = (5, 5, 35)
-        factor = 1
-        err_va, autoencoder, Z_fi, y_fin = tucker_neural_network_autoencoder(rank, factor, 16, data_bundle, True, feature_mode=TUCKER_FEATURE_MODE)
+        rank = (64, 32, 5)
+        factor = 3
+        bottleneck=64
+        err_va, autoencoder, Z_fi, y_fin = tucker_neural_network_autoencoder(rank, factor, bottleneck, data_bundle, True, feature_mode=TUCKER_FEATURE_MODE)
 
         # Predict on FINAL
         recon_fi = autoencoder.predict(Z_fi, verbose=0)
@@ -1784,7 +1787,7 @@ if enable_cp_isolation_forest:
             cp_rank_search_isolation_forest(data_bundle)
         else:
             print("Running CP+Isolation Forest at a fixed rank")
-            bestRank = 24
+            bestRank = 365
             best_if, best_obj, thr, Z_fi, y_fin, best_params = parafac_isolation_forest(bestRank, data_bundle, True)
 
             # --- FINAL scoring ---
@@ -1803,7 +1806,7 @@ if enable_tucker_isolation_forest:
         tucker_rank_search_isolation_forest(data_bundle)
     else:
         print("Running Tucker+Isolation Forest at a fixed rank")
-        rank = (5, 65, 5)
+        rank = (64, 16, 5)
         best_if, best_obj, thr, Z_fi, y_fin, best_params = tucker_isolation_forests(rank, data_bundle, True, feature_mode=TUCKER_FEATURE_MODE)
 
         # --- FINAL scoring ---
