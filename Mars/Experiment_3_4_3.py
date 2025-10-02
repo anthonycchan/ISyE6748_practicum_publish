@@ -30,18 +30,18 @@ from tensorflow.keras.callbacks import EarlyStopping
 random.seed(1)
 
 # Paths & toggles
-#train_data        = "Data/Full/train_typical"        # typical only
-#validation_data   = "Data/Full/validation_typical"   # typical only
-#test_typical_data = "Data/Full/test_typical" # typical
+train_data        = "Data/Full/train_typical"        # typical only
+validation_data   = "Data/Full/validation_typical"   # typical only
+test_typical_data = "Data/Full/test_typical" # typical
 #test_anomaly_data = "Data/Full/test_novel/all"   # novel
 
-train_data        = "Data/Reduced/set_1/train"        # typical only
-validation_data   = "Data/Reduced/set_1/validation"   # typical only
-test_typical_data = "Data/Reduced/set_1/test_typical" # typical
-#test_anomaly_data = "Data/Reduced/set_2/test_novel"   # novel
+#train_data        = "Data/Reduced/set_1/train"        # typical only
+#validation_data   = "Data/Reduced/set_1/validation"   # typical only
+#test_typical_data = "Data/Reduced/set_1/test_typical" # typical
+#test_anomaly_data = "Data/Reduced/set_1/test_novel"   # novel
 #test_anomaly_data = "Data/Full/test_novel/bedrock"   # novel
-test_anomaly_data = "Data/Full/test_novel/broken-rock"   # novel
-#test_anomaly_data = "Data/Full/test_novel/drill-hole"   # novel
+#test_anomaly_data = "Data/Full/test_novel/broken-rock"   # novel
+test_anomaly_data = "Data/Full/test_novel/drill-hole"   # novel
 #test_anomaly_data = "Data/Full/test_novel/drt"   # novel
 #test_anomaly_data = "Data/Full/test_novel/dump-pile"   # novel
 #test_anomaly_data = "Data/Full/test_novel/float"   # novel
@@ -49,15 +49,15 @@ test_anomaly_data = "Data/Full/test_novel/broken-rock"   # novel
 #test_anomaly_data = "Data/Full/test_novel/scuff"   # novel
 #test_anomaly_data = "Data/Full/test_novel/veins"   # novel
 
-use_predefined_rank = True
-enable_tucker_oc_svm = True
-enable_tucker_autoencoder = True
-enable_tucker_isolation_forest = True
+use_predefined_rank = False
+enable_tucker_oc_svm = False
+enable_tucker_autoencoder = False
+enable_tucker_isolation_forest = False
 enable_cp_oc_svm = True
 enable_cp_autoencoder = True
 enable_cp_isolation_forest = True
 
-no_decomposition = False  # set to False to run raw pixel models
+no_decomposition = True  # set to False to run raw pixel models
 RUN_VISUALIZATION = False
 
 # Optional: standardize bands using TRAIN stats
@@ -67,8 +67,8 @@ USE_BAND_STANDARDIZE = True
 REDUCE_DATASETS = True
 REDUCE_TRAIN_N = 1500
 REDUCE_VAL_N = 200
-REDUCE_TEST_TYP_N = 34
-REDUCE_TEST_ANO_N = 34
+REDUCE_TEST_TYP_N = 200
+REDUCE_TEST_ANO_N = 200
 REDUCE_SEED = 1
 VAL_FRACTION = 0.5  # only used if no separate validation dir
 
@@ -425,17 +425,56 @@ def _pick_threshold_max_accuracy(y_true, scores, positive_label=-1):
             best_acc = acc; best_th = th
     return float(best_th), float(best_acc)
 
-def show_raw_tile(X, idx=0, bands=(0,1,2,3,4,5), title="Raw tile"):
-    Xo = np.asarray(X)[idx]  # (64,64,6)
-    n = len(bands)
-    fig, axes = plt.subplots(1, n, figsize=(3.5*n, 3.5))
-    for i, b in enumerate(bands):
-        ax = axes[i]
-        ax.imshow(Xo[:, :, b], interpolation="nearest")
-        ax.set_title(f"raw band {b}")
-        ax.axis("off")
-    fig.suptitle(f"{title} (idx={idx})")
-    plt.tight_layout(); plt.show()
+
+def show_raw_tiles_grayscale(
+    X,
+    idxs,
+    bands=(0,1,2,3,4,5),
+    robust_percentiles=(1, 99),
+):
+    """
+    Display selected tiles (rows) and bands (columns) in grayscale only,
+    with no titles or labels.
+    """
+    X = np.asarray(X)
+    N = X.shape[0]
+    idxs = [min(max(int(i), 0), N - 1) for i in idxs]  # clip to valid range
+
+    n_rows = len(idxs)
+    n_cols = len(bands)
+
+    # Shared robust scaling per band
+    lo_p, hi_p = robust_percentiles
+    band_lims = {}
+    for b in bands:
+        stack = np.stack([X[i, :, :, b] for i in idxs], axis=0)
+        lo = np.percentile(stack, lo_p)
+        hi = np.percentile(stack, hi_p)
+        if not np.isfinite(lo) or not np.isfinite(hi) or hi <= lo:
+            lo = float(np.nanmin(stack))
+            hi = float(np.nanmax(stack))
+            if hi <= lo:
+                hi = lo + 1e-6
+        band_lims[b] = (lo, hi)
+
+    fig, axes = plt.subplots(
+        n_rows, n_cols, figsize=(3.5*n_cols, 3.5*n_rows), squeeze=False
+    )
+    for r, i_tile in enumerate(idxs):
+        for c, b in enumerate(bands):
+            ax = axes[r, c]
+            vmin, vmax = band_lims[b]
+            ax.imshow(
+                X[i_tile, :, :, b],
+                cmap="gray",
+                vmin=vmin,
+                vmax=vmax,
+                interpolation="nearest"
+            )
+            ax.axis("off")
+
+    plt.tight_layout()
+    plt.show()
 
 def cp_reconstruct_tile(A, B, C, h):
     """
@@ -448,36 +487,62 @@ def cp_reconstruct_tile(A, B, C, h):
     Xhat = np.einsum('ir,jr,kr->ijk', Ah, B, C, optimize=True)
     return Xhat
 
-def visualize_cp_reconstruction(A, B, C, H, X_ref=None, idx=0, bands=(0,1,2,3,4,5), title_prefix=""):
+
+def visualize_cp_reconstruction(A, B, C, H, idxs, bands=(0,1,2,3,4,5), robust_percentiles=(1, 99)):
     """
-    Reconstruct tile `idx` from H and optionally show original beside it.
+    CP reconstruction viewer (grayscale, no labels).
+    Rows = selected tile indices; Columns = selected bands.
+
+    Parameters
+    ----------
+    A, B, C : np.ndarray
+        CP factor matrices with shapes (I,R), (J,R), (K,R).
+    H : array-like, shape (N,R)
+        Coefficients per tile.
+    idxs : list[int]
+        Exact tile indices to reconstruct and display (e.g., [i, j, k]).
+    bands : tuple[int]
+        Bands to show as columns.
+    robust_percentiles : (float, float)
+        (low, high) percentiles for per-band shared scaling across rows.
     """
-    h = np.asarray(H)[idx]
-    Xhat = cp_reconstruct_tile(A, B, C, h)
+    H = np.asarray(H)
+    N = H.shape[0]
+    idxs = [min(max(int(i), 0), N - 1) for i in idxs]  # clip
 
-    n = len(bands)
-    plt.figure(figsize=(3*n, 6))
-    for i, b in enumerate(bands):
-        # Top: original (if provided) or reconstruction
-        ax = plt.subplot(2, n, i+1)
-        if X_ref is not None:
-            ax.imshow(np.asarray(X_ref)[idx, :, :, b], interpolation='nearest')
-            ax.set_title(f"orig band {b}")
-        else:
-            ax.imshow(Xhat[:, :, b], interpolation='nearest')
-            ax.set_title(f"recon band {b}")
-        ax.axis('off')
+    # Reconstruct selected tiles
+    Xhats = []
+    for i in idxs:
+        h = H[i]
+        Xhat = cp_reconstruct_tile(A, B, C, h)
+        Xhats.append(Xhat)
 
-        # Bottom: reconstruction
-        ax = plt.subplot(2, n, n+i+1)
-        ax.imshow(Xhat[:, :, b], interpolation='nearest')
-        ax.set_title(f"recon band {b}")
-        ax.axis('off')
+    # Shared robust scaling per band across *reconstructions*
+    lo_p, hi_p = robust_percentiles
+    band_lims = {}
+    for b in bands:
+        stack = np.stack([X[:, :, b] for X in Xhats], axis=0)
+        lo = np.percentile(stack, lo_p)
+        hi = np.percentile(stack, hi_p)
+        if not np.isfinite(lo) or not np.isfinite(hi) or hi <= lo:
+            lo = float(np.nanmin(stack))
+            hi = float(np.nanmax(stack))
+            if hi <= lo:
+                hi = lo + 1e-6
+        band_lims[b] = (lo, hi)
 
-    supt = f"{title_prefix} CP reconstruction (idx={idx})"
-    plt.suptitle(supt)
+    # Plot grid (no titles/labels)
+    n_rows, n_cols = len(idxs), len(bands)
+    fig, axes = plt.subplots(n_rows, n_cols, figsize=(3.5*n_cols, 3.5*n_rows), squeeze=False)
+    for r, Xhat in enumerate(Xhats):
+        for c, b in enumerate(bands):
+            ax = axes[r, c]
+            vmin, vmax = band_lims[b]
+            ax.imshow(Xhat[:, :, b], cmap="gray", vmin=vmin, vmax=vmax, interpolation="nearest")
+            ax.axis("off")
     plt.tight_layout()
     plt.show()
+
 
 
 def _unpack_tucker_from_decomp(dec):
@@ -507,57 +572,59 @@ def tucker_reconstruct_tile(core, U1, U2, U3):
 
 
 def visualize_tucker_reconstruction_per_tile(
-    decomp_list, X_ref, idx=0, bands=(0, 1, 2),
-    title_prefix="Tucker (per-tile)", save_path=None
+    decomp_list,
+    idxs,
+    bands=(0, 1, 2, 3, 4, 5),
+    robust_percentiles=(1, 99),
 ):
     """
-    Show ORIGINAL vs RECONSTRUCTION side-by-side per selected band
-    for a *per-tile* Tucker decomposition result.
+    Tucker reconstruction viewer (grayscale, no labels).
+    Rows = selected tile indices; Columns = selected bands.
 
     Parameters
     ----------
-    decomp_list : list[(core,[U1,U2,U3])]
-        Output of buildTensor(..., isTuckerDecomposition=True).
-    X_ref : np.ndarray
-        Stack for that split, shape (N,64,64,6).
-    idx : int
-        Tile index to visualize.
+    decomp_list : list of (core, [U1, U2, U3])
+        Output from buildTensor(..., isTuckerDecomposition=True).
+    idxs : list[int]
+        Exact tile indices to reconstruct and display (e.g., [i, j, k]).
     bands : tuple[int]
-        Bands to display.
-    title_prefix : str
-        Title prefix (e.g., 'Tucker rank=(5,5,3)').
-    save_path : str or None
-        If provided, save the figure to this path.
+        Bands to show as columns.
+    robust_percentiles : (float, float)
+        (low, high) percentiles for per-band shared scaling across rows.
     """
-    core, U1, U2, U3 = _unpack_tucker_from_decomp(decomp_list[idx])
-    Xhat = tucker_reconstruct_tile(core, U1, U2, U3)
+    # Reconstruct selected tiles
+    idxs = [int(i) for i in idxs]
+    Xhats = []
+    for i in idxs:
+        core, U1, U2, U3 = _unpack_tucker_from_decomp(decomp_list[i])
+        Xhat = tucker_reconstruct_tile(core, U1, U2, U3)
+        Xhats.append(Xhat)
 
-    n_b = len(bands)
-    n_cols = 2  # orig | recon
-    fig, axes = plt.subplots(nrows=n_b, ncols=n_cols,
-                             figsize=(4.2 * n_cols, 3.8 * n_b), squeeze=False)
+    # Shared robust scaling per band across reconstructions
+    lo_p, hi_p = robust_percentiles
+    band_lims = {}
+    for b in bands:
+        stack = np.stack([X[:, :, b] for X in Xhats], axis=0)
+        lo = np.percentile(stack, lo_p)
+        hi = np.percentile(stack, hi_p)
+        if not np.isfinite(lo) or not np.isfinite(hi) or hi <= lo:
+            lo = float(np.nanmin(stack))
+            hi = float(np.nanmax(stack))
+            if hi <= lo:
+                hi = lo + 1e-6
+        band_lims[b] = (lo, hi)
 
-    for i, b in enumerate(bands):
-        Xo = np.asarray(X_ref)[idx, :, :, b]
-        Xr = Xhat[:, :, b]
-        # robust shared scaling per band
-        lo = np.percentile([Xo.min(), Xr.min()], 1)
-        hi = np.percentile([Xo.max(), Xr.max()], 99)
+    # Plot grid (no titles/labels)
+    n_rows, n_cols = len(idxs), len(bands)
+    fig, axes = plt.subplots(n_rows, n_cols, figsize=(3.5*n_cols, 3.5*n_rows), squeeze=False)
+    for r, Xhat in enumerate(Xhats):
+        for c, b in enumerate(bands):
+            ax = axes[r, c]
+            vmin, vmax = band_lims[b]
+            ax.imshow(Xhat[:, :, b], cmap="gray", vmin=vmin, vmax=vmax, interpolation="nearest")
+            ax.axis("off")
 
-        ax = axes[i, 0]
-        ax.imshow(Xo, vmin=lo, vmax=hi, interpolation="nearest")
-        ax.set_title(f"orig (band {b})"); ax.axis("off")
-
-        ax = axes[i, 1]
-        ax.imshow(Xr, vmin=lo, vmax=hi, interpolation="nearest")
-        ax.set_title(f"recon (band {b})"); ax.axis("off")
-
-    fig.suptitle(f"{title_prefix} reconstruction (tile idx={idx})")
-    fig.tight_layout(rect=[0, 0, 1, 0.97])
-
-    if save_path:
-        os.makedirs(os.path.dirname(save_path), exist_ok=True)
-        fig.savefig(save_path, dpi=160)
+    plt.tight_layout()
     plt.show()
 
 
@@ -781,9 +848,9 @@ def parafac_OC_SVM(rank, data_bundle,
 
     if RUN_VISUALIZATION:
         print('raw tiles')
-        show_raw_tile(X_train, idx=0)
+        show_raw_tiles_grayscale(X_train, idxs=[0, 1, 2], bands=(0,1,2,3,4,5))
         print('visualize_cp_reconstruction')
-        visualize_cp_reconstruction(A, B, C, H_train, X_ref=X_train, idx=0)
+        visualize_cp_reconstruction(A, B, C, H_train, idxs=[0, 1, 2], bands=(0, 1, 2, 3, 4, 5))
 
     # Scale
     scaler = StandardScaler()
@@ -994,11 +1061,8 @@ def tucker_one_class_svm(rank, data_bundle, displayConfusionMatrix=False,
     print(f"Decomposition time: {time.time() - start_time:.2f} seconds | features={feature_mode}")
 
     if RUN_VISUALIZATION:
-        visualize_tucker_reconstruction_per_tile(
-            decomp_tr, X_train, idx=0, bands=(0, 1, 2, 3, 4, 5),
-            title_prefix=f"Tucker rank={tuple(rank)}",
-            save_path=f"viz/tucker_recon_rank{tuple(rank)}_tile0.png"
-        )
+        # Show 3 specific Tucker reconstructions across all 6 bands
+        visualize_tucker_reconstruction_per_tile(decomp_tr, idxs=[0, 1, 2], bands=(0, 1, 2, 3, 4, 5))
 
     # Feature extraction + scaling (fit on TRAIN only)
     Feat_tr = extractFeatures(decomp_tr, n_tr, isTuckerDecomposition=True, feature_mode=feature_mode)
@@ -1717,7 +1781,8 @@ if enable_cp_oc_svm:
         if use_predefined_rank == False:
             cp_rank_search_one_class_svm(data_bundle)
         else:
-            rank = 120
+            #rank = 120
+            rank = 200
             best_score_tuple, best_model, Hfin_w, y_fin, best_params, best_aux_print = parafac_OC_SVM(rank, data_bundle, use_pca_whiten=True)
 
             # FINAL evaluation
@@ -1732,7 +1797,7 @@ if enable_tucker_oc_svm:
         tucker_rank_search_one_class_svm(data_bundle)
     else:
         print("Running Tucker OC-SVM at a fixed rank")
-        rank = (32, 32, 16)
+        rank = (64, 64, 16)
         best_model, best_tuple, Z_fi, y_fin, best_params, best_aux = tucker_one_class_svm(rank, data_bundle, True, feature_mode=TUCKER_FEATURE_MODE)
 
         # FINAL evaluation
