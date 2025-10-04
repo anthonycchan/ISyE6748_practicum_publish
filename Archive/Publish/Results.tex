@@ -1,0 +1,311 @@
+\documentclass[11pt]{article}
+
+% ---------- Formatting: Springer-like A4, two-column ----------
+\usepackage[a4paper,left=18mm,right=18mm,top=22mm,bottom=24mm]{geometry}
+\setlength{\columnsep}{5mm} % ~0.20in between columns
+\usepackage{microtype}
+
+% ---------- Packages ----------
+\usepackage{amsmath,amssymb,mathtools,bm}
+\usepackage{siunitx}
+
+% ---------- APA citations ----------
+\usepackage[american]{babel}
+\usepackage{csquotes}
+\usepackage[backend=biber,style=apa,sorting=nyt]{biblatex}
+\DeclareLanguageMapping{american}{american-apa}
+\addbibresource{refs.bib} % <-- ensure your BibTeX entries are here
+
+% ---------- Macros ----------
+% Sets & basic math
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\mathrm{Var}}
+
+% Bold vectors/matrices
+\newcommand{\vect}[1]{\bm{#1}}
+\newcommand{\mat}[1]{\bm{#1}}
+
+% Common symbols
+\newcommand{\x}{\vect{x}}
+\newcommand{\z}{\vect{z}}
+\newcommand{\w}{\vect{w}}
+\newcommand{\muvec}{\bm{\mu}}
+\newcommand{\sigvec}{\bm{\sigma}}
+\newcommand{\SigmaMat}{\bm{\Sigma}}
+\newcommand{\Wmat}{\mat{W}}
+\newcommand{\Lambdamat}{\bm{\Lambda}}
+
+% Operators, norms, inner products
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\tr}{tr}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\inner}[2]{\left\langle #1,\, #2 \right\rangle}
+
+% Indicator and sign
+\newcommand{\Ind}[1]{\mathbb{I}\!\left\{ #1 \right\}}
+\DeclareMathOperator{\sign}{sign}
+
+% Vectorization and PCA whitening
+\DeclareMathOperator{\vecop}{vec}
+\newcommand{\vecx}{\vecop}
+\newcommand{\whiten}[1]{\Lambdamat^{-1/2}\Wmat^{\top} #1}
+
+% Kernel & OC-SVM decision function
+\newcommand{\rbf}[2]{\exp\!\big(-\gamma \norm{#1-#2}^{2}\big)}
+\newcommand{\fsvm}{f}                % OC-SVM decision function
+\newcommand{\score}[1]{-\,\fsvm(#1)} % anomaly-positive score s(z) = -f(z)
+
+% Splits & bands
+\newcommand{\train}{\textsc{Train}}
+\newcommand{\val}{\textsc{Val}}
+\newcommand{\final}{\textsc{Final}}
+\newcommand{\bandmean}{\mu_b}
+\newcommand{\bandsd}{\sigma_b}
+
+% Metrics & thresholds
+\newcommand{\AUC}{\mathrm{AUC}}
+\newcommand{\FPzero}{\mathrm{FP@0}}
+\newcommand{\topt}{\tau^\ast}
+
+% Dimensions
+\newcommand{\Hres}{64}
+\newcommand{\Wres}{64}
+\newcommand{\Bbands}{6}
+\newcommand{\dfeat}{d} % post-processing feature dimension
+
+% ---------- Formatting ----------
+\usepackage{authblk} % for journal-style author/affiliation formatting
+
+% ---------- Title ----------
+\title{\textbf{From Tensors to Novelties: Low-Dimensional Representations for Anomaly Detection in Multispectral Imagery}}
+
+\author{Anthony Chan}
+\affil[1]{Georgia Institute of Technology, OMSA Practicum \\
+\texttt{anthonycchan@gmail.com}}
+
+\date{} % leave empty to omit date, or use \today
+
+\begin{document}
+\maketitle
+
+\section{Results}
+\label{sec:results}
+
+This study evaluated three standard anomaly detection models-OC-SVM, autoencoders (AE), and Isolation Forest (IF). These models were trained both on raw pixel data and on data decomposed using tensor methods. Performance was assessed under two setups as described in Section 3.1: (i) an in-order split using the first 1500 datapoints for training and validation, and (ii) a randomized selection from the full dataset.  
+
+\subsection{Baseline Models}
+OC-SVM, autoencoders, and isolation forest models were trained and validated on the reduced dataset defined in Section 3.1. These baseline models, used without tensor decomposition, provide a reference for the composite models discussed later. Tables \ref{tab:baseline_result_part1} and \ref{tab:baseline_result_part2} present ROC-AUC values for the baseline models evaluated on the test set and the anomaly categories.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{lcccccc}
+\hline
+\textbf{Model} & \textbf{Test set} & \textbf{bedrock} & \textbf{broken-rock} & \textbf{drill-hole} & \textbf{drt} & \textbf{dump-pile} \\
+\hline
+OC-SVM & 0.5625 & 0.2918 & 0.4070 & 0.4680 & 0.6420 & 0.4940 \\
+AE     & 0.5418 & 0.5372 & 0.5971 & 0.4604 & 0.4724 & 0.4512 \\
+IF     & 0.6094 & 0.8512 & 0.8743 & 0.3301 & 0.2454 & 0.3163 \\
+\hline
+\end{tabular}
+\caption{Performance of baseline models across categories up to \textit{dump-pile}.}
+\label{tab:baseline_result_part1}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{lccccc}
+\hline
+\textbf{Model} & \textbf{float} & \textbf{meteorite} & \textbf{scuff} & \textbf{veins} \\
+\hline
+OC-SVM & 0.2990 & 0.4820 & 0.1320 & 0.7630 \\
+AE     & 0.6821 & 0.4689 & 0.5486 & 0.6911 \\
+IF     & 0.8889 & 0.6894 & 0.6042 & 0.9300 \\
+\hline
+\end{tabular}
+\caption{Performance of baseline models across categories from \textit{float} to \textit{veins}.}
+\label{tab:baseline_result_part2}
+\end{table}
+
+\subsection{Rank Selection Summary}
+Tables~\ref{tab:best_ranks_inorder} and~\ref{tab:best_ranks_random} summarize the optimal ranks selected by validation for each decomposition–detector combination under the in-order and randomized configurations. All results reported below use these selected ranks.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{lc}
+\hline
+\textbf{Model} & \textbf{Best Rank(s)} \\
+\hline
+CP + OC-SVM    & 120 \\
+Tucker + OC-SVM& (32, 32, 16) \\
+CP + AE        & 35 \\
+Tucker + AE    & (64, 32, 5) \\
+CP + IF        & 365 \\
+Tucker + IF    & (64, 16, 5) \\
+\hline
+\end{tabular}
+\caption{Optimal ranks (in-order split).}
+\label{tab:best_ranks_inorder}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{lc}
+\hline
+\textbf{Model} & \textbf{Best Rank(s)} \\
+\hline
+CP + OC-SVM    & 15 \\
+Tucker + OC-SVM& (64, 16, 5) \\
+CP + AE        & 230 \\
+Tucker + AE    & (64, 64, 5) \\
+CP + IF        & 315 \\
+Tucker + IF    & (64, 5, 5) \\
+\hline
+\end{tabular}
+\caption{Optimal ranks (randomized split).}
+\label{tab:best_ranks_random}
+\end{table}
+
+\subsection{CP Decomposition}
+The CP results reported below use the optimal ranks in Tables~\ref{tab:best_ranks_inorder} and~\ref{tab:best_ranks_random}.  
+
+For the in-order split (Tables \ref{tab:inOrder_cp_results_part1} and \ref{tab:inOrder_cp_results_part2}), CP + OC-SVM improved ROC-AUC from 0.56 to 0.71 on the test set, with substantial gains in categories such as bedrock, broken-rock, float, meteorite, scuff, and veins. CP + AE showed more modest gains on the test set (0.58 vs.\ 0.54 baseline), with improvements across several categories but declines for bedrock, float, and veins. CP + IF improved slightly on the test set (0.64 vs.\ 0.60 baseline), though performance declined for bedrock, broken-rock, float, meteorite, and veins categories.  
+
+For the randomized selection (Tables \ref{tab:random_cp_results_part1} and \ref{tab:random_cp_results_part2}), CP decomposition generally underperformed compared to the raw-pixel baselines. CP + OC-SVM dropped from 0.56 to 0.49, CP + AE from 0.64 to 0.54, and CP + IF from 0.65 to 0.50, with only minor gains observed in isolated categories such as broken-rock.  
+
+% --- CP Tables ---
+\begin{table}[h!]
+\centering
+\begin{tabular}{lcccccc}
+\hline
+\textbf{Model} & \textbf{Test set} & \textbf{bedrock} & \textbf{broken-rock} & \textbf{drill-hole} & \textbf{drt} & \textbf{dump-pile} \\
+\hline
+CP + OC-SVM & 0.7095 & 0.6860 & 0.8002 & 0.5625 & 0.3681 & 0.4768 \\
+CP + AE     & 0.5778 & 0.5321 & 0.6055 & 0.6597 & 0.6389 & 0.5662 \\
+CP + IF     & 0.6487 & 0.7567 & 0.9256 & 0.1597 & 0.1944 & 0.3311 \\
+\hline
+\end{tabular}
+\caption{Performance of in-order CP-based models across categories up to \textit{dump-pile}.}
+\label{tab:inOrder_cp_results_part1}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{lccccc}
+\hline
+\textbf{Model} & \textbf{float} & \textbf{meteorite} & \textbf{scuff} & \textbf{veins} \\
+\hline
+CP + OC-SVM & 0.6697 & 0.6817 & 0.4722 & 0.9156 \\
+CP + AE     & 0.4969 & 0.7076 & 0.6597 & 0.6311 \\
+CP + IF     & 0.9414 & 0.7803 & 0.4097 & 0.9411 \\
+\hline
+\end{tabular}
+\caption{Performance of in-order CP-based models across categories from \textit{float} to \textit{veins}.}
+\label{tab:inOrder_cp_results_part2}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{lcccccc}
+\hline
+\textbf{Model} & \textbf{Test set} & \textbf{bedrock} & \textbf{broken-rock} & \textbf{drill-hole} & \textbf{drt} & \textbf{dump-pile} \\
+\hline
+CP + OC-SVM & 0.4914 & 0.4136 & 0.4951 & 0.5023 & 0.5569 & 0.4762 \\
+CP + AE     & 0.5405 & 0.6514 & 0.7751 & 0.4711 & 0.3114 & 0.3495 \\
+CP + IF     & 0.5048 & 0.6878 & 0.7935 & 0.4029 & 0.3033 & 0.3216 \\
+\hline
+\end{tabular}
+\caption{Performance of randomized CP-based models across categories up to \textit{dump-pile}.}
+\label{tab:random_cp_results_part1}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{lccccc}
+\hline
+\textbf{Model} & \textbf{float} & \textbf{meteorite} & \textbf{scuff} & \textbf{veins} \\
+\hline
+CP + OC-SVM & 0.4356 & 0.5218 & 0.5042 & 0.5500 \\
+CP + AE     & 0.7292 & 0.6393 & 0.4700 & 0.8088 \\
+CP + IF     & 0.7606 & 0.6235 & 0.4458 & 0.8233 \\
+\hline
+\end{tabular}
+\caption{Performance of randomized CP-based models across categories from \textit{float} to \textit{veins}.}
+\label{tab:random_cp_results_part2}
+\end{table}
+
+\subsection{Tucker Decomposition}
+The Tucker results reported below use the optimal ranks in Tables~\ref{tab:best_ranks_inorder} and~\ref{tab:best_ranks_random}. Tucker decomposition produced modest improvements under the in-order split but outperformed CP under randomized selection.  
+
+For the in-order split (Tables \ref{tab:results_inOrder_tucker_part1} and \ref{tab:results_inOrder_tucker_part2}), Tucker + OC-SVM showed a small improvement from 0.54 to 0.57 on the test set, with gains in bedrock, broken-rock, float, meteorite, and scuff. Tucker + AE improved from 0.54 to 0.59, with gains across most categories except drt. Tucker + IF slightly declined from 0.61 to 0.60 on the test set, with performance losses in bedrock, broken-rock, float, meteorite, and veins.  
+
+For the randomized selection (Tables \ref{tab:results_random_tucker_part1} and \ref{tab:results_random_tucker_part2}), Tucker + OC-SVM improved from 0.56 to 0.64, with gains in bedrock, broken-rock, float, meteorite, scuff, and veins. Tucker + AE increased from 0.64 to 0.66 on the test set, though drill-hole, drt, dump-pile, and meteorite declined. Tucker + IF dropped sharply from 0.65 to 0.49, with performance losses across most categories.  
+
+% --- Tucker Tables ---
+\begin{table}[h!]
+\centering
+\begin{tabular}{lcccccc}
+\hline
+\textbf{Model} & \textbf{Test set} & \textbf{bedrock} & \textbf{broken-rock} & \textbf{drill-hole} & \textbf{drt} & \textbf{dump-pile} \\
+\hline
+Tucker + OC-SVM & 0.5710 & 0.7025 & 0.8131 & 0.3889 & 0.3264 & 0.3842 \\
+Tucker + AE     & 0.5900 & 0.6979 & 0.7898 & 0.4653 & 0.4514 & 0.4589 \\
+Tucker + IF     & 0.6028 & 0.7968 & 0.7569 & 0.5556 & 0.5000 & 0.4678 \\
+\hline
+\end{tabular}
+\caption{Performance of Tucker-based models across categories up to \textit{dump-pile}.}
+\label{tab:results_inOrder_tucker_part1}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{lcccc}
+\hline
+\textbf{Model} & \textbf{float} & \textbf{meteorite} & \textbf{scuff} & \textbf{veins} \\
+\hline
+Tucker + OC-SVM & 0.7346 & 0.5363 & 0.6250 & 0.7567 \\
+Tucker + AE     & 0.7160 & 0.5052 & 0.6597 & 0.7956 \\
+Tucker + IF     & 0.7469 & 0.6367 & 0.7083 & 0.7689 \\
+\hline
+\end{tabular}
+\caption{Performance of Tucker-based models across categories from \textit{float} to \textit{veins}.}
+\label{tab:results_inOrder_tucker_part2}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{lcccccc}
+\hline
+\textbf{Model} & \textbf{Test set} & \textbf{bedrock} & \textbf{broken-rock} & \textbf{drill-hole} & \textbf{drt} & \textbf{dump-pile} \\
+\hline
+Tucker + OC-SVM & 0.6362 & 0.8705 & 0.8872 & 0.5094 & 0.4193 & 0.5654 \\
+Tucker + AE     & 0.6643 & 0.8300 & 0.9055 & 0.5486 & 0.4512 & 0.5762 \\
+Tucker + IF     & 0.4925 & 0.5027 & 0.5403 & 0.3977 & 0.4230 & 0.5076 \\
+\hline
+\end{tabular}
+\caption{Performance of Tucker-based models across categories up to \textit{dump-pile}.}
+\label{tab:results_random_tucker_part1}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{lcccc}
+\hline
+\textbf{Model} & \textbf{float} & \textbf{meteorite} & \textbf{scuff} & \textbf{veins} \\
+\hline
+Tucker + OC-SVM & 0.7692 & 0.7128 & 0.8938 & 0.8638 \\
+Tucker + AE     & 0.7961 & 0.6662 & 0.9100 & 0.9152 \\
+Tucker + IF     & 0.5075 & 0.3699 & 0.6850 & 0.6362 \\
+\hline
+\end{tabular}
+\caption{Performance of Tucker-based models across categories from \textit{float} to \textit{veins}.}
+\label{tab:results_random_tucker_part2}
+\end{table}
+
+
+
+\end{document}
