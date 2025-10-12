@@ -52,11 +52,11 @@ test_anomaly_data = "Data/Full/test_novel/all"   # novel
 #test_anomaly_data = "Data/Full/test_novel/scuff"   # novel
 #test_anomaly_data = "Data/Full/test_novel/veins"   # novel
 
-use_predefined_rank = False
+use_predefined_rank = True
 enable_tucker_oc_svm = True
 enable_tucker_autoencoder = True
 enable_tucker_isolation_forest = True
-enable_cp_oc_svm = True
+enable_cp_oc_svm = False
 enable_cp_autoencoder = True
 enable_cp_isolation_forest = True
 
@@ -68,10 +68,10 @@ USE_BAND_STANDARDIZE = True
 
 # Dataset reduction controls
 REDUCE_DATASETS = True
-REDUCE_TRAIN_N = 3000
-REDUCE_VAL_N = 430
-REDUCE_TEST_TYP_N = 430
-REDUCE_TEST_ANO_N = 430
+REDUCE_TRAIN_N = 1500
+REDUCE_VAL_N = 200
+REDUCE_TEST_TYP_N = 200
+REDUCE_TEST_ANO_N = 200
 REDUCE_SEED = 1
 VAL_FRACTION = 0.5  # only used if no separate validation dir
 
@@ -882,7 +882,7 @@ def parafac_OC_SVM(rank, Htr_w, Hval_w, Hfin_w,
     print(f"[CP+OCSVM] (VAL one-class) rank {rank} chose {best_params} best_obj:({best_aux_print})"
           f" Elapsed: {round(time.process_time() - start_time, 2)}")
 
-    return best_score_tuple, best_model, Hfin_w, y_fin, best_params, best_aux_print
+    return best_score_tuple, best_model, best_params, best_aux_print
 
 
 def ocsvm_only(
@@ -1041,7 +1041,7 @@ def tucker_one_class_svm(Z_tr, Z_va, Z_fi):
     print(f"[Tucker+OCSVM] param {best_params} best_obj:({best_aux})"
           f" Elapsed: {round(time.process_time() - start_time, 2)}")
 
-    return best_model, best_tuple, Z_fi, y_fin, best_params, best_aux
+    return best_model, best_tuple, best_params, best_aux
 
 '''
 def tucker_rank_search_one_class_svm(data_bundle):
@@ -1243,6 +1243,8 @@ def parafac_autoencoder_param_search(Htr_w, Hval_w, Hfin_w):
     print(f'[CP+AE] best_param={best_param} best_obj={best_err_va}'
           f" Elapsed: {best_run_time}" )
 
+    return sum_err_va, autoencoder, run_time
+
 #
 # Tucker with Autoencoder (shared path)
 #
@@ -1350,6 +1352,7 @@ def tucker_autoencoder_param_search(Z_tr, Z_va, Z_fi, feature_mode=TUCKER_FEATUR
     print(f'[Tucker+AE] best_param={best_param} best_obj={best_err_va}'
           f" Elapsed: {best_run_time}")
 
+    return sum_err_va, autoencoder, run_time
 
 def _if_mean_score_scorer(estimator, X, y=None):
     # Higher is better (less "anomalous" on average)
@@ -1361,7 +1364,7 @@ def _if_mean_score_scorer(estimator, X, y=None):
 #
 # CP (global basis) + Isolation Forest
 #
-def parafac_isolation_forest(rank, Htr_w, Hval_w, Hfin_w, random_state=42):
+def parafac_isolation_forest(Htr_w, Hval_w, Hfin_w, random_state=42):
     start_time = time.process_time()
 
     # --- grid ---
@@ -1398,7 +1401,7 @@ def parafac_isolation_forest(rank, Htr_w, Hval_w, Hfin_w, random_state=42):
                 thr = float(np.percentile(s_va, q))
 
     print(f"[CP+IF] best_obj:{best_obj} best_param: {best_params} Elapsed: {round(time.process_time() - start_time, 2)}")
-    return best_if, best_obj, thr, Hfin_w, best_params
+    return best_if, best_obj, thr, best_params
 
 
 def cp_rank_search_isolation_forest(data_bundle):
@@ -1529,7 +1532,7 @@ def tucker_isolation_forests(Z_tr, Z_va, Z_fi, random_state=42):
                 thr = float(np.percentile(s_va, q))
 
     print(f"[Tucker+IF] best_obj:{best_obj} best_param: {best_params} Elapsed: {round(time.process_time() - start_time, 2)}")
-    return best_if, best_obj, thr, Z_fi, y_fin, best_params
+    return best_if, best_obj, thr, best_params
 
 
 def tucker_rank_search_isolation_forest(data_bundle):
@@ -1578,6 +1581,55 @@ def tucker_rank_search_isolation_forest(data_bundle):
           f"| params={rank_best_param} "
           f"| thr={rank_best_thr:.6f} "
           f"| target_FP={VAL_FP_TARGET:.3f}")
+
+
+def _stratified_boot_idxs(y, rng):
+    y = np.asarray(y)
+    pos = np.where(y == -1)[0]
+    neg = np.where(y != -1)[0]
+    bpos = rng.choice(pos, size=pos.size, replace=True)
+    bneg = rng.choice(neg, size=neg.size, replace=True)
+    return np.concatenate([bpos, bneg])
+
+def _bootstrap_metric(y, scores, *, n_boot=1000, ci=95, positive_label=-1,
+                      metric="auc", fixed_threshold=None, rng_seed=123):
+    """Stratified bootstrap over (y, scores). metric in {'auc','acc'}.
+       If metric='acc' and fixed_threshold is None, we re-tune the threshold
+       on each bootstrap resample (optimistic but consistent with your current code).
+       If fixed_threshold is provided, we evaluate accuracy at that fixed threshold.
+    """
+    y = np.asarray(y); s = np.asarray(scores, float)
+    rng = np.random.RandomState(rng_seed)
+    vals = []
+    for _ in range(n_boot):
+        idx = _stratified_boot_idxs(y, rng)
+        yb, sb = y[idx], s[idx]
+        if metric == "auc":
+            v = manual_auc(yb, sb, positive_label=positive_label)
+        elif metric == "acc":
+            if fixed_threshold is None:
+                th_b, _ = _pick_threshold_max_accuracy(yb, sb, positive_label=positive_label)
+                yp = np.where(sb >= th_b, positive_label, -positive_label)
+            else:
+                yp = np.where(sb >= fixed_threshold, positive_label, -positive_label)
+            v = float((yp == yb).mean())
+        else:
+            raise ValueError("metric must be 'auc' or 'acc'")
+        if np.isfinite(v):
+            vals.append(v)
+
+    vals = np.asarray(vals, float)
+    if vals.size == 0:
+        return {"mean": np.nan, "std": np.nan, "low": np.nan, "high": np.nan}
+
+    low_q = (100 - ci) / 2.0
+    high_q = 100 - low_q
+    return {
+        "mean": float(np.mean(vals)),
+        "std": float(np.std(vals, ddof=1)),
+        "low": float(np.percentile(vals, low_q)),
+        "high": float(np.percentile(vals, high_q)),
+    }
 
 
 use_pca_whiten = True
@@ -1745,7 +1797,21 @@ if use_predefined_rank:
                 else:
                     Htr_w, Hval_w, Hfin_w = Htr_s, Hval_s, Hfin_s
 
-                parafac_OC_SVM(rank, Htr_w, Hval_w, Hfin_w, use_pca_whiten=True)
+                best_score_tuple, best_model, best_params, best_aux_print = \
+                    parafac_OC_SVM(rank, Htr_w, Hval_w, Hfin_w, use_pca_whiten=True)
+
+                # FINAL evaluation
+                s_fin = -best_model.decision_function(Hfin_w).ravel()
+                auc_fin = manual_auc(y_fin, s_fin, positive_label=-1)
+                th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, s_fin, positive_label=-1)
+                print(f"[CP+OCSVM] Final result RANK={rank} AUC={auc_fin} | ACC={acc_opt} "
+                      f"| param=({best_params}) | aux={best_aux_print}")
+
+                # Bootstrap AUC (threshold-free, robust)
+                auc_boot = _bootstrap_metric(y_fin, s_fin, n_boot=2000, ci=95, positive_label=-1, metric="auc",
+                                             rng_seed=42)
+                print(f"[CP+OCSVM] AUC={auc_fin:.4f} Boot: mean:{auc_boot['mean']:.4f} std:{auc_boot['std']:.4f}, "
+                      f"CI({auc_boot['low']:.4f}–{auc_boot['high']:.4f}) | ")
 
         if enable_cp_autoencoder:
             # Fixed rank:
@@ -1772,7 +1838,20 @@ if use_predefined_rank:
                 else:
                     Htr_w, Hval_w, Hfin_w = Htr_s, Hval_s, Hfin_s
 
-                parafac_autoencoder_param_search(Htr_w=Htr_w, Hval_w=Hval_w, Hfin_w=Hfin_w)
+                err_va, autoencoder, runTime = parafac_autoencoder_param_search(Htr_w=Htr_w, Hval_w=Hval_w, Hfin_w=Hfin_w)
+
+                # Score FINAL
+                recon_fi = autoencoder.predict(Hfin_w, verbose=0)
+                err_fi = np.mean(np.square(Hfin_w - recon_fi), axis=1)  # anomaly-positive scores
+                auc_fin = manual_auc(y_fin, err_fi, positive_label=-1)
+                th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, err_fi, positive_label=-1)
+                print(f"[CP+AE] (global) Final result Rank={rank} AUC={auc_fin} ACC={acc_opt}")
+
+                # Bootstrap AUC (threshold-free, robust)
+                auc_boot = _bootstrap_metric(y_fin, err_fi, n_boot=2000, ci=95, positive_label=-1, metric="auc",
+                                             rng_seed=42)
+                print(f"[CP+AE] AUC={auc_fin:.4f} Boot: mean:{auc_boot['mean']:.4f} std:{auc_boot['std']:.4f}, "
+                      f"CI({auc_boot['low']:.4f}–{auc_boot['high']:.4f}) | ")
 
         if enable_cp_isolation_forest:
             # Fixed rank:
@@ -1799,8 +1878,23 @@ if use_predefined_rank:
                 else:
                     Htr_w, Hval_w, Hfin_w = Htr_s, Hval_s, Hfin_s
 
+                best_if, best_obj, thr, best_params = parafac_isolation_forest(Htr_w=Htr_w, Hval_w=Hval_w, Hfin_w=Hfin_w)
 
-                parafac_isolation_forest(rank, Htr_w=Htr_w, Hval_w=Hval_w, Hfin_w=Hfin_w)
+                # --- FINAL scoring ---
+                s_fi = -best_if.score_samples(Hfin_w)  # anomaly-positive
+                preds = np.where(s_fi >= thr, -1, 1)
+                acc = float(np.mean(preds == y_fin))
+                auc_fin = manual_auc(y_fin, s_fi, positive_label=-1)
+                print(f"[CP+IF] Final result rank={rank} AUC={auc_fin} ACC={acc} obj={best_obj}"
+                      f"| params={best_params} "
+                      f"| thr={thr:.6f} "
+                      f"| target_FP={VAL_FP_TARGET:.3f}")
+
+                # Bootstrap AUC (threshold-free, robust)
+                auc_boot = _bootstrap_metric(y_fin, s_fi, n_boot=2000, ci=95, positive_label=-1, metric="auc",
+                                             rng_seed=42)
+                print(f"[CP+IF] AUC={auc_fin:.4f} Boot: mean:{auc_boot['mean']:.4f} std:{auc_boot['std']:.4f}, "
+                      f"CI({auc_boot['low']:.4f}–{auc_boot['high']:.4f}) | ")
 
         if enable_tucker_oc_svm:
             rank = (5, 5, 5)
@@ -1825,7 +1919,20 @@ if use_predefined_rank:
                 Z_va = scaler.transform(Feat_va)
                 Z_fi = scaler.transform(Feat_fi)
 
-                tucker_one_class_svm(Z_tr, Z_va, Z_fi)
+                best_model, best_tuple, best_params, best_aux = tucker_one_class_svm(Z_tr, Z_va, Z_fi)
+
+                # FINAL evaluation
+                s_fin = -best_model.decision_function(Z_fi).ravel()
+                auc_fin = manual_auc(y_fin, s_fin, positive_label=-1)
+                th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, s_fin, positive_label=-1)
+                print(f"[Tucker+OCSVM] Final result RANK={rank} AUC={auc_fin} | ACC={acc_opt} "
+                      f"| param={best_params} | aux={best_aux}")
+
+                # Bootstrap AUC (threshold-free, robust)
+                auc_boot = _bootstrap_metric(y_fin, s_fin, n_boot=2000, ci=95, positive_label=-1, metric="auc",
+                                             rng_seed=42)
+                print(f"[Tucker+OCSVM] AUC={auc_fin:.4f} Boot: mean:{auc_boot['mean']:.4f} std:{auc_boot['std']:.4f}, "
+                      f"CI({auc_boot['low']:.4f}–{auc_boot['high']:.4f}) | ")
 
         if enable_tucker_autoencoder:
             rank = (5, 5, 5)
@@ -1850,7 +1957,21 @@ if use_predefined_rank:
                 Z_va = scaler.transform(Feat_va)
                 Z_fi = scaler.transform(Feat_fi)
 
-                tucker_autoencoder_param_search(Z_tr, Z_va, Z_fi)
+                sum_err_va, autoencoder, run_time = tucker_autoencoder_param_search(Z_tr, Z_va, Z_fi)
+
+                # Predict on FINAL
+                recon_fi = autoencoder.predict(Z_fi, verbose=0)
+                err_fi = np.mean(np.square(Z_fi - recon_fi), axis=1)  # anomaly-positive scores
+                # AUC + max-accuracy threshold (for parity with other strategies)
+                auc_fin = manual_auc(y_fin, err_fi, positive_label=-1)
+                th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, err_fi, positive_label=-1)
+                print(f"[Tucker+AE] Final result Rank={rank} AUC={auc_fin} ACC={acc_opt}")
+
+                # Bootstrap AUC (threshold-free, robust)
+                auc_boot = _bootstrap_metric(y_fin, err_fi, n_boot=2000, ci=95, positive_label=-1, metric="auc",
+                                             rng_seed=42)
+                print(f"[Tucker+AE] AUC={auc_fin:.4f} Boot: mean:{auc_boot['mean']:.4f} std:{auc_boot['std']:.4f}, "
+                      f"CI({auc_boot['low']:.4f}–{auc_boot['high']:.4f}) | ")
 
         if enable_tucker_isolation_forest:
             rank = (5, 5, 5)
@@ -1875,7 +1996,23 @@ if use_predefined_rank:
                 Z_va = scaler.transform(Feat_va)
                 Z_fi = scaler.transform(Feat_fi)
 
-                tucker_isolation_forests(Z_tr, Z_va, Z_fi)
+                best_if, best_obj, thr, best_params = tucker_isolation_forests(Z_tr, Z_va, Z_fi)
+
+                # --- FINAL scoring ---
+                s_fi = -best_if.score_samples(Z_fi)
+                preds = np.where(s_fi >= thr, -1, 1)
+                acc = float(np.mean(preds == y_fin))
+                auc_fin = manual_auc(y_fin, s_fi, positive_label=-1)
+                print(f"[Tucker+IF] Final result rank={rank} AUC={auc_fin} ACC={acc} obj={best_obj}"
+                      f"| params={best_params} "
+                      f"| thr={thr:.6f} "
+                      f"| target_FP={VAL_FP_TARGET:.3f}")
+
+                # Bootstrap AUC (threshold-free, robust)
+                auc_boot = _bootstrap_metric(y_fin, s_fi, n_boot=2000, ci=95, positive_label=-1, metric="auc",
+                                             rng_seed=42)
+                print(f"[Tucker+IF] AUC={auc_fin:.4f} Boot: mean:{auc_boot['mean']:.4f} std:{auc_boot['std']:.4f}, "
+                      f"CI({auc_boot['low']:.4f}–{auc_boot['high']:.4f}) | ")
 
 
 '''
