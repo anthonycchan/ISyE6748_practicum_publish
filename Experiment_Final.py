@@ -52,7 +52,7 @@ test_anomaly_data = "Data/Full/test_novel/all"   # novel
 #test_anomaly_data = "Data/Full/test_novel/scuff"   # novel
 #test_anomaly_data = "Data/Full/test_novel/veins"   # novel
 
-use_predefined_rank = True
+use_predefined_rank = False
 enable_tucker_oc_svm = True
 enable_tucker_autoencoder = True
 enable_tucker_isolation_forest = True
@@ -68,10 +68,10 @@ USE_BAND_STANDARDIZE = True
 
 # Dataset reduction controls
 REDUCE_DATASETS = True
-REDUCE_TRAIN_N = 1500
-REDUCE_VAL_N = 200
-REDUCE_TEST_TYP_N = 200
-REDUCE_TEST_ANO_N = 200
+REDUCE_TRAIN_N = 3000
+REDUCE_VAL_N = 430
+REDUCE_TEST_TYP_N = 430
+REDUCE_TEST_ANO_N = 430
 REDUCE_SEED = 1
 VAL_FRACTION = 0.5  # only used if no separate validation dir
 
