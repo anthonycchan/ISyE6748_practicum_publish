@@ -1713,7 +1713,9 @@ def _fit_eval_ocsvm(Htr, Hval, y_val, *, nu, gamma):
 
 
 use_pca_whiten = True
+# Rank search
 if not no_decomposition and not use_predefined_rank:
+    print('Rank search')
     for split_seed in {1,3,5}:
         print('Split seed:', split_seed)
 
@@ -1850,6 +1852,7 @@ if not no_decomposition and not use_predefined_rank:
                                 tucker_isolation_forests(Z_tr, Z_va, Z_fi)
 
 if no_decomposition:
+    print('No Decomposition')
     for split_seed in {1, 3, 5}:
         print('Split seed:', split_seed)
         # Entry (reads once, then passes data to pipelines)
