@@ -52,16 +52,16 @@ test_anomaly_data = "Data/Full/test_novel/all"   # novel
 #test_anomaly_data = "Data/Full/test_novel/scuff"   # novel
 #test_anomaly_data = "Data/Full/test_novel/veins"   # novel
 
-use_predefined_rank = True
+use_predefined_rank = False
 enable_tucker_oc_svm = False
 enable_tucker_autoencoder = False
 enable_tucker_isolation_forest = False
 enable_cp_oc_svm = False
-enable_cp_autoencoder = False
+enable_cp_autoencoder = True
 enable_cp_isolation_forest = False
-enable_pca_oc_svm = True
-enable_pca_autoencoder = True
-enable_pca_isolation_forest = True
+enable_pca_oc_svm = False
+enable_pca_autoencoder = False
+enable_pca_isolation_forest = False
 
 no_decomposition = False
 RUN_VISUALIZATION = False
@@ -72,9 +72,9 @@ USE_BAND_STANDARDIZE = True
 # Dataset reduction controls
 REDUCE_DATASETS = True
 REDUCE_TRAIN_N = 1500
-REDUCE_VAL_N = 200
-REDUCE_TEST_TYP_N = 200
-REDUCE_TEST_ANO_N = 200
+REDUCE_VAL_N = 430
+REDUCE_TEST_TYP_N = 430
+REDUCE_TEST_ANO_N = 430
 REDUCE_SEED = 1
 VAL_FRACTION = 0.5  # only used if no separate validation dir
 
@@ -1094,6 +1094,7 @@ def tucker_rank_search_one_class_svm(data_bundle):
 
 def PCA_autoencoder_param_search(Htr_w, Hval_w, Hfin_w):
     best_err_va = None
+    best_autoencoder = None
     best_param = None
     best_run_time = None
     for factor in range(1, 4):
@@ -1101,13 +1102,14 @@ def PCA_autoencoder_param_search(Htr_w, Hval_w, Hfin_w):
             sum_err_va, autoencoder, run_time = parafac_autoencoder(factor, bottleneck, Htr_w, Hval_w, Hfin_w)
             if (best_err_va is None or sum_err_va < best_err_va):
                 best_err_va = sum_err_va
+                best_autoencoder = autoencoder
                 best_param = (factor, bottleneck)
                 best_run_time = run_time
 
     print(f'[PCA+AE] best_param={best_param} best_obj={best_err_va}'
           f" Elapsed: {best_run_time}" )
 
-    return sum_err_va, autoencoder, run_time
+    return best_err_va, best_autoencoder, best_run_time
 
 #
 # CP with Autoencoder (uses common CP fit/proj + common data)
@@ -1250,6 +1252,7 @@ def cp_rank_search_autoencoder(data_bundle):
 
 def parafac_autoencoder_param_search(Htr_w, Hval_w, Hfin_w):
     best_err_va = None
+    best_autoencoder = None
     best_param = None
     best_run_time = None
     for factor in range(1, 4):
@@ -1257,13 +1260,14 @@ def parafac_autoencoder_param_search(Htr_w, Hval_w, Hfin_w):
             sum_err_va, autoencoder, run_time = parafac_autoencoder(factor, bottleneck, Htr_w, Hval_w, Hfin_w)
             if (best_err_va is None or sum_err_va < best_err_va):
                 best_err_va = sum_err_va
+                best_autoencoder = autoencoder
                 best_param = (factor, bottleneck)
                 best_run_time = run_time
 
     print(f'[CP+AE] best_param={best_param} best_obj={best_err_va}'
           f" Elapsed: {best_run_time}" )
 
-    return sum_err_va, autoencoder, run_time
+    return best_err_va, best_autoencoder, best_run_time
 
 #
 # Tucker with Autoencoder (shared path)
@@ -1357,6 +1361,7 @@ def tucker_rank_search_autoencoder(data_bundle):
 
 def tucker_autoencoder_param_search(Z_tr, Z_va, Z_fi, feature_mode=TUCKER_FEATURE_MODE):
     best_err_va = None
+    best_autoencoder = None
     best_param = None
     best_run_time = None
     for factor in range(1, 4):
@@ -1366,13 +1371,14 @@ def tucker_autoencoder_param_search(Z_tr, Z_va, Z_fi, feature_mode=TUCKER_FEATUR
 
             if (best_err_va is None or sum_err_va < best_err_va):
                 best_err_va = sum_err_va
+                best_autoencoder = autoencoder
                 best_param = (factor, bottleneck)
                 best_run_time = run_time
 
     print(f'[Tucker+AE] best_param={best_param} best_obj={best_err_va}'
           f" Elapsed: {best_run_time}")
 
-    return sum_err_va, autoencoder, run_time
+    return best_err_va, best_autoencoder, best_run_time
 
 def _if_mean_score_scorer(estimator, X, y=None):
     # Higher is better (less "anomalous" on average)
@@ -1939,6 +1945,9 @@ if use_predefined_rank:
 
         if enable_pca_autoencoder:
             rank = 16
+            factor = 1
+            bottleneck = 16
+
             PCA_WHITEN = True  # set False to skip whitening (uses your scaler)
             RANDOM_SEED = 42
             with peak_ram(prefix="PCA+AE", label=f"rank={rank}", interval=0.02) as m:
@@ -1967,7 +1976,7 @@ if use_predefined_rank:
                     Hva = post_scaler.transform(Hva)
                     Hte = post_scaler.transform(Hte)
 
-                err_va, autoencoder, runTime = PCA_autoencoder_param_search(Htr, Hva, Hte)
+                err_va, autoencoder, run_time = parafac_autoencoder(factor, bottleneck, Htr, Hva, Hte)
 
                 # Score FINAL
                 recon_fi = autoencoder.predict(Hte, verbose=0)
@@ -2076,6 +2085,8 @@ if use_predefined_rank:
         if enable_cp_autoencoder:
             # Fixed rank:
             rank = 15
+            factor =1
+            bottleneck = 16
             with peak_ram(prefix=f"CP+AE", label=f"R={rank}", interval=0.02) as m:
                 # Global CP fit + project
                 (A, B, C), H_train, H_val, H_fin = cp_fit_and_project(
@@ -2098,7 +2109,7 @@ if use_predefined_rank:
                 else:
                     Htr_w, Hval_w, Hfin_w = Htr_s, Hval_s, Hfin_s
 
-                err_va, autoencoder, runTime = parafac_autoencoder_param_search(Htr_w=Htr_w, Hval_w=Hval_w, Hfin_w=Hfin_w)
+                sum_err_va, autoencoder, run_time = parafac_autoencoder(factor, bottleneck, Htr_w, Hval_w, Hfin_w)
 
                 # Score FINAL
                 recon_fi = autoencoder.predict(Hfin_w, verbose=0)
@@ -2196,6 +2207,8 @@ if use_predefined_rank:
 
         if enable_tucker_autoencoder:
             rank = (5, 5, 5)
+            factor = 1
+            bottleneck = 16
             with peak_ram(prefix=f"Tucker+AE", label=f"R={rank}", interval=0.02) as m:
                 Z_tr, Z_va, Z_fi = None, None, None
                 # Tucker decompositions
@@ -2217,7 +2230,8 @@ if use_predefined_rank:
                 Z_va = scaler.transform(Feat_va)
                 Z_fi = scaler.transform(Feat_fi)
 
-                sum_err_va, autoencoder, run_time = tucker_autoencoder_param_search(Z_tr, Z_va, Z_fi)
+                sum_err_va, autoencoder, run_time = tucker_neural_network_autoencoder(factor, bottleneck,
+                                                                                      Z_tr, Z_va, Z_fi)
 
                 # Predict on FINAL
                 recon_fi = autoencoder.predict(Z_fi, verbose=0)
