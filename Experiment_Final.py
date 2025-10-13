@@ -1744,7 +1744,7 @@ if not no_decomposition and not use_predefined_rank:
 
             for rank in PCA_RANKS:
                 print("Rank:", rank)
-                with peak_ram(prefix="PCA+OCSVM", label=f"rank={rank}", interval=0.02) as m:
+                with peak_ram(prefix="PCA only", label=f"rank={rank}", interval=0.02) as m:
                     # Fit PCA on TRAIN only; transform VAL/FINAL
                     pca = PCA(n_components=rank, whiten=PCA_WHITEN, svd_solver='auto', random_state=RANDOM_SEED)
                     Htr = pca.fit_transform(Xtr_s)
@@ -1759,13 +1759,16 @@ if not no_decomposition and not use_predefined_rank:
                         Hte = post_scaler.transform(Hte)
 
                     if enable_pca_oc_svm:
-                        PCA_OC_SVM(Htr, Hva, Hte)
+                        with peak_ram(prefix="PCA+OCSVM", label=f"rank={rank}", interval=0.02) as m:
+                            PCA_OC_SVM(Htr, Hva, Hte)
 
                     if enable_pca_autoencoder:
-                        PCA_autoencoder_param_search(Htr, Hva, Hte)
+                        with peak_ram(prefix="PCA+AE", label=f"rank={rank}", interval=0.02) as m:
+                            PCA_autoencoder_param_search(Htr, Hva, Hte)
 
                     if enable_pca_isolation_forest:
-                        PCA_isolation_forest(Htr, Hva, Hte)
+                        with peak_ram(prefix="PCA+IF", label=f"rank={rank}", interval=0.02) as m:
+                            PCA_isolation_forest(Htr, Hva, Hte)
 
 
         if enable_cp_oc_svm or enable_cp_autoencoder or enable_cp_isolation_forest:
