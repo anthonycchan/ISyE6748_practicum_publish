@@ -79,8 +79,8 @@ REDUCE_SEED = 1
 VAL_FRACTION = 0.5  # only used if no separate validation dir
 
 # TensorLy backend + device toggles
-#TL_BACKEND = "pytorch"   # change to "numpy" to force CPU
-TL_BACKEND = "numpy"   
+TL_BACKEND = "pytorch"   # change to "numpy" to force CPU
+#TL_BACKEND = "numpy"
 DEVICE = "cuda"
 USE_GPU_CP = True
 
