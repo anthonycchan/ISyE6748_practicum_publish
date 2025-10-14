@@ -56,12 +56,12 @@ use_predefined_rank = False
 enable_tucker_oc_svm = False
 enable_tucker_autoencoder = False
 enable_tucker_isolation_forest = False
-enable_cp_oc_svm = False
+enable_cp_oc_svm = True
 enable_cp_autoencoder = False
 enable_cp_isolation_forest = False
-enable_pca_oc_svm = True
-enable_pca_autoencoder = True
-enable_pca_isolation_forest = True
+enable_pca_oc_svm = False
+enable_pca_autoencoder = False
+enable_pca_isolation_forest = False
 
 no_decomposition = False
 RUN_VISUALIZATION = False
@@ -79,7 +79,8 @@ REDUCE_SEED = 1
 VAL_FRACTION = 0.5  # only used if no separate validation dir
 
 # TensorLy backend + device toggles
-TL_BACKEND = "pytorch"   # change to "numpy" to force CPU
+#TL_BACKEND = "pytorch"   # change to "numpy" to force CPU
+TL_BACKEND = "numpy"   
 DEVICE = "cuda"
 USE_GPU_CP = True
 
