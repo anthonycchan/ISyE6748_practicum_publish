@@ -56,12 +56,12 @@ use_predefined_rank = False
 enable_tucker_oc_svm = False
 enable_tucker_autoencoder = False
 enable_tucker_isolation_forest = False
-enable_cp_oc_svm = True
+enable_cp_oc_svm = False
 enable_cp_autoencoder = False
 enable_cp_isolation_forest = False
-enable_pca_oc_svm = False
-enable_pca_autoencoder = False
-enable_pca_isolation_forest = False
+enable_pca_oc_svm = True
+enable_pca_autoencoder = True
+enable_pca_isolation_forest = True
 
 no_decomposition = False
 RUN_VISUALIZATION = False
@@ -71,7 +71,7 @@ USE_BAND_STANDARDIZE = True
 
 # Dataset reduction controls
 REDUCE_DATASETS = True
-REDUCE_TRAIN_N = 1500
+REDUCE_TRAIN_N = 3000
 REDUCE_VAL_N = 430
 REDUCE_TEST_TYP_N = 426
 REDUCE_TEST_ANO_N = 430
@@ -1727,7 +1727,6 @@ if not no_decomposition and not use_predefined_rank:
         if enable_pca_oc_svm or enable_pca_autoencoder or enable_pca_isolation_forest:
             #evaluate_pca_oc_svm(X_train, X_val, X_fin, y_val, y_fin)
             # ---- knobs (tweak as needed) ----
-            PCA_RANKS = [16, 32, 64, 128, 256]  # candidate PCA dimensions
             PCA_WHITEN = True  # set False to skip whitening (uses your scaler)
             RANDOM_SEED = 42
 
@@ -1743,7 +1742,10 @@ if not no_decomposition and not use_predefined_rank:
             Xva_s = scaler0.transform(Xva)
             Xte_s = scaler0.transform(Xte)
 
-            for rank in PCA_RANKS:
+            startRank = 10;
+            endRank = 385;
+            step = 5  # tighter range for speed
+            for rank in range(startRank, endRank, step):
                 print("Rank:", rank)
                 with peak_ram(prefix="PCA only", label=f"rank={rank}", interval=0.02) as m:
                     # Fit PCA on TRAIN only; transform VAL/FINAL
