@@ -53,25 +53,26 @@ test_anomaly_data = "Data/Full/test_novel/all"   # novel
 #test_anomaly_data = "Data/Full/test_novel/veins"   # novel
 
 use_predefined_rank = False
-enable_tucker_oc_svm = False
-enable_tucker_autoencoder = False
-enable_tucker_isolation_forest = False
+enable_tucker_oc_svm = True
+enable_tucker_autoencoder = True
+enable_tucker_isolation_forest = True
 enable_cp_oc_svm = False
 enable_cp_autoencoder = False
 enable_cp_isolation_forest = False
-enable_pca_oc_svm = True
-enable_pca_autoencoder = True
-enable_pca_isolation_forest = True
+enable_pca_oc_svm = False
+enable_pca_autoencoder = False
+enable_pca_isolation_forest = False
 
 no_decomposition = False
-RUN_VISUALIZATION = False
+RUN_CP_VISUALIZATION = False
+RUN_TUCKER_VISUALIZATION = False
 
 # Optional: standardize bands using TRAIN stats
 USE_BAND_STANDARDIZE = True
 
 # Dataset reduction controls
 REDUCE_DATASETS = True
-REDUCE_TRAIN_N = 3000
+REDUCE_TRAIN_N = 500
 REDUCE_VAL_N = 430
 REDUCE_TEST_TYP_N = 426
 REDUCE_TEST_ANO_N = 430
@@ -830,14 +831,10 @@ def cp_fit_and_project(X_train, X_val, X_fin, rank, random_state=42):
     H_fin = project_cp_coeffs(X_fin, A, B, C, Ginv=Ginv)
     return (A, B, C), H_train, H_val, H_fin
 
-def PCA_OC_SVM(Htr_w, Hval_w, Hfin_w):
-    start_time = time.process_time()
 
-    if RUN_VISUALIZATION:
-        print('raw tiles')
-        show_raw_tiles_grayscale(X_train, idxs=[0, 1, 2], bands=(0,1,2,3,4,5))
-        print('visualize_cp_reconstruction')
-        visualize_cp_reconstruction(A, B, C, H_train, idxs=[0, 1, 2], bands=(0, 1, 2, 3, 4, 5))
+# OC-SVM using preloaded data
+def OC_SVM(type, Htr_w, Hval_w, Hfin_w):
+    start_time = time.process_time()
 
     feat_dim = Htr_w.shape[1]
 
@@ -872,56 +869,7 @@ def PCA_OC_SVM(Htr_w, Hval_w, Hfin_w):
             best_params = params
             best_aux_print = aux
 
-    print(f"[PCA+OCSVM] (VAL one-class) chose {best_params} best_obj:({best_aux_print})"
-          f" Elapsed: {round(time.process_time() - start_time, 2)}")
-
-    return best_score_tuple, best_model, best_params, best_aux_print
-
-
-# CP + OC-SVM using preloaded data
-def parafac_OC_SVM(Htr_w, Hval_w, Hfin_w):
-    start_time = time.process_time()
-
-    if RUN_VISUALIZATION:
-        print('raw tiles')
-        show_raw_tiles_grayscale(X_train, idxs=[0, 1, 2], bands=(0,1,2,3,4,5))
-        print('visualize_cp_reconstruction')
-        visualize_cp_reconstruction(A, B, C, H_train, idxs=[0, 1, 2], bands=(0, 1, 2, 3, 4, 5))
-
-    feat_dim = Htr_w.shape[1]
-
-    # OC-SVM search (gamma scaled by 1/d)
-    param_grid = {
-        "kernel": ["rbf"],
-        "gamma":  ocsvm_gamma_grid_for_dim(feat_dim) + ["scale", "auto"],
-        "nu":     [0.01, 0.02, 0.05, 0.1, 0.2]
-    }
-
-    best_score_tuple = None
-    best_model = None
-    best_params = None
-    best_aux_print = ""
-
-    for params in ParameterGrid(param_grid):
-        model = OneClassSVM(**params).fit(Htr_w)
-        s_val = -model.decision_function(Hval_w).ravel()  # larger => more anomalous
-        if not np.all(np.isfinite(s_val)):
-            continue
-
-        # Typical-only VAL: minimize FP@0, tie-break on P95 and mean
-        fp_rate = float((s_val >= 0.0).mean())
-        p95 = float(np.percentile(s_val, 95))
-        mean_s = float(np.mean(s_val))
-        score_tuple = (fp_rate, p95, mean_s)
-        aux = f"FP={fp_rate:.3f}, P95={p95:.4f}, mean={mean_s:.4f}"
-
-        if (best_score_tuple is None) or (score_tuple < best_score_tuple):
-            best_score_tuple = score_tuple
-            best_model = model
-            best_params = params
-            best_aux_print = aux
-
-    print(f"[CP+OCSVM] (VAL one-class) chose {best_params} best_obj:({best_aux_print})"
+    print(f"[{type}+OCSVM] (VAL one-class) chose {best_params} best_obj:({best_aux_print})"
           f" Elapsed: {round(time.process_time() - start_time, 2)}")
 
     return best_score_tuple, best_model, best_params, best_aux_print
@@ -997,153 +945,25 @@ def one_class_svm(Ztr, Zv, Zte):
     acc, auc = ocsvm_only(Ztr, Zv, Zte)
     print("One-class SVM best accuracy:", acc, "auc:", auc)
 
-#
-# Tucker with OC-SVM (shared data path)
-#
-def tucker_one_class_svm(Z_tr, Z_va, Z_fi):
-    """
-    Tucker + OC-SVM using the common read/standardize path.
-    feature_mode: "both", "core", or "factors" (for Tucker features).
-    """
-    start_time = time.process_time()
 
-    if RUN_VISUALIZATION:
-        # Show 3 specific Tucker reconstructions across all 6 bands
-        visualize_tucker_reconstruction_per_tile(decomp_tr, idxs=[0, 1, 2], bands=(0, 1, 2, 3, 4, 5))
-
-    # Hyperparameter search on VAL
-    d = Z_tr.shape[1]
-    param_grid = {
-        "kernel": ["rbf"],
-        "gamma":  ocsvm_gamma_grid_for_dim(d) + ["scale", "auto"],
-        "nu":     [0.01, 0.02, 0.05, 0.1, 0.2]
-    }
-
-    best_tuple = None
-    best_model = None
-    best_params = None
-    best_aux = ""
-
-    for p in ParameterGrid(param_grid):
-        m = OneClassSVM(**p).fit(Z_tr)
-        s_val = -m.decision_function(Z_va).ravel()  # anomaly-positive scores
-        if not np.all(np.isfinite(s_val)):
-            continue
-
-        fp  = float((s_val >= 0.0).mean())
-        p95 = float(np.percentile(s_val, 95))
-        mean_s = float(np.mean(s_val))
-        obj = (fp, p95, mean_s)
-        aux = f"FP={fp:.3f}, P95={p95:.4f}, mean={mean_s:.4f}"
-
-        if (best_tuple is None) or (obj < best_tuple):
-            best_tuple = obj
-            best_model = m
-            best_params = dict(p)
-            best_aux = aux
-
-    print(f"[Tucker+OCSVM] param {best_params} best_obj:({best_aux})"
-          f" Elapsed: {round(time.process_time() - start_time, 2)}")
-
-    return best_model, best_tuple, best_params, best_aux
-
-'''
-def tucker_rank_search_one_class_svm(data_bundle):
-    """
-    Grid over Tucker rank triples; choose the rank with highest FINAL accuracy.
-    """
-    print("Tucker rank search (One-class SVM)")
-    rankSet = sorted({5, 16, 32, 64})
-    rank_best_model = None
-    rank_best_tuple = None
-    rank_Z_fi = None
-    rank_y_fin = None
-    rank_best_rank = None
-    rank_best_params= None
-    rank_best_aux= None
-    for i in rankSet:
-        for j in rankSet:
-            for k in sorted({5, 16}):
-                r = (i, j, k)
-                print("Rank:", i, j, k)
-                with peak_ram(prefix=f"Tucker+OCSVM", label=f"R={r}", interval=0.02) as m:
-                    best_model, best_tuple, Z_fi, y_fin, best_params, best_aux = tucker_one_class_svm(r, data_bundle, feature_mode=TUCKER_FEATURE_MODE)
-
-                if (rank_best_tuple is None) or (best_tuple < rank_best_tuple):
-                    rank_best_tuple = best_tuple
-                    rank_best_model = best_model
-                    rank_Z_fi = Z_fi
-                    rank_y_fin = y_fin
-                    rank_best_rank = r
-                    rank_best_params = best_params
-                    rank_best_aux = best_aux
-
-                    # Intermediate evaluation
-                    s_fin = -rank_best_model.decision_function(rank_Z_fi).ravel()
-                    auc_fin = manual_auc(rank_y_fin, s_fin, positive_label=-1)
-                    th_opt, acc_opt = _pick_threshold_max_accuracy(rank_y_fin, s_fin, positive_label=-1)
-                    print(f"[Tucker+OCSVM] Intermediate result RANK={rank_best_rank} AUC={auc_fin} | ACC={acc_opt} "
-                          f"| param={rank_best_params} | aux={rank_best_aux}")
-
-    # FINAL evaluation
-    s_fin = -rank_best_model.decision_function(rank_Z_fi).ravel()
-    auc_fin = manual_auc(rank_y_fin, s_fin, positive_label=-1)
-    th_opt, acc_opt = _pick_threshold_max_accuracy(rank_y_fin, s_fin, positive_label=-1)
-    print(f"[Tucker+OCSVM] Final result RANK={rank_best_rank} AUC={auc_fin} | ACC={acc_opt} "
-          f"| param={rank_best_params} | aux={rank_best_aux}")
-'''
-
-def PCA_autoencoder_param_search(Htr_w, Hval_w, Hfin_w):
+def autoencoder_param_search(type, Htr_w, Hval_w, Hfin_w):
     best_err_va = None
     best_autoencoder = None
     best_param = None
     best_run_time = None
     for factor in range(1, 4):
         for bottleneck in {16, 32, 64}:
-            sum_err_va, autoencoder, run_time = parafac_autoencoder(factor, bottleneck, Htr_w, Hval_w, Hfin_w)
+            sum_err_va, autoencoder, run_time = neural_network_autoencoder(factor, bottleneck, Htr_w, Hval_w, Hfin_w)
             if (best_err_va is None or sum_err_va < best_err_va):
                 best_err_va = sum_err_va
                 best_autoencoder = autoencoder
                 best_param = (factor, bottleneck)
                 best_run_time = run_time
 
-    print(f'[PCA+AE] best_param={best_param} best_obj={best_err_va}'
+    print(f'[{type}+AE] best_param={best_param} best_obj={best_err_va}'
           f" Elapsed: {best_run_time}" )
 
     return best_err_va, best_autoencoder, best_run_time
-
-#
-# CP with Autoencoder (uses common CP fit/proj + common data)
-#
-def parafac_autoencoder(factor, bottleneck, Htr_w, Hval_w, Hfin_w):
-    start_time = time.process_time()
-
-    # Define Autoencoder (simple MLP bottleneck)
-    input_dim = Htr_w.shape[1]
-    inp = Input(shape=(input_dim,))
-    enc = Dense(128 * factor, activation='relu')(inp)
-    enc = Dropout(0.1)(enc)
-    bott = Dense(bottleneck, activation='relu')(enc)
-    dec = Dense(128 * factor, activation='relu')(bott)
-    dec = Dropout(0.1)(dec)
-    out = Dense(input_dim, activation='sigmoid')(dec)
-    autoencoder = Model(inputs=inp, outputs=out)
-    autoencoder.compile(optimizer='adam', loss='mse')
-
-    es = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
-
-    # Use separate VAL (typical-only) for early stopping and threshold
-    autoencoder.fit(Htr_w, Htr_w, epochs=10, batch_size=32,
-                    validation_data=(Hval_w, Hval_w),
-                    callbacks=[es], verbose=0)
-
-    # Threshold from VAL
-    recon_va = autoencoder.predict(Hval_w, verbose=0)
-    err_va = np.mean(np.square(Hval_w - recon_va), axis=1)
-    sum_err_va = np.sum(err_va)
-    threshold = np.percentile(err_va, 95)
-
-    return sum_err_va, autoencoder, round(time.process_time() - start_time, 2)
 
 
 def autoencoder_anomaly(Z_tr, Z_va, Z_fi, factor, bottleneck):
@@ -1251,29 +1071,11 @@ def cp_rank_search_autoencoder(data_bundle):
     th_opt, acc_opt = _pick_threshold_max_accuracy(rank_y_fin, err_fi, positive_label=-1)
     print(f"[CP+AE] (global) Final result Rank={best_rank} AUC={auc_fin} ACC={acc_opt}")
 
-def parafac_autoencoder_param_search(Htr_w, Hval_w, Hfin_w):
-    best_err_va = None
-    best_autoencoder = None
-    best_param = None
-    best_run_time = None
-    for factor in range(1, 4):
-        for bottleneck in {16, 32, 64}:
-            sum_err_va, autoencoder, run_time = parafac_autoencoder(factor, bottleneck, Htr_w, Hval_w, Hfin_w)
-            if (best_err_va is None or sum_err_va < best_err_va):
-                best_err_va = sum_err_va
-                best_autoencoder = autoencoder
-                best_param = (factor, bottleneck)
-                best_run_time = run_time
-
-    print(f'[CP+AE] best_param={best_param} best_obj={best_err_va}'
-          f" Elapsed: {best_run_time}" )
-
-    return best_err_va, best_autoencoder, best_run_time
 
 #
 # Tucker with Autoencoder (shared path)
 #
-def tucker_neural_network_autoencoder(factor, bottleneck, Z_tr, Z_va, Z_fi):
+def neural_network_autoencoder(factor, bottleneck, Z_tr, Z_va, Z_fi):
     start_time = time.process_time()
 
     # Define the autoencoder model
@@ -1360,26 +1162,6 @@ def tucker_rank_search_autoencoder(data_bundle):
 
     return acc_opt, auc_fin
 
-def tucker_autoencoder_param_search(Z_tr, Z_va, Z_fi, feature_mode=TUCKER_FEATURE_MODE):
-    best_err_va = None
-    best_autoencoder = None
-    best_param = None
-    best_run_time = None
-    for factor in range(1, 4):
-        for bottleneck in {16, 32, 64}:
-            sum_err_va, autoencoder, run_time = tucker_neural_network_autoencoder(factor, bottleneck,
-                                                                                  Z_tr, Z_va, Z_fi)
-
-            if (best_err_va is None or sum_err_va < best_err_va):
-                best_err_va = sum_err_va
-                best_autoencoder = autoencoder
-                best_param = (factor, bottleneck)
-                best_run_time = run_time
-
-    print(f'[Tucker+AE] best_param={best_param} best_obj={best_err_va}'
-          f" Elapsed: {best_run_time}")
-
-    return best_err_va, best_autoencoder, best_run_time
 
 def _if_mean_score_scorer(estimator, X, y=None):
     # Higher is better (less "anomalous" on average)
@@ -1388,7 +1170,7 @@ def _if_mean_score_scorer(estimator, X, y=None):
     except Exception:
         return -np.inf
 
-def PCA_isolation_forest(Htr_w, Hval_w, Hfin_w, random_state=42):
+def isolation_forest(type, Htr_w, Hval_w, Hfin_w, random_state=42):
     start_time = time.process_time()
 
     # --- grid ---
@@ -1424,49 +1206,7 @@ def PCA_isolation_forest(Htr_w, Hval_w, Hfin_w, random_state=42):
                 q = 100.0 * (1.0 - float(VAL_FP_TARGET))
                 thr = float(np.percentile(s_va, q))
 
-    print(f"[PCA+IF] best_obj={best_obj} best_param: {best_params} Elapsed: {round(time.process_time() - start_time, 2)}")
-    return best_if, best_obj, thr, best_params
-
-#
-# CP (global basis) + Isolation Forest
-#
-def parafac_isolation_forest(Htr_w, Hval_w, Hfin_w, random_state=42):
-    start_time = time.process_time()
-
-    # --- grid ---
-    warnings.filterwarnings('ignore', category=UserWarning)
-    param_grid = {
-        'n_estimators': [50, 100, 200],
-        'max_samples':  [0.5, 0.75, 1.0],
-        'contamination':[0.05, 0.10, 0.20],  # only used by .predict default; we ignore at inference
-        'max_features': [0.5, 0.75, 1.0],
-        'bootstrap':    [False, True],
-        'random_state': [random_state],
-        'n_jobs':       [-1],
-    }
-
-    best_if = None
-    best_params = None
-    thr = None
-
-    if USE_VAL_FOR_IF and (y_val is None) and (Hval_w is not None) and (Hval_w.shape[0] > 0):
-        # ------- Typical-only VAL: choose hyperparams by minimizing P95 on VAL; calibrate threshold from VAL -------
-        best_obj = np.inf
-        for p in ParameterGrid(param_grid):
-            clf = IsolationForest(**p).fit(Htr_w)
-            s_va = -clf.score_samples(Hval_w)  # anomaly-positive
-            if not np.all(np.isfinite(s_va)):
-                continue
-            p95 = float(np.percentile(s_va, 95))
-            if p95 < best_obj:
-                best_obj = p95
-                best_if = clf
-                best_params = dict(p)
-                # set threshold to achieve target FP on VAL
-                q = 100.0 * (1.0 - float(VAL_FP_TARGET))
-                thr = float(np.percentile(s_va, q))
-
-    print(f"[CP+IF] best_obj:{best_obj} best_param: {best_params} Elapsed: {round(time.process_time() - start_time, 2)}")
+    print(f"[{type}+IF] best_obj={best_obj} best_param: {best_params} Elapsed: {round(time.process_time() - start_time, 2)}")
     return best_if, best_obj, thr, best_params
 
 
@@ -1727,7 +1467,6 @@ if not no_decomposition and not use_predefined_rank:
         if enable_pca_oc_svm or enable_pca_autoencoder or enable_pca_isolation_forest:
             #evaluate_pca_oc_svm(X_train, X_val, X_fin, y_val, y_fin)
             # ---- knobs (tweak as needed) ----
-            PCA_WHITEN = True  # set False to skip whitening (uses your scaler)
             RANDOM_SEED = 42
 
             # -------- PCA + OC-SVM pipeline --------
@@ -1749,29 +1488,30 @@ if not no_decomposition and not use_predefined_rank:
                 print("Rank:", rank)
                 with peak_ram(prefix="PCA only", label=f"rank={rank}", interval=0.02) as m:
                     # Fit PCA on TRAIN only; transform VAL/FINAL
-                    pca = PCA(n_components=rank, whiten=PCA_WHITEN, svd_solver='auto', random_state=RANDOM_SEED)
-                    Htr = pca.fit_transform(Xtr_s)
-                    Hva = pca.transform(Xva_s)
-                    Hte = pca.transform(Xte_s)
+                    pca = PCA(n_components=rank, whiten=use_pca_whiten, svd_solver='auto', random_state=RANDOM_SEED)
+                    H_train = pca.fit_transform(Xtr_s)
+                    H_val = pca.transform(Xva_s)
+                    H_fin = pca.transform(Xte_s)
 
-                    # If NOT whitening, scale the PCA space (OC-SVM is scale sensitive)
-                    if not PCA_WHITEN:
-                        post_scaler = StandardScaler(with_mean=True, with_std=True)
-                        Htr = post_scaler.fit_transform(Htr)
-                        Hva = post_scaler.transform(Hva)
-                        Hte = post_scaler.transform(Hte)
+                    # Scale
+                    scaler = StandardScaler(with_mean=True, with_std=True)
+                    Htr_s = scaler.fit_transform(H_train)
+                    Hval_s = scaler.transform(H_val)
+                    Hfin_s = scaler.transform(H_fin)
+
+                    Htr_w, Hval_w, Hfin_w = Htr_s, Hval_s, Hfin_s
 
                     if enable_pca_oc_svm:
                         with peak_ram(prefix="PCA+OCSVM", label=f"rank={rank}", interval=0.02) as m:
-                            PCA_OC_SVM(Htr, Hva, Hte)
+                            OC_SVM('PCA', Htr_w, Hval_w, Hfin_w)
 
                     if enable_pca_autoencoder:
                         with peak_ram(prefix="PCA+AE", label=f"rank={rank}", interval=0.02) as m:
-                            PCA_autoencoder_param_search(Htr, Hva, Hte)
+                            autoencoder_param_search('PCA', Htr_w, Hval_w, Hfin_w)
 
                     if enable_pca_isolation_forest:
                         with peak_ram(prefix="PCA+IF", label=f"rank={rank}", interval=0.02) as m:
-                            PCA_isolation_forest(Htr, Hva, Hte)
+                            isolation_forest('PCA', Htr_w, Hval_w, Hfin_w)
 
 
         if enable_cp_oc_svm or enable_cp_autoencoder or enable_cp_isolation_forest:
@@ -1806,15 +1546,15 @@ if not no_decomposition and not use_predefined_rank:
 
                 if enable_cp_oc_svm:
                     with peak_ram(prefix=f"CP+OCSVM", label=f"R={rank}", interval=0.02) as m:
-                        parafac_OC_SVM(Htr_w, Hval_w, Hfin_w)
+                        OC_SVM('CP', Htr_w, Hval_w, Hfin_w)
 
                 if enable_cp_autoencoder:
                     with peak_ram(prefix=f"CP+AE", label=f"R={rank}", interval=0.02) as m:
-                        parafac_autoencoder_param_search(Htr_w=Htr_w, Hval_w=Hval_w, Hfin_w=Hfin_w)
+                        autoencoder_param_search('CP', Htr_w=Htr_w, Hval_w=Hval_w, Hfin_w=Hfin_w)
 
                 if enable_cp_isolation_forest:
                     with peak_ram(prefix=f"CP+IF", label=f"R={rank}", interval=0.02) as m:
-                        parafac_isolation_forest(Htr_w=Htr_w, Hval_w=Hval_w, Hfin_w=Hfin_w)
+                        isolation_forest('CP', Htr_w=Htr_w, Hval_w=Hval_w, Hfin_w=Hfin_w)
 
         if enable_tucker_oc_svm or enable_tucker_autoencoder or enable_tucker_isolation_forest:
             rankSet = sorted({5, 16, 32, 64})
@@ -1840,22 +1580,32 @@ if not no_decomposition and not use_predefined_rank:
                             Feat_fi = extractFeatures(decomp_fi, n_fi, isTuckerDecomposition=True,
                                                       feature_mode=TUCKER_FEATURE_MODE)
 
+                            # Scale
                             scaler = StandardScaler()
-                            Z_tr = scaler.fit_transform(Feat_tr)
-                            Z_va = scaler.transform(Feat_va)
-                            Z_fi = scaler.transform(Feat_fi)
+                            Htr_s = scaler.fit_transform(Feat_tr)
+                            Hval_s = scaler.transform(Feat_va)
+                            Hfin_s = scaler.transform(Feat_fi)
+
+                            # Feature pathway: full H (optionally PCA-whiten)
+                            if use_pca_whiten:
+                                pca = PCA(whiten=True, svd_solver='auto', random_state=42)
+                                Htr_w = pca.fit_transform(Htr_s)
+                                Hval_w = pca.transform(Hval_s)
+                                Hfin_w = pca.transform(Hfin_s)
+                            else:
+                                Htr_w, Hval_w, Hfin_w = Htr_s, Hval_s, Hfin_s
 
                         if enable_tucker_oc_svm:
                             with peak_ram(prefix=f"Tucker+OCSVM", label=f"R={rank}", interval=0.02) as m:
-                                tucker_one_class_svm(Z_tr, Z_va, Z_fi)
+                                OC_SVM('Tucker', Htr_w, Hval_w, Hfin_w)
 
                         if enable_tucker_autoencoder:
                             with peak_ram(prefix=f"Tucker+AE", label=f"R={rank}", interval=0.02) as m:
-                                tucker_autoencoder_param_search(Z_tr, Z_va, Z_fi)
+                                autoencoder_param_search('Tucker', Htr_w, Hval_w, Hfin_w)
 
                         if enable_tucker_isolation_forest:
                             with peak_ram(prefix=f"Tucker+IF", label=f"R={rank}", interval=0.02) as m:
-                                tucker_isolation_forests(Z_tr, Z_va, Z_fi)
+                                isolation_forest('Tucker', Htr_w, Hval_w, Hfin_w)
 
 if no_decomposition:
     print('No Decomposition')
@@ -1937,7 +1687,7 @@ if use_predefined_rank:
                     Hte = post_scaler.transform(Hte)
 
                 best_score_tuple, best_model, best_params, best_aux_print = \
-                    PCA_OC_SVM(Htr, Hva, Hte)
+                    OC_SVM('PCA', Htr, Hva, Hte)
 
                 # FINAL evaluation
                 s_fin = -best_model.decision_function(Hte).ravel()
@@ -1985,7 +1735,7 @@ if use_predefined_rank:
                     Hva = post_scaler.transform(Hva)
                     Hte = post_scaler.transform(Hte)
 
-                err_va, autoencoder, run_time = parafac_autoencoder(factor, bottleneck, Htr, Hva, Hte)
+                err_va, autoencoder, run_time = neural_network_autoencoder(factor, bottleneck, Htr, Hva, Hte)
 
                 # Score FINAL
                 recon_fi = autoencoder.predict(Hte, verbose=0)
@@ -2030,7 +1780,7 @@ if use_predefined_rank:
                     Hva = post_scaler.transform(Hva)
                     Hte = post_scaler.transform(Hte)
 
-                best_if, best_obj, thr, best_params = PCA_isolation_forest(Htr_w=Htr, Hval_w=Hva,
+                best_if, best_obj, thr, best_params = isolation_forest('PCA', Htr_w=Htr, Hval_w=Hva,
                                                                                Hfin_w=Hte)
 
                 # --- FINAL scoring ---
@@ -2059,6 +1809,12 @@ if use_predefined_rank:
                     random_state=42
                 )
 
+                if RUN_CP_VISUALIZATION:
+                    print('raw tiles')
+                    show_raw_tiles_grayscale(X_train, idxs=[0, 1, 2], bands=(0, 1, 2, 3, 4, 5))
+                    print('visualize_cp_reconstruction')
+                    visualize_cp_reconstruction(A, B, C, H_train, idxs=[0, 1, 2], bands=(0, 1, 2, 3, 4, 5))
+
                 # Scale
                 scaler = StandardScaler()
                 Htr_s = scaler.fit_transform(H_train)
@@ -2075,7 +1831,7 @@ if use_predefined_rank:
                     Htr_w, Hval_w, Hfin_w = Htr_s, Hval_s, Hfin_s
 
                 best_score_tuple, best_model, best_params, best_aux_print = \
-                    parafac_OC_SVM(Htr_w, Hval_w, Hfin_w)
+                    OC_SVM('CP', Htr_w, Hval_w, Hfin_w)
 
                 # FINAL evaluation
                 s_fin = -best_model.decision_function(Hfin_w).ravel()
@@ -2118,7 +1874,7 @@ if use_predefined_rank:
                 else:
                     Htr_w, Hval_w, Hfin_w = Htr_s, Hval_s, Hfin_s
 
-                sum_err_va, autoencoder, run_time = parafac_autoencoder(factor, bottleneck, Htr_w, Hval_w, Hfin_w)
+                sum_err_va, autoencoder, run_time = neural_network_autoencoder(factor, bottleneck, Htr_w, Hval_w, Hfin_w)
 
                 # Score FINAL
                 recon_fi = autoencoder.predict(Hfin_w, verbose=0)
@@ -2158,7 +1914,7 @@ if use_predefined_rank:
                 else:
                     Htr_w, Hval_w, Hfin_w = Htr_s, Hval_s, Hfin_s
 
-                best_if, best_obj, thr, best_params = parafac_isolation_forest(Htr_w=Htr_w, Hval_w=Hval_w, Hfin_w=Hfin_w)
+                best_if, best_obj, thr, best_params = isolation_forest('CP', Htr_w=Htr_w, Hval_w=Hval_w, Hfin_w=Hfin_w)
 
                 # --- FINAL scoring ---
                 s_fi = -best_if.score_samples(Hfin_w)  # anomaly-positive
@@ -2194,15 +1950,29 @@ if use_predefined_rank:
                 Feat_fi = extractFeatures(decomp_fi, n_fi, isTuckerDecomposition=True,
                                           feature_mode=TUCKER_FEATURE_MODE)
 
-                scaler = StandardScaler()
-                Z_tr = scaler.fit_transform(Feat_tr)
-                Z_va = scaler.transform(Feat_va)
-                Z_fi = scaler.transform(Feat_fi)
+                if RUN_TUCKER_VISUALIZATION:
+                    # Show 3 specific Tucker reconstructions across all 6 bands
+                    visualize_tucker_reconstruction_per_tile(decomp_tr, idxs=[0, 1, 2], bands=(0, 1, 2, 3, 4, 5))
 
-                best_model, best_tuple, best_params, best_aux = tucker_one_class_svm(Z_tr, Z_va, Z_fi)
+                # Scale
+                scaler = StandardScaler()
+                Htr_s = scaler.fit_transform(Feat_tr)
+                Hval_s = scaler.transform(Feat_va)
+                Hfin_s = scaler.transform(Feat_fi)
+
+                # Feature pathway: full H (optionally PCA-whiten)
+                if use_pca_whiten:
+                    pca = PCA(whiten=True, svd_solver='auto', random_state=42)
+                    Htr_w = pca.fit_transform(Htr_s)
+                    Hval_w = pca.transform(Hval_s)
+                    Hfin_w = pca.transform(Hfin_s)
+                else:
+                    Htr_w, Hval_w, Hfin_w = Htr_s, Hval_s, Hfin_s
+
+                best_tuple, best_model, best_params, best_aux = OC_SVM('Tucker', Htr_w, Hval_w, Hfin_w)
 
                 # FINAL evaluation
-                s_fin = -best_model.decision_function(Z_fi).ravel()
+                s_fin = -best_model.decision_function(Hfin_w).ravel()
                 auc_fin = manual_auc(y_fin, s_fin, positive_label=-1)
                 th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, s_fin, positive_label=-1)
                 print(f"[Tucker+OCSVM] Final result RANK={rank} AUC={auc_fin} | ACC={acc_opt} "
@@ -2239,7 +2009,7 @@ if use_predefined_rank:
                 Z_va = scaler.transform(Feat_va)
                 Z_fi = scaler.transform(Feat_fi)
 
-                sum_err_va, autoencoder, run_time = tucker_neural_network_autoencoder(factor, bottleneck,
+                sum_err_va, autoencoder, run_time = neural_network_autoencoder(factor, bottleneck,
                                                                                       Z_tr, Z_va, Z_fi)
 
                 # Predict on FINAL
@@ -2279,7 +2049,7 @@ if use_predefined_rank:
                 Z_va = scaler.transform(Feat_va)
                 Z_fi = scaler.transform(Feat_fi)
 
-                best_if, best_obj, thr, best_params = tucker_isolation_forests(Z_tr, Z_va, Z_fi)
+                best_if, best_obj, thr, best_params = isolation_forests('Tucker', Z_tr, Z_va, Z_fi)
 
                 # --- FINAL scoring ---
                 s_fi = -best_if.score_samples(Z_fi)
