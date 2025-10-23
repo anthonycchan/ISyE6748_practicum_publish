@@ -800,9 +800,9 @@ def get_splits(data_bundle, standardize=USE_BAND_STANDARDIZE):
         X_val   = apply_band_standardizer(X_val,   mu_b, sig_b)
         X_fin   = apply_band_standardizer(X_fin,   mu_b, sig_b)
 
-    #sanity_report(X_train, "TRAIN")
-    #sanity_report(X_val,   "VAL")
-    #sanity_report(X_fin,   "FINAL")
+    sanity_report(X_train, "TRAIN")
+    sanity_report(X_val,   "VAL")
+    sanity_report(X_fin,   "FINAL")
 
     if np.isnan(X_train).any() or np.isinf(X_train).any():
         print("TRAIN: NaN/Inf found; cleaning tiles.")
