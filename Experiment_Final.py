@@ -33,15 +33,15 @@ from utils_mem import peak_ram
 random.seed(1)
 
 # Paths & toggles
-train_data        = "Data/Full/train_typical"        # typical only
-validation_data   = "Data/Full/validation_typical"   # typical only
-test_typical_data = "Data/Full/test_typical" # typical
-test_anomaly_data = "Data/Full/test_novel/all"   # novel
+#train_data        = "Data/Full/train_typical"        # typical only
+#validation_data   = "Data/Full/validation_typical"   # typical only
+#test_typical_data = "Data/Full/test_typical" # typical
+#test_anomaly_data = "Data/Full/test_novel/all"   # novel
 
-#train_data        = "Data/Reduced/set_1/train"        # typical only
-#validation_data   = "Data/Reduced/set_1/validation"   # typical only
-#test_typical_data = "Data/Reduced/set_1/test_typical" # typical
-#test_anomaly_data = "Data/Reduced/set_1/test_novel"   # novel
+train_data        = "Data/Reduced/set_500/train"        # typical only
+validation_data   = "Data/Reduced/set_1/validation"   # typical only
+test_typical_data = "Data/Reduced/set_1/test_typical" # typical
+test_anomaly_data = "Data/Reduced/set_1/test_novel"   # novel
 #test_anomaly_data = "Data/Full/test_novel/bedrock"   # novel
 #test_anomaly_data = "Data/Full/test_novel/broken-rock"   # novel
 #test_anomaly_data = "Data/Full/test_novel/drill-hole"   # novel
@@ -53,12 +53,12 @@ test_anomaly_data = "Data/Full/test_novel/all"   # novel
 #test_anomaly_data = "Data/Full/test_novel/veins"   # novel
 
 use_predefined_rank = False
-enable_tucker_oc_svm = True
-enable_tucker_autoencoder = True
-enable_tucker_isolation_forest = True
-enable_cp_oc_svm = False
-enable_cp_autoencoder = False
-enable_cp_isolation_forest = False
+enable_tucker_oc_svm = False
+enable_tucker_autoencoder = False
+enable_tucker_isolation_forest = False
+enable_cp_oc_svm = True
+enable_cp_autoencoder = True
+enable_cp_isolation_forest = True
 enable_pca_oc_svm = False
 enable_pca_autoencoder = False
 enable_pca_isolation_forest = False
@@ -66,6 +66,8 @@ enable_pca_isolation_forest = False
 no_decomposition = False
 RUN_CP_VISUALIZATION = False
 RUN_TUCKER_VISUALIZATION = False
+
+TRAINING_EVALUATION = True
 
 # Optional: standardize bands using TRAIN stats
 USE_BAND_STANDARDIZE = True
@@ -78,6 +80,7 @@ REDUCE_TEST_TYP_N = 426
 REDUCE_TEST_ANO_N = 430
 REDUCE_SEED = 1
 VAL_FRACTION = 0.5  # only used if no separate validation dir
+
 
 # TensorLy backend + device toggles
 TL_BACKEND = "pytorch"   # change to "numpy" to force CPU
@@ -1452,12 +1455,60 @@ def _fit_eval_ocsvm(Htr, Hval, y_val, *, nu, gamma):
     auc = manual_auc(y_val, s_val, positive_label=-1)
     return auc, mdl
 
+###
+## Evaluate models
+###
+def evaluate_OC_SVM(type, rank, Hfin_w, y_fin, best_score_tuple, best_model, best_params, best_aux_print):
+    # FINAL evaluation
+    s_fin = -best_model.decision_function(Hfin_w).ravel()
+    auc_fin = manual_auc(y_fin, s_fin, positive_label=-1)
+    th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, s_fin, positive_label=-1)
+    print(f"[{type}+OCSVM] Final result RANK={rank} AUC={auc_fin} | ACC={acc_opt} "
+          f"| param=({best_params}) | aux={best_aux_print}")
+
+    # Bootstrap AUC (threshold-free, robust)
+    auc_boot = _bootstrap_metric(y_fin, s_fin, n_boot=2000, ci=95, positive_label=-1, metric="auc",
+                                 rng_seed=42)
+    print(f"[{type}+OCSVM] AUC={auc_fin:.4f} Boot: mean:{auc_boot['mean']:.4f} std:{auc_boot['std']:.4f}, "
+          f"CI({auc_boot['low']:.4f}–{auc_boot['high']:.4f}) | ")
+
+def evaluate_AE(type, rank, Hfin_w, y_fin, autoencoder):
+    # Score FINAL
+    recon_fi = autoencoder.predict(Hfin_w, verbose=0)
+    err_fi = np.mean(np.square(Hfin_w - recon_fi), axis=1)  # anomaly-positive scores
+    auc_fin = manual_auc(y_fin, err_fi, positive_label=-1)
+    th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, err_fi, positive_label=-1)
+    print(f"[{type}+AE] (global) Final result Rank={rank} AUC={auc_fin} ACC={acc_opt}")
+
+    # Bootstrap AUC (threshold-free, robust)
+    auc_boot = _bootstrap_metric(y_fin, err_fi, n_boot=2000, ci=95, positive_label=-1, metric="auc",
+                                 rng_seed=42)
+    print(f"[{type}+AE] AUC={auc_fin:.4f} Boot: mean:{auc_boot['mean']:.4f} std:{auc_boot['std']:.4f}, "
+          f"CI({auc_boot['low']:.4f}–{auc_boot['high']:.4f}) | ")
+
+def evaluate_IF(type, rank, Hfin_w, y_fin, best_if, best_obj, thr, best_params):
+    # --- FINAL scoring ---
+    s_fi = -best_if.score_samples(Hfin_w)  # anomaly-positive
+    preds = np.where(s_fi >= thr, -1, 1)
+    acc = float(np.mean(preds == y_fin))
+    auc_fin = manual_auc(y_fin, s_fi, positive_label=-1)
+    print(f"{type}+IF] Final result rank={rank} AUC={auc_fin} ACC={acc} obj={best_obj}"
+          f"| params={best_params} "
+          f"| thr={thr:.6f} "
+          f"| target_FP={VAL_FP_TARGET:.3f}")
+
+    # Bootstrap AUC (threshold-free, robust)
+    auc_boot = _bootstrap_metric(y_fin, s_fi, n_boot=2000, ci=95, positive_label=-1, metric="auc",
+                                 rng_seed=42)
+    print(f"{type}+IF] AUC={auc_fin:.4f} Boot: mean:{auc_boot['mean']:.4f} std:{auc_boot['std']:.4f}, "
+          f"CI({auc_boot['low']:.4f}–{auc_boot['high']:.4f}) | ")
+
 
 use_pca_whiten = True
 # Rank search
 if not no_decomposition and not use_predefined_rank:
     print('Rank search')
-    for split_seed in {1,3,5}:
+    for split_seed in {5}:
         print('Split seed:', split_seed)
 
         # Entry (reads once, then passes data to pipelines)
@@ -1503,15 +1554,18 @@ if not no_decomposition and not use_predefined_rank:
 
                     if enable_pca_oc_svm:
                         with peak_ram(prefix="PCA+OCSVM", label=f"rank={rank}", interval=0.02) as m:
-                            OC_SVM('PCA', Htr_w, Hval_w, Hfin_w)
+                            best_score_tuple, best_model, best_params, best_aux_print = OC_SVM('PCA', Htr_w, Hval_w, Hfin_w)
+                            evaluate_OC_SVM('PCA', rank, Hfin_w, y_fin, best_score_tuple, best_model, best_params, best_aux_print)
 
                     if enable_pca_autoencoder:
                         with peak_ram(prefix="PCA+AE", label=f"rank={rank}", interval=0.02) as m:
-                            autoencoder_param_search('PCA', Htr_w, Hval_w, Hfin_w)
+                            best_err_va, best_autoencoder, best_run_time = autoencoder_param_search('PCA', Htr_w, Hval_w, Hfin_w)
+                            evaluate_AE('PCA', rank, Hfin_w, y_fin, best_autoencoder)
 
                     if enable_pca_isolation_forest:
                         with peak_ram(prefix="PCA+IF", label=f"rank={rank}", interval=0.02) as m:
-                            isolation_forest('PCA', Htr_w, Hval_w, Hfin_w)
+                            best_if, best_obj, thr, best_params = isolation_forest('PCA', Htr_w, Hval_w, Hfin_w)
+                            evaluate_IF('PCA', rank, Hfin_w, y_fin, best_if, best_obj, thr, best_params)
 
 
         if enable_cp_oc_svm or enable_cp_autoencoder or enable_cp_isolation_forest:
@@ -1546,19 +1600,25 @@ if not no_decomposition and not use_predefined_rank:
 
                 if enable_cp_oc_svm:
                     with peak_ram(prefix=f"CP+OCSVM", label=f"R={rank}", interval=0.02) as m:
-                        OC_SVM('CP', Htr_w, Hval_w, Hfin_w)
+                        best_score_tuple, best_model, best_params, best_aux_print = OC_SVM('CP', Htr_w, Hval_w, Hfin_w)
+                        if TRAINING_EVALUATION:
+                            evaluate_OC_SVM('CP', rank, Hfin_w, y_fin, best_score_tuple, best_model, best_params, best_aux_print)
 
                 if enable_cp_autoencoder:
                     with peak_ram(prefix=f"CP+AE", label=f"R={rank}", interval=0.02) as m:
-                        autoencoder_param_search('CP', Htr_w=Htr_w, Hval_w=Hval_w, Hfin_w=Hfin_w)
+                        best_err_va, best_autoencoder, best_run_time = autoencoder_param_search('CP', Htr_w=Htr_w, Hval_w=Hval_w, Hfin_w=Hfin_w)
+                        if TRAINING_EVALUATION:
+                            evaluate_AE('CP', rank, Hfin_w, y_fin, best_autoencoder)
 
                 if enable_cp_isolation_forest:
                     with peak_ram(prefix=f"CP+IF", label=f"R={rank}", interval=0.02) as m:
-                        isolation_forest('CP', Htr_w=Htr_w, Hval_w=Hval_w, Hfin_w=Hfin_w)
+                        best_if, best_obj, thr, best_params = isolation_forest('CP', Htr_w=Htr_w, Hval_w=Hval_w, Hfin_w=Hfin_w)
+                        if TRAINING_EVALUATION:
+                            evaluate_IF('CP', rank, Hfin_w, y_fin, best_if, best_obj, thr, best_params)
 
         if enable_tucker_oc_svm or enable_tucker_autoencoder or enable_tucker_isolation_forest:
             rankSet = sorted({5, 16, 32, 64})
-            for i in rankSet:
+            for i in {16, 32, 64}:
                 for j in rankSet:
                     for k in sorted({5, 16}):
                         rank = (i, j, k)
@@ -1597,15 +1657,21 @@ if not no_decomposition and not use_predefined_rank:
 
                         if enable_tucker_oc_svm:
                             with peak_ram(prefix=f"Tucker+OCSVM", label=f"R={rank}", interval=0.02) as m:
-                                OC_SVM('Tucker', Htr_w, Hval_w, Hfin_w)
+                                best_score_tuple, best_model, best_params, best_aux_print = OC_SVM('Tucker', Htr_w, Hval_w, Hfin_w)
+                                if TRAINING_EVALUATION:
+                                    evaluate_OC_SVM('Tucker', rank, Hfin_w, y_fin, best_score_tuple, best_model, best_params, best_aux_print)
 
                         if enable_tucker_autoencoder:
                             with peak_ram(prefix=f"Tucker+AE", label=f"R={rank}", interval=0.02) as m:
-                                autoencoder_param_search('Tucker', Htr_w, Hval_w, Hfin_w)
+                                best_err_va, best_autoencoder, best_run_time = autoencoder_param_search('Tucker', Htr_w, Hval_w, Hfin_w)
+                                if TRAINING_EVALUATION:
+                                    evaluate_AE('Tucker', rank, Hfin_w, y_fin, best_autoencoder)
 
                         if enable_tucker_isolation_forest:
                             with peak_ram(prefix=f"Tucker+IF", label=f"R={rank}", interval=0.02) as m:
-                                isolation_forest('Tucker', Htr_w, Hval_w, Hfin_w)
+                                best_if, best_obj, thr, best_params = isolation_forest('Tucker', Htr_w, Hval_w, Hfin_w)
+                                if TRAINING_EVALUATION:
+                                    evaluate_IF('Tucker', rank, Hfin_w, y_fin, best_if, best_obj, thr, best_params)
 
 if no_decomposition:
     print('No Decomposition')
@@ -1689,18 +1755,8 @@ if use_predefined_rank:
                 best_score_tuple, best_model, best_params, best_aux_print = \
                     OC_SVM('PCA', Htr, Hva, Hte)
 
-                # FINAL evaluation
-                s_fin = -best_model.decision_function(Hte).ravel()
-                auc_fin = manual_auc(y_fin, s_fin, positive_label=-1)
-                th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, s_fin, positive_label=-1)
-                print(f"[PCA+OCSVM] Final result RANK={rank} AUC={auc_fin} | ACC={acc_opt} "
-                      f"| param=({best_params}) | aux={best_aux_print}")
+                evaluate_OC_SVM('PCA', rank, Hfin_w, y_fin, best_score_tuple, best_model, best_params, best_aux_print)
 
-                # Bootstrap AUC (threshold-free, robust)
-                auc_boot = _bootstrap_metric(y_fin, s_fin, n_boot=2000, ci=95, positive_label=-1, metric="auc",
-                                             rng_seed=42)
-                print(f"[PCA+OCSVM] AUC={auc_fin:.4f} Boot: mean:{auc_boot['mean']:.4f} std:{auc_boot['std']:.4f}, "
-                      f"CI({auc_boot['low']:.4f}–{auc_boot['high']:.4f}) | ")
 
         if enable_pca_autoencoder:
             rank = 16
@@ -1737,18 +1793,8 @@ if use_predefined_rank:
 
                 err_va, autoencoder, run_time = neural_network_autoencoder(factor, bottleneck, Htr, Hva, Hte)
 
-                # Score FINAL
-                recon_fi = autoencoder.predict(Hte, verbose=0)
-                err_fi = np.mean(np.square(Hte - recon_fi), axis=1)  # anomaly-positive scores
-                auc_fin = manual_auc(y_fin, err_fi, positive_label=-1)
-                th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, err_fi, positive_label=-1)
-                print(f"[PCA+AE] (global) Final result Rank={rank} AUC={auc_fin} ACC={acc_opt}")
+                evaluate_AE('PCA', rank, Hfin_w, y_fin, autoencoder)
 
-                # Bootstrap AUC (threshold-free, robust)
-                auc_boot = _bootstrap_metric(y_fin, err_fi, n_boot=2000, ci=95, positive_label=-1, metric="auc",
-                                             rng_seed=42)
-                print(f"[PCA+AE] AUC={auc_fin:.4f} Boot: mean:{auc_boot['mean']:.4f} std:{auc_boot['std']:.4f}, "
-                      f"CI({auc_boot['low']:.4f}–{auc_boot['high']:.4f}) | ")
 
         if enable_pca_isolation_forest:
             rank = 16
@@ -1780,24 +1826,10 @@ if use_predefined_rank:
                     Hva = post_scaler.transform(Hva)
                     Hte = post_scaler.transform(Hte)
 
-                best_if, best_obj, thr, best_params = isolation_forest('PCA', Htr_w=Htr, Hval_w=Hva,
-                                                                               Hfin_w=Hte)
+                best_if, best_obj, thr, best_params = isolation_forest('PCA', Htr_w=Htr, Hval_w=Hva, Hfin_w=Hte)
 
-                # --- FINAL scoring ---
-                s_fi = -best_if.score_samples(Hte)  # anomaly-positive
-                preds = np.where(s_fi >= thr, -1, 1)
-                acc = float(np.mean(preds == y_fin))
-                auc_fin = manual_auc(y_fin, s_fi, positive_label=-1)
-                print(f"[PCA+IF] Final result rank={rank} AUC={auc_fin} ACC={acc} obj={best_obj}"
-                      f"| params={best_params} "
-                      f"| thr={thr:.6f} "
-                      f"| target_FP={VAL_FP_TARGET:.3f}")
+                evaluate_IF('PCA', rank, Hfin_w, y_fin, best_if, best_obj, thr, best_params)
 
-                # Bootstrap AUC (threshold-free, robust)
-                auc_boot = _bootstrap_metric(y_fin, s_fi, n_boot=2000, ci=95, positive_label=-1, metric="auc",
-                                             rng_seed=42)
-                print(f"[PCA+IF] AUC={auc_fin:.4f} Boot: mean:{auc_boot['mean']:.4f} std:{auc_boot['std']:.4f}, "
-                      f"CI({auc_boot['low']:.4f}–{auc_boot['high']:.4f}) | ")
 
         if enable_cp_oc_svm:
             # Fixed rank:
@@ -1833,18 +1865,7 @@ if use_predefined_rank:
                 best_score_tuple, best_model, best_params, best_aux_print = \
                     OC_SVM('CP', Htr_w, Hval_w, Hfin_w)
 
-                # FINAL evaluation
-                s_fin = -best_model.decision_function(Hfin_w).ravel()
-                auc_fin = manual_auc(y_fin, s_fin, positive_label=-1)
-                th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, s_fin, positive_label=-1)
-                print(f"[CP+OCSVM] Final result RANK={rank} AUC={auc_fin} | ACC={acc_opt} "
-                      f"| param=({best_params}) | aux={best_aux_print}")
-
-                # Bootstrap AUC (threshold-free, robust)
-                auc_boot = _bootstrap_metric(y_fin, s_fin, n_boot=2000, ci=95, positive_label=-1, metric="auc",
-                                             rng_seed=42)
-                print(f"[CP+OCSVM] AUC={auc_fin:.4f} Boot: mean:{auc_boot['mean']:.4f} std:{auc_boot['std']:.4f}, "
-                      f"CI({auc_boot['low']:.4f}–{auc_boot['high']:.4f}) | ")
+                evaluate_OC_SVM('CP', rank, Hfin_w, y_fin, best_score_tuple, best_model, best_params, best_aux_print)
 
 
         if enable_cp_autoencoder:
@@ -1876,18 +1897,7 @@ if use_predefined_rank:
 
                 sum_err_va, autoencoder, run_time = neural_network_autoencoder(factor, bottleneck, Htr_w, Hval_w, Hfin_w)
 
-                # Score FINAL
-                recon_fi = autoencoder.predict(Hfin_w, verbose=0)
-                err_fi = np.mean(np.square(Hfin_w - recon_fi), axis=1)  # anomaly-positive scores
-                auc_fin = manual_auc(y_fin, err_fi, positive_label=-1)
-                th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, err_fi, positive_label=-1)
-                print(f"[CP+AE] (global) Final result Rank={rank} AUC={auc_fin} ACC={acc_opt}")
-
-                # Bootstrap AUC (threshold-free, robust)
-                auc_boot = _bootstrap_metric(y_fin, err_fi, n_boot=2000, ci=95, positive_label=-1, metric="auc",
-                                             rng_seed=42)
-                print(f"[CP+AE] AUC={auc_fin:.4f} Boot: mean:{auc_boot['mean']:.4f} std:{auc_boot['std']:.4f}, "
-                      f"CI({auc_boot['low']:.4f}–{auc_boot['high']:.4f}) | ")
+                evaluate_AE('CP', rank, Hfin_w, y_fin, autoencoder)
 
         if enable_cp_isolation_forest:
             # Fixed rank:
@@ -1916,21 +1926,8 @@ if use_predefined_rank:
 
                 best_if, best_obj, thr, best_params = isolation_forest('CP', Htr_w=Htr_w, Hval_w=Hval_w, Hfin_w=Hfin_w)
 
-                # --- FINAL scoring ---
-                s_fi = -best_if.score_samples(Hfin_w)  # anomaly-positive
-                preds = np.where(s_fi >= thr, -1, 1)
-                acc = float(np.mean(preds == y_fin))
-                auc_fin = manual_auc(y_fin, s_fi, positive_label=-1)
-                print(f"[CP+IF] Final result rank={rank} AUC={auc_fin} ACC={acc} obj={best_obj}"
-                      f"| params={best_params} "
-                      f"| thr={thr:.6f} "
-                      f"| target_FP={VAL_FP_TARGET:.3f}")
+                evaluate_IF('CP', rank, Hfin_w, y_fin, best_if, best_obj, thr, best_params)
 
-                # Bootstrap AUC (threshold-free, robust)
-                auc_boot = _bootstrap_metric(y_fin, s_fi, n_boot=2000, ci=95, positive_label=-1, metric="auc",
-                                             rng_seed=42)
-                print(f"[CP+IF] AUC={auc_fin:.4f} Boot: mean:{auc_boot['mean']:.4f} std:{auc_boot['std']:.4f}, "
-                      f"CI({auc_boot['low']:.4f}–{auc_boot['high']:.4f}) | ")
 
         if enable_tucker_oc_svm:
             rank = (5, 5, 5)
@@ -1971,18 +1968,8 @@ if use_predefined_rank:
 
                 best_tuple, best_model, best_params, best_aux = OC_SVM('Tucker', Htr_w, Hval_w, Hfin_w)
 
-                # FINAL evaluation
-                s_fin = -best_model.decision_function(Hfin_w).ravel()
-                auc_fin = manual_auc(y_fin, s_fin, positive_label=-1)
-                th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, s_fin, positive_label=-1)
-                print(f"[Tucker+OCSVM] Final result RANK={rank} AUC={auc_fin} | ACC={acc_opt} "
-                      f"| param={best_params} | aux={best_aux}")
-
-                # Bootstrap AUC (threshold-free, robust)
-                auc_boot = _bootstrap_metric(y_fin, s_fin, n_boot=2000, ci=95, positive_label=-1, metric="auc",
-                                             rng_seed=42)
-                print(f"[Tucker+OCSVM] AUC={auc_fin:.4f} Boot: mean:{auc_boot['mean']:.4f} std:{auc_boot['std']:.4f}, "
-                      f"CI({auc_boot['low']:.4f}–{auc_boot['high']:.4f}) | ")
+                evaluate_OC_SVM('Tucker', rank, Hfin_w, y_fin, best_tuple, best_model, best_params,
+                                best_aux)
 
         if enable_tucker_autoencoder:
             rank = (5, 5, 5)
@@ -2004,27 +1991,26 @@ if use_predefined_rank:
                 Feat_fi = extractFeatures(decomp_fi, n_fi, isTuckerDecomposition=True,
                                           feature_mode=TUCKER_FEATURE_MODE)
 
+                # Scale
                 scaler = StandardScaler()
-                Z_tr = scaler.fit_transform(Feat_tr)
-                Z_va = scaler.transform(Feat_va)
-                Z_fi = scaler.transform(Feat_fi)
+                Htr_s = scaler.fit_transform(Feat_tr)
+                Hval_s = scaler.transform(Feat_va)
+                Hfin_s = scaler.transform(Feat_fi)
 
-                sum_err_va, autoencoder, run_time = neural_network_autoencoder(factor, bottleneck,
-                                                                                      Z_tr, Z_va, Z_fi)
+                # Feature pathway: full H (optionally PCA-whiten)
+                if use_pca_whiten:
+                    pca = PCA(whiten=True, svd_solver='auto', random_state=42)
+                    Htr_w = pca.fit_transform(Htr_s)
+                    Hval_w = pca.transform(Hval_s)
+                    Hfin_w = pca.transform(Hfin_s)
+                else:
+                    Htr_w, Hval_w, Hfin_w = Htr_s, Hval_s, Hfin_s
 
-                # Predict on FINAL
-                recon_fi = autoencoder.predict(Z_fi, verbose=0)
-                err_fi = np.mean(np.square(Z_fi - recon_fi), axis=1)  # anomaly-positive scores
-                # AUC + max-accuracy threshold (for parity with other strategies)
-                auc_fin = manual_auc(y_fin, err_fi, positive_label=-1)
-                th_opt, acc_opt = _pick_threshold_max_accuracy(y_fin, err_fi, positive_label=-1)
-                print(f"[Tucker+AE] Final result Rank={rank} AUC={auc_fin} ACC={acc_opt}")
+                sum_err_va, autoencoder, run_time = neural_network_autoencoder(factor, bottleneck, Htr_w, Hval_w,
+                                                                               Hfin_w)
 
-                # Bootstrap AUC (threshold-free, robust)
-                auc_boot = _bootstrap_metric(y_fin, err_fi, n_boot=2000, ci=95, positive_label=-1, metric="auc",
-                                             rng_seed=42)
-                print(f"[Tucker+AE] AUC={auc_fin:.4f} Boot: mean:{auc_boot['mean']:.4f} std:{auc_boot['std']:.4f}, "
-                      f"CI({auc_boot['low']:.4f}–{auc_boot['high']:.4f}) | ")
+                evaluate_AE('Tucker', rank, Hfin_w, y_fin, autoencoder)
+
 
         if enable_tucker_isolation_forest:
             rank = (5, 5, 5)
@@ -2044,26 +2030,21 @@ if use_predefined_rank:
                 Feat_fi = extractFeatures(decomp_fi, n_fi, isTuckerDecomposition=True,
                                           feature_mode=TUCKER_FEATURE_MODE)
 
+                # Scale
                 scaler = StandardScaler()
-                Z_tr = scaler.fit_transform(Feat_tr)
-                Z_va = scaler.transform(Feat_va)
-                Z_fi = scaler.transform(Feat_fi)
+                Htr_s = scaler.fit_transform(Feat_tr)
+                Hval_s = scaler.transform(Feat_va)
+                Hfin_s = scaler.transform(Feat_fi)
 
-                best_if, best_obj, thr, best_params = isolation_forests('Tucker', Z_tr, Z_va, Z_fi)
+                # Feature pathway: full H (optionally PCA-whiten)
+                if use_pca_whiten:
+                    pca = PCA(whiten=True, svd_solver='auto', random_state=42)
+                    Htr_w = pca.fit_transform(Htr_s)
+                    Hval_w = pca.transform(Hval_s)
+                    Hfin_w = pca.transform(Hfin_s)
+                else:
+                    Htr_w, Hval_w, Hfin_w = Htr_s, Hval_s, Hfin_s
 
-                # --- FINAL scoring ---
-                s_fi = -best_if.score_samples(Z_fi)
-                preds = np.where(s_fi >= thr, -1, 1)
-                acc = float(np.mean(preds == y_fin))
-                auc_fin = manual_auc(y_fin, s_fi, positive_label=-1)
-                print(f"[Tucker+IF] Final result rank={rank} AUC={auc_fin} ACC={acc} obj={best_obj}"
-                      f"| params={best_params} "
-                      f"| thr={thr:.6f} "
-                      f"| target_FP={VAL_FP_TARGET:.3f}")
+                best_if, best_obj, thr, best_params = isolation_forests('Tucker', Htr_w, Hval_w, Hfin_w)
 
-                # Bootstrap AUC (threshold-free, robust)
-                auc_boot = _bootstrap_metric(y_fin, s_fi, n_boot=2000, ci=95, positive_label=-1, metric="auc",
-                                             rng_seed=42)
-                print(f"[Tucker+IF] AUC={auc_fin:.4f} Boot: mean:{auc_boot['mean']:.4f} std:{auc_boot['std']:.4f}, "
-                      f"CI({auc_boot['low']:.4f}–{auc_boot['high']:.4f}) | ")
-
+                evaluate_IF('Tucker', rank, Hfin_w, y_fin, best_if, best_obj, thr, best_params)
