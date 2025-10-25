@@ -74,7 +74,7 @@ USE_BAND_STANDARDIZE = True
 
 # Dataset reduction controls
 REDUCE_DATASETS = True
-REDUCE_TRAIN_N = 500
+REDUCE_TRAIN_N = 1500
 REDUCE_VAL_N = 430
 REDUCE_TEST_TYP_N = 426
 REDUCE_TEST_ANO_N = 430
@@ -1492,7 +1492,7 @@ def evaluate_IF(type, rank, Hfin_w, y_fin, best_if, best_obj, thr, best_params):
     preds = np.where(s_fi >= thr, -1, 1)
     acc = float(np.mean(preds == y_fin))
     auc_fin = manual_auc(y_fin, s_fi, positive_label=-1)
-    print(f"{type}+IF] Final result rank={rank} AUC={auc_fin} ACC={acc} obj={best_obj}"
+    print(f"[{type}+IF] Final result rank={rank} AUC={auc_fin} ACC={acc} obj={best_obj}"
           f"| params={best_params} "
           f"| thr={thr:.6f} "
           f"| target_FP={VAL_FP_TARGET:.3f}")
@@ -1500,7 +1500,7 @@ def evaluate_IF(type, rank, Hfin_w, y_fin, best_if, best_obj, thr, best_params):
     # Bootstrap AUC (threshold-free, robust)
     auc_boot = _bootstrap_metric(y_fin, s_fi, n_boot=2000, ci=95, positive_label=-1, metric="auc",
                                  rng_seed=42)
-    print(f"{type}+IF] AUC={auc_fin:.4f} Boot: mean:{auc_boot['mean']:.4f} std:{auc_boot['std']:.4f}, "
+    print(f"[{type}+IF] AUC={auc_fin:.4f} Boot: mean:{auc_boot['mean']:.4f} std:{auc_boot['std']:.4f}, "
           f"CI({auc_boot['low']:.4f}–{auc_boot['high']:.4f}) | ")
 
 
