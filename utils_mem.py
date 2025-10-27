@@ -140,8 +140,6 @@ def _workingset_bytes_windows():
     if not _IS_WINDOWS:
         return (None, None)
 
-    # If psutil is available, we can still prefer its rss as WS proxy,
-    # but also fetch true WS via ctypes to expose as an extra metric.
     ws_now, ws_peak = _win_workingset_bytes()
     return (ws_now, ws_peak)
 
@@ -165,12 +163,16 @@ class MemRecord:
         self.peak_rss_bytes = 0
         self.peak_workingset_bytes = 0  # meaningful on Windows
         self.peak_cuda_bytes = 0
+        self.cpu_time_sec = 0.0         # CPU time (user+sys) for just the with-block
 
 
 @contextmanager
 def peak_ram(prefix=None, label=None, interval=0.02, with_cuda=True, track_workingset=True):
     """
-    Sample process memory usage while executing a code block.
+    Sample process memory usage while executing a code block AND report CPU time only.
+
+    Prints a single line like:
+      [CP+AE] R=40 peak_rss_mb=2054.0 | peak_workingset_mb=2054.1 | peak_cuda_mb=621.4 | cpu_time_sec=6.11
 
     Args:
         prefix (str): Printed prefix label (e.g., pipeline name).
@@ -183,6 +185,17 @@ def peak_ram(prefix=None, label=None, interval=0.02, with_cuda=True, track_worki
     stop = [False]
     t = None
     cuda_enabled = False
+
+    # CPU timers (snapshot start)
+    start_cpu_fallback = time.process_time()
+    psutil_start_user = psutil_start_sys = None
+    if _PROC is not None:
+        try:
+            ct0 = _PROC.cpu_times()
+            psutil_start_user = float(getattr(ct0, "user", 0.0) or 0.0)
+            psutil_start_sys  = float(getattr(ct0, "system", 0.0) or 0.0)
+        except Exception:
+            psutil_start_user = psutil_start_sys = None
 
     try:
         # CUDA setup (non-fatal if torch isn't present)
@@ -241,9 +254,21 @@ def peak_ram(prefix=None, label=None, interval=0.02, with_cuda=True, track_worki
         if t is not None:
             t.join(timeout=0.25)
 
-        # CUDA peak
+        # CUDA peak (no need to synchronize since we're not measuring wall time)
         if cuda_enabled:
             rec.peak_cuda_bytes = _cuda_peak_bytes()
+
+        # CPU time (snapshot end)
+        cpu_sec = time.process_time() - start_cpu_fallback
+        if _PROC is not None and (psutil_start_user is not None and psutil_start_sys is not None):
+            try:
+                ct1 = _PROC.cpu_times()
+                end_user = float(getattr(ct1, "user", 0.0) or 0.0)
+                end_sys  = float(getattr(ct1, "system", 0.0) or 0.0)
+                cpu_sec = max(0.0, (end_user - psutil_start_user) + (end_sys - psutil_start_sys))
+            except Exception:
+                pass
+        rec.cpu_time_sec = float(cpu_sec)
 
         # ---------------------------
         # Formatting & Printing
@@ -275,6 +300,7 @@ def peak_ram(prefix=None, label=None, interval=0.02, with_cuda=True, track_worki
             line += f" | peak_workingset_mb={ws_line}"
         if cuda_line is not None:
             line += f" | peak_cuda_mb={cuda_line}"
+        line += f" | cpu_time_sec={rec.cpu_time_sec:.2f}"
 
         sys.stdout.write(line + "\n")
         sys.stdout.flush()

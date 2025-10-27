@@ -5,6 +5,7 @@ import random
 import torch
 import warnings
 import numpy as np
+import math
 import matplotlib.pyplot as plt
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -34,14 +35,14 @@ random.seed(1)
 
 # Paths & toggles
 #train_data        = "Data/Full/train_typical"        # typical only
-#validation_data   = "Data/Full/validation_typical"   # typical only
+validation_data   = "Data/Full/validation_typical"   # typical only
 #test_typical_data = "Data/Full/test_typical" # typical
-#test_anomaly_data = "Data/Full/test_novel/all"   # novel
+test_anomaly_data = "Data/Full/test_novel/all"   # novel
 
-train_data        = "Data/Reduced/set_500/train"        # typical only
-validation_data   = "Data/Reduced/set_1/validation"   # typical only
-test_typical_data = "Data/Reduced/set_1/test_typical" # typical
-test_anomaly_data = "Data/Reduced/set_1/test_novel"   # novel
+train_data        = "Data/Reduced/set_1/train"        # typical only
+#validation_data   = "Data/Reduced/set_1/validation"   # typical only
+test_typical_data = "Data/Reduced/set_1/test_typical_200" # typical
+#test_anomaly_data = "Data/Reduced/set_1/test_novel"   # novel
 #test_anomaly_data = "Data/Full/test_novel/bedrock"   # novel
 #test_anomaly_data = "Data/Full/test_novel/broken-rock"   # novel
 #test_anomaly_data = "Data/Full/test_novel/drill-hole"   # novel
@@ -75,9 +76,9 @@ USE_BAND_STANDARDIZE = True
 # Dataset reduction controls
 REDUCE_DATASETS = True
 REDUCE_TRAIN_N = 1500
-REDUCE_VAL_N = 430
-REDUCE_TEST_TYP_N = 426
-REDUCE_TEST_ANO_N = 430
+REDUCE_VAL_N = math.ceil(REDUCE_TRAIN_N * 0.15)      # 15% of training data
+REDUCE_TEST_TYP_N = 200
+REDUCE_TEST_ANO_N = 10
 REDUCE_SEED = 1
 VAL_FRACTION = 0.5  # only used if no separate validation dir
 
@@ -1508,7 +1509,7 @@ use_pca_whiten = True
 # Rank search
 if not no_decomposition and not use_predefined_rank:
     print('Rank search')
-    for split_seed in {5}:
+    for split_seed in {1}:
         print('Split seed:', split_seed)
 
         # Entry (reads once, then passes data to pipelines)
@@ -1569,8 +1570,8 @@ if not no_decomposition and not use_predefined_rank:
 
 
         if enable_cp_oc_svm or enable_cp_autoencoder or enable_cp_isolation_forest:
-            startRank = 10;
-            endRank = 385;
+            startRank = 10
+            endRank = 385
             step = 5  # tighter range for speed
             for rank in range(startRank, endRank, step):
                 print("Rank:", rank)
@@ -1618,7 +1619,7 @@ if not no_decomposition and not use_predefined_rank:
 
         if enable_tucker_oc_svm or enable_tucker_autoencoder or enable_tucker_isolation_forest:
             rankSet = sorted({5, 16, 32, 64})
-            for i in {16, 32, 64}:
+            for i in rankSet:
                 for j in rankSet:
                     for k in sorted({5, 16}):
                         rank = (i, j, k)
@@ -1833,7 +1834,7 @@ if use_predefined_rank:
 
         if enable_cp_oc_svm:
             # Fixed rank:
-            rank = 15
+            rank = 10
             with peak_ram(prefix=f"CP+OCSVM", label=f"R={rank}", interval=0.02) as m:
                 # Global CP fit + project
                 (A, B, C), H_train, H_val, H_fin = cp_fit_and_project(
@@ -1870,9 +1871,9 @@ if use_predefined_rank:
 
         if enable_cp_autoencoder:
             # Fixed rank:
-            rank = 15
-            factor =1
-            bottleneck = 16
+            rank = 25
+            factor =3
+            bottleneck = 64
             with peak_ram(prefix=f"CP+AE", label=f"R={rank}", interval=0.02) as m:
                 # Global CP fit + project
                 (A, B, C), H_train, H_val, H_fin = cp_fit_and_project(
@@ -1901,7 +1902,7 @@ if use_predefined_rank:
 
         if enable_cp_isolation_forest:
             # Fixed rank:
-            rank = 15
+            rank = 130
             with peak_ram(prefix=f"CP+IF", label=f"R={rank}", interval=0.02) as m:
                 # Global CP fit + project
                 (A, B, C), H_train, H_val, H_fin = cp_fit_and_project(
