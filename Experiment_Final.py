@@ -76,9 +76,9 @@ USE_BAND_STANDARDIZE = True
 # Dataset reduction controls
 REDUCE_DATASETS = True
 REDUCE_TRAIN_N = 1501
-REDUCE_VAL_N = math.ceil(REDUCE_TRAIN_N * 0.15)      # 15% of training data
+REDUCE_VAL_N = math.ceil(REDUCE_TRAIN_N * 0.20)     # 20% of training data
 REDUCE_TEST_TYP_N = 200
-REDUCE_TEST_ANO_N = 10
+REDUCE_TEST_ANO_N = 100
 REDUCE_SEED = 1
 VAL_FRACTION = 0.5  # only used if no separate validation dir
 
@@ -1511,6 +1511,7 @@ def evaluate_AE(type, rank, Hfin_w, y_fin, autoencoder):
                                  rng_seed=42)
     print(f"[{type}+AE] AUC={auc_fin:.4f} Boot: mean:{auc_boot['mean']:.4f} std:{auc_boot['std']:.4f}, "
           f"CI({auc_boot['low']:.4f}–{auc_boot['high']:.4f}) | ")
+
 
 def evaluate_IF(type, rank, Hfin_w, y_fin, best_if, best_obj, thr, best_params):
     # --- FINAL scoring ---
