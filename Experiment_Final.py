@@ -35,12 +35,12 @@ random.seed(1)
 
 # Paths & toggles
 #train_data        = "Data/Full/train_typical"        # typical only
-validation_data   = "Data/Full/validation_typical"   # typical only
+#validation_data   = "Data/Full/validation_typical"   # typical only
 #test_typical_data = "Data/Full/test_typical" # typical
 test_anomaly_data = "Data/Full/test_novel/all"   # novel
 
 train_data        = "Data/Reduced/set_1/train"        # typical only
-#validation_data   = "Data/Reduced/set_1/validation"   # typical only
+validation_data   = "Data/Reduced/set_1/validation"   # typical only
 test_typical_data = "Data/Reduced/set_1/test_typical_200" # typical
 #test_anomaly_data = "Data/Reduced/set_1/test_novel"   # novel
 #test_anomaly_data = "Data/Full/test_novel/bedrock"   # novel
@@ -54,12 +54,12 @@ test_typical_data = "Data/Reduced/set_1/test_typical_200" # typical
 #test_anomaly_data = "Data/Full/test_novel/veins"   # novel
 
 use_predefined_rank = False
-enable_tucker_oc_svm = False
-enable_tucker_autoencoder = False
-enable_tucker_isolation_forest = False
-enable_cp_oc_svm = True
-enable_cp_autoencoder = True
-enable_cp_isolation_forest = True
+enable_tucker_oc_svm = True
+enable_tucker_autoencoder = True
+enable_tucker_isolation_forest = True
+enable_cp_oc_svm = False
+enable_cp_autoencoder = False
+enable_cp_isolation_forest = False
 enable_pca_oc_svm = False
 enable_pca_autoencoder = False
 enable_pca_isolation_forest = False
@@ -75,7 +75,7 @@ USE_BAND_STANDARDIZE = True
 
 # Dataset reduction controls
 REDUCE_DATASETS = True
-REDUCE_TRAIN_N = 1500
+REDUCE_TRAIN_N = 1501
 REDUCE_VAL_N = math.ceil(REDUCE_TRAIN_N * 0.15)      # 15% of training data
 REDUCE_TEST_TYP_N = 200
 REDUCE_TEST_ANO_N = 10
@@ -176,6 +176,7 @@ def readData(directory, max_files=None, random_state=REDUCE_SEED):
     directory = os.fsencode(directory)
     all_files = [f for f in os.listdir(directory) if os.fsdecode(f).endswith(".npy")]
     sel_idx = _random_subset_indices(len(all_files), max_files, seed=random_state)
+
     filelist = [all_files[i] for i in sel_idx]
 
     numFiles = len(filelist)
@@ -1109,11 +1110,13 @@ def neural_network_autoencoder(factor, bottleneck, Z_tr, Z_va, Z_fi):
 
     # Threshold from VAL (typical-only directory, if provided)
     recon_va = autoencoder.predict(Z_va, verbose=0)
-    err_va = np.mean(np.square(Z_va - recon_va), axis=1)
+    #err_va = np.mean(np.square(Z_va - recon_va), axis=1)
+    err_va = np.mean((Z_va - recon_va) ** 2, axis=1)
+    best_obj_value = float(np.median(err_va))  # or np.percentile(err_va, 95)
     threshold = np.percentile(err_va, 95)
     runTime = round(time.process_time() - start_time, 2)
 
-    return np.sum(err_va), autoencoder, runTime
+    return best_obj_value, autoencoder, runTime
 
 
 def tucker_rank_search_autoencoder(data_bundle):
@@ -1174,43 +1177,65 @@ def _if_mean_score_scorer(estimator, X, y=None):
     except Exception:
         return -np.inf
 
-def isolation_forest(type, Htr_w, Hval_w, Hfin_w, random_state=42):
+def isolation_forest(model_tag, Htr_w, Hval_w, Hfin_w, random_state=42):
+    """
+    Tune IF by minimizing the average VAL false-positive rate across a range of
+    TRAIN-anchored thresholds (quantiles of -score_samples on TRAIN).
+    Then calibrate the final threshold on VAL at (1 - VAL_FP_TARGET).
+    """
     start_time = time.process_time()
-
-    # --- grid ---
     warnings.filterwarnings('ignore', category=UserWarning)
+    assert (Hval_w is not None) and (Hval_w.shape[0] > 0)
+
     param_grid = {
         'n_estimators': [50, 100, 200],
         'max_samples':  [0.5, 0.75, 1.0],
-        'contamination':[0.05, 0.10, 0.20],  # only used by .predict default; we ignore at inference
         'max_features': [0.5, 0.75, 1.0],
         'bootstrap':    [False, True],
+        'contamination':[0.05, 0.10, 0.20],  # inert (we use score_samples), harmless to keep
         'random_state': [random_state],
         'n_jobs':       [-1],
     }
 
-    best_if = None
-    best_params = None
-    thr = None
+    # Quantiles to sweep (TRAIN-anchored). Adjust granularity if you like.
+    q_grid = [90, 95, 97.5, 99, 99.5, 99.9]
 
-    if USE_VAL_FOR_IF and (y_val is None) and (Hval_w is not None) and (Hval_w.shape[0] > 0):
-        # ------- Typical-only VAL: choose hyperparams by minimizing P95 on VAL; calibrate threshold from VAL -------
-        best_obj = np.inf
-        for p in ParameterGrid(param_grid):
-            clf = IsolationForest(**p).fit(Htr_w)
-            s_va = -clf.score_samples(Hval_w)  # anomaly-positive
-            if not np.all(np.isfinite(s_va)):
-                continue
-            p95 = float(np.percentile(s_va, 95))
-            if p95 < best_obj:
-                best_obj = p95
-                best_if = clf
-                best_params = dict(p)
-                # set threshold to achieve target FP on VAL
-                q = 100.0 * (1.0 - float(VAL_FP_TARGET))
-                thr = float(np.percentile(s_va, q))
+    best_if, best_params, best_obj, thr = None, None, np.inf, None
+    any_finite = False
 
-    print(f"[{type}+IF] best_obj={best_obj} best_param: {best_params} Elapsed: {round(time.process_time() - start_time, 2)}")
+    for p in ParameterGrid(param_grid):
+        clf = IsolationForest(**p).fit(Htr_w)
+
+        s_tr = -clf.score_samples(Htr_w)
+        s_va = -clf.score_samples(Hval_w)
+        if not (np.all(np.isfinite(s_tr)) and np.all(np.isfinite(s_va))):
+            continue
+        any_finite = True
+
+        # Average VAL FP across a range of TRAIN-anchored thresholds
+        fp_vals = []
+        for q in q_grid:
+            t = float(np.percentile(s_tr, q))
+            fp = float(np.mean(s_va >= t))
+            fp_vals.append(fp)
+
+        # Small regularizer to avoid needlessly huge models; tweak or drop as desired
+        reg = 1e-4 * p['n_estimators']
+        obj = float(np.mean(fp_vals)) + reg
+
+        if obj < best_obj:
+            best_obj = obj
+            best_if = clf
+            best_params = dict(p)
+            # Final threshold: hit VAL_FP_TARGET on VAL (typical-only)
+            q_star = 100.0 * (1.0 - float(VAL_FP_TARGET))
+            thr = float(np.percentile(s_va, q_star))
+
+    if not any_finite or best_if is None or thr is None:
+        raise RuntimeError("IF grid produced no finite scores; check data for NaN/inf.")
+
+    elapsed = round(time.process_time() - start_time, 2)
+    print(f"[{model_tag}+IF] best_obj={best_obj:.6f} best_param: {best_params} Elapsed (CPU s): {elapsed}")
     return best_if, best_obj, thr, best_params
 
 
