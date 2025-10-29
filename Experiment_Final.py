@@ -78,7 +78,7 @@ REDUCE_DATASETS = True
 REDUCE_TRAIN_N = 1501
 REDUCE_VAL_N = math.ceil(REDUCE_TRAIN_N * 0.20)     # 20% of training data
 REDUCE_TEST_TYP_N = 200
-REDUCE_TEST_ANO_N = 100
+REDUCE_TEST_ANO_N = 50
 REDUCE_SEED = 1
 VAL_FRACTION = 0.5  # only used if no separate validation dir
 
@@ -1094,29 +1094,51 @@ def neural_network_autoencoder(factor, bottleneck, Z_tr, Z_va, Z_fi):
 
     # Decoder
     decoder = Dense(128 * factor, activation='relu')(encoder)
-    decoder = Dropout(0.1)(decoder)
-    decoder = Dense(input_dim, activation='sigmoid')(decoder)
+    # keep variable names; switch head to linear unless your inputs are min-maxed to [0,1]
+    decoder = Dense(input_dim, activation='linear')(decoder)
 
     autoencoder = Model(inputs=input_layer, outputs=decoder)
     autoencoder.compile(optimizer='adam', loss='mse')
 
     # Early stopping callback (use VAL split)
-    early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
+    early_stopping = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
 
     # Fit the model
-    autoencoder.fit(Z_tr, Z_tr, epochs=10, batch_size=32,
-                    validation_data=(Z_va, Z_va),
-                    callbacks=[early_stopping], verbose=0)
+    autoencoder.fit(
+        Z_tr, Z_tr,
+        epochs=100, batch_size=32,
+        validation_data=(Z_va, Z_va),
+        callbacks=[early_stopping],
+        verbose=0
+    )
 
-    # Threshold from VAL (typical-only directory, if provided)
+    # --- anomaly-positive scores: per-row MSE on TRAIN and VAL ---
+    recon_tr = autoencoder.predict(Z_tr, verbose=0)
+    s_tr = np.mean((Z_tr - recon_tr) ** 2, axis=1).astype(float)
+
     recon_va = autoencoder.predict(Z_va, verbose=0)
-    #err_va = np.mean(np.square(Z_va - recon_va), axis=1)
-    err_va = np.mean((Z_va - recon_va) ** 2, axis=1)
-    best_obj_value = float(np.median(err_va))  # or np.percentile(err_va, 95)
-    threshold = np.percentile(err_va, 95)
+    err_va = np.mean((Z_va - recon_va) ** 2, axis=1).astype(float)  # keep name; this is s_va
+
+    if not (np.all(np.isfinite(s_tr)) and np.all(np.isfinite(err_va))):
+        raise RuntimeError("Non-finite AE scores; check inputs/scaling.")
+
+    # --- TRAIN-anchored multi-quantile FP objective (lower is better) ---
+    q_grid = (90, 95, 97.5, 99, 99.5, 99.9)
+    fp_vals = []
+    for q in q_grid:
+        t = float(np.percentile(s_tr, q))
+        fp = float(np.mean(err_va >= t))   # VAL is typical-only → this is FPR at that tail
+        fp_vals.append(fp)
+    best_obj_value = float(np.mean(fp_vals))
+
+    # Threshold from VAL (typical-only directory) for a target FP
+    #VAL_FP_TARGET = 0.05 if 'VAL_FP_TARGET' not in globals() else VAL_FP_TARGET
+    threshold = float(np.percentile(err_va, 100.0 * (1.0 - float(VAL_FP_TARGET))))
+
     runTime = round(time.process_time() - start_time, 2)
 
     return best_obj_value, autoencoder, runTime
+
 
 
 def tucker_rank_search_autoencoder(data_bundle):
