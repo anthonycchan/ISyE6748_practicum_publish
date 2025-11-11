@@ -39,7 +39,7 @@ random.seed(1)
 #test_typical_data = "Data/Full/test_typical" # typical
 test_anomaly_data = "Data/Full/test_novel/all"   # novel
 
-train_data        = "Data/Reduced/set_500/train"        # typical only
+train_data        = "Data/Reduced/set_1000/train"        # typical only
 validation_data   = "Data/Reduced/set_1/validation"   # typical only
 test_typical_data = "Data/Reduced/set_1/test_typical_200" # typical
 #test_anomaly_data = "Data/Reduced/set_1/test_novel"   # novel
@@ -75,7 +75,7 @@ USE_BAND_STANDARDIZE = True
 
 # Dataset reduction controls
 REDUCE_DATASETS = True
-REDUCE_TRAIN_N = 500
+REDUCE_TRAIN_N = 1000
 REDUCE_VAL_N = math.ceil(REDUCE_TRAIN_N * 0.20)     # 20% of training data
 REDUCE_TEST_TYP_N = 200
 REDUCE_TEST_ANO_N = 50
@@ -1772,7 +1772,7 @@ if use_predefined_rank:
         X_train, X_val, X_fin, y_val, y_fin, _, _ = get_splits(data_bundle, standardize=USE_BAND_STANDARDIZE)
 
         if enable_pca_oc_svm:
-            rank = 135
+            rank = 190
             PCA_WHITEN = True  # set False to skip whitening (uses your scaler)
             RANDOM_SEED = 42
             with peak_ram(prefix="PCA+OCSVM", label=f"rank={rank}", interval=0.02) as m:
@@ -1808,7 +1808,7 @@ if use_predefined_rank:
 
 
         if enable_pca_autoencoder:
-            rank = 105
+            rank = 215
             factor = 1
             bottleneck = 16
 
@@ -1846,7 +1846,7 @@ if use_predefined_rank:
 
 
         if enable_pca_isolation_forest:
-            rank = 65
+            rank = 200
             PCA_WHITEN = True  # set False to skip whitening (uses your scaler)
             RANDOM_SEED = 42
             with peak_ram(prefix="PCA+IF", label=f"rank={rank}", interval=0.02) as m:
@@ -1882,7 +1882,7 @@ if use_predefined_rank:
 
         if enable_cp_oc_svm:
             # Fixed rank:
-            rank = 25
+            rank = 15
             with peak_ram(prefix=f"CP+OCSVM", label=f"R={rank}", interval=0.02) as m:
                 # Global CP fit + project
                 (A, B, C), H_train, H_val, H_fin = cp_fit_and_project(
@@ -1919,9 +1919,9 @@ if use_predefined_rank:
 
         if enable_cp_autoencoder:
             # Fixed rank:
-            rank = 60
-            factor = 2
-            bottleneck = 16
+            rank = 10
+            factor = 3
+            bottleneck = 64
             with peak_ram(prefix=f"CP+AE", label=f"R={rank}", interval=0.02) as m:
                 # Global CP fit + project
                 (A, B, C), H_train, H_val, H_fin = cp_fit_and_project(
@@ -1950,7 +1950,7 @@ if use_predefined_rank:
 
         if enable_cp_isolation_forest:
             # Fixed rank:
-            rank = 25
+            rank = 15
             with peak_ram(prefix=f"CP+IF", label=f"R={rank}", interval=0.02) as m:
                 # Global CP fit + project
                 (A, B, C), H_train, H_val, H_fin = cp_fit_and_project(
@@ -2062,7 +2062,7 @@ if use_predefined_rank:
 
 
         if enable_tucker_isolation_forest:
-            rank = (16, 32, 16)
+            rank = (16, 64, 16)
             with peak_ram(prefix=f"Tucker+IF", label=f"R={rank}", interval=0.02) as m:
                 Z_tr, Z_va, Z_fi = None, None, None
                 # Tucker decompositions
