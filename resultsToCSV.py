@@ -8,11 +8,11 @@ import os
 # CONFIGURATION
 # ------------------------------
 
-# Option 1: Set manually here
+# Default paths (can be overridden via CLI)
 INPUT_PATH = "C:/OMSA/ISyE6748_practicum_publish/Results/results.out"  # Change to your input log file path
 OUTPUT_DIR = "Results"               # Folder to save the CSV files
 
-# Option 2: Allow overrides via command line:
+# CLI overrides:
 #   python parse_auc.py results.out output_folder
 if len(sys.argv) > 1:
     INPUT_PATH = sys.argv[1]
@@ -23,6 +23,9 @@ if not os.path.exists(INPUT_PATH):
     raise FileNotFoundError(f"Input file not found: {INPUT_PATH}")
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+# Seeds to include (in order)
+SEEDS = (1, 2, 3, 5, 8, 13, 21)
 
 # ------------------------------
 # REGEX PATTERNS
@@ -65,7 +68,7 @@ def parse_aucs(path):
                 m_auc = pat.search(line)
                 if m_auc:
                     auc = float(m_auc.group(1))
-                    # Keep first AUC per (model, seed); ignore later duplicates
+                    # keep first AUC per (model, seed); ignore repeats
                     results[key].setdefault(current_seed, auc)
 
     return results
@@ -96,85 +99,94 @@ def write_csv(filename, header, row, outdir):
     print(f"  → {out_path}")
 
 # ------------------------------
-# CSV WRITER (WITH AVERAGES)
+# CSV WRITER (WITH SEED1/2/3/5/8/13/21 + AVG)
 # ------------------------------
 
-def write_csvs(results, outdir, seeds=(1, 3, 5, 8, 13)):
-    # ----- OCSVM -----
+def write_csvs(results, outdir, seeds=SEEDS):
+    # -------- OCSVM --------
     ocsvm_header = [
         # PCA
-        "ocsvm_pca_seed1", "ocsvm_pca_seed3", "ocsvm_pca_seed5", "ocsvm_pca_seed8", "ocsvm_pca_seed13",
+        "ocsvm_pca_seed1", "ocsvm_pca_seed2", "ocsvm_pca_seed3",
+        "ocsvm_pca_seed5", "ocsvm_pca_seed8", "ocsvm_pca_seed13", "ocsvm_pca_seed21",
         "ocsvm_pca_avg",
         # CP
-        "ocsvm_cp_seed1", "ocsvm_cp_seed3", "ocsvm_cp_seed5", "ocsvm_cp_seed8", "ocsvm_cp_seed13",
+        "ocsvm_cp_seed1", "ocsvm_cp_seed2", "ocsvm_cp_seed3",
+        "ocsvm_cp_seed5", "ocsvm_cp_seed8", "ocsvm_cp_seed13", "ocsvm_cp_seed21",
         "ocsvm_cp_avg",
         # Tucker
-        "ocsvm_tucker_seed1", "ocsvm_tucker_seed3", "ocsvm_tucker_seed5", "ocsvm_tucker_seed8", "ocsvm_tucker_seed13",
+        "ocsvm_tucker_seed1", "ocsvm_tucker_seed2", "ocsvm_tucker_seed3",
+        "ocsvm_tucker_seed5", "ocsvm_tucker_seed8", "ocsvm_tucker_seed13", "ocsvm_tucker_seed21",
         "ocsvm_tucker_avg",
     ]
 
     ocsvm_row = [
-        # PCA seeds
+        # PCA seeds + avg
         *[get_val(results, "ocsvm_pca", s) for s in seeds],
         get_avg(results, "ocsvm_pca", seeds),
-        # CP seeds
+        # CP seeds + avg
         *[get_val(results, "ocsvm_cp", s) for s in seeds],
         get_avg(results, "ocsvm_cp", seeds),
-        # Tucker seeds
+        # Tucker seeds + avg
         *[get_val(results, "ocsvm_tucker", s) for s in seeds],
         get_avg(results, "ocsvm_tucker", seeds),
     ]
 
     write_csv("ocsvm_auc.csv", ocsvm_header, ocsvm_row, outdir)
 
-    # ----- AE -----
+    # -------- AE --------
     ae_header = [
         # PCA
-        "ae_pca_seed1", "ae_pca_seed3", "ae_pca_seed5", "ae_pca_seed8", "ae_pca_seed13",
+        "ae_pca_seed1", "ae_pca_seed2", "ae_pca_seed3",
+        "ae_pca_seed5", "ae_pca_seed8", "ae_pca_seed13", "ae_pca_seed21",
         "ae_pca_avg",
         # CP
-        "ae_cp_seed1", "ae_cp_seed3", "ae_cp_seed5", "ae_cp_seed8", "ae_cp_seed13",
+        "ae_cp_seed1", "ae_cp_seed2", "ae_cp_seed3",
+        "ae_cp_seed5", "ae_cp_seed8", "ae_cp_seed13", "ae_cp_seed21",
         "ae_cp_avg",
         # Tucker
-        "ae_tucker_seed1", "ae_tucker_seed3", "ae_tucker_seed5", "ae_tucker_seed8", "ae_tucker_seed13",
+        "ae_tucker_seed1", "ae_tucker_seed2", "ae_tucker_seed3",
+        "ae_tucker_seed5", "ae_tucker_seed8", "ae_tucker_seed13", "ae_tucker_seed21",
         "ae_tucker_avg",
     ]
 
     ae_row = [
-        # PCA seeds
+        # PCA seeds + avg
         *[get_val(results, "ae_pca", s) for s in seeds],
         get_avg(results, "ae_pca", seeds),
-        # CP seeds
+        # CP seeds + avg
         *[get_val(results, "ae_cp", s) for s in seeds],
         get_avg(results, "ae_cp", seeds),
-        # Tucker seeds
+        # Tucker seeds + avg
         *[get_val(results, "ae_tucker", s) for s in seeds],
         get_avg(results, "ae_tucker", seeds),
     ]
 
     write_csv("ae_auc.csv", ae_header, ae_row, outdir)
 
-    # ----- IF -----
+    # -------- IF --------
     if_header = [
         # PCA
-        "if_pca_seed1", "if_pca_seed3", "if_pca_seed5", "if_pca_seed8", "if_pca_seed13",
+        "if_pca_seed1", "if_pca_seed2", "if_pca_seed3",
+        "if_pca_seed5", "if_pca_seed8", "if_pca_seed13", "if_pca_seed21",
         "if_pca_avg",
         # CP
-        "if_cp_seed1", "if_cp_seed3", "if_cp_seed5", "if_cp_seed8", "if_cp_seed13",
+        "if_cp_seed1", "if_cp_seed2", "if_cp_seed3",
+        "if_cp_seed5", "if_cp_seed8", "if_cp_seed13", "if_cp_seed21",
         "if_cp_avg",
         # Tucker
-        "if_tucker_seed1", "if_tucker_seed3", "if_tucker_seed5", "if_tucker_seed8", "if_tucker_seed13",
+        "if_tucker_seed1", "if_tucker_seed2", "if_tucker_seed3",
+        "if_tucker_seed5", "if_tucker_seed8", "if_tucker_seed13", "if_tucker_seed21",
         "if_tucker_avg",
     ]
 
     if_row = [
-        # PCA seeds
+        # PCA seeds + avg
         *[get_val(results, "if_pca", s) for s in seeds],
         get_avg(results, "if_pca", seeds),
-        # CP seeds
+        # CP seeds + avg
         *[get_val(results, "if_cp", s) for s in seeds],
         get_avg(results, "if_cp", seeds),
-        # Tucker seeds
+        # Tucker seeds + avg
         *[get_val(results, "if_tucker", s) for s in seeds],
         get_avg(results, "if_tucker", seeds),
     ]
