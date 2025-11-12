@@ -36,7 +36,7 @@ random.seed(1)
 # Paths & toggles
 #train_data        = "Data/Full/train_typical"        # typical only
 #validation_data   = "Data/Full/validation_typical"   # typical only
-test_typical_data = "Data/Full/test_typical" # typical
+test_typical_data = "../../Data/Full/test_typical" # typical
 #test_anomaly_data = "Data/Full/test_novel/all"   # novel
 
 train_data        = "../../Data/Reduced/set_1/train"        # typical only
