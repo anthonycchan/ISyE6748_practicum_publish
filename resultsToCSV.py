@@ -9,7 +9,7 @@ import os
 # ------------------------------
 
 # Default paths (can be overridden via CLI)
-INPUT_PATH = "C:/OMSA/ISyE6748_practicum_publish/Results/results.out"  # Change to your input log file path
+INPUT_PATH = "C:/OMSA/ISyE6748_practicum_publish/Results/results2.out"  # Change to your input log file path
 OUTPUT_DIR = "Results"               # Folder to save the CSV files
 
 # CLI overrides:
