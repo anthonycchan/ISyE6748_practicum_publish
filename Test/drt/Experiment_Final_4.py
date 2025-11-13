@@ -30,6 +30,7 @@ from tensorflow.keras.callbacks import EarlyStopping
 
 # Memory logging
 from utils_mem import peak_ram
+import sys
 
 random.seed(1)
 
@@ -1764,7 +1765,7 @@ if no_decomposition:
 
 if use_predefined_rank:
     print('Predefined rank')
-    for split_seed in {1,2,3,5,8,13,21}:
+    for split_seed in {int(sys.argv[1])}:
         print('Split seed:', split_seed)
 
         # Entry (reads once, then passes data to pipelines)

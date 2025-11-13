@@ -1,0 +1,39 @@
+TensorLy backend: PyTorch (CUDA)
+Predefined rank
+Split seed: 1
+[TRAIN] N=3000, NaNs=False, Infs=False
+[TRAIN] min=-4.096736, max=7.367549
+[VAL] N=430, NaNs=False, Infs=False
+[VAL] min=-4.064969, max=6.346356
+[FINAL] N=311, NaNs=False, Infs=False
+[FINAL] min=-4.064969, max=3.754098
+[PCA+OCSVM] (VAL one-class) chose {'gamma': 0.0002631578947368421, 'kernel': 'rbf', 'nu': 0.05} best_obj:(FP=0.000, P95=-11.4616, mean=-19.1889) Elapsed: 25.81
+[PCA+OCSVM] Final result RANK=380 AUC=0.2573423423423423 | ACC=0.6430868167202572 | param=({'gamma': 0.0002631578947368421, 'kernel': 'rbf', 'nu': 0.05}) | aux=FP=0.000, P95=-11.4616, mean=-19.1889
+[PCA+OCSVM] AUC=0.2573 Boot: mean:0.2581 std:0.0291, CI(0.2031–0.3162) | 
+[PCA+OCSVM] rank=380 peak_rss_mb=2133.9 | peak_workingset_mb=2133.9 | peak_cuda_mb=0.0 | cpu_time_sec=57.17
+[PCA+AE] rank=370 peak_rss_mb=2443.8 | peak_workingset_mb=2444.1 | peak_cuda_mb=0.0 | cpu_time_sec=44.78
+Traceback (most recent call last):
+  File "C:\OMSA\ISyE6748_practicum_publish\Test\drt\Experiment_Final_4.py", line 1844, in <module>
+    err_va, autoencoder, run_time = neural_network_autoencoder(factor, bottleneck, Htr, Hva, Hte)
+  File "C:\OMSA\ISyE6748_practicum_publish\Test\drt\Experiment_Final_4.py", line 1108, in neural_network_autoencoder
+    autoencoder.fit(
+  File "C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\keras\utils\traceback_utils.py", line 65, in error_handler
+    return fn(*args, **kwargs)
+  File "C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\keras\engine\training.py", line 1685, in fit
+    tmp_logs = self.train_function(iterator)
+  File "C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorflow\python\util\traceback_utils.py", line 150, in error_handler
+    return fn(*args, **kwargs)
+  File "C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorflow\python\eager\polymorphic_function\polymorphic_function.py", line 894, in __call__
+    result = self._call(*args, **kwds)
+  File "C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorflow\python\eager\polymorphic_function\polymorphic_function.py", line 926, in _call
+    return self._no_variable_creation_fn(*args, **kwds)  # pylint: disable=not-callable
+  File "C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorflow\python\eager\polymorphic_function\tracing_compiler.py", line 143, in __call__
+    return concrete_function._call_flat(
+  File "C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorflow\python\eager\polymorphic_function\monomorphic_function.py", line 1757, in _call_flat
+    return self._build_call_outputs(self._inference_function.call(
+  File "C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorflow\python\eager\polymorphic_function\monomorphic_function.py", line 381, in call
+    outputs = execute.execute(
+  File "C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\tensorflow\python\eager\execute.py", line 52, in quick_execute
+    tensors = pywrap_tfe.TFE_Py_Execute(ctx._handle, device_name, op_name,
+KeyboardInterrupt
+^C
