@@ -1,0 +1,13 @@
+TensorLy backend: PyTorch (CUDA)
+Predefined rank
+Split seed: 1
+[TRAIN] N=3000, NaNs=False, Infs=False
+[TRAIN] min=-4.096736, max=7.367549
+[VAL] N=430, NaNs=False, Infs=False
+[VAL] min=-4.064969, max=6.346356
+[FINAL] N=262, NaNs=False, Infs=False
+[FINAL] min=-4.064969, max=3.675545
+[PCA+OCSVM] (VAL one-class) chose {'gamma': 0.0002631578947368421, 'kernel': 'rbf', 'nu': 0.05} best_obj:(FP=0.000, P95=-11.4616, mean=-19.1889) Elapsed: 25.91
+[PCA+OCSVM] Final result RANK=380 AUC=0.49274193548387096 | ACC=0.7633587786259542 | param=({'gamma': 0.0002631578947368421, 'kernel': 'rbf', 'nu': 0.05}) | aux=FP=0.000, P95=-11.4616, mean=-19.1889
+[PCA+OCSVM] AUC=0.4927 Boot: mean:0.4931 std:0.0396, CI(0.4194–0.5741) | 
+[PCA+OCSVM] rank=380 peak_rss_mb=2118.7 | peak_workingset_mb=2118.7 | peak_cuda_mb=0.0 | cpu_time_sec=52.50

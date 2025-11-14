@@ -9,7 +9,7 @@ set numbers=1 2 3 5 8 13 21
 
 for %%i in (%numbers%) do (
     echo Seed: %%i
-    "%PYTHON_EXE%" Experiment_Final_4.py %%i > results4.log 2>&1
+    "%PYTHON_EXE%" Experiment_Final_4.py %%i > results4_%%i.log 2>&1
 )
 
 echo Done.
