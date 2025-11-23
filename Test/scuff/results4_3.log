@@ -1,0 +1,69 @@
+TensorLy backend: PyTorch (CUDA)
+Predefined rank
+Split seed: 3
+[TRAIN] N=3000, NaNs=False, Infs=False
+[TRAIN] min=-4.094555, max=7.364254
+[VAL] N=430, NaNs=False, Infs=False
+[VAL] min=-4.062719, max=6.343209
+[FINAL] N=60, NaNs=False, Infs=False
+[FINAL] min=-4.062719, max=3.122991
+[PCA+OCSVM] (VAL one-class) chose {'gamma': 0.0002631578947368421, 'kernel': 'rbf', 'nu': 0.05} best_obj:(FP=0.000, P95=-11.5474, mean=-19.0982) Elapsed: 24.59
+[PCA+OCSVM] Final result RANK=380 AUC=0.5711805555555556 | ACC=0.8 | param=({'gamma': 0.0002631578947368421, 'kernel': 'rbf', 'nu': 0.05}) | aux=FP=0.000, P95=-11.5474, mean=-19.0982
+[PCA+OCSVM] AUC=0.5712 Boot: mean:0.5733 std:0.1072, CI(0.3559–0.7743) | 
+[PCA+OCSVM] rank=380 peak_rss_mb=2062.8 | peak_workingset_mb=2062.9 | peak_cuda_mb=0.0 | cpu_time_sec=47.77
+[PCA+AE] (global) Final result Rank=370 AUC=0.6284722222222222 ACC=0.8
+[PCA+AE] AUC=0.6285 Boot: mean:0.6308 std:0.1025, CI(0.4184–0.8229) | 
+[PCA+AE] rank=370 peak_rss_mb=2366.8 | peak_workingset_mb=2366.9 | peak_cuda_mb=0.0 | cpu_time_sec=51.45
+[PCA+IF] best_obj=0.005000 best_param: {'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.75, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} Elapsed (CPU s): 262.48
+[PCA+IF] Final result rank=365 AUC=0.5625 ACC=0.7333333333333333 obj=0.005| params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.75, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} | thr=0.390254 | target_FP=0.050
+[PCA+IF] AUC=0.5625 Boot: mean:0.5646 std:0.1035, CI(0.3559–0.7587) | 
+[PCA+IF] rank=365 peak_rss_mb=2441.5 | peak_workingset_mb=2441.5 | peak_cuda_mb=0.0 | cpu_time_sec=287.36
+[CP+OCSVM] (VAL one-class) chose {'gamma': 0.0002631578947368421, 'kernel': 'rbf', 'nu': 0.01} best_obj:(FP=0.021, P95=-0.7112, mean=-3.0115) Elapsed: 26.67
+[CP+OCSVM] Final result RANK=380 AUC=0.5659722222222222 | ACC=0.8 | param=({'gamma': 0.0002631578947368421, 'kernel': 'rbf', 'nu': 0.01}) | aux=FP=0.021, P95=-0.7112, mean=-3.0115
+[CP+OCSVM] AUC=0.5660 Boot: mean:0.5679 std:0.1083, CI(0.3489–0.7657) | 
+[CP+OCSVM] R=380 peak_rss_mb=2338.0 | peak_workingset_mb=2441.5 | peak_cuda_mb=586.7 | cpu_time_sec=307.23
+[CP+AE] (global) Final result Rank=380 AUC=0.5989583333333334 ACC=0.8
+[CP+AE] AUC=0.5990 Boot: mean:0.6009 std:0.1013, CI(0.3941–0.7882) | 
+[CP+AE] R=380 peak_rss_mb=2467.6 | peak_workingset_mb=2475.3 | peak_cuda_mb=586.7 | cpu_time_sec=299.92
+[CP+IF] best_obj=0.023217 best_param: {'bootstrap': False, 'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} Elapsed (CPU s): 204.56
+[CP+IF] Final result rank=380 AUC=0.4965277777777778 ACC=0.7166666666666667 obj=0.023217054263565892| params={'bootstrap': False, 'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} | thr=0.438823 | target_FP=0.050
+[CP+IF] AUC=0.4965 Boot: mean:0.4983 std:0.1008, CI(0.3021–0.6910) | 
+[CP+IF] R=380 peak_rss_mb=2659.8 | peak_workingset_mb=2661.9 | peak_cuda_mb=586.7 | cpu_time_sec=485.34
+[Tucker+OCSVM] (VAL one-class) chose {'gamma': 0.000125, 'kernel': 'rbf', 'nu': 0.01} best_obj:(FP=0.116, P95=0.8073, mean=-1.6502) Elapsed: 48.47
+[Tucker+OCSVM] Final result RANK=(5, 32, 5) AUC=0.6354166666666666 | ACC=0.8 | param=({'gamma': 0.000125, 'kernel': 'rbf', 'nu': 0.01}) | aux=FP=0.116, P95=0.8073, mean=-1.6502
+[Tucker+OCSVM] AUC=0.6354 Boot: mean:0.6357 std:0.1028, CI(0.4288–0.8282) | 
+[Tucker+OCSVM] R=(5, 32, 5) peak_rss_mb=2866.2 | peak_workingset_mb=2866.2 | peak_cuda_mb=158.5 | cpu_time_sec=209.03
+[Tucker+AE] (global) Final result Rank=(5, 32, 5) AUC=0.6371527777777778 ACC=0.8
+[Tucker+AE] AUC=0.6372 Boot: mean:0.6374 std:0.1039, CI(0.4288–0.8333) | 
+[Tucker+AE] R=(5, 32, 5) peak_rss_mb=2883.1 | peak_workingset_mb=2898.4 | peak_cuda_mb=158.4 | cpu_time_sec=297.69
+[Tucker+IF] R=(32, 64, 16) peak_rss_mb=6132.6 | peak_workingset_mb=6153.1 | peak_cuda_mb=1126.6 | cpu_time_sec=383.27
+Traceback (most recent call last):
+  File "C:\OMSA\ISyE6748_practicum_publish\Test\scuff\Experiment_Final_4.py", line 368, in buildTensor
+    return list(executor.map(decomp, range(num_sets)))
+  File "C:\Users\Anthony\anaconda3\envs\isye6740\lib\concurrent\futures\_base.py", line 621, in result_iterator
+    yield _result_or_cancel(fs.pop())
+  File "C:\Users\Anthony\anaconda3\envs\isye6740\lib\concurrent\futures\_base.py", line 319, in _result_or_cancel
+    return fut.result(timeout)
+  File "C:\Users\Anthony\anaconda3\envs\isye6740\lib\concurrent\futures\_base.py", line 453, in result
+    self._condition.wait(timeout)
+  File "C:\Users\Anthony\anaconda3\envs\isye6740\lib\threading.py", line 320, in wait
+    waiter.acquire()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\OMSA\ISyE6748_practicum_publish\Test\scuff\Experiment_Final_4.py", line 2071, in <module>
+    decomp_tr = buildTensor(X_train, rank, n_tr, isTuckerDecomposition=True)
+  File "C:\OMSA\ISyE6748_practicum_publish\Test\scuff\Experiment_Final_4.py", line 367, in buildTensor
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+  File "C:\Users\Anthony\anaconda3\envs\isye6740\lib\concurrent\futures\_base.py", line 649, in __exit__
+    self.shutdown(wait=True)
+  File "C:\Users\Anthony\anaconda3\envs\isye6740\lib\concurrent\futures\thread.py", line 235, in shutdown
+    t.join()
+  File "C:\Users\Anthony\anaconda3\envs\isye6740\lib\threading.py", line 1096, in join
+    self._wait_for_tstate_lock()
+  File "C:\Users\Anthony\anaconda3\envs\isye6740\lib\threading.py", line 1116, in _wait_for_tstate_lock
+    if lock.acquire(block, timeout):
+KeyboardInterrupt
+^C

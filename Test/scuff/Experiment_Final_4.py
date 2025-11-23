@@ -40,9 +40,9 @@ random.seed(1)
 #test_typical_data = "Data/Full/test_typical" # typical
 #test_anomaly_data = "Data/Full/test_novel/all"   # novel
 
-train_data        = "Data/Reduced/set_3000/train"        # typical only
-validation_data   = "Data/Reduced/set_1/validation"   # typical only
-test_typical_data = "Data/Reduced/set_1/test_typical_200" # typical
+train_data        = "../../Data/Reduced/set_3000/train"        # typical only
+validation_data   = "../../Data/Reduced/set_1/validation"   # typical only
+test_typical_data = "../../Data/Reduced/set_1/test_typical_200" # typical
 #test_anomaly_data = "Data/Reduced/set_1/test_novel"   # novel
 #test_anomaly_data = "Data/Full/test_novel/bedrock"   # novel
 #test_anomaly_data = "Data/Full/test_novel/broken-rock"   # novel
@@ -51,7 +51,7 @@ test_typical_data = "Data/Reduced/set_1/test_typical_200" # typical
 #test_anomaly_data = "Data/Full/test_novel/dump-pile"   # novel
 #test_anomaly_data = "Data/Full/test_novel/float"   # novel
 #test_anomaly_data = "Data/Full/test_novel/meteorite"   # novel
-test_anomaly_data = "Data/Full/test_novel/scuff"   # novel
+test_anomaly_data = "../../Data/Full/test_novel/scuff"   # novel
 #test_anomaly_data = "Data/Full/test_novel/veins"   # novel
 
 use_predefined_rank = True

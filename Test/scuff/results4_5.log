@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "C:\OMSA\ISyE6748_practicum_publish\Test\scuff\Experiment_Final_4.py", line 5, in <module>
+    import torch
+  File "C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\torch\__init__.py", line 262, in <module>
+    _load_dll_libraries()
+  File "C:\Users\Anthony\anaconda3\envs\isye6740\lib\site-packages\torch\__init__.py", line 238, in _load_dll_libraries
+    res = kernel32.LoadLibraryExW(dll, None, 0x00001100)
+KeyboardInterrupt
+^C

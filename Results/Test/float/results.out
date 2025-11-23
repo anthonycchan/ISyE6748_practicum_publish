@@ -1,0 +1,286 @@
+nohup: ignoring input
+2025-11-13 20:25:04.442288: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+TensorLy backend: PyTorch (CPU)
+Predefined rank
+Split seed: 1
+[TRAIN] N=500, NaNs=False, Infs=False
+[TRAIN] min=-3.717012, max=4.956969
+[VAL] N=100, NaNs=False, Infs=False
+[VAL] min=-3.717012, max=5.486399
+[FINAL] N=90, NaNs=False, Infs=False
+[FINAL] min=-3.620735, max=3.236322
+[PCA+OCSVM] (VAL one-class) chose {'gamma': 0.0007407407407407408, 'kernel': 'rbf', 'nu': 0.1} best_obj:(FP=0.000, P95=-3.5195, mean=-6.6573) Elapsed: 1.11
+[PCA+OCSVM] Final result RANK=135 AUC=0.6751543209876543 | ACC=0.7888888888888889 | param=({'gamma': 0.0007407407407407408, 'kernel': 'rbf', 'nu': 0.1}) | aux=FP=0.000, P95=-3.5195, mean=-6.6573
+[PCA+OCSVM] AUC=0.6752 Boot: mean:0.6773 std:0.0568, CI(0.5602–0.7855) | 
+[PCA+OCSVM] rank=135 peak_rss_mb=1494.9
+2025-11-13 20:25:56.747188: E external/local_xla/xla/stream_executor/cuda/cuda_platform.cc:51] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: UNKNOWN ERROR (303)
+[PCA+AE] (global) Final result Rank=105 AUC=0.6782407407407407 ACC=0.8
+[PCA+AE] AUC=0.6782 Boot: mean:0.6802 std:0.0567, CI(0.5640–0.7870) | 
+[PCA+AE] rank=105 peak_rss_mb=1542.2
+[PCA+IF] best_obj=0.005000 best_param: {'bootstrap': False, 'contamination': 0.05, 'max_features': 0.75, 'max_samples': 1.0, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} Elapsed (CPU s): 46.93
+[PCA+IF] Final result rank=65 AUC=0.6990740740740741 ACC=0.8111111111111111 obj=0.005| params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.75, 'max_samples': 1.0, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} | thr=0.448745 | target_FP=0.050
+[PCA+IF] AUC=0.6991 Boot: mean:0.7009 std:0.0564, CI(0.5864–0.8102) | 
+[PCA+IF] rank=65 peak_rss_mb=1587.3
+[CP+OCSVM] (VAL one-class) chose {'gamma': 0.004, 'kernel': 'rbf', 'nu': 0.02} best_obj:(FP=0.020, P95=-0.1421, mean=-0.8668) Elapsed: 0.26
+[CP+OCSVM] Final result RANK=25 AUC=0.6172839506172839 | ACC=0.7888888888888889 | param=({'gamma': 0.004, 'kernel': 'rbf', 'nu': 0.02}) | aux=FP=0.020, P95=-0.1421, mean=-0.8668
+[CP+OCSVM] AUC=0.6173 Boot: mean:0.6198 std:0.0579, CI(0.5069–0.7292) | 
+[CP+OCSVM] R=25 peak_rss_mb=1950.5
+[CP+AE] (global) Final result Rank=60 AUC=0.7037037037037037 ACC=0.8
+[CP+AE] AUC=0.7037 Boot: mean:0.7057 std:0.0569, CI(0.5849–0.8140) | 
+[CP+AE] R=60 peak_rss_mb=2498.3
+[CP+IF] best_obj=0.013333 best_param: {'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.75, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} Elapsed (CPU s): 44.26
+[CP+IF] Final result rank=25 AUC=0.6327160493827161 ACC=0.7888888888888889 obj=0.013333333333333332| params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.75, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} | thr=0.489308 | target_FP=0.050
+[CP+IF] AUC=0.6327 Boot: mean:0.6339 std:0.0567, CI(0.5208–0.7431) | 
+[CP+IF] R=25 peak_rss_mb=1945.8
+[Tucker+OCSVM] (VAL one-class) chose {'gamma': 0.0024, 'kernel': 'rbf', 'nu': 0.01} best_obj:(FP=0.370, P95=1.0350, mean=-0.0770) Elapsed: 1.46
+[Tucker+OCSVM] Final result RANK=(5, 5, 5) AUC=0.6959876543209876 | ACC=0.8222222222222222 | param=({'gamma': 0.0024, 'kernel': 'rbf', 'nu': 0.01}) | aux=FP=0.370, P95=1.0350, mean=-0.0770
+[Tucker+OCSVM] AUC=0.6960 Boot: mean:0.6979 std:0.0698, CI(0.5586–0.8295) | 
+[Tucker+OCSVM] R=(5, 5, 5) peak_rss_mb=2023.0
+[Tucker+AE] (global) Final result Rank=(5, 5, 5) AUC=0.6936728395061729 ACC=0.8111111111111111
+[Tucker+AE] AUC=0.6937 Boot: mean:0.6957 std:0.0700, CI(0.5556–0.8264) | 
+[Tucker+AE] R=(5, 5, 5) peak_rss_mb=2155.6
+[Tucker+IF] best_obj=0.005000 best_param: {'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.75, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} Elapsed (CPU s): 50.12
+[Tucker+IF] Final result rank=(16, 32, 16) AUC=0.6319444444444444 ACC=0.7888888888888889 obj=0.005| params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.75, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} | thr=0.357907 | target_FP=0.050
+[Tucker+IF] AUC=0.6319 Boot: mean:0.6329 std:0.0764, CI(0.4715–0.7763) | 
+[Tucker+IF] R=(16, 32, 16) peak_rss_mb=3459.2
+Split seed: 2
+[TRAIN] N=500, NaNs=False, Infs=False
+[TRAIN] min=-3.717459, max=4.965140
+[VAL] N=100, NaNs=False, Infs=False
+[VAL] min=-3.539285, max=5.495544
+[FINAL] N=90, NaNs=False, Infs=False
+[FINAL] min=-3.620424, max=3.241324
+[PCA+OCSVM] (VAL one-class) chose {'gamma': 0.0007407407407407408, 'kernel': 'rbf', 'nu': 0.1} best_obj:(FP=0.000, P95=-3.9277, mean=-6.4963) Elapsed: 1.42
+[PCA+OCSVM] Final result RANK=135 AUC=0.7731481481481481 | ACC=0.8111111111111111 | param=({'gamma': 0.0007407407407407408, 'kernel': 'rbf', 'nu': 0.1}) | aux=FP=0.000, P95=-3.9277, mean=-6.4963
+[PCA+OCSVM] AUC=0.7731 Boot: mean:0.7743 std:0.0531, CI(0.6627–0.8735) | 
+[PCA+OCSVM] rank=135 peak_rss_mb=2618.0
+[PCA+AE] (global) Final result Rank=105 AUC=0.7407407407407407 ACC=0.8
+[PCA+AE] AUC=0.7407 Boot: mean:0.7422 std:0.0553, CI(0.6312–0.8457) | 
+[PCA+AE] rank=105 peak_rss_mb=2646.9
+[PCA+IF] best_obj=0.006667 best_param: {'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.5, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} Elapsed (CPU s): 45.66
+[PCA+IF] Final result rank=65 AUC=0.7152777777777778 ACC=0.8 obj=0.006666666666666667| params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.5, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} | thr=0.473357 | target_FP=0.050
+[PCA+IF] AUC=0.7153 Boot: mean:0.7163 std:0.0565, CI(0.6026–0.8210) | 
+[PCA+IF] rank=65 peak_rss_mb=2340.9
+[CP+OCSVM] (VAL one-class) chose {'gamma': 0.004, 'kernel': 'rbf', 'nu': 0.02} best_obj:(FP=0.040, P95=-0.0341, mean=-0.8106) Elapsed: 0.26
+[CP+OCSVM] Final result RANK=25 AUC=0.6820987654320988 | ACC=0.7888888888888889 | param=({'gamma': 0.004, 'kernel': 'rbf', 'nu': 0.02}) | aux=FP=0.040, P95=-0.0341, mean=-0.8106
+[CP+OCSVM] AUC=0.6821 Boot: mean:0.6830 std:0.0559, CI(0.5702–0.7878) | 
+[CP+OCSVM] R=25 peak_rss_mb=2691.3
+[CP+AE] (global) Final result Rank=60 AUC=0.7361111111111112 ACC=0.8111111111111111
+[CP+AE] AUC=0.7361 Boot: mean:0.7374 std:0.0572, CI(0.6227–0.8441) | 
+[CP+AE] R=60 peak_rss_mb=3238.2
+[CP+IF] best_obj=0.016667 best_param: {'bootstrap': False, 'contamination': 0.05, 'max_features': 1.0, 'max_samples': 0.5, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} Elapsed (CPU s): 51.11
+[CP+IF] Final result rank=25 AUC=0.6712962962962963 ACC=0.8 obj=0.016666666666666666| params={'bootstrap': False, 'contamination': 0.05, 'max_features': 1.0, 'max_samples': 0.5, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} | thr=0.496802 | target_FP=0.050
+[CP+IF] AUC=0.6713 Boot: mean:0.6731 std:0.0607, CI(0.5509–0.7863) | 
+[CP+IF] R=25 peak_rss_mb=2706.5
+[Tucker+OCSVM] (VAL one-class) chose {'gamma': 0.0008, 'kernel': 'rbf', 'nu': 0.01} best_obj:(FP=0.360, P95=1.3577, mean=0.0024) Elapsed: 1.82
+[Tucker+OCSVM] Final result RANK=(5, 5, 5) AUC=0.7137345679012346 | ACC=0.8111111111111111 | param=({'gamma': 0.0008, 'kernel': 'rbf', 'nu': 0.01}) | aux=FP=0.360, P95=1.3577, mean=0.0024
+[Tucker+OCSVM] AUC=0.7137 Boot: mean:0.7150 std:0.0674, CI(0.5771–0.8403) | 
+[Tucker+OCSVM] R=(5, 5, 5) peak_rss_mb=2472.4
+[Tucker+AE] (global) Final result Rank=(5, 5, 5) AUC=0.7145061728395061 ACC=0.8222222222222222
+[Tucker+AE] AUC=0.7145 Boot: mean:0.7158 std:0.0680, CI(0.5748–0.8395) | 
+[Tucker+AE] R=(5, 5, 5) peak_rss_mb=2518.4
+[Tucker+IF] best_obj=0.005000 best_param: {'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.5, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} Elapsed (CPU s): 52.01
+[Tucker+IF] Final result rank=(16, 32, 16) AUC=0.5594135802469136 ACC=0.7777777777777778 obj=0.005| params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.5, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} | thr=0.384838 | target_FP=0.050
+[Tucker+IF] AUC=0.5594 Boot: mean:0.5579 std:0.0852, CI(0.3881–0.7253) | 
+[Tucker+IF] R=(16, 32, 16) peak_rss_mb=3779.8
+Split seed: 3
+[TRAIN] N=500, NaNs=False, Infs=False
+[TRAIN] min=-3.717595, max=4.963859
+[VAL] N=100, NaNs=False, Infs=False
+[VAL] min=-3.717595, max=5.494114
+[FINAL] N=90, NaNs=False, Infs=False
+[FINAL] min=-3.620833, max=2.896612
+[PCA+OCSVM] (VAL one-class) chose {'gamma': 0.0007407407407407408, 'kernel': 'rbf', 'nu': 0.1} best_obj:(FP=0.000, P95=-3.9401, mean=-6.7810) Elapsed: 1.35
+[PCA+OCSVM] Final result RANK=135 AUC=0.7476851851851852 | ACC=0.7888888888888889 | param=({'gamma': 0.0007407407407407408, 'kernel': 'rbf', 'nu': 0.1}) | aux=FP=0.000, P95=-3.9401, mean=-6.7810
+[PCA+OCSVM] AUC=0.7477 Boot: mean:0.7490 std:0.0546, CI(0.6381–0.8496) | 
+[PCA+OCSVM] rank=135 peak_rss_mb=2831.3
+[PCA+AE] (global) Final result Rank=105 AUC=0.75 ACC=0.7888888888888889
+[PCA+AE] AUC=0.7500 Boot: mean:0.7513 std:0.0550, CI(0.6420–0.8550) | 
+[PCA+AE] rank=105 peak_rss_mb=2848.5
+[PCA+IF] best_obj=0.005000 best_param: {'bootstrap': False, 'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} Elapsed (CPU s): 46.22
+[PCA+IF] Final result rank=65 AUC=0.7067901234567902 ACC=0.7666666666666667 obj=0.005| params={'bootstrap': False, 'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} | thr=0.438714 | target_FP=0.050
+[PCA+IF] AUC=0.7068 Boot: mean:0.7077 std:0.0590, CI(0.5848–0.8202) | 
+[PCA+IF] rank=65 peak_rss_mb=2520.9
+[CP+OCSVM] (VAL one-class) chose {'gamma': 0.004, 'kernel': 'rbf', 'nu': 0.05} best_obj:(FP=0.030, P95=-0.1712, mean=-2.1567) Elapsed: 0.26
+[CP+OCSVM] Final result RANK=25 AUC=0.6496913580246914 | ACC=0.7888888888888889 | param=({'gamma': 0.004, 'kernel': 'rbf', 'nu': 0.05}) | aux=FP=0.030, P95=-0.1712, mean=-2.1567
+[CP+OCSVM] AUC=0.6497 Boot: mean:0.6516 std:0.0587, CI(0.5378–0.7639) | 
+[CP+OCSVM] R=25 peak_rss_mb=2898.8
+[CP+AE] (global) Final result Rank=60 AUC=0.6983024691358025 ACC=0.7888888888888889
+[CP+AE] AUC=0.6983 Boot: mean:0.6993 std:0.0571, CI(0.5810–0.8032) | 
+[CP+AE] R=60 peak_rss_mb=3446.5
+[CP+IF] best_obj=0.008333 best_param: {'bootstrap': False, 'contamination': 0.05, 'max_features': 1.0, 'max_samples': 0.5, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} Elapsed (CPU s): 44.96
+[CP+IF] Final result rank=25 AUC=0.6342592592592593 ACC=0.8 obj=0.008333333333333333| params={'bootstrap': False, 'contamination': 0.05, 'max_features': 1.0, 'max_samples': 0.5, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} | thr=0.492169 | target_FP=0.050
+[CP+IF] AUC=0.6343 Boot: mean:0.6357 std:0.0597, CI(0.5177–0.7477) | 
+[CP+IF] R=25 peak_rss_mb=2894.6
+[Tucker+OCSVM] (VAL one-class) chose {'gamma': 0.0008, 'kernel': 'rbf', 'nu': 0.01} best_obj:(FP=0.360, P95=1.0836, mean=-0.0737) Elapsed: 1.72
+[Tucker+OCSVM] Final result RANK=(5, 5, 5) AUC=0.7152777777777778 | ACC=0.8 | param=({'gamma': 0.0008, 'kernel': 'rbf', 'nu': 0.01}) | aux=FP=0.360, P95=1.0836, mean=-0.0737
+[Tucker+OCSVM] AUC=0.7153 Boot: mean:0.7169 std:0.0682, CI(0.5772–0.8449) | 
+[Tucker+OCSVM] R=(5, 5, 5) peak_rss_mb=2659.9
+[Tucker+AE] (global) Final result Rank=(5, 5, 5) AUC=0.7137345679012346 ACC=0.8111111111111111
+[Tucker+AE] AUC=0.7137 Boot: mean:0.7156 std:0.0683, CI(0.5779–0.8434) | 
+[Tucker+AE] R=(5, 5, 5) peak_rss_mb=2713.3
+[Tucker+IF] best_obj=0.005000 best_param: {'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.5, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} Elapsed (CPU s): 50.72
+[Tucker+IF] Final result rank=(16, 32, 16) AUC=0.6782407407407407 ACC=0.8333333333333334 obj=0.005| params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.5, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} | thr=0.371800 | target_FP=0.050
+[Tucker+IF] AUC=0.6782 Boot: mean:0.6789 std:0.0752, CI(0.5216–0.8233) | 
+[Tucker+IF] R=(16, 32, 16) peak_rss_mb=3926.7
+Split seed: 5
+[TRAIN] N=500, NaNs=False, Infs=False
+[TRAIN] min=-3.717824, max=4.959051
+[VAL] N=100, NaNs=False, Infs=False
+[VAL] min=-3.717824, max=5.356434
+[FINAL] N=90, NaNs=False, Infs=False
+[FINAL] min=-3.620189, max=2.894957
+[PCA+OCSVM] (VAL one-class) chose {'gamma': 0.0007407407407407408, 'kernel': 'rbf', 'nu': 0.1} best_obj:(FP=0.000, P95=-3.6910, mean=-6.4595) Elapsed: 1.11
+[PCA+OCSVM] Final result RANK=135 AUC=0.6967592592592593 | ACC=0.7888888888888889 | param=({'gamma': 0.0007407407407407408, 'kernel': 'rbf', 'nu': 0.1}) | aux=FP=0.000, P95=-3.6910, mean=-6.4595
+[PCA+OCSVM] AUC=0.6968 Boot: mean:0.6965 std:0.0592, CI(0.5779–0.8071) | 
+[PCA+OCSVM] rank=135 peak_rss_mb=2965.7
+[PCA+AE] (global) Final result Rank=105 AUC=0.6782407407407407 ACC=0.7888888888888889
+[PCA+AE] AUC=0.6782 Boot: mean:0.6781 std:0.0593, CI(0.5602–0.7894) | 
+[PCA+AE] rank=105 peak_rss_mb=2978.1
+[PCA+IF] best_obj=0.005000 best_param: {'bootstrap': False, 'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} Elapsed (CPU s): 46.48
+[PCA+IF] Final result rank=65 AUC=0.6427469135802469 ACC=0.7777777777777778 obj=0.005| params={'bootstrap': False, 'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} | thr=0.444787 | target_FP=0.050
+[PCA+IF] AUC=0.6427 Boot: mean:0.6422 std:0.0591, CI(0.5231–0.7523) | 
+[PCA+IF] rank=65 peak_rss_mb=2629.4
+[CP+OCSVM] (VAL one-class) chose {'gamma': 0.004, 'kernel': 'rbf', 'nu': 0.02} best_obj:(FP=0.040, P95=-0.0514, mean=-0.8534) Elapsed: 0.4
+[CP+OCSVM] Final result RANK=25 AUC=0.6165123456790124 | ACC=0.7888888888888889 | param=({'gamma': 0.004, 'kernel': 'rbf', 'nu': 0.02}) | aux=FP=0.040, P95=-0.0514, mean=-0.8534
+[CP+OCSVM] AUC=0.6165 Boot: mean:0.6158 std:0.0591, CI(0.4969–0.7299) | 
+[CP+OCSVM] R=25 peak_rss_mb=2982.0
+[CP+AE] (global) Final result Rank=60 AUC=0.6311728395061729 ACC=0.7888888888888889
+[CP+AE] AUC=0.6312 Boot: mean:0.6310 std:0.0599, CI(0.5131–0.7446) | 
+[CP+AE] R=60 peak_rss_mb=3528.9
+[CP+IF] best_obj=0.013333 best_param: {'bootstrap': True, 'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} Elapsed (CPU s): 57.12
+[CP+IF] Final result rank=25 AUC=0.5995370370370371 ACC=0.7666666666666667 obj=0.013333333333333332| params={'bootstrap': True, 'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} | thr=0.516209 | target_FP=0.050
+[CP+IF] AUC=0.5995 Boot: mean:0.5988 std:0.0633, CI(0.4683–0.7184) | 
+[CP+IF] R=25 peak_rss_mb=2985.0
+[Tucker+OCSVM] (VAL one-class) chose {'gamma': 0.0008, 'kernel': 'rbf', 'nu': 0.01} best_obj:(FP=0.430, P95=1.3004, mean=0.0749) Elapsed: 1.02
+[Tucker+OCSVM] Final result RANK=(5, 5, 5) AUC=0.7006172839506173 | ACC=0.8111111111111111 | param=({'gamma': 0.0008, 'kernel': 'rbf', 'nu': 0.01}) | aux=FP=0.430, P95=1.3004, mean=0.0749
+[Tucker+OCSVM] AUC=0.7006 Boot: mean:0.7000 std:0.0698, CI(0.5548–0.8310) | 
+[Tucker+OCSVM] R=(5, 5, 5) peak_rss_mb=2777.4
+[Tucker+AE] (global) Final result Rank=(5, 5, 5) AUC=0.6921296296296297 ACC=0.8111111111111111
+[Tucker+AE] AUC=0.6921 Boot: mean:0.6917 std:0.0708, CI(0.5486–0.8233) | 
+[Tucker+AE] R=(5, 5, 5) peak_rss_mb=2838.2
+[Tucker+IF] best_obj=0.005000 best_param: {'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.5, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} Elapsed (CPU s): 49.07
+[Tucker+IF] Final result rank=(16, 32, 16) AUC=0.6242283950617284 ACC=0.6555555555555556 obj=0.005| params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.5, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} | thr=0.371607 | target_FP=0.050
+[Tucker+IF] AUC=0.6242 Boot: mean:0.6233 std:0.0644, CI(0.4907–0.7438) | 
+[Tucker+IF] R=(16, 32, 16) peak_rss_mb=4067.9
+Split seed: 8
+[TRAIN] N=500, NaNs=False, Infs=False
+[TRAIN] min=-3.717898, max=4.960089
+[VAL] N=100, NaNs=False, Infs=False
+[VAL] min=-3.717898, max=5.490161
+[FINAL] N=90, NaNs=False, Infs=False
+[FINAL] min=-3.620656, max=2.896399
+[PCA+OCSVM] (VAL one-class) chose {'gamma': 0.0007407407407407408, 'kernel': 'rbf', 'nu': 0.1} best_obj:(FP=0.000, P95=-3.9239, mean=-6.5173) Elapsed: 0.87
+[PCA+OCSVM] Final result RANK=135 AUC=0.7291666666666666 | ACC=0.8 | param=({'gamma': 0.0007407407407407408, 'kernel': 'rbf', 'nu': 0.1}) | aux=FP=0.000, P95=-3.9239, mean=-6.5173
+[PCA+OCSVM] AUC=0.7292 Boot: mean:0.7283 std:0.0563, CI(0.6119–0.8341) | 
+[PCA+OCSVM] rank=135 peak_rss_mb=3031.6
+[PCA+AE] (global) Final result Rank=105 AUC=0.7260802469135802 ACC=0.8
+[PCA+AE] AUC=0.7261 Boot: mean:0.7244 std:0.0567, CI(0.6103–0.8318) | 
+[PCA+AE] rank=105 peak_rss_mb=3061.3
+[PCA+IF] best_obj=0.005000 best_param: {'bootstrap': True, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.75, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} Elapsed (CPU s): 45.43
+[PCA+IF] Final result rank=65 AUC=0.720679012345679 ACC=0.8111111111111111 obj=0.005| params={'bootstrap': True, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.75, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} | thr=0.484214 | target_FP=0.050
+[PCA+IF] AUC=0.7207 Boot: mean:0.7205 std:0.0560, CI(0.6057–0.8233) | 
+[PCA+IF] rank=65 peak_rss_mb=2698.4
+[CP+OCSVM] (VAL one-class) chose {'gamma': 0.004, 'kernel': 'rbf', 'nu': 0.02} best_obj:(FP=0.040, P95=-0.0466, mean=-0.8771) Elapsed: 0.29
+[CP+OCSVM] Final result RANK=25 AUC=0.6057098765432098 | ACC=0.7888888888888889 | param=({'gamma': 0.004, 'kernel': 'rbf', 'nu': 0.02}) | aux=FP=0.040, P95=-0.0466, mean=-0.8771
+[CP+OCSVM] AUC=0.6057 Boot: mean:0.6032 std:0.0594, CI(0.4853–0.7176) | 
+[CP+OCSVM] R=25 peak_rss_mb=3046.1
+[CP+AE] (global) Final result Rank=60 AUC=0.6666666666666666 ACC=0.7888888888888889
+[CP+AE] AUC=0.6667 Boot: mean:0.6651 std:0.0591, CI(0.5478–0.7762) | 
+[CP+AE] R=60 peak_rss_mb=3593.2
+[CP+IF] best_obj=0.010000 best_param: {'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.75, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} Elapsed (CPU s): 44.35
+[CP+IF] Final result rank=25 AUC=0.6126543209876543 ACC=0.7777777777777778 obj=0.01| params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.75, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} | thr=0.494164 | target_FP=0.050
+[CP+IF] AUC=0.6127 Boot: mean:0.6104 std:0.0594, CI(0.4930–0.7231) | 
+[CP+IF] R=25 peak_rss_mb=3025.5
+[Tucker+OCSVM] (VAL one-class) chose {'gamma': 0.0024, 'kernel': 'rbf', 'nu': 0.01} best_obj:(FP=0.380, P95=0.9776, mean=-0.0513) Elapsed: 1.11
+[Tucker+OCSVM] Final result RANK=(5, 5, 5) AUC=0.6867283950617284 | ACC=0.7888888888888889 | param=({'gamma': 0.0024, 'kernel': 'rbf', 'nu': 0.01}) | aux=FP=0.380, P95=0.9776, mean=-0.0513
+[Tucker+OCSVM] AUC=0.6867 Boot: mean:0.6854 std:0.0668, CI(0.5494–0.8102) | 
+[Tucker+OCSVM] R=(5, 5, 5) peak_rss_mb=2826.7
+[Tucker+AE] (global) Final result Rank=(5, 5, 5) AUC=0.6859567901234568 ACC=0.8
+[Tucker+AE] AUC=0.6860 Boot: mean:0.6846 std:0.0667, CI(0.5517–0.8079) | 
+[Tucker+AE] R=(5, 5, 5) peak_rss_mb=2881.3
+[Tucker+IF] best_obj=0.005000 best_param: {'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.5, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} Elapsed (CPU s): 50.22
+[Tucker+IF] Final result rank=(16, 32, 16) AUC=0.6026234567901234 ACC=0.7555555555555555 obj=0.005| params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.5, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} | thr=0.368488 | target_FP=0.050
+[Tucker+IF] AUC=0.6026 Boot: mean:0.6013 std:0.0861, CI(0.4321–0.7616) | 
+[Tucker+IF] R=(16, 32, 16) peak_rss_mb=4065.0
+Split seed: 13
+[TRAIN] N=500, NaNs=False, Infs=False
+[TRAIN] min=-3.715901, max=4.958313
+[VAL] N=100, NaNs=False, Infs=False
+[VAL] min=-3.715901, max=5.487875
+[FINAL] N=90, NaNs=False, Infs=False
+[FINAL] min=-3.621509, max=2.895768
+[PCA+OCSVM] (VAL one-class) chose {'gamma': 0.0007407407407407408, 'kernel': 'rbf', 'nu': 0.1} best_obj:(FP=0.000, P95=-4.2769, mean=-6.6775) Elapsed: 1.4
+[PCA+OCSVM] Final result RANK=135 AUC=0.6720679012345679 | ACC=0.7888888888888889 | param=({'gamma': 0.0007407407407407408, 'kernel': 'rbf', 'nu': 0.1}) | aux=FP=0.000, P95=-4.2769, mean=-6.6775
+[PCA+OCSVM] AUC=0.6721 Boot: mean:0.6725 std:0.0562, CI(0.5594–0.7770) | 
+[PCA+OCSVM] rank=135 peak_rss_mb=3106.0
+[PCA+AE] (global) Final result Rank=105 AUC=0.6743827160493827 ACC=0.8111111111111111
+[PCA+AE] AUC=0.6744 Boot: mean:0.6746 std:0.0564, CI(0.5602–0.7794) | 
+[PCA+AE] rank=105 peak_rss_mb=3121.4
+[PCA+IF] best_obj=0.005000 best_param: {'bootstrap': False, 'contamination': 0.05, 'max_features': 1.0, 'max_samples': 0.5, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} Elapsed (CPU s): 45.86
+[PCA+IF] Final result rank=65 AUC=0.6496913580246914 ACC=0.7888888888888889 obj=0.005| params={'bootstrap': False, 'contamination': 0.05, 'max_features': 1.0, 'max_samples': 0.5, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} | thr=0.456959 | target_FP=0.050
+[PCA+IF] AUC=0.6497 Boot: mean:0.6509 std:0.0598, CI(0.5347–0.7624) | 
+[PCA+IF] rank=65 peak_rss_mb=2774.2
+[CP+OCSVM] (VAL one-class) chose {'gamma': 0.004, 'kernel': 'rbf', 'nu': 0.05} best_obj:(FP=0.040, P95=-0.1757, mean=-2.0985) Elapsed: 0.26
+[CP+OCSVM] Final result RANK=25 AUC=0.5740740740740741 | ACC=0.7888888888888889 | param=({'gamma': 0.004, 'kernel': 'rbf', 'nu': 0.05}) | aux=FP=0.040, P95=-0.1757, mean=-2.0985
+[CP+OCSVM] AUC=0.5741 Boot: mean:0.5760 std:0.0576, CI(0.4629–0.6875) | 
+[CP+OCSVM] R=25 peak_rss_mb=3131.0
+[CP+AE] (global) Final result Rank=60 AUC=0.6334876543209876 ACC=0.7888888888888889
+[CP+AE] AUC=0.6335 Boot: mean:0.6347 std:0.0583, CI(0.5224–0.7477) | 
+[CP+AE] R=60 peak_rss_mb=3678.4
+[CP+IF] best_obj=0.013333 best_param: {'bootstrap': False, 'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} Elapsed (CPU s): 44.72
+[CP+IF] Final result rank=25 AUC=0.5794753086419753 ACC=0.7555555555555555 obj=0.013333333333333332| params={'bootstrap': False, 'contamination': 0.05, 'max_features': 1.0, 'max_samples': 1.0, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} | thr=0.482381 | target_FP=0.050
+[CP+IF] AUC=0.5795 Boot: mean:0.5817 std:0.0593, CI(0.4683–0.6976) | 
+[CP+IF] R=25 peak_rss_mb=3104.5
+[Tucker+OCSVM] (VAL one-class) chose {'gamma': 0.0008, 'kernel': 'rbf', 'nu': 0.01} best_obj:(FP=0.430, P95=0.8552, mean=-0.0353) Elapsed: 1.72
+[Tucker+OCSVM] Final result RANK=(5, 5, 5) AUC=0.7029320987654321 | ACC=0.8222222222222222 | param=({'gamma': 0.0008, 'kernel': 'rbf', 'nu': 0.01}) | aux=FP=0.430, P95=0.8552, mean=-0.0353
+[Tucker+OCSVM] AUC=0.7029 Boot: mean:0.7035 std:0.0677, CI(0.5617–0.8295) | 
+[Tucker+OCSVM] R=(5, 5, 5) peak_rss_mb=2883.7
+[Tucker+AE] (global) Final result Rank=(5, 5, 5) AUC=0.7106481481481481 ACC=0.8222222222222222
+[Tucker+AE] AUC=0.7106 Boot: mean:0.7112 std:0.0661, CI(0.5725–0.8356) | 
+[Tucker+AE] R=(5, 5, 5) peak_rss_mb=2921.8
+[Tucker+IF] best_obj=0.005000 best_param: {'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.5, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} Elapsed (CPU s): 50.77
+[Tucker+IF] Final result rank=(16, 32, 16) AUC=0.6234567901234568 ACC=0.7444444444444445 obj=0.005| params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.5, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} | thr=0.364682 | target_FP=0.050
+[Tucker+IF] AUC=0.6235 Boot: mean:0.6212 std:0.0702, CI(0.4776–0.7531) | 
+[Tucker+IF] R=(16, 32, 16) peak_rss_mb=4064.5
+Split seed: 21
+[TRAIN] N=500, NaNs=False, Infs=False
+[TRAIN] min=-3.716641, max=4.959589
+[VAL] N=100, NaNs=False, Infs=False
+[VAL] min=-3.716641, max=5.489552
+[FINAL] N=90, NaNs=False, Infs=False
+[FINAL] min=-3.619877, max=3.237211
+[PCA+OCSVM] (VAL one-class) chose {'gamma': 0.0007407407407407408, 'kernel': 'rbf', 'nu': 0.1} best_obj:(FP=0.000, P95=-4.7745, mean=-6.7924) Elapsed: 1.66
+[PCA+OCSVM] Final result RANK=135 AUC=0.6905864197530864 | ACC=0.7888888888888889 | param=({'gamma': 0.0007407407407407408, 'kernel': 'rbf', 'nu': 0.1}) | aux=FP=0.000, P95=-4.7745, mean=-6.7924
+[PCA+OCSVM] AUC=0.6906 Boot: mean:0.6907 std:0.0576, CI(0.5725–0.7986) | 
+[PCA+OCSVM] rank=135 peak_rss_mb=3173.5
+[PCA+AE] (global) Final result Rank=105 AUC=0.6859567901234568 ACC=0.7888888888888889
+[PCA+AE] AUC=0.6860 Boot: mean:0.6864 std:0.0586, CI(0.5664–0.7940) | 
+[PCA+AE] rank=105 peak_rss_mb=3204.1
+[PCA+IF] best_obj=0.005000 best_param: {'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.5, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} Elapsed (CPU s): 45.67
+[PCA+IF] Final result rank=65 AUC=0.6334876543209876 ACC=0.7555555555555555 obj=0.005| params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.5, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} | thr=0.456327 | target_FP=0.050
+[PCA+IF] AUC=0.6335 Boot: mean:0.6335 std:0.0649, CI(0.4985–0.7554) | 
+[PCA+IF] rank=65 peak_rss_mb=2808.9
+[CP+OCSVM] (VAL one-class) chose {'gamma': 0.004, 'kernel': 'rbf', 'nu': 0.05} best_obj:(FP=0.030, P95=-0.3869, mean=-2.0031) Elapsed: 0.41
+[CP+OCSVM] Final result RANK=25 AUC=0.6010802469135802 | ACC=0.7888888888888889 | param=({'gamma': 0.004, 'kernel': 'rbf', 'nu': 0.05}) | aux=FP=0.030, P95=-0.3869, mean=-2.0031
+[CP+OCSVM] AUC=0.6011 Boot: mean:0.6013 std:0.0565, CI(0.4907–0.7099) | 
+[CP+OCSVM] R=25 peak_rss_mb=3164.3
+[CP+AE] (global) Final result Rank=60 AUC=0.6280864197530864 ACC=0.7888888888888889
+[CP+AE] AUC=0.6281 Boot: mean:0.6281 std:0.0646, CI(0.4985–0.7523) | 
+[CP+AE] R=60 peak_rss_mb=3711.6
+[CP+IF] best_obj=0.011667 best_param: {'bootstrap': False, 'contamination': 0.05, 'max_features': 1.0, 'max_samples': 0.75, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} Elapsed (CPU s): 44.34
+[CP+IF] Final result rank=25 AUC=0.5864197530864198 ACC=0.7666666666666667 obj=0.011666666666666667| params={'bootstrap': False, 'contamination': 0.05, 'max_features': 1.0, 'max_samples': 0.75, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} | thr=0.485361 | target_FP=0.050
+[CP+IF] AUC=0.5864 Boot: mean:0.5863 std:0.0644, CI(0.4591–0.7122) | 
+[CP+IF] R=25 peak_rss_mb=3141.1
+[Tucker+OCSVM] (VAL one-class) chose {'gamma': 0.0024, 'kernel': 'rbf', 'nu': 0.01} best_obj:(FP=0.350, P95=0.7558, mean=-0.0953) Elapsed: 1.49
+[Tucker+OCSVM] Final result RANK=(5, 5, 5) AUC=0.6666666666666666 | ACC=0.7888888888888889 | param=({'gamma': 0.0024, 'kernel': 'rbf', 'nu': 0.01}) | aux=FP=0.350, P95=0.7558, mean=-0.0953
+[Tucker+OCSVM] AUC=0.6667 Boot: mean:0.6669 std:0.0720, CI(0.5216–0.8010) | 
+[Tucker+OCSVM] R=(5, 5, 5) peak_rss_mb=2941.8
+[Tucker+AE] (global) Final result Rank=(5, 5, 5) AUC=0.6697530864197531 ACC=0.7888888888888889
+[Tucker+AE] AUC=0.6698 Boot: mean:0.6699 std:0.0729, CI(0.5216–0.8079) | 
+[Tucker+AE] R=(5, 5, 5) peak_rss_mb=2983.7
+[Tucker+IF] best_obj=0.005000 best_param: {'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.5, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} Elapsed (CPU s): 50.74
+[Tucker+IF] Final result rank=(16, 32, 16) AUC=0.5370370370370371 ACC=0.7111111111111111 obj=0.005| params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.5, 'n_estimators': 50, 'n_jobs': -1, 'random_state': 42} | thr=0.373342 | target_FP=0.050
+[Tucker+IF] AUC=0.5370 Boot: mean:0.5354 std:0.0882, CI(0.3595–0.7091) | 
+[Tucker+IF] R=(16, 32, 16) peak_rss_mb=4074.0

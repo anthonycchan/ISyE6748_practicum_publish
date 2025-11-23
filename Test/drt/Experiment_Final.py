@@ -53,7 +53,7 @@ test_anomaly_data = "../../Data/Full/test_novel/drt"   # novel
 #test_anomaly_data = "Data/Full/test_novel/scuff"   # novel
 #test_anomaly_data = "Data/Full/test_novel/veins"   # novel
 
-use_predefined_rank = True
+use_predefined_rank = False
 enable_tucker_oc_svm = True
 enable_tucker_autoencoder = True
 enable_tucker_isolation_forest = True
@@ -64,7 +64,7 @@ enable_pca_oc_svm = True
 enable_pca_autoencoder = True
 enable_pca_isolation_forest = True
 
-no_decomposition = False
+no_decomposition = True
 RUN_CP_VISUALIZATION = False
 RUN_TUCKER_VISUALIZATION = False
 
