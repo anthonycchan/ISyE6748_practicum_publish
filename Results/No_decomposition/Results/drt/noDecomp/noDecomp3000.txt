@@ -1,0 +1,156 @@
+"C:\Users\223075434\RS\Python environment\computeEnv\Scripts\python.exe" "C:\Users\223075434\OneDrive - GE Aerospace\Desktop\Practicum_publish\compute\Test\drt\Experiment_Final_4.py" 
+2025-12-17 16:05:15.882619: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-12-17 16:05:17.165230: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+TensorLy backend: PyTorch (CUDA)
+No Decomposition
+Split seed: 1
+[TRAIN] N=3000, NaNs=False, Infs=False
+[TRAIN] min=-4.096736, max=7.367549
+[VAL] N=430, NaNs=False, Infs=False
+[VAL] min=-4.064969, max=6.346356
+[FINAL] N=311, NaNs=False, Infs=False
+[FINAL] min=-4.064969, max=3.754098
+One-class SVM (raw pixels)
+OCSVM (VAL one-class) chose {'gamma': 0.001, 'kernel': 'rbf', 'nu': 0.01} (FP=0.993, P95=0.0845, mean=0.0826)
+OCSVM FINAL AUC=0.491
+OCSVM threshold=-0.059079 | accuracy=0.357
+Elapsed: 727.28 s
+One-class SVM best accuracy: 0.35691318327974275 auc: 0.4913963963963964
+[OCSVM] R=NA peak_rss_mb=2971.7 | peak_workingset_mb=3041.7 | peak_cuda_mb=0.0 | cpu_time_sec=700.09
+Autoencoder (raw-pixel) — sweeping factors and bottlenecks
+2025-12-17 16:18:39.453915: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F AVX512_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Factor: 1 Bottleneck: 16
+AE Intermediate result Rank=(1, 16) AUC=0.39423423423423426 ACC=0.639871382636656
+AE Final result Rank=(1, 16) AUC=0.39423423423423426 ACC=0.639871382636656
+[AE] R=NA peak_rss_mb=3402.5 | peak_workingset_mb=3402.6 | peak_cuda_mb=0.0 | cpu_time_sec=384.20
+IF Final result AUC=0.2516216216216216 ACC=0.47266881028938906 obj=0.47242459216192095| params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 1.0, 'n_estimators': 200, 'n_jobs': -1, 'random_state': 42} | thr=0.472425 | target_FP=0.050
+[IF] R=NA peak_rss_mb=3953.5 | peak_workingset_mb=4005.3 | peak_cuda_mb=0.0 | cpu_time_sec=305.92
+Split seed: 2
+[TRAIN] N=3000, NaNs=False, Infs=False
+[TRAIN] min=-4.095621, max=7.378669
+[VAL] N=430, NaNs=False, Infs=False
+[VAL] min=-4.063815, max=6.357088
+[FINAL] N=311, NaNs=False, Infs=False
+[FINAL] min=-4.063815, max=3.763844
+One-class SVM (raw pixels)
+OCSVM (VAL one-class) chose {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.01} (FP=0.991, P95=4.0687, mean=3.9880)
+OCSVM FINAL AUC=0.481
+OCSVM threshold=4.068699 | accuracy=0.376
+Elapsed: 559.17 s
+One-class SVM best accuracy: 0.3762057877813505 auc: 0.4806306306306306
+[OCSVM] R=NA peak_rss_mb=4108.2 | peak_workingset_mb=4289.9 | peak_cuda_mb=0.0 | cpu_time_sec=553.80
+Autoencoder (raw-pixel) — sweeping factors and bottlenecks
+Factor: 1 Bottleneck: 16
+AE Intermediate result Rank=(1, 16) AUC=0.3990990990990991 ACC=0.639871382636656
+AE Final result Rank=(1, 16) AUC=0.3990990990990991 ACC=0.639871382636656
+[AE] R=NA peak_rss_mb=4217.7 | peak_workingset_mb=4289.9 | peak_cuda_mb=0.0 | cpu_time_sec=344.28
+IF Final result AUC=0.25504504504504505 ACC=0.4919614147909968 obj=0.4751999894335327| params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.75, 'max_samples': 1.0, 'n_estimators': 200, 'n_jobs': -1, 'random_state': 42} | thr=0.475200 | target_FP=0.050
+[IF] R=NA peak_rss_mb=4792.5 | peak_workingset_mb=4818.2 | peak_cuda_mb=0.0 | cpu_time_sec=252.50
+Split seed: 3
+[TRAIN] N=3000, NaNs=False, Infs=False
+[TRAIN] min=-4.094555, max=7.364254
+[VAL] N=430, NaNs=False, Infs=False
+[VAL] min=-4.062719, max=6.343209
+[FINAL] N=311, NaNs=False, Infs=False
+[FINAL] min=-4.062719, max=3.751326
+One-class SVM (raw pixels)
+OCSVM (VAL one-class) chose {'gamma': 'scale', 'kernel': 'rbf', 'nu': 0.01} (FP=0.993, P95=4.0687, mean=4.0080)
+OCSVM FINAL AUC=0.498
+OCSVM threshold=4.068703 | accuracy=0.370
+Elapsed: 521.33 s
+One-class SVM best accuracy: 0.36977491961414793 auc: 0.49752252252252255
+[OCSVM] R=NA peak_rss_mb=4806.9 | peak_workingset_mb=5112.2 | peak_cuda_mb=0.0 | cpu_time_sec=521.02
+Autoencoder (raw-pixel) — sweeping factors and bottlenecks
+Factor: 1 Bottleneck: 16
+AE Intermediate result Rank=(1, 16) AUC=0.45432432432432435 ACC=0.639871382636656
+AE Final result Rank=(1, 16) AUC=0.45432432432432435 ACC=0.639871382636656
+[AE] R=NA peak_rss_mb=4991.0 | peak_workingset_mb=5112.2 | peak_cuda_mb=0.0 | cpu_time_sec=345.33
+IF Final result AUC=0.2566216216216216 ACC=0.4919614147909968 obj=0.4762008781757366| params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 0.75, 'n_estimators': 100, 'n_jobs': -1, 'random_state': 42} | thr=0.476201 | target_FP=0.050
+[IF] R=NA peak_rss_mb=5527.9 | peak_workingset_mb=5556.8 | peak_cuda_mb=0.0 | cpu_time_sec=293.66
+Split seed: 5
+[TRAIN] N=3000, NaNs=False, Infs=False
+[TRAIN] min=-4.096006, max=7.378879
+[VAL] N=430, NaNs=False, Infs=False
+[VAL] min=-4.064200, max=6.357166
+[FINAL] N=311, NaNs=False, Infs=False
+[FINAL] min=-4.064200, max=3.763587
+One-class SVM (raw pixels)
+OCSVM (VAL one-class) chose {'gamma': 0.001, 'kernel': 'rbf', 'nu': 0.01} (FP=0.995, P95=0.0845, mean=0.0837)
+OCSVM FINAL AUC=0.507
+OCSVM threshold=0.084487 | accuracy=0.367
+Elapsed: 1681.89 s
+One-class SVM best accuracy: 0.3665594855305466 auc: 0.5075
+[OCSVM] R=NA peak_rss_mb=5437.7 | peak_workingset_mb=5849.1 | peak_cuda_mb=0.0 | cpu_time_sec=1524.58
+Autoencoder (raw-pixel) — sweeping factors and bottlenecks
+Factor: 1 Bottleneck: 16
+AE Intermediate result Rank=(1, 16) AUC=0.415045045045045 ACC=0.639871382636656
+AE Final result Rank=(1, 16) AUC=0.415045045045045 ACC=0.639871382636656
+[AE] R=NA peak_rss_mb=5388.8 | peak_workingset_mb=5849.1 | peak_cuda_mb=0.0 | cpu_time_sec=427.52
+IF Final result AUC=0.252972972972973 ACC=0.4790996784565916 obj=0.47365208281350163| params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 1.0, 'n_estimators': 200, 'n_jobs': -1, 'random_state': 42} | thr=0.473652 | target_FP=0.050
+[IF] R=NA peak_rss_mb=5827.1 | peak_workingset_mb=5863.3 | peak_cuda_mb=0.0 | cpu_time_sec=451.20
+Split seed: 8
+[TRAIN] N=3000, NaNs=False, Infs=False
+[TRAIN] min=-4.094524, max=7.373137
+[VAL] N=430, NaNs=False, Infs=False
+[VAL] min=-4.062692, max=6.351750
+[FINAL] N=311, NaNs=False, Infs=False
+[FINAL] min=-4.062692, max=3.759001
+One-class SVM (raw pixels)
+OCSVM (VAL one-class) chose {'gamma': 0.001, 'kernel': 'rbf', 'nu': 0.01} (FP=0.998, P95=0.0845, mean=0.0842)
+OCSVM FINAL AUC=0.503
+OCSVM threshold=0.084487 | accuracy=0.367
+Elapsed: 1498.59 s
+One-class SVM best accuracy: 0.3665594855305466 auc: 0.5034459459459459
+[OCSVM] R=NA peak_rss_mb=6337.2 | peak_workingset_mb=6405.9 | peak_cuda_mb=0.0 | cpu_time_sec=1351.14
+Autoencoder (raw-pixel) — sweeping factors and bottlenecks
+Factor: 1 Bottleneck: 16
+AE Intermediate result Rank=(1, 16) AUC=0.4216666666666667 ACC=0.639871382636656
+AE Final result Rank=(1, 16) AUC=0.4216666666666667 ACC=0.639871382636656
+[AE] R=NA peak_rss_mb=6554.2 | peak_workingset_mb=6559.8 | peak_cuda_mb=0.0 | cpu_time_sec=421.73
+IF Final result AUC=0.2512162162162162 ACC=0.4887459807073955 obj=0.47204510233861363| params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.75, 'max_samples': 1.0, 'n_estimators': 200, 'n_jobs': -1, 'random_state': 42} | thr=0.472045 | target_FP=0.050
+[IF] R=NA peak_rss_mb=7192.8 | peak_workingset_mb=7250.6 | peak_cuda_mb=0.0 | cpu_time_sec=479.45
+Split seed: 13
+[TRAIN] N=3000, NaNs=False, Infs=False
+[TRAIN] min=-4.095110, max=7.367073
+[VAL] N=430, NaNs=False, Infs=False
+[VAL] min=-4.063302, max=6.346766
+[FINAL] N=311, NaNs=False, Infs=False
+[FINAL] min=-4.063302, max=3.756760
+One-class SVM (raw pixels)
+OCSVM (VAL one-class) chose {'gamma': 0.001, 'kernel': 'rbf', 'nu': 0.01} (FP=0.993, P95=0.0845, mean=0.0808)
+OCSVM FINAL AUC=0.496
+OCSVM threshold=0.084487 | accuracy=0.360
+Elapsed: 1469.46 s
+One-class SVM best accuracy: 0.36012861736334406 auc: 0.496036036036036
+[OCSVM] R=NA peak_rss_mb=7682.1 | peak_workingset_mb=7682.1 | peak_cuda_mb=0.0 | cpu_time_sec=1312.97
+Autoencoder (raw-pixel) — sweeping factors and bottlenecks
+Factor: 1 Bottleneck: 16
+AE Intermediate result Rank=(1, 16) AUC=0.4162612612612613 ACC=0.639871382636656
+AE Final result Rank=(1, 16) AUC=0.4162612612612613 ACC=0.639871382636656
+[AE] R=NA peak_rss_mb=7854.0 | peak_workingset_mb=7854.0 | peak_cuda_mb=0.0 | cpu_time_sec=406.03
+IF Final result AUC=0.24635135135135136 ACC=0.4662379421221865 obj=0.47283189731415004| params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 1.0, 'n_estimators': 200, 'n_jobs': -1, 'random_state': 42} | thr=0.472832 | target_FP=0.050
+[IF] R=NA peak_rss_mb=8317.8 | peak_workingset_mb=8400.5 | peak_cuda_mb=0.0 | cpu_time_sec=509.45
+Split seed: 21
+[TRAIN] N=3000, NaNs=False, Infs=False
+[TRAIN] min=-4.095860, max=7.361290
+[VAL] N=430, NaNs=False, Infs=False
+[VAL] min=-4.064064, max=6.341131
+[FINAL] N=311, NaNs=False, Infs=False
+[FINAL] min=-4.064064, max=3.751498
+One-class SVM (raw pixels)
+OCSVM (VAL one-class) chose {'gamma': 0.001, 'kernel': 'rbf', 'nu': 0.01} (FP=0.995, P95=0.0845, mean=0.0828)
+OCSVM FINAL AUC=0.502
+OCSVM threshold=0.084487 | accuracy=0.360
+Elapsed: 1257.15 s
+One-class SVM best accuracy: 0.36012861736334406 auc: 0.5025
+[OCSVM] R=NA peak_rss_mb=8347.1 | peak_workingset_mb=8667.7 | peak_cuda_mb=0.0 | cpu_time_sec=1248.02
+Autoencoder (raw-pixel) — sweeping factors and bottlenecks
+Factor: 1 Bottleneck: 16
+AE Intermediate result Rank=(1, 16) AUC=0.4197297297297297 ACC=0.639871382636656
+AE Final result Rank=(1, 16) AUC=0.4197297297297297 ACC=0.639871382636656
+[AE] R=NA peak_rss_mb=8582.3 | peak_workingset_mb=8667.7 | peak_cuda_mb=0.0 | cpu_time_sec=506.67
+IF Final result AUC=0.25247747747747745 ACC=0.49517684887459806 obj=0.47594384990903243| params={'bootstrap': False, 'contamination': 0.05, 'max_features': 0.5, 'max_samples': 1.0, 'n_estimators': 200, 'n_jobs': -1, 'random_state': 42} | thr=0.475944 | target_FP=0.050
+[IF] R=NA peak_rss_mb=9265.1 | peak_workingset_mb=9314.6 | peak_cuda_mb=0.0 | cpu_time_sec=545.97
+
+Process finished with exit code 0
